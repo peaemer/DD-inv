@@ -4,8 +4,9 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 # Definiere die Schriftarten
-LARGEFONT = ("Verdana", 35)
-LOGINFONT = ("Courier", 40)
+LARGEFONT = ("Arial", 35)
+LOGINFONT = ("Arial", 40)
+srhGrey = "d9d9d9"
 
 # Hauptklasse für das Tkinter-Fenster
 class ddINV(tk.Tk):
@@ -16,7 +17,7 @@ class ddINV(tk.Tk):
 		tk.Tk.__init__(self, *args, **kwargs)
 
 		# Setze den Fenstertitel
-		self.title("Starlight")
+		self.title("DD-inv")
 
 		# Fensterbreite und -höhe definieren
 		window_width = 1920
@@ -33,7 +34,7 @@ class ddINV(tk.Tk):
 		# Setze die Fenstergröße und Position
 		self.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 		self.resizable(True, True)  # Ermögliche Größenanpassung des Fensters
-		self.iconbitmap("assets/starmoon.ico")  # Setze das Fenster-Icon
+		self.iconbitmap("assets/srhIcon.ico")  # Setze das Fenster-Icon
 
 		# Setze das Fenster in den Vordergrund
 		self.attributes('-topmost', 1)
@@ -83,34 +84,40 @@ class logInWindow(tk.Frame):
 		self.grid_columnconfigure(0, weight=1)
 
 		# Erstelle einen Header-Bereich
-		headerFrame = tk.Frame(self, height=10, background="pink")
+		headerFrame = tk.Frame(self, height=10, background="#DF4807")
 		headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
-		# Füge ein Label zum Header hinzu
-		headerLabel = tk.Label(headerFrame, text="☆ Lovely ☆", background="pink", foreground="white")
-		headerLabel.config(font=("Courier", 80, "bold"))
-		headerLabel.pack(padx=20, pady=20)
+		# Laden des Bildes mit Pillow
+		image = Image.open("assets/srhHeader.png")
+
+		# Konvertiere das Bild für Tkinter
+		self.srhHead = ImageTk.PhotoImage(image)
+
+		# Füge einen Button mit dem Bild hinzu
+		srhHeader = tk.Label(headerFrame, image=self.srhHead, bd=0, relief=tk.FLAT, bg="#DF4807", activebackground="#DF4807")
+		srhHeader.grid(padx=20, pady=20, row=0, column=0, sticky=tk.W + tk.N)
+
 
 		# Erstelle das Login-Formular im mittleren Bereich
 		loginFrame = tk.Frame(self)
 		loginFrame.grid(row=1, column=0, sticky=tk.N + tk.S, pady=100)
 
 		# Füge die Eingabefelder für Username und Passwort hinzu
-		username_label = ttk.Label(loginFrame, text="Username", font=LOGINFONT)
-		username_label.grid(column=0, row=1, sticky=tk.W + tk.E, padx=5, pady=5)
+		username_label = ttk.Label(loginFrame, text="Benutzername", font=LOGINFONT)
+		username_label.grid(column=0, row=1, sticky=tk.W + tk.E, padx=130, pady=5)
 
 		username_entry = tk.Entry(loginFrame, font=LOGINFONT)
 		username_entry.grid(column=0, row=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
-		password_label = ttk.Label(loginFrame, text="Password", font=LOGINFONT)
-		password_label.grid(column=0, row=3, sticky=tk.W + tk.E, padx=5, pady=5)
+		password_label = ttk.Label(loginFrame, text="Passwort", font=LOGINFONT)
+		password_label.grid(column=0, row=3, sticky=tk.W + tk.E, padx=190, pady=5)
 
 		password_entry = tk.Entry(loginFrame, show="*", font=LOGINFONT)
 		password_entry.grid(column=0, row=4, sticky=tk.W + tk.E, padx=5, pady=5)
 
 		# Login-Button, der zur Hauptseite führt
-		login_button = tk.Button(loginFrame, text="Login", command=lambda: controller.show_frame(mainPage), font=LOGINFONT)
-		login_button.grid(column=0, row=5, sticky=tk.W + tk.E, padx=5, pady=5)
+		login_button = tk.Button(loginFrame, text="Anmelden",bg="#DF4807",foreground="white" , command=lambda: controller.show_frame(mainPage), font=LOGINFONT)
+		login_button.grid(column=0, row=5, sticky=tk.W + tk.E, padx=5, pady=20)
 
 # Hauptseite (zweites Fenster)
 class mainPage(tk.Frame):
@@ -125,7 +132,7 @@ class mainPage(tk.Frame):
 		self.grid_columnconfigure(0, weight=1)
 
 		# Erstelle einen Header-Bereich
-		headerFrame = tk.Frame(self, height=10, background="pink")
+		headerFrame = tk.Frame(self, height=10, background="#DF4807")
 		headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
 		# Konfiguriere die Spalten für den Header
@@ -136,8 +143,8 @@ class mainPage(tk.Frame):
 		headerFrame.grid_rowconfigure(0, weight=1)
 
 		# Füge ein zentriertes Label hinzu
-		headerLabel = tk.Label(headerFrame, text="⋆⭒˚.⋆ Sparkle ⋆.˚⭒⋆", background="pink", foreground="white")
-		headerLabel.config(font=("Courier", 80, "bold"))
+		headerLabel = tk.Label(headerFrame, text="⋆⭒˚.⋆ Sparkle ⋆.˚⭒⋆", background="#DF4807", foreground="white")
+		headerLabel.config(font=("Arial", 80, "bold"))
 		headerLabel.grid(row=0, column=0, columnspan=3, padx=20, pady=20, sticky=tk.N + tk.E + tk.W)
 
 		# Funktion für den Logout-Button
@@ -152,7 +159,7 @@ class mainPage(tk.Frame):
 		self.logOutBtn = ImageTk.PhotoImage(image)
 
 		# Füge einen Button mit dem Bild hinzu
-		logOutButton = tk.Button(headerFrame, image=self.logOutBtn, command=logOut, bd=0, relief=tk.FLAT, bg="pink", activebackground="pink")
+		logOutButton = tk.Button(headerFrame, image=self.logOutBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807", activebackground="#DF4807")
 		logOutButton.grid(row=0, column=3, sticky=tk.E, padx=20)
 		
 		treeFrame = tk.Frame(self, background='white')
