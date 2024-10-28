@@ -76,6 +76,8 @@ class logInWindow(tk.Frame):
 		# Funktion für den Login-Button (Platzhalter)
 		def logIn():
 			print("AAAAAAAAAAAAAAA")
+			if benutzername == Benutzername
+				return login()
 
 		# Konfiguriere das Grid-Layout für die Login-Seite
 		self.grid_rowconfigure(0, weight=0)
