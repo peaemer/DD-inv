@@ -11,7 +11,9 @@ class Benutzer(db.Model):
     Nutzername = db.Column(db.String, primary_key=True)
     Passwort = db.Column(db.String, nullable=False)
     Email = db.Column(db.String)
-    Rolle = db.Column(db.String, default="User")
+    Rolle = db.Column(db.String)
+
+    #rolle = db.relationship("NutzerrollenRechte, backref="Benutzer")
 
 
 # Modell für die Hardware Tabelle

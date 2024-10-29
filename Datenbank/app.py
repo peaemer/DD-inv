@@ -34,5 +34,76 @@ def create_nutzer():
         Nutzername=data['Nutzername'],
         Passwort=data['HASHWERT'],    # @Alex bitte hier hashwert für verschlüsselung anwenden
         email=data['Email'],
-        Rolle=data['Rolle', 'User']
+        Rolle=data['Rolle']
     )
+    db.session.add(neuer_nutzer)
+    db.session.commit()
+    return jsonify({'message': 'Nutzer hinzugefügt'}), 201
+
+# PUT Operation -damit werden bestehende Nutzer editiert
+@app.route('/api/nutzer/<string:nutzername>', methods=['PUT'])
+def update_nutzer(nutzername):
+    nutzer = Benutzer.query.get(nutzername)
+    if nutzer:
+        data = request.get_json()
+        nutzer.Email = data.get('Email', nutzer.Email)
+        nutzer.Rolle = data.get('Rolle', nutzer.Rolle)
+        db.session.commit()
+        return jsonify({'message': 'Nutzer aktualisiert'})
+    else:
+        return jsonify({'message': 'Nutzer nicht gefunden'}), 404
+
+
+# DELETE Operation -damit werden Nutzer gelöscht
+@app.route('/api/nutzer/<string:nutzername>', methods=['DELETE'])
+def delete_nutzer(nutzername):
+    nutzer = Benutzer.query.get(nutzername)
+    if nutzer:
+        db.session.delete(nutzer)
+        db.session.commit()
+        return jsonify({'message': 'Nutzer wurde entfernt'})
+    else:
+        return jsonify({'message': 'Nutzer nicht gefunden'}), 404
+
+
+#######################################
+# API-Endpunkt für Tabelle "Hardware" #
+#######################################
+
+
+# GET Operation -damit werden alle Nutzer abgerufen die in der Datenbank verfügbar sind
+@app.route('/api/hardware', methods=['GET'])
+def get_hardware():
+    hardware = Hardware.query.all()
+    return jsonify([{'Service_Tag': h.Service_Tag, 'Gerätetyp': h.Gerätetyp, 'Modell': h.Modell, 'Standort': h.Standort} for h in hardware])
+
+# POST Operation -damit werden neue Nutzer hinzugefügt
+@app.route('/api/hardware', methods=['POST'])
+def create_hardware():
+    data = request.get.json()
+    neue_hardware = Hardware(
+        Service_Tag=data['Service_Tag'],
+        Geraetetyp=data['Geraetetyp'],
+        Modell=data['Modell'],
+        Beschaedigung=data['Beschaedigung'],
+        Ausgeliehen_von=data['Ausgeliehen_von'],
+        Standort=data['Standort']
+    )
+    db.session.add(neue_hardware)
+    db.session.commit()
+    return jsonify({'message': 'Hardware hinzugefügt'}), 201
+
+
+# PUT Operation -damit werden bestehende Nutzer editiert
+@app.route('/api/hardware', methods=['PUT'])
+def update_hardware():
+    hardware = Hardware.query.all()
+    if hardware:
+        data = request.get_json()
+        hardware.Modell = data.get('Modell', hardware.Modell)
+        hardware.Standort = data.get('Standort', hardware.Standort)
+        hardware.Beschaedigung = data.get('Beschaedigung', hardware.Beschaedigung)
+        db.session.commit()
+        return jsonify({'message': 'Hardware aktualisiert'})
+    else:
+        return jsonify({'error': 'Hardware nicht gefunden'}), 404
