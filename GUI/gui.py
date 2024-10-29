@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-from PIL import Image, ImageTk
 
 # Definiere die Schriftarten
 LARGEFONT = ("Arial", 35)
@@ -76,7 +75,7 @@ class logInWindow(tk.Frame):
 		# Funktion für den Login-Button (Platzhalter)
 		def logIn():
 			print("AAAAAAAAAAAAAAA")
-			if benutzername == Benutzername
+			if benutzername == Benutzername:
 				return login()
 
 		# Konfiguriere das Grid-Layout für die Login-Seite
@@ -89,11 +88,7 @@ class logInWindow(tk.Frame):
 		headerFrame = tk.Frame(self, height=10, background="#DF4807")
 		headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
-		# Laden des Bildes mit Pillow
-		image = Image.open("assets/srhHeader.png")
-
-		# Konvertiere das Bild für Tkinter
-		self.srhHead = ImageTk.PhotoImage(image)
+		self.srhHead = tk.PhotoImage(file="assets/srhHeader.png")
 
 		# Füge einen Button mit dem Bild hinzu
 		srhHeader = tk.Label(headerFrame, image=self.srhHead, bd=0, relief=tk.FLAT, bg="#DF4807", activebackground="#DF4807")
@@ -144,21 +139,18 @@ class mainPage(tk.Frame):
 		headerFrame.grid_columnconfigure(3, weight=0)
 		headerFrame.grid_rowconfigure(0, weight=1)
 
+		self.srhHead = tk.PhotoImage(file="assets/srhHeader.png")
+
 		# Füge ein zentriertes Label hinzu
-		headerLabel = tk.Label(headerFrame, text="⋆⭒˚.⋆ Sparkle ⋆.˚⭒⋆", background="#DF4807", foreground="white")
-		headerLabel.config(font=("Arial", 80, "bold"))
-		headerLabel.grid(row=0, column=0, columnspan=3, padx=20, pady=20, sticky=tk.N + tk.E + tk.W)
+		headerLabel = tk.Label(headerFrame, image=self.srhHead, background="#DF4807", foreground="white")
+		headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
 		# Funktion für den Logout-Button
 		def logOut():
-			controller.show_frame(logInWindow)
-
-		# Lade und skaliere das Logout-Bild mit Pillow
-		image = Image.open("assets/ausloggen.png")
-		image = image.resize((50, 50), Image.Resampling.LANCZOS)
+			controller.show_frame(logInWindow)    #funktionalität hinzufügen
 
 		# Konvertiere das Bild für Tkinter
-		self.logOutBtn = ImageTk.PhotoImage(image)
+		self.logOutBtn = tk.PhotoImage(file="assets/ausloggen.png")
 
 		# Füge einen Button mit dem Bild hinzu
 		logOutButton = tk.Button(headerFrame, image=self.logOutBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807", activebackground="#DF4807")
