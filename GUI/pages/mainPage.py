@@ -16,13 +16,17 @@ class mainPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
-        # Funktion für den Logout-Button
+
         def logOut():
             from .logInWindow import logInWindow
             controller.show_frame(logInWindow)  # funktionalität hinzufügen
 
-        def search():
+        def search():                           # funktionalität hinzufügen
             print("I am Searching")
+
+
+        def filtr():                            # funktionalität hinzufügen
+            print("Do be filtering")
 
         # Konfiguriere das Grid-Layout für die Hauptseite
         self.grid_rowconfigure(0, weight=0)
@@ -88,7 +92,7 @@ class mainPage(tk.Frame):
         searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
         self.filterBtn = tk.PhotoImage(file="assets/Filter.png")
-        filterButton = tk.Button(searchFrame, image=self.filterBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white")
+        filterButton = tk.Button(searchFrame, image=self.filterBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=filtr)
         filterButton.grid(row=0, column=3, padx=10)
 
         # Ändere die Position des TreeFrames auf row=3

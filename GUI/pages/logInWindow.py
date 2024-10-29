@@ -4,8 +4,8 @@ from tkinter import *
 
 
 
-LARGEFONT = ("Arial", 35)
-LOGINFONT = ("Arial", 35)
+LARGEFONT = ("Arial", 30)
+LOGINFONT = ("Arial", 30)
 srhGrey = "#d9d9d9"
 
 # Login-Fenster (erste Seite)
@@ -53,15 +53,15 @@ class logInWindow(tk.Frame):
 
 		# Füge die Eingabefelder für Username und Passwort hinzu
 		usernameLabel = ttk.Label(loginFrame, text="Benutzername", font=LOGINFONT, background="white")
-		usernameLabel.grid(column=0, row=1, sticky=tk.W + tk.E, padx=130, pady=5)
+		usernameLabel.grid(column=0, row=1, sticky=tk.W + tk.E, padx=140, pady=5)
 
-		usernameEntry = tk.Entry(loginFrame, bg=defaultbg, font=LOGINFONT, bd=1)
+		usernameEntry = tk.Entry(loginFrame, bg=defaultbg, font=LOGINFONT, bd=0)
 		usernameEntry.grid(column=0, row=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
 		passwordLabel = ttk.Label(loginFrame, text="Passwort", font=LOGINFONT, background="white")
 		passwordLabel.grid(column=0, row=3, sticky=tk.W + tk.E, padx=190, pady=5)
 
-		passwordEntry = tk.Entry(loginFrame, show="*", bg=defaultbg, font=LOGINFONT, bd=1)
+		passwordEntry = tk.Entry(loginFrame, show="*", bg=defaultbg, font=LOGINFONT, bd=0)
 		passwordEntry.grid(column=0, row=4, sticky=tk.W + tk.E, padx=5, pady=5)
 
 		self.logOutBtn = tk.PhotoImage(file="assets/Anmelden.png")
