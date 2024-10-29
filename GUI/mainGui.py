@@ -12,7 +12,7 @@ class ddINV(tk.Tk):
 		tk.Tk.__init__(self, *args, **kwargs)
 
 		# Setze den Fenstertitel
-		self.title("DD-inv")
+		self.title("Inventartoul")
 
 		# Fensterbreite und -höhe definieren
 		window_width = 1920
