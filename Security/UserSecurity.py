@@ -4,6 +4,10 @@ from sqlite3 import Connection as SqlConnection
 from typing import Final
 import warnings
 
+a = '1000111101110101011'
+b:bytearray = a.getbytes()
+
+
 class UserSecurity:
 
     #enables or disables debugging messages
@@ -19,7 +23,7 @@ class UserSecurity:
     fallback_password:Final[str] = 'password'
     initial_password:str = fallback_password
 
-    def hash_password(self, plain_password:str)->bytearray:
+    def __hash_password(self, plain_password:str)->bytearray:
         '''
             hashes a plain password into a byte array using sha512 encryption
 
@@ -41,9 +45,9 @@ class UserSecurity:
             ------
             :return bool: whether the name is valid
         '''
-        return name == None or name ==''or not name.__class__ == str
+        return name == None or name ==''or not name.__class__ == str.__class__
     
-    def __pickDatabaseName(self, _database_name)->str:
+    def __pickDatabaseName(self, _database_name:str)->str:
         '''
             a shortcut function for deciding between the supplied string, this object's initial_database_name or
             the fallback_database_name as the file name of the database
@@ -61,7 +65,7 @@ class UserSecurity:
             self.initial_database_name if (self.__isInvalidName(_database_name)) else \
             _database_name
     
-    def __pickTableName(self, _table_name)->str:
+    def __pickTableName(self, _table_name:str)->str:
         '''
             a shortcut function for deciding between the supplied string, this object's initial_table_name or
             the fallback_table_name as the name of the table
@@ -72,7 +76,7 @@ class UserSecurity:
 
             Return
             ------
-            :return bool: which string was choosen
+            :return str: which string was choosen
         '''
         return \
             self.fallback_table_name if self.__isInvalidName(_table_name) and self.__isInvalidName(self.initial_table_name) else \
@@ -94,6 +98,22 @@ class UserSecurity:
         return sqlite3.Connection(
            self.__pickDatabaseName(_database_name)
         )
+    
+    def __compare_password(self, plain_password:str, hashed_password:bytearray)->bool:
+        '''
+            compares a plain with an already hashed password
+
+            Parameters
+            ----------
+            :param str plain_password: the plain password that has to be compared
+            :param bytearray hashed_password: the already hashed password that has to be compared
+
+            Return
+            ------
+            :return bool: whether the plain password matches the already hashed one after the plain password was hashed
+        '''
+        #hash the plain password and check if the hash is equal to the given
+        return hashed_password == UserSecurity.__hash_password(plain_password)
 
     
     def createTable(self, _database_name:str = '', _table_name:str = '')->None:
@@ -106,9 +126,10 @@ class UserSecurity:
             :param str _table_name: the name of the table where the user data should be stored, uses the stored data of the object if no addditional data is supplied
         '''
         warnings.warn("This method may break the original structre of the supplied database",category=UserWarning,stacklevel=2)
+        return
         try:
             #open a connectionn to the supplied database
-            connection:SqlConnection = self.__connect(_database_name)
+            connection:SqlConnection = self.__connect(self.__pickDatabaseName(_database_name))
             #create a cursor to the database of the connection
             cursor = connection.cursor()
             #create a table withe the supplied name and the  the columns 'id', 'username' and 'password_hash'
@@ -117,21 +138,20 @@ class UserSecurity:
                     #id increments automatically for each new record
                     #each username in the table has to be unique and not empty
                     #the hashed password cannot be empty
-                    '''CREATE TABLE IF NOT EXISTS ? (
+                    f'''CREATE TABLE IF NOT EXISTS {self.__pickTableName(_table_name)} (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         username TEXT UNIQUE NOT NULL,
                         password_hash TEXT NOT NULL
-                    )''',
-                    (self.__pickTableName(_table_name))
+                    )'''
             )
-        except:
+        except sqlite3.IntegrityError as e:
             if(self.DEBUG_MODE==True):print(f'table {self.__pickTableName(_table_name)} exists already')
+        except Exception as e:
+            print(e)
         finally:
             connection.close
-            
-        pass
 
-    def verify_user(self, username:str, plain_password:str, _database_name:str=initial_database_name, _table_name:str=initial_table_name)->bool:
+    def verify_user(self, username:str, plain_password:str, _database_name:str='', _table_name:str='')->bool:
         '''
             searches for the user in the table of the cursor
             if the user exists, hashes the supplied plain password and compares it to the stored one 
@@ -159,7 +179,7 @@ class UserSecurity:
             #check whether the user is stored in the database
             if result:
                 # Check if the supplied password matches the stored hash
-                if self.compare_password(plain_password,result[0]):
+                if self.__compare_password(plain_password,result[0]):
                     if(self.DEBUG_MODE==True):print(f'[UserSecurity]: user {username} was successfully verified.')
                     return True
                 else:
@@ -173,23 +193,7 @@ class UserSecurity:
         finally:
             connection.close
     
-    def compare_password(self, plain_password:str, hashed_password:bytearray)->bool:
-        '''
-            compares a plain with an already hashed password
-
-            Parameters
-            ----------
-            :param str plain_password: the plain password that has to be compared
-            :param bytearray hashed_password: the already hashed password that has to be compared
-
-            Return
-            ------
-            :return bool: whether the plain password matches the already hashed one after the plain password was hashed
-        '''
-        #hash the plain password and check if the hash is equal to the given
-        return hashed_password == UserSecurity.hash_password(plain_password)
-    
-    def add_user(self, username:str, plain_password:str, _database_name:str=None, _table_name:str=None):
+    def sudo_add_user(self, username:str, plain_password:str, _database_name:str='', _table_name:str=''):
         '''
             checks if an entry for the given user exists in the user table of the database of the connection
             if it doesn't, creates a new entry for the given user with the hash of the supplied password
@@ -201,27 +205,46 @@ class UserSecurity:
             :param sqlite3.Connection connection: a connection to the database where the user's data should be stored
         '''
         try:
-        #open a connection to the database and 
-            connection:SqlConnection = self.__connect(_database_name)
+            connection:SqlConnection = self.__connect(self.__pickDatabaseName(_database_name))
             cursor = connection.cursor()
-            cursor.execute(f'INSERT INTO {_table_name} (username, password_hash) VALUES (?,?)',(username, self.hash_password(plain_password)))
+            cursor.execute(f"INSERT INTO {self.__pickTableName(_table_name)} (username, password_hash) VALUES (?, ?)", (username, self.__hash_password(plain_password)))
             connection.commit()
-            if(self.DEBUG_MODE==True):print(f"[UserSecurity]: User '{username}' added successfully")
+            if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: User '{username}' added successfully")
         except sqlite3.IntegrityError as e:
-            if(self.DEBUG_MODE==True):print(f"[UserSecurity]: IntegrityError: {e}")
-        except sqlite3.OperationalError as e:
-            if(self.DEBUG_MODE==True):print(f"[UserSecurity]: OperationalError: {e}")
-        # except Exception as e:
-        #     if(self.DEBUG_MODE==True):print(f"[UserSecurity]: other error: type:{e.__class__}, message:{e.__cause__}")
+            if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: IntegrityError: {e}")
 
         finally:
             # Close the database connection
             connection.close()
     
-    def modifyUserRights(username:str, ):
-        pass
+    def add_user(self, username:str, plain_password:str, _database_name:str='', _table_name:str=''):
+        '''
+            checks if an entry for the given user exists in the user table of the database of the connection
+            if it doesn't, creates a new entry for the given user with the hash of the supplied password
+
+            Parameters
+            ----------
+            :param str username: the name of the user who should be added to the database
+            :param str password: the plain password that will be hashed and stored as the new user's initial password
+            :param sqlite3.Connection connection: a connection to the database where the user's data should be stored
+        '''
+        try:
+            connection:SqlConnection = self.__connect(self.__pickDatabaseName(_database_name))
+            cursor = connection.cursor()
+            cursor.execute(f"INSERT INTO {self.__pickTableName(_table_name)} (username, password_hash) VALUES (?, ?)", (username, self.__hash_password(plain_password)))
+            connection.commit()
+            if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: User '{username}' added successfully")
+        except sqlite3.IntegrityError as e:
+            if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: IntegrityError: {e}")
+
+        finally:
+            # Close the database connection
+            connection.close()
 
     def sudoModifyUserRights(username:str, ):
+        pass
+    
+    def modifyUserRights(username:str, ):
         pass
     
     def __init__(self, _database_name:str=fallback_database_name, _table_name:str=fallback_table_name):
@@ -236,7 +259,8 @@ class UserSecurity:
         self.initial_database_name = _database_name
         self.initial_table_name = _table_name
 
-
-us:UserSecurity = UserSecurity('test.db', 'bla')
-us.createTable()
-us.add_user('TestUser','password')
+'''
+us:UserSecurity = UserSecurity('test.db', 'user')
+us.createTable('test.db','user')
+us.add_user('TestUser','password','test.db','user')
+'''
