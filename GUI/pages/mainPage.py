@@ -28,6 +28,18 @@ class mainPage(tk.Frame):
         def filtr():                            # funktionalität hinzufügen
             print("Do be filtering")
 
+
+
+        def onEntryClick(event):
+            if searchEntry.get() == 'Suche':
+                searchEntry.delete(0, "end")  # Lösche den Platzhalter-Text
+                searchEntry.config(fg='black')  # Setze Textfarbe auf schwarz
+
+        def onFocusOut(event):
+            if searchEntry.get() == '':
+                searchEntry.insert(0, 'Suche')  # Platzhalter zurücksetzen
+                searchEntry.config(fg='grey')  # Textfarbe auf grau ändern
+
         # Konfiguriere das Grid-Layout für die Hauptseite
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
@@ -96,7 +108,13 @@ class mainPage(tk.Frame):
         searchButton = tk.Button(searchFrame, image=self.searchBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
         searchButton.grid(padx=10, pady=5, row=0, column=0)
 
-        searchEntry = tk.Entry(searchFrame, bg="white",background="#F4EFEF", font=("Arial", 20), bd=0)
+        # Entry-Feld mit Platzhalter-Text
+        searchEntry = tk.Entry(searchFrame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
+        searchEntry.insert(0, 'Suche')  # Setze den Platzhalter-Text
+
+        # Events für Klick und Fokusverlust hinzufügen
+        searchEntry.bind('<FocusIn>', onEntryClick)
+        searchEntry.bind('<FocusOut>', onFocusOut)
         searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
         self.filterBtn = tk.PhotoImage(file="assets/Filter.png")
