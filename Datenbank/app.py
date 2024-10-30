@@ -51,7 +51,7 @@ def update_nutzer(nutzername):
         db.session.commit()
         return jsonify({'message': 'Nutzer aktualisiert'})
     else:
-        return jsonify({'message': 'Nutzer nicht gefunden'}), 404
+        return jsonify({'error': 'Nutzer nicht gefunden'}), 404
 
 
 # DELETE Operation -damit werden Nutzer gelöscht
@@ -63,7 +63,7 @@ def delete_nutzer(nutzername):
         db.session.commit()
         return jsonify({'message': 'Nutzer wurde entfernt'})
     else:
-        return jsonify({'message': 'Nutzer nicht gefunden'}), 404
+        return jsonify({'error': 'Nutzer nicht gefunden'}), 404
 
 
 #######################################
@@ -80,7 +80,7 @@ def get_hardware():
 # POST Operation -damit werden neue Nutzer hinzugefügt
 @app.route('/api/hardware', methods=['POST'])
 def create_hardware():
-    data = request.get.json()
+    data = request.get_json()
     neue_hardware = Hardware(
         Service_Tag=data['Service_Tag'],
         Geraetetyp=data['Geraetetyp'],
@@ -107,3 +107,26 @@ def update_hardware():
         return jsonify({'message': 'Hardware aktualisiert'})
     else:
         return jsonify({'error': 'Hardware nicht gefunden'}), 404
+
+# DELETE Operation -damit werden Nutzer gelöscht
+@app.route('/api/hardware', methods=['DELETE'])
+def delete_hardware(service_tag):
+    hardware = Hardware.query.all()
+    if hardware:
+        db.session.delete(hardware)
+        db.session.commit()
+        return jsonify({'message': 'Hardware Eintrag geloscht'})
+    else:
+        return jsonify({'error': 'Hardware nicht gefunden'}), 404
+
+
+#################################################
+# API-Endpunkt für Tabelle "NutzerrollenRechte" #
+#################################################
+
+
+
+
+# Main loop
+if __name__ == '__main__':
+    app.run(debug=True)

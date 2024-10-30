@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+import sqllite3
 
 # Datenbank von SQLLib initialising
 db = SQLAlchemy()
@@ -11,7 +12,7 @@ class Benutzer(db.Model):
     Nutzername = db.Column(db.String, primary_key=True)
     Passwort = db.Column(db.String, nullable=False)
     Email = db.Column(db.String)
-    Rolle = db.Column(db.String)
+    Rolle = db.Column(db.String, db.ForeignKey('NutzerrollenRechte.Rolle'))
 
     #rolle = db.relationship("NutzerrollenRechte, backref="Benutzer")
 
@@ -28,3 +29,23 @@ class Hardware(db.Model):
 
     # Die Beziehung von Benutzer auf Nutzer herstellen -Muss vielleicht geändert werden
     nutzer = db.relationship("Benutzer", backref="Hardware")
+
+
+# Modell für die NutzerrollenRechte
+class NutzerrollenRechte(db.Model):
+    __tablename__ = "NutzerrollenRechte"
+    Rolle = db.Column(db.String, primary_key=True)
+    ANSEHEN = db.Column(db.String)
+    ROLLEN_LOESCHBAR = db.Column(db.String)
+    ADMIN_FEATURE = db.Column(db.String)
+    LOESCHEN = db.Column(db.String)
+    BEARBEITEN = db.Column(db.String)
+    ERSTELLEN = db.Column(db.String)
+    GRUPPEN_LOESCHEN = db.Column(db.String)
+    GRUPPEN_ERSTELLEN = db.Column(db.String)
+    GRUPPEN_BEARBEITEN = db.Column(db.String)
+    ROLLEN_ERSTELLEN = db.Column(db.String)
+    ROLLEN_BEARBEITEN = db.Column(db.String)
+    ROLLEN_LOESCHEN = db.Column(db.String)
+
+
