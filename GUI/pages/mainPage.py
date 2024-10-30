@@ -58,6 +58,14 @@ class mainPage(tk.Frame):
                                  activebackground="#DF4807")
         logOutButton.grid(row=0, column=3, sticky=tk.E, padx=20)
 
+        # Konvertiere das Bild für Tkinter
+        self.optBtn = tk.PhotoImage(file="assets/option.png")
+
+        # Füge einen Button mit dem Bild hinzu
+        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
+                                 activebackground="#DF4807")
+        optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
+
 
 
         greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
@@ -86,7 +94,7 @@ class mainPage(tk.Frame):
 
         self.searchBtn = tk.PhotoImage(file="assets/SearchButton.png")
         searchButton = tk.Button(searchFrame, image=self.searchBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
-        searchButton.grid(padx=20, pady=5, row=0, column=0)
+        searchButton.grid(padx=10, pady=5, row=0, column=0)
 
         searchEntry = tk.Entry(searchFrame, bg="white",background="#F4EFEF", font=("Arial", 20), bd=0)
         searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
@@ -95,28 +103,37 @@ class mainPage(tk.Frame):
         filterButton = tk.Button(searchFrame, image=self.filterBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=filtr)
         filterButton.grid(row=0, column=3, padx=10)
 
+
+
+
+
+
+
+
+
         # Ändere die Position des TreeFrames auf row=3
         treeFrame = tk.Frame(self, background=srhGrey)
-        treeFrame.grid(row=1, column=0)
+        treeFrame.grid(row=1, column=0, padx=260)
 
-        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=5)
+        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=30)
 
         scroll = ttk.Scrollbar(treeFrame, orient="vertical", command=tree.yview)
         scroll.grid(row=0, column=1)
         tree.configure(yscrollcommand=scroll.set)
 
         ### listbox for directories
-        tree.column("# 1", anchor=CENTER, width=50)
+        tree.column("# 1", anchor=CENTER, width=90)
         tree.heading("# 1", text="ID")
-        tree.column("# 2", anchor=CENTER, width=235)
+        tree.column("# 2", anchor=CENTER, width=310)
         tree.heading("# 2", text="Service Tag")
-        tree.column("# 3", anchor=CENTER, width=235)
+        tree.column("# 3", anchor=CENTER, width=310)
         tree.heading("# 3", text="Typ")
-        tree.column("# 4", anchor=CENTER, width=235)
+        tree.column("# 4", anchor=CENTER, width=310)
         tree.heading("# 4", text="Raum")
-        tree.column("# 5", anchor=CENTER, width=235)
+        tree.column("# 5", anchor=CENTER, width=310)
         tree.heading("# 5", text="Name")
         tree.grid(row=0, column=0)
+        tree.tkraise()
 
         # Hier muss die Datenbank hinzugefügt werden
         dataValue = open("dataList", "r")
