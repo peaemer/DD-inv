@@ -14,7 +14,7 @@ class Benutzer(db.Model):
     Email = db.Column(db.String)
     Rolle = db.Column(db.String, db.ForeignKey('NutzerrollenRechte.Rolle'))
 
-    #rolle = db.relationship("NutzerrollenRechte, backref="Benutzer")
+    rolle = db.relationship("NutzerrollenRechte", backref="Benutzer")
 
 
 # Modell für die Hardware Tabelle
