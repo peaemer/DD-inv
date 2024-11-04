@@ -28,6 +28,37 @@ class mainPage(tk.Frame):
         def filtr():                            # funktionalität hinzufügen
             print("Do be filtering")
 
+        def addItem():
+            # Toplevel-Fenster erstellen
+            popup = tk.Tk()
+            popup.title("Neuer Eintrag")
+            popup.geometry("300x200")
+
+            label = tk.Label(popup, text="Füge einen neuen Eintrag hinzu:")
+            label.pack(pady=10)
+
+            entry = tk.Entry(popup)
+            entry.pack(pady=5)
+
+            def submitEntry():
+                item_name = entry.get()
+                # Hier kannst du den Code zum Hinzufügen des Eintrags zur Datenbank einfügen
+                print(f"Neuer Eintrag hinzugefügt: {item_name}")
+                popup.destroy()  # Fenster schließen
+
+            submitButton = tk.Button(popup, text="Hinzufügen", command=submitEntry)
+            submitButton.pack(pady=20)
+
+        def onEntryClick(event):
+            if searchEntry.get() == 'Suche':
+                searchEntry.delete(0, "end")  # Lösche den Platzhalter-Text
+                searchEntry.config(fg='black')  # Setze Textfarbe auf schwarz
+
+        def onFocusOut(event):
+            if searchEntry.get() == '':
+                searchEntry.insert(0, 'Suche')  # Platzhalter zurücksetzen
+                searchEntry.config(fg='grey')  # Textfarbe auf grau ändern
+
         # Konfiguriere das Grid-Layout für die Hauptseite
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
@@ -58,6 +89,14 @@ class mainPage(tk.Frame):
                                  activebackground="#DF4807")
         logOutButton.grid(row=0, column=3, sticky=tk.E, padx=20)
 
+        # Konvertiere das Bild für Tkinter
+        self.optBtn = tk.PhotoImage(file="assets/option.png")
+
+        # Füge einen Button mit dem Bild hinzu
+        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
+                                 activebackground="#DF4807")
+        optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
+
 
 
         greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
@@ -86,47 +125,73 @@ class mainPage(tk.Frame):
 
         self.searchBtn = tk.PhotoImage(file="assets/SearchButton.png")
         searchButton = tk.Button(searchFrame, image=self.searchBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
-        searchButton.grid(padx=20, pady=5, row=0, column=0)
+        searchButton.grid(padx=10, pady=5, row=0, column=0)
 
-        searchEntry = tk.Entry(searchFrame, bg="white",background="#F4EFEF", font=("Arial", 20), bd=0)
+        # Entry-Feld mit Platzhalter-Text
+        searchEntry = tk.Entry(searchFrame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
+        searchEntry.insert(0, 'Suche')  # Setze den Platzhalter-Text
+
+        # Events für Klick und Fokusverlust hinzufügen
+        searchEntry.bind('<FocusIn>', onEntryClick)
+        searchEntry.bind('<FocusOut>', onFocusOut)
         searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
         self.filterBtn = tk.PhotoImage(file="assets/Filter.png")
         filterButton = tk.Button(searchFrame, image=self.filterBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=filtr)
         filterButton.grid(row=0, column=3, padx=10)
 
+        self.addBtn = tk.PhotoImage(file="assets/ErstellenButton.png")
+        addButton = tk.Button(self,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
+        addButton.grid(padx=10, pady=5, row=2, column=0)
+
+
+
+
+
+
+
         # Ändere die Position des TreeFrames auf row=3
-        treeFrame = tk.Frame(self, background=srhGrey)
-        treeFrame.grid(row=1, column=0)
+        treeFrame = tk.Frame(self, background="white")
+        treeFrame.grid(row=1, column=0, padx=260)
 
-        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=5)
+        self.addBtn = tk.PhotoImage(file="assets/ErstellenButton.png")
+        addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
+        addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
-        scroll = ttk.Scrollbar(treeFrame, orient="vertical", command=tree.yview)
-        scroll.grid(row=0, column=1)
+        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=30)
+
+        scroll = tk.Scrollbar(
+            treeFrame,
+            orient="vertical",
+            command=tree.yview,
+            bg="black",
+            activebackground="darkblue",
+            troughcolor="grey",
+            highlightcolor="black",
+            width=12,
+            borderwidth=1
+        )
+        scroll.grid(row=1, column=1,sticky="ns")
         tree.configure(yscrollcommand=scroll.set)
 
         ### listbox for directories
-        tree.column("# 1", anchor=CENTER, width=50)
+        tree.column("# 1", anchor=CENTER, width=90)
         tree.heading("# 1", text="ID")
-        tree.column("# 2", anchor=CENTER, width=235)
+        tree.column("# 2", anchor=CENTER, width=310)
         tree.heading("# 2", text="Service Tag")
-        tree.column("# 3", anchor=CENTER, width=235)
+        tree.column("# 3", anchor=CENTER, width=310)
         tree.heading("# 3", text="Typ")
-        tree.column("# 4", anchor=CENTER, width=235)
+        tree.column("# 4", anchor=CENTER, width=310)
         tree.heading("# 4", text="Raum")
-        tree.column("# 5", anchor=CENTER, width=235)
+        tree.column("# 5", anchor=CENTER, width=310)
         tree.heading("# 5", text="Name")
-        tree.grid(row=0, column=0)
+        tree.grid(row=1, column=0)
+        tree.tkraise()
 
         # Hier muss die Datenbank hinzugefügt werden
-        dataValue = open("dataList", "r")
-        dataValue = []
-        for i in dataValue:
-            lineList = i.split()
-            dataValue.append(lineList)
+        for i in range(50):
+            tree.insert("", "end", text=f"Item {i}", values=(f"Wert {i}", f"Wert {i + 10}"))
 
-        for i in dataValue:
-            tree.insert(" ", "end", values=(i))
 
 
 

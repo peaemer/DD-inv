@@ -1,12 +1,8 @@
 from hashlib import sha512
 import sqlite3
 from sqlite3 import Connection as SqlConnection
-from typing import Final
+from typing import Final, Tuple
 import warnings
-
-a = '1000111101110101011'
-b:bytearray = a.getbytes()
-
 
 class UserSecurity:
 
@@ -45,7 +41,8 @@ class UserSecurity:
             ------
             :return bool: whether the name is valid
         '''
-        return name == None or name ==''or not name.__class__ == str.__class__
+        #return name == None or name ==''or not name.__class__ == str.__class__
+        return name == None or name ==''
     
     def __pickDatabaseName(self, _database_name:str)->str:
         '''
@@ -99,6 +96,14 @@ class UserSecurity:
            self.__pickDatabaseName(_database_name)
         )
     
+    def __readDatabaseEntry(conditions:Tuple[str] = [], database_name:str = '', table_name:str = '')->str:
+        
+        pass
+
+    def __writeDatabaseEntry(database_name:str = '', table_name:str = '', )->str:
+        
+        pass
+    
     def __compare_password(self, plain_password:str, hashed_password:bytearray)->bool:
         '''
             compares a plain with an already hashed password
@@ -126,7 +131,7 @@ class UserSecurity:
             :param str _table_name: the name of the table where the user data should be stored, uses the stored data of the object if no addditional data is supplied
         '''
         warnings.warn("This method may break the original structre of the supplied database",category=UserWarning,stacklevel=2)
-        return
+        # return
         try:
             #open a connectionn to the supplied database
             connection:SqlConnection = self.__connect(self.__pickDatabaseName(_database_name))
@@ -153,7 +158,7 @@ class UserSecurity:
 
     def verify_user(self, username:str, plain_password:str, _database_name:str='', _table_name:str='')->bool:
         '''
-            searches for the user in the table of the cursor
+            searches for the user in the table of the database
             if the user exists, hashes the supplied plain password and compares it to the stored one 
 
             Parameters
@@ -241,10 +246,10 @@ class UserSecurity:
             # Close the database connection
             connection.close()
 
-    def sudoModifyUserRights(username:str, ):
+    def sudoModifyUserRights(username:str , _database_name:str = '', _table_name:str = '', right:str ='', ):
         pass
     
-    def modifyUserRights(username:str, ):
+    def modifyUserRights(executing_user_username:str, executing_user_plain_password, modified_user_username:str, modified_user_right_name:str, modified_user_right_state:str):
         pass
     
     def __init__(self, _database_name:str=fallback_database_name, _table_name:str=fallback_table_name):
@@ -259,8 +264,8 @@ class UserSecurity:
         self.initial_database_name = _database_name
         self.initial_table_name = _table_name
 
-'''
-us:UserSecurity = UserSecurity('test.db', 'user')
-us.createTable('test.db','user')
-us.add_user('TestUser','password','test.db','user')
-'''
+
+# us:UserSecurity = UserSecurity('test.db', 'user')
+# us.createTable('test.db','user')
+# us.sudo_add_user('TestUser2','passwort','test.db','user')
+# us.add_user('TestUser','password','test.db','user')
