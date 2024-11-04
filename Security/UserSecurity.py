@@ -246,10 +246,10 @@ class UserSecurity:
             # Close the database connection
             connection.close()
 
-    def sudoModifyUserRights(username:str, ):
+    def sudoModifyUserRights(username:str , _database_name:str = '', _table_name:str = '', right:str ='', ):
         pass
     
-    def modifyUserRights(username:str, ):
+    def modifyUserRights(executing_user_username:str, executing_user_plain_password, modified_user_username:str, modified_user_right_name:str, modified_user_right_state:str):
         pass
     
     def __init__(self, _database_name:str=fallback_database_name, _table_name:str=fallback_table_name):
