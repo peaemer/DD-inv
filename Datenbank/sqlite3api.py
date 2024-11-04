@@ -86,4 +86,21 @@ def delete_benutzer(nutzername):
     except sqlite3.Error as e:
         print("Fehler beim Löschen des Benutzers:", e)
 
+
+# Endpunkt für Hardware #
+
+#Hiermit kann neue Hardware erstellt werden
+
+def create_hardware(Service_Tag, Geraetename, Modell, Beschaedigung, Ausgeliehen_von, Standort):
+    try:
+        con.execute("INSERT INTO Hardware(Service_Tag, Geraetename, Modell, Beschaedigung, Ausgeliehen_von, Standort) VALUES(? ,? ,? ,? ,? ,?)",
+                    (Service_Tag, Geraetename, Modell, Beschaedigung, Ausgeliehen_von, Standort))
+        con.commit()
+        print("Hardware eintrag wurde erstellt")
+    except sqlite3.Error as e:
+        print("Fehler beim erstellen des Hardware eintrags", e)
+
+def fetch_hardware
+
+
 con.close()
