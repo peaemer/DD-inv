@@ -86,4 +86,39 @@ def delete_benutzer(nutzername):
     except sqlite3.Error as e:
         print("Fehler beim Löschen des Benutzers:", e)
 
+
+# Endpunkt für Hardware #
+
+# Hiermit kann neue Hardware erstellt werden
+
+def create_hardware(Service_Tag, Geraetename, Modell, Beschaedigung, Ausgeliehen_von, Standort):
+    try:
+        con.execute("INSERT INTO Hardware(Service_Tag, Geraetename, Modell, Beschaedigung, Ausgeliehen_von, Standort) VALUES(? ,? ,? ,? ,? ,?)",
+                    (Service_Tag, Geraetename, Modell, Beschaedigung, Ausgeliehen_von, Standort))
+        con.commit()
+        print("Hardware eintrag wurde erstellt")
+    except sqlite3.Error as e:
+        print("Fehler beim erstellen des Hardware eintrags", e)
+
+# Funktionen zum Abrufen der gesamten Datenbank "Hardware"
+def fetch_hardware():
+    try:
+        con.execute("SELECT * FROM Hardware")
+        rows = cur.fetchall()
+        return [dict(rows)for rows in rows]
+    except sqlite3.Error as e:
+        print("Fehler beim Abrufen der Hardware einträge", e)
+        return []
+
+# Funktion zum Abrufen von einzelnen Service-Tags
+def fetch_hardware_by_id(Service_Tag):
+    try:
+        con.execute("SELECT * FROM Hardware WHERE Service_Tag = ?", (Service_Tag,))
+        rows = cur.fetchall()
+        return dict(rows) if row else None
+    except sqlite3.Error as e:
+        print("Fehler beim Abrufen des Service-Tags, bitte überprüfen sie die Schreibweise")
+
+
+
 con.close()
