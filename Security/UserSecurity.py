@@ -1,7 +1,7 @@
 from hashlib import sha512
 import sqlite3
 from sqlite3 import Connection as SqlConnection
-from typing import Final, Tuple
+from typing import Final, List
 import warnings
 
 class UserSecurity:
@@ -96,15 +96,26 @@ class UserSecurity:
            self.__pickDatabaseName(_database_name)
         )
     
-    def __readDatabaseEntry(conditions:Tuple[str] = [], database_name:str = '', table_name:str = '')->str:
-        
-        pass
+    def __readDatabaseEntry(self, database_name:str, table_name:str, column_name:str, conditions:List[str] = [])->List[str]:
+        '''
+            reads an entry from the given table of the given database
+
+            Parameters
+            ----------
+            :param List[str] conditions: a list of conditions for the qerrying of the result with the pattern 'variable = value'
+        '''
+        command:str = f"from {table_name} select {column_name}"
+        if len(conditions)>0 :
+            for condition in conditions:
+                command += 'WHERE'
+                command += condition
+        if(self.DEBUG_MODE==True):print(f"[UserSecurity]: created command '{command}'")
 
     def __writeDatabaseEntry(database_name:str = '', table_name:str = '', )->str:
         
         pass
     
-    def __compare_password(self, plain_password:str, hashed_password:bytearray)->bool:
+    def __comparePassword(self, plain_password:str, hashed_password:bytearray)->bool:
         '''
             compares a plain with an already hashed password
 
@@ -134,7 +145,7 @@ class UserSecurity:
         # return
         try:
             #open a connectionn to the supplied database
-            connection:SqlConnection = self.__connect(self.__pickDatabaseName(_database_name))
+            connection:SqlConnection = self.__connect(_database_name)
             #create a cursor to the database of the connection
             cursor = connection.cursor()
             #create a table withe the supplied name and the  the columns 'id', 'username' and 'password_hash'
@@ -156,7 +167,7 @@ class UserSecurity:
         finally:
             connection.close
 
-    def verify_user(self, username:str, plain_password:str, _database_name:str='', _table_name:str='')->bool:
+    def verifyUser(self, username:str, plain_password:str, _database_name:str='', _table_name:str='')->bool:
         '''
             searches for the user in the table of the database
             if the user exists, hashes the supplied plain password and compares it to the stored one 
@@ -175,7 +186,7 @@ class UserSecurity:
 
         try:
             #open a connnection to the database
-            connection:SqlConnection = self.__connect(self.__pickDatabaseName(_database_name))
+            connection:SqlConnection = self.__connect(_database_name)
             cursor = connection.cursor()
             #read the hashed password from the record with the supplied username
             cursor.execute(f'SELECT password_hash FROM {self.__pickTableName(_table_name)} WHERE username = ?', (username))
@@ -184,7 +195,7 @@ class UserSecurity:
             #check whether the user is stored in the database
             if result:
                 # Check if the supplied password matches the stored hash
-                if self.__compare_password(plain_password,result[0]):
+                if self.__comparePassword(plain_password,result[0]):
                     if(self.DEBUG_MODE==True):print(f'[UserSecurity]: user {username} was successfully verified.')
                     return True
                 else:
@@ -198,7 +209,34 @@ class UserSecurity:
         finally:
             connection.close
     
-    def sudo_add_user(self, username:str, plain_password:str, _database_name:str='', _table_name:str=''):
+    def sudoAddUser(self, username:str, plain_password:str, _database_name:str='', _table_name:str=''):
+        '''
+            checks if an entry for the given user exists in the user table of the database of the connection
+            if it doesn't, creates a new entry for the given user with the hash of the supplied password
+
+            Parameters
+            ----------
+            :param str username: the name of the user who should be added to the database
+            :param str password: the plain password that will be hashed and stored as the new user's initial password
+            :param sqlite3.Connection connection: a connection to the database where the user's data should be stored
+        '''
+        try:
+            connection:SqlConnection = self.__connect(_database_name)
+            cursor = connection.cursor()
+            cursor.execute(
+                f"INSERT INTO {self.__pickTableName(_table_name)} (username, password_hash) VALUES (?, ?)",
+                (username, self.__hash_password(plain_password))
+            )
+            connection.commit()
+            if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: User '{username}' added successfully")
+        except sqlite3.IntegrityError as e:
+            if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: IntegrityError: {e}")
+
+        finally:
+            # Close the database connection
+            connection.close()
+    
+    def addUser(self, username:str, plain_password:str, _database_name:str='', _table_name:str=''):
         '''
             checks if an entry for the given user exists in the user table of the database of the connection
             if it doesn't, creates a new entry for the given user with the hash of the supplied password
@@ -212,45 +250,47 @@ class UserSecurity:
         try:
             connection:SqlConnection = self.__connect(self.__pickDatabaseName(_database_name))
             cursor = connection.cursor()
-            cursor.execute(f"INSERT INTO {self.__pickTableName(_table_name)} (username, password_hash) VALUES (?, ?)", (username, self.__hash_password(plain_password)))
+            cursor.execute(
+                f"INSERT INTO {self.__pickTableName(_table_name)} (username, password_hash) VALUES (?, ?)",
+                (username, self.__hash_password(plain_password))
+            )
             connection.commit()
             if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: User '{username}' added successfully")
         except sqlite3.IntegrityError as e:
             if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: IntegrityError: {e}")
-
         finally:
             # Close the database connection
             connection.close()
-    
-    def add_user(self, username:str, plain_password:str, _database_name:str='', _table_name:str=''):
-        '''
-            checks if an entry for the given user exists in the user table of the database of the connection
-            if it doesn't, creates a new entry for the given user with the hash of the supplied password
 
-            Parameters
-            ----------
-            :param str username: the name of the user who should be added to the database
-            :param str password: the plain password that will be hashed and stored as the new user's initial password
-            :param sqlite3.Connection connection: a connection to the database where the user's data should be stored
-        '''
+    def sudoModifyUserRights(self, username:str , _database_name:str = '', _table_name:str = '', right:str ='', state:str = 'True'):
         try:
             connection:SqlConnection = self.__connect(self.__pickDatabaseName(_database_name))
             cursor = connection.cursor()
-            cursor.execute(f"INSERT INTO {self.__pickTableName(_table_name)} (username, password_hash) VALUES (?, ?)", (username, self.__hash_password(plain_password)))
+            cursor.execute(
+                f"INSERT INTO {self.__pickTableName(_table_name)} WHERE username = {username} (right, ) VALUES (?, ?)",
+                (right, state)
+            )
             connection.commit()
-            if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: User '{username}' added successfully")
+            if(self.DEBUG_MODE==True):print(f"[UserSecurity][sudoModifyUserRight()]: successfully set {right} of user {username} to {state}")
         except sqlite3.IntegrityError as e:
-            if(self.DEBUG_MODE==True):print(f"[UserSecurity][addUser()]: IntegrityError: {e}")
-
+            if(self.DEBUG_MODE==True):print(f"[UserSecurity][sudoModifyUserRight()]: IntegrityError: {e}")
+        except sqlite3.OperationalError as e:
+            if(self.DEBUG_MODE==True):print(f"[UserSecurity][sudoModifyUserRight()]: OperationalError: {e}")
         finally:
             # Close the database connection
             connection.close()
-
-    def sudoModifyUserRights(username:str , _database_name:str = '', _table_name:str = '', right:str ='', ):
-        pass
     
-    def modifyUserRights(executing_user_username:str, executing_user_plain_password, modified_user_username:str, modified_user_right_name:str, modified_user_right_state:str):
-        pass
+    def modifyUserRights(
+              self,
+              executor_username:str, 
+              executor_plain_password:str,
+              affected_username:str,
+              affected_right_name:str, 
+              affected_right_state:str, 
+              _database_name:str, 
+              _table_name:str):
+        if(self.verifyUser(executor_plain_password,executor_plain_password,_database_name,_table_name)==True):
+            pass
     
     def __init__(self, _database_name:str=fallback_database_name, _table_name:str=fallback_table_name):
         '''
@@ -267,5 +307,6 @@ class UserSecurity:
 
 # us:UserSecurity = UserSecurity('test.db', 'user')
 # us.createTable('test.db','user')
-# us.sudo_add_user('TestUser2','passwort','test.db','user')
-# us.add_user('TestUser','password','test.db','user')
+# us.sudoAddUser('TestUser2','passwort','test.db','user')
+# us.addUser('TestUser','password','test.db','user')
+# us.sudoModifyUserRights('TestUser','test.db','user','bla','True')
