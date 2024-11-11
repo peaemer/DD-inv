@@ -120,5 +120,8 @@ def fetch_hardware_by_id(Service_Tag):
         print("Fehler beim Abrufen des Service-Tags, bitte überprüfen sie die Schreibweise")
 
 
+# Funktion zum Updaten von Hardware Einträgen
+
+
 
 con.close()
