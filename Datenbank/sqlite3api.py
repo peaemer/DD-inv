@@ -87,6 +87,7 @@ def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_roll
         return msg, e
 
 
+
 # Funktion zum Löschen eines Benutzers
 def delete_benutzer(nutzername):
     try:
