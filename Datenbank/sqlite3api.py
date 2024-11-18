@@ -97,13 +97,13 @@ def delete_benutzer(nutzername):
 # H A R D W A R E - E N D P U N K T #
 #####################################
 
-def create_hardware(Service_Tag, Geraetename, Modell, Beschaedigung, Ausgeliehen_von, Standort):
+def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort):
     try:
         con = init_connection()
         cur = con.cursor()
         cur.execute(
-            "INSERT INTO Hardware (Service_Tag, Geraetename, Modell, Beschaedigung, Ausgeliehen_von, Standort) VALUES (?, ?, ?, ?, ?, ?)",
-            (Service_Tag, Geraetename, Modell, Beschaedigung, Ausgeliehen_von, Standort)
+            "INSERT INTO Hardware (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort) VALUES (?, ?, ?, ?, ?, ?)",
+            (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort)
         )
         con.commit()
         return "Hardware-Eintrag wurde erstellt."
@@ -177,3 +177,111 @@ def delete_Hardware_by_service_tag(Service_Tag):
         return "Fehler beim Entfernen des Hardware-Eintrags:", str(e)
     finally:
         con.close()
+
+###########################################################
+# N U T Z E R R O L L E N - R E C H T E - E N D P U N K T #
+###########################################################
+
+def create_Rolle(ANSEHEN,
+                 ROLLE_LOESCHBAR,
+                 ADMIN_FEATURE,
+                 LOESCHEN,
+                 BEARBEITEN,
+                 ERSTELLEN,
+                 GRUPPEN_LOESCHEN,
+                 GRUPPEN_ERSTELLEN,
+                 GRUPPEN_BEARBEITEN,
+                 ROLLEN_ERSTELLEN,
+                 ROLLEN_BEARBEITEN,
+                 ROLLEN_LOESCHEN):
+    try:
+        con = init_connection()
+        cur = con.cursor()
+        cur.execute("INSERT INTO NutzerrollenRechte (ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)",
+                    (ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN)
+                    )
+        con.close()
+        return "Nutzerrolle wurder erfolgreich erstellt."
+    except sqlite3 as e:
+        return "Es ist eine fehler beim erstellen der Rolle aufgetreten", str(e)
+    finally:
+        con.close()
+
+def read_all_Rollen():
+    try:
+        con = init_connection()
+        cur = con.cursor()
+        cur.execute("SELECT * FROM NutzerollenRechte")
+        rows = cur.fetchall()
+        return [dict(row) for row in rows]
+    except sqlite3.Error as e:
+        return [], "Fehler beim Abrufen der Rollen:", str(e)
+    finally:
+        con.close()
+
+def read_Rolle(nutzername):
+    try:
+        con = init_connection()
+        cur = con.cursor()
+        cur.execute("SELECT * FROM Benutzer WHERE Nutzername = ?", (nutzername,))
+        row = cur.fetchone()
+        return dict(row) if row else None
+    except sqlite3.Error as e:
+        return None, "Fehler beim Abrufen des Benutzers:", str(e)
+    finally:
+        con.close()
+
+def update_rolle(Rolle,
+                 neue_ROLLE_LOESCHBAR=None,
+                 neue_ADMIN_FEATURE=None,
+                 neue_LOESCHEN=None,
+                 neue_BEARBEITEN=None,
+                 neue_ERSTELLEN=None,
+                 neue_GRUPPEN_LOESCHEN=None,
+                 neue_GRUPPEN_ERSTELLEN=None,
+                 neue_GRUPPEN_BEARBEITEN=None,
+                 neue_ROLLEN_ERSTELLEN=None,
+                 neue_ROLLEN_BEARBEITEN=None,
+                 neue_ROLLEN_LOESCHEN=None):
+    try:
+        con = init_connection()
+        cur = con.cursor()
+        update_fields = []
+        parameters = []
+
+        if neue_ROLLE_LOESCHBAR:
+            update_fields.append("ROLLE_LOESCHBAR = ?")
+            parameters.append(neue_ROLLE_LOESCHBAR)
+        if neue_ADMIN_FEATURE:
+            update_fields.append("ADMIN_FEATURE = ?")
+            parameters.append(neue_ADMIN_FEATURE)
+        if neue_LOESCHEN:
+            update_fields.append("LOESCHEN = ?")
+            parameters.append(neue_LOESCHEN)
+        if neue_BEARBEITEN:
+            update_fields.append("BEARBEITEN = ?")
+            parameters.append(neue_BEARBEITEN)
+        if neue_ERSTELLEN:
+            update_fields.append("ERSTELLEN = ?")
+            parameters.append(neue_ERSTELLEN)
+        if neue_GRUPPEN_LOESCHEN:
+            update_fields.append("GRUPPEN_LOESCHEN = ?")
+            parameters.append(neue_GRUPPEN_LOESCHEN)
+        if neue_GRUPPEN_ERSTELLEN:
+            update_fields.append("GRUPPEN_ERSTELLEN = ?")
+            parameters.append(neue_GRUPPEN_ERSTELLEN)
+        if neue_GRUPPEN_BEARBEITEN:
+            update_fields.append("GRUPPEN_BEARBEITEN = ?")
+            parameters.append(neue_GRUPPEN_BEARBEITEN)
+        if neue_ROLLEN_ERSTELLEN:
+            update_fields.append("ROLLEN_ERSTELLEN = ?")
+            parameters.append(neue_ROLLEN_ERSTELLEN)
+        if neue_beschaedigung:
+            update_fields.append("Beschaedigung = ?")
+            parameters.append(neue_beschaedigung)
+        if neue_beschaedigung:
+            update_fields.append("Beschaedigung = ?")
+            parameters.append(neue_beschaedigung)
+
+        cur.execute()
+
