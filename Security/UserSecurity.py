@@ -79,7 +79,7 @@ class UserSecurity:
             self.fallback_table_name if self.__isInvalidName(_table_name) and self.__isInvalidName(self.initial_table_name) else \
             self.initial_table_name if (self.__isInvalidName(_table_name)) else \
             _table_name
-    
+    """
     def __connect(self, _database_name:str = '')->sqlite3.Connection:
         '''
             a shortcut function for opening a connection to the supplied database
@@ -114,7 +114,7 @@ class UserSecurity:
     def __writeDatabaseEntry(database_name:str = '', table_name:str = '', )->str:
         
         pass
-    
+    """
     def __comparePassword(self, plain_password:str, hashed_password:bytearray)->bool:
         '''
             compares a plain with an already hashed password
@@ -131,7 +131,7 @@ class UserSecurity:
         #hash the plain password and check if the hash is equal to the given
         return hashed_password == UserSecurity.__hash_password(plain_password)
 
-    
+    """
     def createTable(self, _database_name:str = '', _table_name:str = '')->None:
         '''
             creates a table with the supplied name in the supplied database the fields 'id', 'username' and 'password_hash'
@@ -166,7 +166,7 @@ class UserSecurity:
             print(e)
         finally:
             connection.close
-
+    """
     def verifyUser(self, username:str, plain_password:str, _database_name:str='', _table_name:str='')->bool:
         '''
             searches for the user in the table of the database
@@ -174,7 +174,7 @@ class UserSecurity:
 
             Parameters
             ----------
-            :param str username: the name of the user whoes password should be verifyed
+            :param str username: the n  ame of the user whoes password should be verifyed
             :param str plain_password: the password that is expected to be stored in the database
             :param str _database_name: the name of the database 
             :param str table_name: the name of the table where the user data is stored
