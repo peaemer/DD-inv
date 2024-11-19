@@ -233,7 +233,18 @@ def delete_Hardware_by_service_tag(Service_Tag):
 # N U T Z E R R O L L E N - R E C H T E - E N D P U N K T #
 ###########################################################
 
-def create_Rolle(ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN):
+def create_Rolle(ANSEHEN,
+                 ROLLE_LOESCHBAR,
+                 ADMIN_FEATURE,
+                 LOESCHEN,
+                 BEARBEITEN,
+                 ERSTELLEN,
+                 GRUPPEN_LOESCHEN,
+                 GRUPPEN_ERSTELLEN,
+                 GRUPPEN_BEARBEITEN,
+                 ROLLEN_ERSTELLEN,
+                 ROLLEN_BEARBEITEN,
+                 ROLLEN_LOESCHEN):
     """
     Fügt eine neue Nutzerrolle mit spezifischen Rechten in die Tabelle `NutzerrollenRechte` ein.
     - Rechte können als Booleans oder Integer-Werte übergeben werden.
@@ -242,7 +253,18 @@ def create_Rolle(ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTE
         con = init_connection()
         cur = con.cursor()
         cur.execute("INSERT INTO NutzerrollenRechte (ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    (ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN)
+                    (ANSEHEN,
+                     ROLLE_LOESCHBAR,
+                     ADMIN_FEATURE,
+                     LOESCHEN,
+                     BEARBEITEN,
+                     ERSTELLEN,
+                     GRUPPEN_LOESCHEN,
+                     GRUPPEN_ERSTELLEN,
+                     GRUPPEN_BEARBEITEN,
+                     ROLLEN_ERSTELLEN,
+                     ROLLEN_BEARBEITEN,
+                     ROLLEN_LOESCHEN)
                     )
         con.close()
         return "Nutzerrolle wurder erfolgreich erstellt."
@@ -259,7 +281,7 @@ def read_all_Rollen():
     try:
         con = init_connection()
         cur = con.cursor()
-        cur.execute("SELECT * FROM NutzerollenRechte")
+        cur.execute("SELECT * FROM NutzerrollenRechte")
         rows = cur.fetchall()
         return [dict(row) for row in rows]
     except sqlite3.Error as e:
@@ -267,7 +289,7 @@ def read_all_Rollen():
     finally:
         con.close()
 
-def read_Rolle(nutzername):
+def read_Rolle(Rolle):
     """
     Ruft die Rolle eines spezifischen Benutzers ab.
     - Der Nutzername dient als Identifikator.
@@ -275,11 +297,11 @@ def read_Rolle(nutzername):
     try:
         con = init_connection()
         cur = con.cursor()
-        cur.execute("SELECT * FROM Benutzer WHERE Nutzername = ?", (nutzername,))
+        cur.execute("SELECT * FROM NutzerrollenRechte WHERE Rolle = ?", (Rolle,))
         row = cur.fetchone()
         return dict(row) if row else None
     except sqlite3.Error as e:
-        return None, "Fehler beim Abrufen des Benutzers:", str(e)
+        return None, "Fehler beim Abrufen der Rollen:", str(e)
     finally:
         con.close()
 
