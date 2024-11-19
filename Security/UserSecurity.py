@@ -5,8 +5,8 @@ from Datenbank.sqlite3api import read_benutzer, update_benutzer
 #enables or disables debugging messages
 DEBUG_MODE:bool = True
 
-get_user_ptr:function = read_benutzer()
-update_user_ptr:function = update_benutzer()
+__get_user_ptr = read_benutzer()
+__update_user_ptr = update_benutzer()
 
 fallback_username:Final[str] = 'test'
 fallback_password:Final[str] = 'password'
@@ -67,9 +67,8 @@ def verifyUser(username:str, plain_password:str)->bool:
         ------
         :return bool: whether the plain password matches the stored one after the plain password was hashed
     '''
-
     try:
-        benutzer:dict[str,str] = get_user_ptr(username)
+        benutzer:dict[str,str] = __get_user_ptr(username)
         if benutzer:
             # Check if the supplied password matches the stored hash
             if __comparePassword(plain_password,benutzer['hashed_password']):
@@ -83,3 +82,40 @@ def verifyUser(username:str, plain_password:str)->bool:
             return False
     except:
         pass
+
+    def verifyUser(username:str, plain_password:str)->bool:
+        '''
+            searches for the user in the table of the database
+            if the user exists, hashes the supplied plain password and compares it to the stored one 
+
+            Parameters
+            ----------
+            :param str username: the name of the user whoes password should be verifyed
+            :param str plain_password: the password that is expected to be stored in the database
+            :param str _database_name: the name of the database 
+            :param str table_name: the name of the table where the user data is stored
+
+            Return
+            ------
+            :return bool: whether the plain password matches the stored one after the plain password was hashed
+        '''
+
+        # try:
+        benutzer = get_u_ptr(username)
+        try:
+            if benutzer:
+                # Check if the supplied password matches the stored hash
+                if __comparePassword(plain_password,benutzer['hashed_password']):
+                    if(DEBUG_MODE==True):print(f'[UserSecurity]: user {username} was successfully verified.')
+                    return True
+                else:
+                    if(DEBUG_MODE==True):print("[UserSecurity]: Incorrect password.")
+                    return False
+            else:
+                if(DEBUG_MODE==True):print(f"[UserSecurity]: user '{username}' was not found.")
+                return False
+        except:
+            if(DEBUG_MODE==True):print(f"[UserSecurity]: user '{username}' was not found.")
+            return False
+
+print(verifyUser('Alex','Alex!123'))
