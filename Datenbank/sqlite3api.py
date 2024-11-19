@@ -2,17 +2,28 @@ import sqlite3
 import os
 
 def init_connection():
-    # Hilfsfunktion für Verbindungen
+    """
+    Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
+    - Die Datenbankdatei muss unter dem angegebenen Pfad existieren.
+    - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
+    """
     con = sqlite3.connect("C:\dd-inv/Datenbank/DD-invBeispielDatenbank.sqlite3")
+    # Wichtig ist das hier der Root-Pfad angegeben wird
+
     con.row_factory = sqlite3.Row  # Rückgabe von Zeilen als Dictionary
     return con
-
 
 #####################################
 # B E N U T Z E R - E N D P U N K T #
 #####################################
 
 def create_benutzer(nutzername, passwort, email):
+    """
+    Fügt einen neuen Benutzer zur Tabelle `Benutzer` hinzu.
+    - Nutzername, Passwort und Email müssen übergeben werden.
+    - Standardrolle wird auf 'Guest' gesetzt.
+    - alles wird in Try gesetzt um bei fehlern ein Crash zu verhindern
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -28,6 +39,10 @@ def create_benutzer(nutzername, passwort, email):
         con.close()
 
 def read_all_benutzer():
+    """
+    Ruft alle Benutzer aus der Tabelle `Benutzer` ab.
+    - Gibt eine Liste von Dictionaries zurück, die die Benutzerdaten enthalten.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -40,6 +55,11 @@ def read_all_benutzer():
         con.close()
 
 def read_benutzer(nutzername):
+    """
+    Ruft die Daten eines spezifischen Benutzers ab.
+    - Der Nutzername dient als Identifikator.
+    - Gibt ein Dictionary mit den Benutzerdaten zurück oder None, falls der Benutzer nicht existiert.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -52,6 +72,11 @@ def read_benutzer(nutzername):
         con.close()
 
 def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_rolle=None):
+    """
+    Aktualisiert die Daten eines Benutzers (Passwort, Email, Rolle).
+    - Nur die übergebenen Parameter werden geändert.
+    - Dynamische Erstellung der SQL-Abfrage, basierend auf den übergebenen Parametern.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -82,6 +107,10 @@ def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_roll
         con.close()
 
 def delete_benutzer(nutzername):
+    """
+    Löscht einen Benutzer aus der Tabelle `Benutzer`.
+    - Der Nutzername dient als Identifikator.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -99,6 +128,10 @@ def delete_benutzer(nutzername):
 #####################################
 
 def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort):
+    """
+    Erstellt einen neuen Eintrag in der Tabelle `Hardware`.
+    - Alle notwendigen Hardwaredetails (z. B. Service_Tag, Gerätetyp) müssen übergeben werden.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -114,6 +147,10 @@ def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_
         con.close()
 
 def fetch_hardware():
+    """
+    Ruft alle Hardware-Einträge aus der Tabelle `Hardware` ab.
+    - Gibt eine Liste von Dictionaries zurück.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -126,6 +163,10 @@ def fetch_hardware():
         con.close()
 
 def fetch_hardware_by_id(Service_Tag):
+    """
+    Ruft die Daten einer spezifischen Hardware anhand ihres `Service_Tag` ab.
+    - Gibt ein Dictionary mit den Daten zurück oder None, falls kein Eintrag existiert.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -138,6 +179,11 @@ def fetch_hardware_by_id(Service_Tag):
         con.close()
 
 def update_Hardware_by_service_tag(Service_Tag, neue_Ausgeliehen_von=None, neue_beschaedigung=None, neue_Standort=None):
+    """
+    Aktualisiert bestimmte Felder einer Hardware basierend auf dem `Service_Tag`.
+    - Nur die übergebenen Parameter (z. B. neue_Beschädigung) werden geändert.
+    - Dynamische Erstellung der SQL-Abfrage.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -168,6 +214,10 @@ def update_Hardware_by_service_tag(Service_Tag, neue_Ausgeliehen_von=None, neue_
         con.close()
 
 def delete_Hardware_by_service_tag(Service_Tag):
+    """
+    Löscht einen Hardware-Eintrag aus der Tabelle `Hardware`.
+    - Der `Service_Tag` dient als Identifikator.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -184,6 +234,10 @@ def delete_Hardware_by_service_tag(Service_Tag):
 ###########################################################
 
 def create_Rolle(ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN):
+    """
+    Fügt eine neue Nutzerrolle mit spezifischen Rechten in die Tabelle `NutzerrollenRechte` ein.
+    - Rechte können als Booleans oder Integer-Werte übergeben werden.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -198,6 +252,10 @@ def create_Rolle(ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTE
         con.close()
 
 def read_all_Rollen():
+    """
+    Ruft alle Rollen aus der Tabelle `NutzerrollenRechte` ab.
+    - Gibt eine Liste von Dictionaries zurück.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -210,6 +268,10 @@ def read_all_Rollen():
         con.close()
 
 def read_Rolle(nutzername):
+    """
+    Ruft die Rolle eines spezifischen Benutzers ab.
+    - Der Nutzername dient als Identifikator.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -233,6 +295,10 @@ def update_rolle(Rolle,
                  neue_ROLLEN_ERSTELLEN=None,
                  neue_ROLLEN_BEARBEITEN=None,
                  neue_ROLLEN_LOESCHEN=None):
+    """
+    Aktualisiert spezifische Rechte einer Rolle in der Tabelle `NutzerrollenRechte`.
+    - Dynamische Erstellung der SQL-Abfrage, basierend auf den übergebenen Parametern.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
@@ -288,6 +354,10 @@ def update_rolle(Rolle,
         con.close()
 
 def delete_Rolle(Rolle):
+    """
+    Entfernt eine Rolle aus der Tabelle `NutzerrollenRechte`.
+    - Die Rollenbezeichnung dient als Identifikator.
+    """
     try:
         con = init_connection()
         cur = con.cursor()
