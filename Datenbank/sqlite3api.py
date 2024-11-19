@@ -276,12 +276,35 @@ def update_rolle(Rolle,
         if neue_ROLLEN_ERSTELLEN:
             update_fields.append("ROLLEN_ERSTELLEN = ?")
             parameters.append(neue_ROLLEN_ERSTELLEN)
-        if neue_beschaedigung:
-            update_fields.append("Beschaedigung = ?")
-            parameters.append(neue_beschaedigung)
-        if neue_beschaedigung:
-            update_fields.append("Beschaedigung = ?")
-            parameters.append(neue_beschaedigung)
+        if neue_ROLLEN_BEARBEITEN:
+            update_fields.append("ROLLEN_BEARBEITEN = ?")
+            parameters.append(neue_ROLLEN_BEARBEITEN)
+        if neue_ROLLEN_LOESCHEN:
+            update_fields.append("ROLLEN_LOESCHEN = ?")
+            parameters.append(neue_ROLLEN_LOESCHEN)
 
-        cur.execute()
+        if not update_fields:
+            return "Keine Aktualisierungsdaten vorhanden."
 
+        sql_query = f"UPDATE NutzerrollenRechte SET {', '.join(update_fields)} WHERE Rolle = ?"
+        parameters.append(Rolle)
+        cur.execute(sql_query, parameters)
+        con.commit()
+        return "Rolle erfolgreich aktualisiert."
+
+    except sqlite3.Error as e:
+        return "Fehler beim Aktualisieren des Benutzers:", str(e)
+    finally:
+        con.close()
+
+def delete_Rolle(Rolle):
+    try:
+        con = init_connection()
+        cur = con.cursor()
+        cur.execute("DELETE FROM NutzerrollenRechte WHERE Rolle = ?", (Rolle,))
+        con.commit()
+        return "Rolle wurde erfolgreich entfernt."
+    except sqlite3.Error as e:
+        return "Fehler beim Entfernen der Rolle:", str(e)
+    finally:
+        con.close()
