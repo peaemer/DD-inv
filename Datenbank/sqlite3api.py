@@ -1,8 +1,9 @@
 import sqlite3
+import os
 
 def init_connection():
     # Hilfsfunktion für Verbindungen
-    con = sqlite3.connect('DD-invBeispielDatenbank.sqlite3')
+    con = sqlite3.connect("C:\dd-inv/Datenbank/DD-invBeispielDatenbank.sqlite3")
     con.row_factory = sqlite3.Row  # Rückgabe von Zeilen als Dictionary
     return con
 
@@ -182,27 +183,16 @@ def delete_Hardware_by_service_tag(Service_Tag):
 # N U T Z E R R O L L E N - R E C H T E - E N D P U N K T #
 ###########################################################
 
-def create_Rolle(ANSEHEN,
-                 ROLLE_LOESCHBAR,
-                 ADMIN_FEATURE,
-                 LOESCHEN,
-                 BEARBEITEN,
-                 ERSTELLEN,
-                 GRUPPEN_LOESCHEN,
-                 GRUPPEN_ERSTELLEN,
-                 GRUPPEN_BEARBEITEN,
-                 ROLLEN_ERSTELLEN,
-                 ROLLEN_BEARBEITEN,
-                 ROLLEN_LOESCHEN):
+def create_Rolle(ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN):
     try:
         con = init_connection()
         cur = con.cursor()
-        cur.execute("INSERT INTO NutzerrollenRechte (ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,)",
+        cur.execute("INSERT INTO NutzerrollenRechte (ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     (ANSEHEN,ROLLE_LOESCHBAR,ADMIN_FEATURE,LOESCHEN,BEARBEITEN,ERSTELLEN,GRUPPEN_LOESCHEN,GRUPPEN_ERSTELLEN,GRUPPEN_BEARBEITEN,ROLLEN_ERSTELLEN,ROLLEN_BEARBEITEN,ROLLEN_LOESCHEN)
                     )
         con.close()
         return "Nutzerrolle wurder erfolgreich erstellt."
-    except sqlite3 as e:
+    except sqlite3.Error as e:
         return "Es ist eine fehler beim erstellen der Rolle aufgetreten", str(e)
     finally:
         con.close()

@@ -1,8 +1,5 @@
 import os
-from sqlite3api import (
-    create_Rolle, read_all_Rollen, read_Rolle, update_rolle, delete_Rolle
-)
-
+from Datenbank.sqlite3api import *
 def test_rolle_functions():
     print("Starte Tests für Nutzerrollen-Funktionen...")
 

@@ -1,8 +1,5 @@
 import os
-from sqlite3api import (
-    create_benutzer, read_all_benutzer, read_benutzer, update_benutzer, delete_benutzer,
-    create_hardware, fetch_hardware, fetch_hardware_by_id, update_Hardware_by_service_tag, delete_Hardware_by_service_tag,
-)
+from Datenbank.sqlite3api import *
 
 def test_functions():
     print("Starte Tests...")
@@ -46,11 +43,6 @@ def test_functions():
     print(delete_Hardware_by_service_tag("1234-5678"))
 
     print("\nTests abgeschlossen.")
-
-import os
-from main_code import (
-    create_Rolle, read_all_Rollen, read_Rolle, update_rolle, delete_Rolle
-)
 
 def test_rolle_functions():
     print("Starte Tests für Nutzerrollen-Funktionen...")
@@ -96,10 +88,6 @@ def test_rolle_functions():
     print(delete_Rolle("test_rolle"))
 
     print("\nTests für Nutzerrollen-Funktionen abgeschlossen.")
-
-if __name__ == "__main__":
-    test_rolle_functions()
-
 
 if __name__ == "__main__":
     test_functions()
