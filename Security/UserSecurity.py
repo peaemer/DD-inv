@@ -100,8 +100,6 @@ def verifyUser(username:str, plain_password:str)->bool:
             :return bool: whether the plain password matches the stored one after the plain password was hashed
         '''
 
-        # try:
-        benutzer = get_u_ptr(username)
         try:
             if benutzer:
                 # Check if the supplied password matches the stored hash
