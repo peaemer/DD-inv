@@ -71,7 +71,7 @@ class SettingsWindow(ttk.CTkFrame):
         self.bg_label.config(image=bg_image)
         self.bg_label.image = bg_image
 
-    def choseAPicture(self):
+    def chose_A_Picture(self):
         # Datei-Dialog öffnen
         file_path = filedialog.askopenfilename(title="Wähle ein Bild aus...",
                                                filetypes=[("Bilddateien", "*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp")])
