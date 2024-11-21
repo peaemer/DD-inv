@@ -1,6 +1,6 @@
 from hashlib import sha512
 import sys, os
-sys.path.append(os.getcwd()+'\..')
+sys.path.append(os.path.dirname(__file__)+'\..')
 from typing import Final, List
 from typing import Final, List
 from Datenbank.sqlite3api import *
@@ -32,7 +32,7 @@ def __isInvalidName(name:str)->bool:
 
         Parameters
         ----------
-        :param str _database_name: the name that has to be checked
+        :param str name: the name that has to be checked
 
         Return
         ------
@@ -89,7 +89,3 @@ def verifyUser(username:str, plain_password:str)->bool:
     except:
         if(DEBUG_MODE==True):print(f"[UserSecurity]: user '{username}' was not found.")
         return False
-    # except:
-    #     pass
-
-print(verifyUser('Alex','Alex!123'))
