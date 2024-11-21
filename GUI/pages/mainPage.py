@@ -29,25 +29,8 @@ class mainPage(tk.Frame):
             print("Do be filtering")
 
         def addItem():
-            # Toplevel-Fenster erstellen
-            popup = tk.Tk()
-            popup.title("Neuer Eintrag")
-            popup.geometry("300x200")
-
-            label = tk.Label(popup, text="Füge einen neuen Eintrag hinzu:")
-            label.pack(pady=10)
-
-            entry = tk.Entry(popup)
-            entry.pack(pady=5)
-
-            def submitEntry():
-                item_name = entry.get()
-                # Hier kannst du den Code zum Hinzufügen des Eintrags zur Datenbank einfügen
-                print(f"Neuer Eintrag hinzugefügt: {item_name}")
-                popup.destroy()  # Fenster schließen
-
-            submitButton = tk.Button(popup, text="Hinzufügen", command=submitEntry)
-            submitButton.pack(pady=20)
+            from .addItemPopup import addItemPopup
+            addItemPopup(self)
 
         def onEntryClick(event):
             if searchEntry.get() == 'Suche':
@@ -140,22 +123,12 @@ class mainPage(tk.Frame):
         filterButton = tk.Button(searchFrame, image=self.filterBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=filtr)
         filterButton.grid(row=0, column=3, padx=10)
 
-        self.addBtn = tk.PhotoImage(file="assets/ErstellenButton.png")
-        addButton = tk.Button(self,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
-        addButton.grid(padx=10, pady=5, row=2, column=0)
-
-
-
-
-
-
-
         # Ändere die Position des TreeFrames auf row=3
         treeFrame = tk.Frame(self, background="white")
         treeFrame.grid(row=1, column=0, padx=260)
 
         self.addBtn = tk.PhotoImage(file="assets/ErstellenButton.png")
-        addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
+        addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
         addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
         tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=30)

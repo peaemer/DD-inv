@@ -1,7 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-from pages import logInWindow, mainPage # Importiere Klassen direkt aus dem Modul pages
+
+# Importiere Klassen direkt aus dem Modul pages
+from pages import logInWindow,\
+				   mainPage,\
+				   settingsWindow, \
+			       _DPIAwareness
 
 # Hauptklasse für das Tkinter-Fenster
 class ddINV(tk.Tk):
