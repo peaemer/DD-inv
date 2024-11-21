@@ -1,26 +1,12 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog
-import customtkinter  # Library kann mit "pip install customtkinter" geladen werden
-import customtkinter as ttk
+from PIL import Image, ImageTk
+
 
 LARGEFONT = ("Arial", 30)
 SETTINGSFONT = ("Arial", 30)
 srhGrey = "#d9d9d9"
-
-#class SettingsWindow(ttk.CTkFrame):
-#    def __init__(parent, parent, controller):
-#        tk.Frame.__init__(parent, parent)
-#        parent.configure(background="white")
-
-        # Hintergrund-Label
-#        parent.bg_label = tk.Label(parent)
-#        parent.bg_label.place(relwidth=1, relheight=1)
-
-        # Button zum Bildauswählen
-#        parent.select_button = tk.Button(parent, text="Wähle ein besseres Bild aus, als diesen Hintergrund zu verwenden...",
-#                                       command=parent.choseAPicture)
-#        parent.select_button.pack(pady=20)
-
 
 
 def popUpSettings(parent):
@@ -45,7 +31,7 @@ def popUpSettings(parent):
 
     # Setze die Fenstergröße und Position
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
-    popup.resizable(False, False)
+    popup.resizable(True, True)
 
     # Konfiguriere das Grid-Layout für die Hauptseite
     popup.grid_rowconfigure(0, weight=0)
@@ -68,20 +54,36 @@ def popUpSettings(parent):
     headerLabel = tk.Label(headerFrame, image=parent.srhHead2, background="#DF4807", foreground="white")
     headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
-    def btnDarkmode(parent):
-        # Button Darkmode erstellen
-        btn_switch = tk.StringVar(value="on")
+    # chekbox zum anhacken / abhacken
+    chek_button = ttk.Checkbutton(parent,
+                                  text="Click me for more actions")
+    chek_button.pack()
 
-        def change_theme():
-            pass  # Darkmode-Logik hier hinzufügen
+    # auswaehlen was bei verschiedenen optionen passieren soll
+    selected_option = tk.StringVar()
 
-        # Erstellen und definieren des Switches
-        darkmode_switch = customtkinter.CTkSwitch(text="Light-/Darkmode",
-                                                  command=change_theme,
-                                                  variable=btn_switch,
-                                                  onvalue="on",
-                                                  offvalue="off")
-        darkmode_switch.pack()
+    # def der optionen
+    def print_current_option():
+        print(selected_option.get())
+
+    check = ttk.Checkbutton(parent,
+                            text="Nothing happens in the upper checkbox",
+                            variable=selected_option,
+                            command=print_current_option,
+                            onvalue="no action avabiale",
+                            offvalue="i gott u xD")
+    check.pack()
+
+    # Hintergrund-Label
+    parent.bg_label = tk.Label(parent)
+    parent.bg_label.place(relwidth=1,
+                          relheight=1)
+
+    # Button zum Bildauswählen
+    parent.select_button = tk.Button(parent,
+                                     text="Wähle ein besseres Bild aus, als diesen Hintergrund zu verwenden...",
+                                     command=parent.choseAPicture)
+    parent.select_button.pack(pady=20)
 
     def set_background(parent, file_path):
         # Bild laden und skalieren
@@ -94,7 +96,8 @@ def popUpSettings(parent):
     def choseAPicture(parent):
         # Datei-Dialog öffnen
         file_path = filedialog.askopenfilename(title="Wähle ein Bild aus...",
-                                               filetypes=[("Bilddateien", "*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp")])
+                                               filetypes=[("Bilddateien",
+                                                           "*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp")])
         if file_path:
             parent.set_background(file_path)
         else:
