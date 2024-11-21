@@ -13,6 +13,7 @@ def popUpSettings(parent):
     popup = tk.Toplevel(parent)
     popup.title("Einstellungen")
     popup.geometry("960x540")
+    popup.configure(background="white")
     popup.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
     popup.grab_set()  # Blockiere Interaktionen mit dem Hauptfenster
     popup.attributes('-topmost', True)  # Erzwinge den Fokus auf das Popup
@@ -86,9 +87,9 @@ def popUpSettings(parent):
                                  font=("Arial", 15))
     overviewStngSystem.grid(padx=1,
                            pady=5,
-                           row=1,
+                           row=0,
                            column=0,
-                           sticky=tk.W + tk.E)
+                           sticky=tk.W + tk.S)
 
     # schrifzug "Hintergrund" setzen
     overviewStngsBackground = tk.Label(sideSettingsView,
@@ -100,7 +101,43 @@ def popUpSettings(parent):
                                  pady=6,
                                  row=1,
                                  column=0,
-                                 sticky=tk.W + tk.E)
+                                 sticky=tk.W + tk.S)
+
+    # schrifzug "Benachrichtigungen" setzen
+    overviewStngsMessage = tk.Label(sideSettingsView,
+                                       text="Benachrichtigungen",
+                                       bd=0,
+                                       relief=tk.FLAT,
+                                       font=("Arial", 15))
+    overviewStngsMessage.grid(padx=1,
+                                 pady=6,
+                                 row=2,
+                                 column=0,
+                                 sticky=tk.W + tk.S)
+
+    # schrifzug "Konten" setzen
+    overviewStngsProfile = tk.Label(sideSettingsView,
+                                       text="Konten",
+                                       bd=0,
+                                       relief=tk.FLAT,
+                                       font=("Arial", 15))
+    overviewStngsProfile.grid(padx=1,
+                                 pady=6,
+                                 row=3,
+                                 column=0,
+                                 sticky=tk.W + tk.S)
+
+    # schrifzug "Sprachen" setzen
+    overviewStngsLangue = tk.Label(sideSettingsView,
+                                       text="Sprachen",
+                                       bd=0,
+                                       relief=tk.FLAT,
+                                       font=("Arial", 15))
+    overviewStngsLangue.grid(padx=1,
+                                 pady=6,
+                                 row=4,
+                                 column=0,
+                                 sticky=tk.W + tk.S)
 
 
     # ablegen der nachfolgenden optionen (daher def. sich die Gruppe)
