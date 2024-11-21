@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-path:str = os.getcwd()+'DD-invBeispielDatenbank.sqlite3'
+path:str = os.getcwd()+'Datenbank/DD-invBeispielDatenbank.sqlite3'
 
 def init_connection():
     """
