@@ -32,6 +32,7 @@ def popUpSettings(parent):
     # Setze die Fenstergröße und Position
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
     popup.resizable(True, True)
+    popup.iconbitmap("assets/srhIcon.ico")
 
     # Konfiguriere das Grid-Layout für die Hauptseite
     popup.grid_rowconfigure(0, weight=0)
@@ -41,49 +42,50 @@ def popUpSettings(parent):
     popup.grid_columnconfigure(0, weight=1)
 
     # Erstelle einen Header-Bereich
-    headerFrame = tk.Frame(popup, height=10, background="#DF4807")
+    headerFrame = tk.Frame(popup, height=1)
     headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
     # Konfiguriere die Spalten für den Header
     headerFrame.grid_columnconfigure(0, weight=1)
     headerFrame.grid_rowconfigure(0, weight=1)
 
-    parent.srhHead2 = tk.PhotoImage(file="assets/srh.png")
+    parent.optionsHead = tk.PhotoImage(file="assets/option.png")
 
     # Füge ein zentriertes Label hinzu
-    headerLabel = tk.Label(headerFrame, image=parent.srhHead2, background="#DF4807", foreground="white")
-    headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
+    headerLabel = tk.Label(headerFrame, image=parent.optionsHead, foreground="white")
+    headerLabel.grid(row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.W)
 
-    # chekbox zum anhacken / abhacken
-    chek_button = ttk.Checkbutton(parent,
-                                  text="Click me for more actions")
-    chek_button.pack()
+    # ablegen der optionen (daher def. sich die Gruppe)
+    storage_variable = tk.StringVar()
 
-    # auswaehlen was bei verschiedenen optionen passieren soll
-    selected_option = tk.StringVar()
+    # verschiedene optionen zum auswaehlen (eine option gleichzeitig)
+    option_one = ttk.Radiobutton(parent,
+                                 text="Grün",
+                                 variable=storage_variable,
+                                 value="Grün")
 
-    # def der optionen
-    def print_current_option():
-        print(selected_option.get())
+    option_two = ttk.Radiobutton(parent,
+                                 text="Blau",
+                                 variable=storage_variable,
+                                 value="Blau")
 
-    check = ttk.Checkbutton(parent,
-                            text="Nothing happens in the upper checkbox",
-                            variable=selected_option,
-                            command=print_current_option,
-                            onvalue="no action avabiale",
-                            offvalue="i gott u xD")
-    check.pack()
+    option_three = ttk.Radiobutton(parent,
+                                   text="Gelb",
+                                   variable=storage_variable,
+                                   value="Gelb")
 
-    # Hintergrund-Label
-    parent.bg_label = tk.Label(parent)
-    parent.bg_label.place(relwidth=1,
-                          relheight=1)
+    option_for = ttk.Radiobutton(parent,
+                                   text="Schwarz",
+                                   variable=storage_variable,
+                                   value="Schwarz")
 
-    # Button zum Bildauswählen
-    parent.select_button = tk.Button(parent,
-                                     text="Wähle ein besseres Bild aus, als diesen Hintergrund zu verwenden...",
-                                     command=parent.choseAPicture)
-    parent.select_button.pack(pady=20)
+    option_one.grid(row=-2,
+                    column=0)
+    option_two.grid(row=-2,
+                    column=0)
+    option_three.grid(row=-2, column=0)
+    option_for.grid(row=-2,
+                    column=0)
 
     def set_background(parent, file_path):
         # Bild laden und skalieren
@@ -92,6 +94,8 @@ def popUpSettings(parent):
         bg_image = ImageTk.PhotoImage(resize_image)
         parent.bg_label.config(image=bg_image)
         parent.bg_label.image = bg_image
+
+    set_background.grid()
 
     def choseAPicture(parent):
         # Datei-Dialog öffnen
@@ -102,3 +106,5 @@ def popUpSettings(parent):
             parent.set_background(file_path)
         else:
             print("Error: Could´t load or get image")
+
+    choseAPicture.grind()
