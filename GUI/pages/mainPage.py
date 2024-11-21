@@ -17,6 +17,10 @@ class mainPage(tk.Frame):
         self.configure(background="white")
 
 
+        def showSettingsWindow():
+            from .settingsWindow import popUpSettings
+            popUpSettings(self)
+
         def logOut():
             from .logInWindow import logInWindow
             controller.show_frame(logInWindow)  # funktionalität hinzufügen
@@ -76,7 +80,7 @@ class mainPage(tk.Frame):
         self.optBtn = tk.PhotoImage(file="assets/option.png")
 
         # Füge einen Button mit dem Bild hinzu
-        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
+        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=showSettingsWindow, bd=0, relief=tk.FLAT, bg="#DF4807",
                                  activebackground="#DF4807")
         optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
 
