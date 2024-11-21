@@ -1,13 +1,15 @@
 import sqlite3
 import os
 
+path:str = os.getcwd()+'Datenbank/D-invBeispielDatenbank.sqlite3'
+
 def init_connection():
     """
     Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
     - Die Datenbankdatei muss unter dem angegebenen Pfad existieren.
     - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
     """
-    con = sqlite3.connect("C:\dd-inv/Datenbank/DD-invBeispielDatenbank.sqlite3")
+    con = sqlite3.connect(path)
     # Wichtig ist das hier der Root-Pfad angegeben wird
 
     con.row_factory = sqlite3.Row  # Rückgabe von Zeilen als Dictionary
@@ -66,6 +68,7 @@ def read_benutzer(nutzername):
         cur.execute("SELECT * FROM Benutzer WHERE Nutzername = ?", (nutzername,))
         row = cur.fetchone()
         return dict(row) if row else None
+        Print(con)
     except sqlite3.Error as e:
         return None, "Fehler beim Abrufen des Benutzers:", str(e)
     finally:
