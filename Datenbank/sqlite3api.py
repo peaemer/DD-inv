@@ -66,6 +66,7 @@ def read_benutzer(nutzername):
         cur.execute("SELECT * FROM Benutzer WHERE Nutzername = ?", (nutzername,))
         row = cur.fetchone()
         return dict(row) if row else None
+        Print(con)
     except sqlite3.Error as e:
         return None, "Fehler beim Abrufen des Benutzers:", str(e)
     finally:
