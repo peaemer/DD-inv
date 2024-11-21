@@ -1,4 +1,6 @@
 from hashlib import sha512
+import sys, os
+sys.path.append(os.getcwd()+'\..')
 from typing import Final, List
 from Datenbank.sqlite3api import read_benutzer, update_benutzer
 
