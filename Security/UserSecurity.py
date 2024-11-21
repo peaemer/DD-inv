@@ -3,15 +3,15 @@ import sys, os
 sys.path.append(os.getcwd()+'\..')
 from typing import Final, List
 from typing import Final, List
-from Datenbank import sqlite3api
-from Datenbank.sqlite3api import read_benutzer, update_benutzer
+from Datenbank.sqlite3api import *
+# from Datenbank.sqlite3api import read_benutzer, update_benutzer
 
 #enables or disables debugging messages
 DEBUG_MODE:bool = True
 
-__get_user_ptr = read_benutzer
-get_u_ptr = read_benutzer
-update_u_ptr = update_benutzer
+# __get_user_ptr = read_benutzer
+# get_u_ptr = read_benutzer
+# update_u_ptr = update_benutzer
 
 fallback_username:Final[str] = 'test'
 fallback_password:Final[str] = 'password'
@@ -73,8 +73,7 @@ def verifyUser(username:str, plain_password:str)->bool:
         :return bool: whether the plain password matches the stored one after the plain password was hashed
     '''
 
-    # try:
-    benutzer = get_u_ptr(username)
+    benutzer = read_benutzer(username)
     try:
         if benutzer:
             # Check if the supplied password matches the stored hash
