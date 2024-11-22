@@ -62,7 +62,7 @@ class ddINV(tk.Tk):
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid
 
 		# Zeige das Login-Fenster an
-		self.show_frame(logInWindow)
+		self.show_frame(mainPage)
 
 	# Funktion, um ein Frame (Seite) anzuzeigen
 	def show_frame(self, cont):
