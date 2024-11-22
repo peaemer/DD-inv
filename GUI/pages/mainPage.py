@@ -3,7 +3,6 @@ from tkinter import ttk
 from tkinter import *
 
 
-
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
@@ -16,6 +15,10 @@ class mainPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
+
+        def showSettingsWindow():
+            from .settingsWindow import popUpSettings
+            popUpSettings(self)
 
         def logOut():
             from .logInWindow import logInWindow
@@ -76,7 +79,7 @@ class mainPage(tk.Frame):
         self.optBtn = tk.PhotoImage(file="assets/option.png")
 
         # Füge einen Button mit dem Bild hinzu
-        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
+        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=showSettingsWindow, bd=0, relief=tk.FLAT, bg="#DF4807",
                                  activebackground="#DF4807")
         optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
 

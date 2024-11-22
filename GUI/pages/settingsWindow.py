@@ -1,81 +1,198 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog
 from PIL import Image, ImageTk
-import customtkinter  # Library kann mit "pip install customtkinter" geladen werden
-import customtkinter as ttk
+
 
 LARGEFONT = ("Arial", 30)
 SETTINGSFONT = ("Arial", 30)
 srhGrey = "#d9d9d9"
 
-class SettingsWindow(ttk.CTkFrame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.configure(background="white")
 
-        # Hintergrund-Label
-        self.bg_label = tk.Label(self)
-        self.bg_label.place(relwidth=1, relheight=1)
+def popUpSettings(parent):
+    popup = tk.Toplevel(parent)
+    popup.title("Einstellungen")
+    popup.geometry("960x540")
+    popup.configure(background="white")
+    popup.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
+    popup.grab_set()  # Blockiere Interaktionen mit dem Hauptfenster
+    popup.attributes('-topmost', True)  # Erzwinge den Fokus auf das Popup
 
-        # Button zum Bildauswählen
-        self.select_button = tk.Button(self, text="Wähle ein besseres Bild aus, als diesen Hintergrund zu verwenden...",
-                                       command=self.choseAPicture)
-        self.select_button.pack(pady=20)
+    # Bildschirmbreite und -hoehe ermitteln
+    screen_width = parent.winfo_screenwidth()
+    screen_height = parent.winfo_screenheight()
 
-    def popUpSettings(self):
-        popup = tk.Toplevel(self)
-        popup.title("Einstellungen")
-        popup.geometry("800x600")
+    # Fensterbreite und -hoehe definieren
+    window_width = 960  # Halb von 1920
+    window_height = 540  # Halb von 1080
 
-        # Konfiguriere das Grid-Layout für die Hauptseite
-        popup.grid_rowconfigure(0, weight=0)
-        popup.grid_rowconfigure(1, weight=1)
-        popup.grid_rowconfigure(2, weight=0)
-        popup.grid_rowconfigure(3, weight=0)
-        popup.grid_columnconfigure(0, weight=1)
+    # Berechne die Position, um das Fenster in der Mitte des Bildschirms zu platzieren
+    center_x = int(screen_width / 2 - window_width / 2)
+    center_y = int(screen_height / 2 - window_height / 2)
 
-        # Erstelle einen Header-Bereich
-        headerFrame = tk.Frame(popup, height=10, background="#DF4807")
-        headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+    # Setze die Fenstergroeße und Position
+    popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
+    popup.resizable(True, True)
+    popup.iconbitmap("assets/srhIcon.ico")
 
-        # Konfiguriere die Spalten für den Header
-        headerFrame.grid_columnconfigure(0, weight=1)
-        headerFrame.grid_rowconfigure(0, weight=1)
+    # Konfiguriere das Grid-Layout fuer die Einstellungen
+    popup.grid_rowconfigure(0, weight=0)
+    popup.grid_rowconfigure(1, weight=1)
+    popup.grid_rowconfigure(2, weight=0)
+    popup.grid_rowconfigure(3, weight=0)
+    popup.grid_columnconfigure(0, weight=1)
 
-        self.srhHead = tk.PhotoImage(file="assets/srh.png")
+    # Erstelle einen Header-Bereich
+    headerFrameSettings = tk.Frame(popup, height=0)
+    headerFrameSettings.grid(row=0,
+                             column=0,
+                             sticky=tk.W + tk.E + tk.N)
 
-        # Füge ein zentriertes Label hinzu
-        headerLabel = tk.Label(headerFrame, image=self.srhHead, background="#DF4807", foreground="white")
-        headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
+    # Konfiguriere die Spalten für den Header
+    headerFrameSettings.grid_columnconfigure(0, weight=1)
+    headerFrameSettings.grid_rowconfigure(0, weight=1)
 
-    def btnDarkmode(self):
-        # Button Darkmode erstellen
-        btn_switch = tk.StringVar(value="on")
+    popup.optionsHead = tk.PhotoImage(file="assets/option.png")
 
-        def change_theme():
-            pass  # Darkmode-Logik hier hinzufügen
+    # Füge ein zentriertes Label hinzu
+    headerLabel = tk.Label(headerFrameSettings,
+                           image=popup.optionsHead,
+                           foreground="white")
+    headerLabel.grid(row=1,
+                     column=0,
+                     padx=10,
+                     pady=10,
+                     sticky=tk.N + tk.W)
 
-        # Erstellen und definieren des Switches
-        darkmode_switch = customtkinter.CTkSwitch(text="Light-/Darkmode",
-                                                  command=change_theme,
-                                                  variable=btn_switch,
-                                                  onvalue="on",
-                                                  offvalue="off")
-        darkmode_switch.pack()
+    sideSettings = tk.Frame(popup,
+                            height=5,
+                            background="#F4EFEF")
+    sideSettings.grid(row=2,
+                      column=0,
+                      sticky=tk.W + tk.E + tk.N)
 
-    def set_background(self, file_path):
+    # Konfiguriere die sideSettings für zentrierte Ausrichtung
+    sideSettings.grid_columnconfigure(0, weight=1)
+
+    sideSettingsView = tk.Frame(popup)
+    sideSettingsView.grid(row=1,
+                          column=0,
+                          sticky=tk.W + tk.E + tk.N)
+
+    # schrifzug "System" setzen
+    overviewStngSystem = tk.Label(sideSettingsView,
+                                 text="System",
+                                 bd=0,
+                                 relief=tk.FLAT,
+                                 font=("Arial", 15))
+    overviewStngSystem.grid(padx=1,
+                           pady=5,
+                           row=0,
+                           column=0,
+                           sticky=tk.W + tk.S)
+
+    # schrifzug "Hintergrund" setzen
+    overviewStngsBackground = tk.Label(sideSettingsView,
+                                       text="Hintergrund",
+                                       bd=0,
+                                       relief=tk.FLAT,
+                                       font=("Arial", 15))
+    overviewStngsBackground.grid(padx=1,
+                                 pady=6,
+                                 row=1,
+                                 column=0,
+                                 sticky=tk.W + tk.S)
+
+    # schrifzug "Benachrichtigungen" setzen
+    overviewStngsMessage = tk.Label(sideSettingsView,
+                                       text="Benachrichtigungen",
+                                       bd=0,
+                                       relief=tk.FLAT,
+                                       font=("Arial", 15))
+    overviewStngsMessage.grid(padx=1,
+                                 pady=6,
+                                 row=2,
+                                 column=0,
+                                 sticky=tk.W + tk.S)
+
+    # schrifzug "Konten" setzen
+    overviewStngsProfile = tk.Label(sideSettingsView,
+                                       text="Konten",
+                                       bd=0,
+                                       relief=tk.FLAT,
+                                       font=("Arial", 15))
+    overviewStngsProfile.grid(padx=1,
+                                 pady=6,
+                                 row=3,
+                                 column=0,
+                                 sticky=tk.W + tk.S)
+
+    # schrifzug "Sprachen" setzen
+    overviewStngsLangue = tk.Label(sideSettingsView,
+                                       text="Sprachen",
+                                       bd=0,
+                                       relief=tk.FLAT,
+                                       font=("Arial", 15))
+    overviewStngsLangue.grid(padx=1,
+                                 pady=6,
+                                 row=4,
+                                 column=0,
+                                 sticky=tk.W + tk.S)
+
+
+    # ablegen der nachfolgenden optionen (daher def. sich die Gruppe)
+    storage_variable = tk.StringVar()
+
+    # verschiedene optionen zum auswaehlen (eine option gleichzeitig)
+    option_zero = ttk.Radiobutton(popup,
+                                 text="Deafault",
+                                 variable=storage_variable,
+                                 value="White")
+
+    option_one = ttk.Radiobutton(popup,
+                                 text="Grün",
+                                 variable=storage_variable,
+                                 value="Grün")
+
+    option_two = ttk.Radiobutton(popup,
+                                 text="Blau",
+                                 variable=storage_variable,
+                                 value="Blau")
+
+    option_three = ttk.Radiobutton(popup,
+                                   text="Gelb",
+                                   variable=storage_variable,
+                                   value="Gelb")
+
+    option_for = ttk.Radiobutton(popup,
+                                   text="Schwarz",
+                                   variable=storage_variable,
+                                   value="Schwarz")
+
+    option_zero.grid()
+    option_one.grid()
+    option_two.grid()
+    option_three.grid()
+    option_for.grid()
+
+    def set_background(popup, file_path):
         # Bild laden und skalieren
         image = Image.open(file_path)
-        resize_image = image.resize((self.winfo_width(), self.winfo_height()), Image.ANTIALIAS)
+        resize_image = image.resize((popup.winfo_width(), popup.winfo_height()), Image.ANTIALIAS)
         bg_image = ImageTk.PhotoImage(resize_image)
-        self.bg_label.config(image=bg_image)
-        self.bg_label.image = bg_image
+        popup.bg_label.config(image=bg_image)
+        popup.bg_label.image = bg_image
+        set_background.grid(popup,
+                            row=2)
 
-    def chose_A_Picture(self):
+    def chose_A_Picture(popup):
         # Datei-Dialog öffnen
         file_path = filedialog.askopenfilename(title="Wähle ein Bild aus...",
-                                               filetypes=[("Bilddateien", "*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp")])
+                                               filetypes=[("Bilddateien",
+                                                           "*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp")])
         if file_path:
-            self.set_background(file_path)
+            popup.set_background(file_path)
         else:
             print("Error: Could´t load or get image")
+    chose_A_Picture.grid(popup,
+                         row=2)

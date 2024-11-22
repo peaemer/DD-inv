@@ -1,8 +1,7 @@
 import sqlite3
 import os
 
-path:str = os.getcwd()+'DD-invBeispielDatenbank.sqlite3'
-
+path:str = os.path.dirname(__file__)+'\DD-invBeispielDatenbank.sqlite3'
 def init_connection():
     """
     Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
@@ -68,7 +67,6 @@ def read_benutzer(nutzername):
         cur.execute("SELECT * FROM Benutzer WHERE Nutzername = ?", (nutzername,))
         row = cur.fetchone()
         return dict(row) if row else None
-        Print(con)
     except sqlite3.Error as e:
         return None, "Fehler beim Abrufen des Benutzers:", str(e)
     finally:
