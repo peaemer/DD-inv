@@ -1,6 +1,8 @@
+import sys
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+import Security.UserSecurity as security
 
 
 
@@ -16,10 +18,15 @@ class logInWindow(tk.Frame):
 		defaultbg = self.cget('bg')
 		self.configure(background="white")
 
-		# Funktion für den Login-Button (Platzhalter)
 		def logIn():
-			from .mainPage import mainPage
-			controller.show_frame(mainPage)
+			password = passwordEntry.get().strip()
+			user = usernameEntry.get().strip()
+			if (security.verifyUser(user, password) == True):
+				print(security.verifyUser(user, password))
+				from .mainPage import mainPage
+				controller.show_frame(mainPage)
+			else:
+				sys.exit()
 
 		# Konfiguriere das Grid-Layout für die Login-Seite
 		self.grid_rowconfigure(0, weight=0)
