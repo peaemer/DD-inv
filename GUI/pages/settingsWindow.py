@@ -206,7 +206,7 @@ def popUpSettings(parent):
                        pady=20)  # Vertikaler abstand zwischen Frame und anderen Elementen
 
     # Konfiguriere Layout inerhalb des Frames
-    functionFrame.grid(0, weight=1)  # Erlaubt flexible groeße
+    functionFrame.grid_rowconfigure(0, weight=1)  # Erlaubt flexible groeße
     functionFrame.grid_columnconfigure(0, weight=1)
 
     # Butten zum Bild auswaehlen
