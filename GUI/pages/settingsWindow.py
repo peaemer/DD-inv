@@ -180,11 +180,11 @@ def popUpSettings(parent):
     def set_background(file_path):
         if file_path:
             # Bild laden und für Tkinter konvertieren
-            bg_image = ttk.PhotoImage(file=file_path)
+            bg_image = tk.PhotoImage(file=file_path)
 
             # Aktualisiere das Hintergrundbild im Popup
-            popup.bg_label.config(image=bg_image)
-            popup.bg_label.image = bg_image  # Referenz halten, damit das Bild nicht vom Speicher gelöscht wird
+            parent.bg_label.config(image=bg_image)
+            parent.bg_label.image = bg_image  # Referenz halten, damit das Bild nicht vom Speicher gelöscht wird
         else:
             # Fehlerfall, falls kein Bild geladen werden konnte
             print("Error: Could´t load or get image")
@@ -192,11 +192,11 @@ def popUpSettings(parent):
     # Funktion: Bild auswaehlen
     def chose_A_Picture():
         # oeffne Dateidialog zum auswaehlen eines Bildes
-        file_path = filedialog.askopenfilename(title="Wähle ein Bild aus... (Windows-Explorer)",  # Titel des Dialogfensters
-                                               filetypes=[("Bilddateien", "*.png;*.gif")])  # Zulaessige Dateitypen
-        if file_path:
+        parent.file_path = filedialog.askopenfilename(title="Wähle ein Bild aus... (Windows-Explorer)",  # Titel des Dialogfensters
+                                                      filetypes=[("Bilddateien", "*.png;*.gif")])  # Zulaessige Dateitypen
+        if parent.file_path:
             # Wenn datei ausgewaehlt wurde, setze Hintergrund
-            set_background(file_path)
+            set_background(parent.file_path)
 
     # Frame für die Funktion erstellen
     functionFrame = tk.Frame(popup, background="#F4EFEF")  #Hintergrundfarbe
@@ -221,8 +221,8 @@ def popUpSettings(parent):
     # Button: Hintergrund setzen
     btn_set_bg = ttk.Button(functionFrame,
                             text="Hintergrund anwenden",  # Text auf dem Button
-                            command=lambda: set_background("example.png"))
+                            command=lambda: set_background("Downloads/images.png"))
     btn_set_bg.grid(row=1,  # Position des Buttons (zweite Zeile im Frame)
-                    column=0,  # Positoin des Buttons (erste Spalte im Frame)
+                    column=0,  # Position des Buttons (erste Spalte im Frame)
                     padx=10,  # Abstand um den Button herum
                     pady=10)  # Abstand um den Button herum
