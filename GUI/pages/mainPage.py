@@ -127,11 +127,14 @@ class mainPage(tk.Frame):
         filterButton = tk.Button(searchFrame, image=self.filterBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=filtr)
         filterButton.grid(row=0, column=3, padx=10)
 
+        treeStyle = ttk.Style()
+        treeStyle.configure("Treeview.Heading", font=("Arial", 12))
+
         # Ändere die Position des TreeFrames auf row=3
         treeFrame = tk.Frame(self, background="white")
         treeFrame.grid(row=1, column=0, padx=260)
 
-        self.addBtn = tk.PhotoImage(file="assets/ErstellenButton.png")
+        self.addBtn = tk.PhotoImage(file="assets/Erstellen.png")
         addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
         addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
@@ -148,13 +151,13 @@ class mainPage(tk.Frame):
             width=12,
             borderwidth=1
         )
-        scroll.grid(row=1, column=1,sticky="ns")
+        scroll.grid(row=1, column=1, sticky="ns")
         tree.configure(yscrollcommand=scroll.set)
 
         ### listbox for directories
         tree.column("# 1", anchor=CENTER, width=70)
-        tree.heading("# 1", text="ID")
-        tree.column("# 2", anchor=CENTER, width=250)
+        tree.heading("# 1", text="ID", )
+        tree.column("# 2", anchor=CENTER, width=100)
         tree.heading("# 2", text="Service Tag")
         tree.column("# 3", anchor=CENTER, width=250)
         tree.heading("# 3", text="Typ")
@@ -162,10 +165,10 @@ class mainPage(tk.Frame):
         tree.heading("# 4", text="Raum")
         tree.column("# 5", anchor=CENTER, width=250)
         tree.heading("# 5", text="Name")
-        tree.column("# 6", anchor=CENTER, width=100)
-        tree.heading("# 6", text="Beschaedigung")
+        tree.column("# 6", anchor=CENTER, width=300)
+        tree.heading("# 6", text="Beschädigung")
         tree.column("# 7", anchor=CENTER, width=250)
-        tree.heading("# 7", text="Ausgeliehen Von")
+        tree.heading("# 7", text="Ausgeliehen von")
         tree.grid(row=1, column=0)
         tree.tkraise()
 
