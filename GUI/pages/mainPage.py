@@ -16,6 +16,7 @@ class mainPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
+
         def showSettingsWindow():
             from .settingsWindow import popUpSettings
             popUpSettings(self)
@@ -27,6 +28,7 @@ class mainPage(tk.Frame):
         def search():                           # funktionalität hinzufügen
             print("I am Searching")
 
+
         def filtr():                            # funktionalität hinzufügen
             print("Do be filtering")
 
@@ -37,7 +39,7 @@ class mainPage(tk.Frame):
         def onEntryClick(event):
             if searchEntry.get() == 'Suche':
                 searchEntry.delete(0, "end")  # Lösche den Platzhalter-Text
-                searchEntry.config(fg='black')  # Setze Textfarbe auf Schwarz
+                searchEntry.config(fg='black')  # Setze Textfarbe auf schwarz
 
         def onFocusOut(event):
             if searchEntry.get() == '':
@@ -65,6 +67,7 @@ class mainPage(tk.Frame):
         headerLabel = tk.Label(headerFrame, image=self.srhHead, background="#DF4807", foreground="white")
         headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
+
         # Konvertiere das Bild für Tkinter
         self.logOutBtn = tk.PhotoImage(file="assets/ausloggen.png")
 
@@ -77,16 +80,12 @@ class mainPage(tk.Frame):
         self.optBtn = tk.PhotoImage(file="assets/option.png")
 
         # Füge einen Button mit dem Bild hinzu
-        optionsButton = tk.Button(headerFrame,
-                                  image=self.optBtn,
-                                  command=showSettingsWindow,
-                                  bd=0,
-                                  relief=tk.FLAT,
-                                  bg="#DF4807",
-                                  activebackground="#DF4807")
+        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=showSettingsWindow, bd=0, relief=tk.FLAT, bg="#DF4807",
+                                 activebackground="#DF4807")
         optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
 
-        # Frame hinzufuegen (linkes Label)
+
+
         greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
         greyFrame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
@@ -104,21 +103,15 @@ class mainPage(tk.Frame):
         overviewLabel.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        searchFrame = tk.Frame(self, bg="white")
-        searchFrame.grid(pady=50, padx=200, row=1, column=0, sticky=tk.W + tk.E + tk.N)
+        searchFrame = tk.Frame(self,bg="white")
+        searchFrame.grid(pady=50, padx=200,row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         searchFrame.grid_columnconfigure(0, weight=0)
         searchFrame.grid_columnconfigure(1, weight=1)
         searchFrame.grid_columnconfigure(2, weight=0)
 
         self.searchBtn = tk.PhotoImage(file="assets/SearchButton.png")
-        searchButton = tk.Button(searchFrame,
-                                 image=self.searchBtn,
-                                 bd=0,
-                                 relief=tk.FLAT,
-                                 bg="white",
-                                 activebackground="white",
-                                 command=search)
+        searchButton = tk.Button(searchFrame, image=self.searchBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
         searchButton.grid(padx=10, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
@@ -131,27 +124,18 @@ class mainPage(tk.Frame):
         searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
         self.filterBtn = tk.PhotoImage(file="assets/Filter.png")
-        filterButton = tk.Button(searchFrame,
-                                 image=self.filterBtn,
-                                 bd=0,
-                                 relief=tk.FLAT,
-                                 bg="white",
-                                 activebackground="white",
-                                 command=filtr)
+        filterButton = tk.Button(searchFrame, image=self.filterBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=filtr)
         filterButton.grid(row=0, column=3, padx=10)
+
+        treeStyle = ttk.Style()
+        treeStyle.configure("Treeview.Heading", font=("Arial", 12))
 
         # Ändere die Position des TreeFrames auf row=3
         treeFrame = tk.Frame(self, background="white")
         treeFrame.grid(row=1, column=0, padx=260)
 
-        self.addBtn = tk.PhotoImage(file="assets/ErstellenButton.png")
-        addButton = tk.Button(treeFrame,
-                              image=self.addBtn,
-                              bd=0,
-                              relief=tk.FLAT,
-                              bg="white",
-                              activebackground="white",
-                              command=addItem)
+        self.addBtn = tk.PhotoImage(file="assets/Erstellen.png")
+        addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
         addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
         tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=30)
@@ -172,8 +156,8 @@ class mainPage(tk.Frame):
 
         ### listbox for directories
         tree.column("# 1", anchor=CENTER, width=70)
-        tree.heading("# 1", text="ID")
-        tree.column("# 2", anchor=CENTER, width=250)
+        tree.heading("# 1", text="ID", )
+        tree.column("# 2", anchor=CENTER, width=100)
         tree.heading("# 2", text="Service Tag")
         tree.column("# 3", anchor=CENTER, width=250)
         tree.heading("# 3", text="Typ")
@@ -181,20 +165,19 @@ class mainPage(tk.Frame):
         tree.heading("# 4", text="Raum")
         tree.column("# 5", anchor=CENTER, width=250)
         tree.heading("# 5", text="Name")
-        tree.column("# 6", anchor=CENTER, width=100)
-        tree.heading("# 6", text="Beschaedigung")
+        tree.column("# 6", anchor=CENTER, width=300)
+        tree.heading("# 6", text="Beschädigung")
         tree.column("# 7", anchor=CENTER, width=250)
-        tree.heading("# 7", text="Ausgeliehen Von")
+        tree.heading("# 7", text="Ausgeliehen von")
         tree.grid(row=1, column=0)
         tree.tkraise()
 
         i = 0
         for entry in sqlapi.fetch_hardware():
-            tree.insert("",
-                        "end",
-                        text=f"{entry['Service_Tag']}",
-                        values=(i, entry['Service_Tag'], entry['Geraetetyp'], entry['Standort'], entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']))
-            i +=1
+            tree.insert("", "end", text=f"{entry['Service_Tag']}", values=(i, entry['Service_Tag'],entry['Geraetetyp'],entry['Standort'],entry['Modell'],entry['Beschaedigung'],entry['Ausgeliehen_von']))
+            i+=1
+
+
 
         #Macht die
         def showDetails(selected_item):
