@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+import Datenbank.sqlite3api as sqlapi
 
 
 LARGEFONT = ("Arial", 35)
@@ -134,7 +135,7 @@ class mainPage(tk.Frame):
         addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
         addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
-        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=30)
+        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=30)
 
         scroll = tk.Scrollbar(
             treeFrame,
@@ -161,13 +162,16 @@ class mainPage(tk.Frame):
         tree.heading("# 4", text="Raum")
         tree.column("# 5", anchor=CENTER, width=310)
         tree.heading("# 5", text="Name")
+        tree.column("# 6", anchor=CENTER, width=310)
+        tree.heading("# 6", text="Beschaedigung")
+        tree.column("# 7", anchor=CENTER, width=310)
+        tree.heading("# 7", text="Ausgeliehen Von")
         tree.grid(row=1, column=0)
         tree.tkraise()
 
-        # Hier muss die Datenbank hinzugefügt werden
-        for i in range(50):
-            tree.insert("", "end", text=f"Item {i}", values=(f"Wert {i}", f"Wert {i + 10}"))
-
-
+        i = 0
+        for entry in sqlapi.fetch_hardware():
+            tree.insert("", "end", text=f"{entry['Service_Tag']}", values=(i, entry['Service_Tag'],entry['Geraetetyp'],entry['Standort'],entry['Modell'],entry['Beschaedigung'],entry['Ausgeliehen_von']))
+            i+=1
 
 
