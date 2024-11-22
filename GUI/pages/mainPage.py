@@ -208,7 +208,7 @@ class mainPage(tk.Frame):
                 selectedItem = tree.focus()
                 print(f"Ausgewähltes Item: {selectedItem}")  # Debug
                 if selectedItem:
-                    show_details(selectedItem)
+                    showDetails(selectedItem)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 

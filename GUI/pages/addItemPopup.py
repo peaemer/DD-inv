@@ -14,8 +14,8 @@ def addItemPopup(parent):
     screen_height = parent.winfo_screenheight()
 
     # Fensterbreite und -höhe definieren
-    window_width = 600
-    window_height = 600
+    window_width = 650
+    window_height = 650
 
     # Berechne die Position, um das Fenster in der Mitte des Bildschirms zu platzieren
     center_x = int(screen_width / 2 - window_width / 2)
@@ -50,36 +50,36 @@ def addItemPopup(parent):
     inputFrameAddItemPopup.grid_columnconfigure(1, weight=1)
 
     # Label und Eingabefeld hinzufügen
-    serviceTagLabel = tk.Label(inputFrameAddItemPopup, text="Service Tag", background="white")
-    serviceTagLabel.grid(row=0, column=0, padx=10, sticky=tk.E)
+    serviceTagLabel = tk.Label(inputFrameAddItemPopup, text="Service Tag", background="white", font=("Arial",20))
+    serviceTagLabel.grid(row=0, column=0, padx=10, pady=20, sticky=tk.E)
 
-    serviceTagEntry = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9")
-    serviceTagEntry.grid(row=0, column=1, padx=10, sticky=tk.W)
+    serviceTagEntry = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",20))
+    serviceTagEntry.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W)
 
-    typeLabel = tk.Label(inputFrameAddItemPopup, text="Typ", background="white")
-    typeLabel.grid(row=1, column=0, padx=10, sticky=tk.E)
+    typeLabel = tk.Label(inputFrameAddItemPopup, text="Typ", background="white", font=("Arial",20))
+    typeLabel.grid(row=1, column=0, padx=10, pady=20, sticky=tk.E)
 
-    typeEntry = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9")
-    typeEntry.grid(row=1, column=1, padx=10, sticky=tk.W)
+    typeEntry = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",20))
+    typeEntry.grid(row=1, column=1, padx=10, pady=20, sticky=tk.W)
 
-    roomLabel = tk.Label(inputFrameAddItemPopup, text="Raum", background="white")
-    roomLabel.grid(row=2, column=0, padx=10, sticky=tk.E)
+    roomLabel = tk.Label(inputFrameAddItemPopup, text="Raum", background="white", font=("Arial",20))
+    roomLabel.grid(row=2, column=0, padx=10, pady=20, sticky=tk.E)
 
-    roomEntry = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9")
-    roomEntry.grid(row=2, column=1, padx=10, sticky=tk.W)
+    roomEntry = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",20))
+    roomEntry.grid(row=2, column=1, padx=10, pady=20, sticky=tk.W)
 
-    nameLabel = tk.Label(inputFrameAddItemPopup, text="Name", background="white")
-    nameLabel.grid(row=3, column=0, padx=10, sticky=tk.E)
+    nameLabel = tk.Label(inputFrameAddItemPopup, text="Name", background="white", font=("Arial",20))
+    nameLabel.grid(row=3, column=0, padx=10, pady=20, sticky=tk.E)
 
-    nameEntry = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9")
-    nameEntry.grid(row=3, column=1, padx=10, sticky=tk.W)
+    nameEntry = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",20))
+    nameEntry.grid(row=3, column=1, padx=10, pady=20, sticky=tk.W)
 
     # Funktion zum Eintrag hinzufügen
     def submit_entry():
         print("Eintrag hinzugefügt.")
         addPopup.destroy()  # Popup schließen
 
-    submitButton = tk.Button(addPopup, text="Hinzufügen", command=submit_entry)
+    submitButton = tk.Button(addPopup, text="Erstellen", command=submit_entry)
     submitButton.grid(row=2, column=0, pady=20)
 
     addPopup.grid_rowconfigure(0, weight=0)
