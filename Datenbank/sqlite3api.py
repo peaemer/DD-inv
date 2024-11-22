@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-path: str = os.path.dirname(__file__) + r'\DD-invBeispielDatenbank.sqlite3'
+path:str = os.path.dirname(__file__)+'\DD-invBeispielDatenbank.sqlite3'
 def init_connection():
     """
     Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
