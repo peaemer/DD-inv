@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from PIL import Image, ImageTk
 
 
 # Schriftarten / Farbschema
@@ -72,16 +71,16 @@ def popUpSettings(parent):
                       column=0,
                       sticky=tk.W + tk.E + tk.N)  # Vollbreite
 
-    # sidesettings für die Ausrichtung der Seiteleiste
+    # sidesettings für die Ausrichtung der Seitenleiste
     sideSettings.grid_columnconfigure(0, weight=1)
 
-    # Bereich für Einstellungen
+    # Bereich für Einstellungen der sidesettings
     sideSettingsView = tk.Frame(popup)
     sideSettingsView.grid(row=1,
                           column=0,
                           sticky=tk.W + tk.E + tk.N)
 
-    # schrifzug "System" setzen (Label einfügen)
+    # schriftzug "System" setzen (Label einfügen)
     overviewStngSystem = tk.Label(sideSettingsView,
                                   text="System",
                                   bd=0,
@@ -105,7 +104,7 @@ def popUpSettings(parent):
                                  column=0,
                                  sticky=tk.W + tk.S)
 
-    # schrifzug "Benachrichtigungen" setzen (Label einfügen)
+    # schriftzug "Benachrichtigungen" setzen (Label einfügen)
     overviewStngsMessage = tk.Label(sideSettingsView,
                                     text="Benachrichtigungen",
                                     bd=0,
@@ -117,7 +116,7 @@ def popUpSettings(parent):
                               column=0,
                               sticky=tk.W + tk.S)
 
-    # schrifzug "Konten" setzen (Label einfügen)
+    # schriftzug "Konten" setzen (Label einfügen)
     overviewStngsProfile = tk.Label(sideSettingsView,
                                     text="Konten",
                                     bd=0,
@@ -129,7 +128,7 @@ def popUpSettings(parent):
                               column=0,
                               sticky=tk.W + tk.S)
 
-    # schrifzug "Sprache" setzen (Label einfügen)
+    # schriftzug "Sprache" setzen (Label einfügen)
     overviewStngsLangue = tk.Label(sideSettingsView,
                                    text="Sprache",
                                    bd=0,
@@ -178,25 +177,52 @@ def popUpSettings(parent):
     option_for.grid()
 
     # Funktion: Hintergrund aendern
-    def set_background(popup, file_path):
-        # Bild laden und Popup-Groeße skalieren
-        image = Image.open(file_path)
-        resize_image = image.resize((popup.winfo_width(), popup.winfo_height()), Image.ANTIALIAS)
-        bg_image = ImageTk.PhotoImage(resize_image)
-        popup.bg_label.config(image=bg_image)  # Hintergrund ändern
-        popup.bg_label.image = bg_image
-        set_background.grid(popup,
-                            row=2)
+    def set_background(file_path):
+        if file_path:
+            # Bild laden und für Tkinter konvertieren
+            bg_image = ttk.PhotoImage(file=file_path)
+
+            # Aktualisiere das Hintergrundbild im Popup
+            popup.bg_label.config(image=bg_image)
+            popup.bg_label.image = bg_image  # Referenz halten, damit das Bild nicht vom Speicher gelöscht wird
+        else:
+            # Fehlerfall, falls kein Bild geladen werden konnte
+            print("Error: Could´t load or get image")
 
     # Funktion: Bild auswaehlen
-    def chose_A_Picture(popup):
-        # Datei-Dialog oeffnen fuer Bildauswahl
-        file_path = filedialog.askopenfilename(title="Wähle ein Bild aus...",
-                                               filetypes=[("Bilddateien",
-                                                           "*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp")])
+    def chose_A_Picture():
+        # oeffne Dateidialog zum auswaehlen eines Bildes
+        file_path = filedialog.askopenfilename(title="Wähle ein Bild aus... (Windows-Explorer)",  # Titel des Dialogfensters
+                                               filetypes=[("Bilddateien", "*.png;*.gif")])  # Zulaessige Dateitypen
         if file_path:
-            popup.set_background(file_path)  # Hintergrund setzen
-        else:
-            print("Error: Could´t load or get image")
-    chose_A_Picture.grid(popup,
-                         row=2)
+            # Wenn datei ausgewaehlt wurde, setze Hintergrund
+            set_background(file_path)
+
+    # Frame für die Funktion erstellen
+    functionFrame = tk.Frame(popup, background="#F4EFEF")  #Hintergrundfarbe
+    functionFrame.grid(row=2,  # Positioniere Frame in der dritten Zeile im Layout
+                       column=0,  # Frame erstreckt über erste Spalte (zentral)
+                       sticky=tk.N + tk.W + tk.E + tk.S,  # Zentriert / dehnt sich aus bei Aenderungen
+                       pady=20)  # Vertikaler abstand zwischen Frame und anderen Elementen
+
+    # Konfiguriere Layout inerhalb des Frames
+    functionFrame.grid(0, weight=1)  # Erlaubt flexible groeße
+    functionFrame.grid_columnconfigure(0, weight=1)
+
+    # Butten zum Bild auswaehlen
+    btn_chose_picature = ttk.Button(functionFrame,
+                                    text="Besseres Aussehen auswählen....",  # Text auf dem Button
+                                    command=chose_A_Picture)  # Funktion die ausgefuehrt wird
+    btn_chose_picature.grid(row=0,  # Position des Buttons (erste Zeile im Frame)
+                            column=0,  # Postion des Buttons (erste Spalte im Frame)
+                            padx=10,  # Abstand um den Button herum
+                            pady=10)  # Abstand um den Button herum
+
+    # Button: Hintergrund setzen
+    btn_set_bg = ttk.Button(functionFrame,
+                            text="Hintergrund anwenden",  # Text auf dem Button
+                            command=lambda: set_background("example.png"))
+    btn_set_bg.grid(row=1,  # Position des Buttons (zweite Zeile im Frame)
+                    column=0,  # Positoin des Buttons (erste Spalte im Frame)
+                    padx=10,  # Abstand um den Button herum
+                    pady=10)  # Abstand um den Button herum
