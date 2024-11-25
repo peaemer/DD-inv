@@ -25,14 +25,16 @@ def create_benutzer(nutzername, passwort, email):
     - Nutzername, Passwort und Email müssen übergeben werden.
     - Standardrolle wird auf 'Guest' gesetzt.
     - alles wird in Try gesetzt um bei fehlern ein Crash zu verhindern
+    - passwort_hashed_value wird genutzt um das Plain passwort in eine HashValue zu ändern
+    - Informationen über HashPasswort() unter Security/UserSecurity.py
     """
     try:
-        user_passwort_hashed = hashPassword(passwort)
+        passwort_hashed_value = hashPassword(passwort)
         con = init_connection()
         cur = con.cursor()
         cur.execute(
             "INSERT INTO Benutzer (Nutzername, Passwort, Email, Rolle) VALUES (?, ?, ?, 'Guest')",
-            (nutzername, user_passwort_hashed, email)
+            (nutzername, passwort_hashed_value, email)
         )
         con.commit()
         return "Benutzer wurde hinzugefügt."
