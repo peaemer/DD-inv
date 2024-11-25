@@ -41,6 +41,13 @@ Das Projekt befindet sich derzeit in der Entwicklung und wird kontinuierlich erw
 
 Das projekt wird **aktiv** entwickelt. Es können Bugs auftreteten und einige Features sind noch nicht vollständig implementiert
 
+## Dokumentationen
+
+- [GUI Dokumentation](https://docs.google.com/document/d/1cw-v-YGeTcAKWmvS_XI-Pzev7BLqxlVeBSGfPffx408/edit?tab=t.0#heading=h.vyzxfk53efur)
+- [Datenbank Dokumentation](https://docs.google.com/document/d/1JMGLcfbs8KzxF_zfKBePersd-7iInHD2hQcOE3sAdLk/edit?tab=t.0#heading=h.nhkrx8i5d2i6)
+- [Backend Dokumenatation]()
+- [Dokumentation über Sicherheit]()
+
 ## Credits
 
 Dieses Projekt wird von der **FI24** im Rahmen ihrer Ausbildung entwickelt, Mitwirkende
