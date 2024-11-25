@@ -2,40 +2,40 @@ from Datenbank.sqlite3api import *
 
 def create_neue_benutzer():
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Anna", "#Anna456", "Anna@srhk.de"))
+    print(create_benutzer("Rolf", "#Anna456", "Rolf@srhk.de"))
 
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Max", "#Max789", "Max@srhk.de"))
+    print(create_benutzer("Maximal", "#Max789", "Maximal@srhk.de"))
 
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Lisa", "#Lisa321", "Lisa@srhk.de"))
+    print(create_benutzer("Daniel", "#Lisa321", "Daniel@srhk.de"))
 
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Tom", "#Tom654", "Tom@srhk.de"))
+    print(create_benutzer("Toma", "#Tom654", "Toma@srhk.de"))
 
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Sophia", "#Sophia987", "Sophia@srhk.de"))
+    print(create_benutzer("Sophiar", "#Sophia987", "Sophiar@srhk.de"))
 
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Lukas", "#Lukas112", "Lukas@srhk.de"))
+    print(create_benutzer("Lukassas", "#Lukas112", "Lukassas@srhk.de"))
 
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Mia", "#Mia223", "Mia@srhk.de"))
+    print(create_benutzer("Miathes", "#Mia223", "Miathes@srhk.de"))
 
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Jonas", "#Jonas334", "Jonas@srhk.de"))
+    print(create_benutzer("Jonathan", "#Jonas334", "Jonathan@srhk.de"))
 
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Clara", "#Clara445", "Clara@srhk.de"))
+    print(create_benutzer("Clarana", "#Clara445", "Clarana@srhk.de"))
 
     print("-------Benutzer wird erstellt-------")
-    print(create_benutzer("Felix", "#Felix556", "Felix@srhk.de"))
+    print(create_benutzer("Felixius", "#Felix556", "Felixius@srhk.de"))
 
 def create_neue_rolle():
     # Test für das Erstellen einer Rolle
     print("\n--- Test: Rolle erstellen ---")
     print(create_rolle(
-        Rolle="Test-Rolle",
+        Rolle="SuperRolle",
         ANSEHEN="True",
         ROLLE_LOESCHBAR="True",
         ADMIN_FEATURE="True",
@@ -52,4 +52,4 @@ def create_neue_rolle():
 
 
 if __name__ == '__main__':
-    create_neue_rolle()
+    create_neue_benutzer()
