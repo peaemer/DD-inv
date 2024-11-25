@@ -19,6 +19,7 @@ class ddINV(tk.Tk):
 		# Setze den Fenstertitel
 		self.title("Inventartool")
 		self.configure(background="white")
+		self.state("zoomed")
 
 		# Fensterbreite und -höhe definieren
 		window_width = 1920
@@ -34,7 +35,7 @@ class ddINV(tk.Tk):
 
 		# Setze die Fenstergröße und Position
 		self.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
-		self.resizable(True, True)  # Ermögliche Größenanpassung des Fensters
+		self.resizable(False, False)  # Ermögliche Größenanpassung des Fensters
 		self.iconbitmap("assets/srhIcon.ico")  # Setze das Fenster-Icon
 
 		# Setze das Fenster in den Vordergrund
