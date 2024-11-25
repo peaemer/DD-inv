@@ -2,7 +2,7 @@ import sys
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-import Security.UserSecurity as security
+
 
 
 
@@ -21,6 +21,7 @@ class logInWindow(tk.Frame):
 		def logIn():
 			password = passwordEntry.get().strip()
 			user = usernameEntry.get().strip()
+			import Security.UserSecurity as security
 			if (security.verifyUser(user, password) == True):
 				print(security.verifyUser(user, password))
 				from .mainPage import mainPage

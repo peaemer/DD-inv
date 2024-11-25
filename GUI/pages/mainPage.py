@@ -195,9 +195,6 @@ class mainPage(tk.Frame):
             i +=1
 
 
-
-
-
         # Funktion für das Ereignis-Binding
         def onItemSelected(event):
             try:
