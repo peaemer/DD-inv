@@ -4,8 +4,6 @@ from tkinter import ttk
 from tkinter import *
 
 
-
-
 LARGEFONT = ("Arial", 30)
 LOGINFONT = ("Arial", 30)
 srhGrey = "#d9d9d9"

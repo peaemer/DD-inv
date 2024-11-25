@@ -145,7 +145,11 @@ class mainPage(tk.Frame):
         filterButton.grid(row=0, column=3, padx=10)
 
         treeStyle = ttk.Style()
-        treeStyle.configure("Treeview.Heading", font=("Arial", 12))
+        treeStyle.theme_use("default") #alt, classic,xpnative,winnative, default
+        treeStyle.configure("Treeview.Heading", font=("Arial", 14))
+        treeStyle.configure("Treeview", rowheight=20, font=("Arial", 12))
+
+
 
         # Ändere die Position des TreeFrames auf row=3
         treeFrame = tk.Frame(self, background="white")
@@ -165,16 +169,20 @@ class mainPage(tk.Frame):
             activebackground="darkblue",
             troughcolor="grey",
             highlightcolor="black",
-            width=12,
+            width=15,
             borderwidth=1
         )
         scroll.grid(row=1, column=1, sticky="ns")
         tree.configure(yscrollcommand=scroll.set)
 
+        # Tags für alternierende Zeilenfarben konfigurieren
+        tree.tag_configure("oddrow", background="#f7f7f7")
+        tree.tag_configure("evenrow", background="white")
+
         ### listbox for directories
         tree.column("# 1", anchor=CENTER, width=70)
         tree.heading("# 1", text="ID", )
-        tree.column("# 2", anchor=CENTER, width=100)
+        tree.column("# 2", anchor=CENTER, width=115)
         tree.heading("# 2", text="Service Tag")
         tree.column("# 3", anchor=CENTER, width=250)
         tree.heading("# 3", text="Typ")
@@ -189,11 +197,30 @@ class mainPage(tk.Frame):
         tree.grid(row=1, column=0)
         tree.tkraise()
 
-        i = 0
-        for entry in sqlapi.fetch_hardware():
-            tree.insert("", "end", text=f"{entry['Service_Tag']}", values=(i, entry['Service_Tag'],entry['Geraetetyp'],entry['Standort'],entry['Modell'],entry['Beschaedigung'],entry['Ausgeliehen_von']))
-            i +=1
+        def insert_data(self):
+            i = 0
+            for entry in sqlapi.fetch_hardware():
+                # Bestimme das Tag für die aktuelle Zeile
+                tag = "evenrow" if i % 2 == 0 else "oddrow"
 
+                # Daten mit dem Tag in das Treeview einfügen
+                tree.insert(
+                    "",
+                    "end",
+                    text=f"{entry['Service_Tag']}",
+                    values=(
+                        i,
+                        entry['Service_Tag'],
+                        entry['Geraetetyp'],
+                        entry['Standort'],
+                        entry['Modell'],
+                        entry['Beschaedigung'],
+                        entry['Ausgeliehen_von']
+                    ),
+                    tags=(tag,)
+                )
+                i += 1
+        insert_data(self)
 
         # Funktion für das Ereignis-Binding
         def onItemSelected(event):
