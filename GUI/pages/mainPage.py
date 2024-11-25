@@ -179,30 +179,6 @@ class mainPage(tk.Frame):
 
 
 
-        #Macht die
-        def showDetails(selected_item):
-            """Öffnet ein neues Fenster mit den Details des ausgewählten Elements."""
-            # Neues Fenster erstellen
-            detailsWindow = tk.Toplevel(self)
-            detailsWindow.title("Details")
-            detailsWindow.geometry("400x400")
-            detailsWindow.configure(background="white")  # Hintergrundfarbe festlegen
-            detailsWindow.transient(self)  # Popup bleibt im Vordergrund des Hauptfensters
-            detailsWindow.attributes('-topmost', True)  # Erzwinge den Fokus auf das Popup
-
-            # Daten aus der ausgewählten Zeile
-            data = tree.item(selected_item, "values")
-            print(f"Daten des ausgewählten Items: {data}")
-
-            # Zeige die Daten im neuen Fenster
-            tk.Label(detailsWindow, text="Details des ausgewählten Elements:", font=("Arial", 16)).pack(pady=10)
-            tk.Label(detailsWindow, text=f"ID: {data[0]}").pack(pady=5)
-            tk.Label(detailsWindow, text=f"Service Tag: {data[1]}").pack(pady=5)
-            tk.Label(detailsWindow, text=f"Typ: {data[2]}").pack(pady=5)
-            tk.Label(detailsWindow, text=f"Raum: {data[3]}").pack(pady=5)
-            tk.Label(detailsWindow, text=f"Name: {data[4]}").pack(pady=5)
-            tk.Label(detailsWindow, text=f"Beschädigung: {data[5]}").pack(pady=5)
-            tk.Label(detailsWindow, text=f"Ausgeliehen Von: {data[6]}").pack(pady=5)
 
 
         # Funktion für das Ereignis-Binding
@@ -211,7 +187,8 @@ class mainPage(tk.Frame):
                 selectedItem = tree.focus()
                 print(f"Ausgewähltes Item: {selectedItem}")  # Debug
                 if selectedItem:
-                    showDetails(selectedItem)
+                    from .detailsWindow import detailsWindow, showDetails
+                    showDetails(selectedItem, tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
