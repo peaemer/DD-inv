@@ -5,6 +5,7 @@ from tkinter import ttk
 LARGEFONT = ("Arial", 30)
 LOGINFONT = ("Arial", 30)
 srhGrey = "#d9d9d9"
+srhOrange = "#DF4807"
 
 # Funktion zum Zeichnen eines Rechtecks mit abgerundeten Ecken
 def round_rectangle(canvas, x1, y1, x2, y2, radius=25, **kwargs):
@@ -27,8 +28,6 @@ def round_rectangle(canvas, x1, y1, x2, y2, radius=25, **kwargs):
         x1, y2 - radius,
         x1, y2 - radius,
         x1, y2 - radius,
-        x1, y2 - radius,
-        x1, y1 + radius,
         x1, y1 + radius,
         x1, y1 + radius,
         x1 + radius, y1,
@@ -80,7 +79,7 @@ class logInWindow(tk.Frame):
         greyCanvas.create_text(
             self.winfo_screenwidth() // 2,
             40,
-            text="Log In",
+            text="Loggin into DD-Inv",
             font=("Arial", 20),
             fill="black",
         )
