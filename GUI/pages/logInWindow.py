@@ -26,7 +26,7 @@ class logInWindow(tk.Frame):
 				from .mainPage import mainPage
 				controller.show_frame(mainPage)
 			else:
-				sys.exit()
+				sys.exit()  #Muss noch angepasst werden
 
 		# Konfiguriere das Grid-Layout für die Login-Seite
 		self.grid_rowconfigure(0, weight=0)
