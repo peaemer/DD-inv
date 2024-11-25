@@ -180,9 +180,9 @@ class mainPage(tk.Frame):
         tree.tag_configure("evenrow", background="white")
 
         ### listbox for directories
-        tree.column("# 1", anchor=CENTER, width=70)
+        tree.column("# 1", anchor=CENTER, width=60)
         tree.heading("# 1", text="ID", )
-        tree.column("# 2", anchor=CENTER, width=115)
+        tree.column("# 2", anchor=CENTER, width=125)
         tree.heading("# 2", text="Service Tag")
         tree.column("# 3", anchor=CENTER, width=250)
         tree.heading("# 3", text="Typ")
