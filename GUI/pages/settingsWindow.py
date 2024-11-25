@@ -37,7 +37,7 @@ def popUpSettings(parent):
 
     # Konfiguriere das Grid-Layout fuer die Einstellungen
     popup.grid_rowconfigure(0, weight=0)  # fixiert Zeilenhoehe
-    popup.grid_rowconfigure(1, weight=1)  # Dynamsche hoehe für Inhalte
+    popup.grid_rowconfigure(1, weight=1)  # Dynamische hoehe für Inhalte
     popup.grid_rowconfigure(2, weight=0)
     popup.grid_rowconfigure(3, weight=0)
     popup.grid_columnconfigure(0, weight=1)  # Spalte nimmt gesamte breite
@@ -56,17 +56,18 @@ def popUpSettings(parent):
     popup.optionsHead = tk.PhotoImage(file="assets/option.png")
     headerLabel = tk.Label(headerFrameSettings,
                            image=popup.optionsHead,
+                           bg="#DF4807",
                            foreground="white")
     headerLabel.grid(row=1,
                      column=0,
                      padx=10,
                      pady=10,
-                     sticky=tk.N + tk.W)
+                     sticky=tk.N + tk.W + tk.E)
 
     # Seitenleiste (linker Bereich)
     sideSettings = tk.Frame(popup,
                             height=5,
-                            background="#F4EFEF")
+                            bg="#DF4807")
     sideSettings.grid(row=2,
                       column=0,
                       sticky=tk.W + tk.E + tk.N)  # Vollbreite
@@ -169,12 +170,19 @@ def popUpSettings(parent):
                                  variable=storage_variable,
                                  value="Schwarz")
 
-    # Radiobuttons platzieren
-    option_zero.grid()
-    option_one.grid()
-    option_two.grid()
-    option_three.grid()
-    option_for.grid()
+    # Radiobuttons separat anordnen (in Frame)
+    radio_frame = tk.Frame(popup, background="#F4EFEF")
+    radio_frame.grid(row=3,
+                     column=0,
+                     sticky=tk.E + tk.S,
+                     pady=20)
+
+    # Radiobuttons platzieren (jeder in einer eigenen Zeile innerhalb von `radio_frame`)
+    option_zero.grid(row=4, column=0, padx=5, pady=5, sticky=tk.E)
+    option_one.grid(row=5, column=0, padx=5, pady=5, sticky=tk.E)
+    option_two.grid(row=6, column=0, padx=5, pady=5, sticky=tk.E)
+    option_three.grid(row=7, column=0, padx=5, pady=5, sticky=tk.E)
+    option_for.grid(row=8, column=0, padx=5, pady=5, sticky=tk.E)
 
     # Funktion: Hintergrund aendern
     def set_background(file_path):
@@ -213,16 +221,18 @@ def popUpSettings(parent):
     btn_chose_picature = ttk.Button(functionFrame,
                                     text="Besseres Aussehen auswählen....",  # Text auf dem Button
                                     command=chose_A_Picture)  # Funktion die ausgefuehrt wird
-    btn_chose_picature.grid(row=0,  # Position des Buttons (erste Zeile im Frame)
-                            column=0,  # Postion des Buttons (erste Spalte im Frame)
-                            padx=10,  # Abstand um den Button herum
-                            pady=10)  # Abstand um den Button herum
 
     # Button: Hintergrund setzen
     btn_set_bg = ttk.Button(functionFrame,
                             text="Hintergrund anwenden",  # Text auf dem Button
                             command=lambda: set_background("Downloads/images.png"))
-    btn_set_bg.grid(row=1,  # Position des Buttons (zweite Zeile im Frame)
-                    column=0,  # Position des Buttons (erste Spalte im Frame)
-                    padx=10,  # Abstand um den Button herum
-                    pady=10)  # Abstand um den Button herum
+
+    # Funktionale Hauptbereiche (in fuenf Zeilen unterteilt)
+    # 1. Header (row=0), 2. Seitenleiste und Funktionen (row=1 und row=2), 3. Radiobuttons (row=3)
+    # HINWEIS: RADIO OPT BTN AENDERN AUF ZEILE 180 - 184
+    #          HEADERSTYLE AENDERN AUF ZEILE 56 - 59
+    headerFrameSettings.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+    sideSettingsView.grid(row=1, column=0, sticky=tk.W + tk.N + tk.S)
+    btn_set_bg.grid(row=1, column=0, sticky=tk.E, pady=10)
+    btn_chose_picature.grid(row=0, column=0, sticky=tk.E, pady=10)
+    radio_frame.grid(row=3, column=0, sticky=tk.E, pady=10)

@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from Security.UserSecurity import *
 
 path:str = os.path.dirname(__file__)+'\DD-invBeispielDatenbank.sqlite3'
 def init_connection():
@@ -24,13 +25,16 @@ def create_benutzer(nutzername, passwort, email):
     - Nutzername, Passwort und Email müssen übergeben werden.
     - Standardrolle wird auf 'Guest' gesetzt.
     - alles wird in Try gesetzt um bei fehlern ein Crash zu verhindern
+    - passwort_hashed_value wird genutzt um das Plain passwort in eine HashValue zu ändern
+    - Informationen über HashPasswort() unter Security/UserSecurity.py
     """
     try:
+        passwort_hashed_value = hashPassword(passwort)
         con = init_connection()
         cur = con.cursor()
         cur.execute(
             "INSERT INTO Benutzer (Nutzername, Passwort, Email, Rolle) VALUES (?, ?, ?, 'Guest')",
-            (nutzername, passwort, email)
+            (nutzername, passwort_hashed_value, email)
         )
         con.commit()
         return "Benutzer wurde hinzugefügt."
@@ -348,6 +352,7 @@ def update_rolle(Rolle,
             parameters.append(neue_GRUPPEN_LOESCHEN)
         if neue_GRUPPEN_ERSTELLEN:
             update_fields.append("GRUPPEN_ERSTELLEN = ?")
+
             parameters.append(neue_GRUPPEN_ERSTELLEN)
         if neue_GRUPPEN_BEARBEITEN:
             update_fields.append("GRUPPEN_BEARBEITEN = ?")

@@ -2,7 +2,6 @@ from hashlib import sha512
 import sys, os
 sys.path.append(os.path.dirname(__file__)+'\..')
 from typing import Final, List
-from typing import Final, List
 from Datenbank.sqlite3api import *
 # from Datenbank.sqlite3api import read_benutzer, update_benutzer
 
@@ -16,7 +15,7 @@ DEBUG_MODE:bool = True
 fallback_username:Final[str] = 'test'
 fallback_password:Final[str] = 'password'
 
-def __hash_password(plain_password:str)->bytearray:
+def __hashPassword(plain_password:str)->bytearray:
     '''
         hashes a plain password into a byte array using sha512 encryption
 
@@ -54,7 +53,25 @@ def __comparePassword(plain_password:str, hashed_password:bytearray)->bool:
         :return bool: whether the plain password matches the already hashed one after the plain password was hashed
     '''
     #hash the plain password and check if the hash is equal to the given
-    return hashed_password == __hash_password(plain_password)
+    return hashed_password == __hashPassword(plain_password)
+
+def hashPassword(plain_password:str)->str:
+    '''
+        hashes a given password and returns the hash formatted as a string
+
+        Parameters
+        ----------
+        :param str plain_password: the plain password that has to be hashed
+
+        Return
+        ------
+        :return string: the hashed and formatted string
+    '''
+    if(__isInvalidName(plain_password)==True):
+        raise Exception('invalid password')
+    return str(__hashPassword(plain_password))
+    
+
 
 def verifyUser(username:str, plain_password:str)->bool:
     '''
