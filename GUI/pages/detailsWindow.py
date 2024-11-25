@@ -91,58 +91,67 @@ class detailsWindow(tk.Frame):
 
         sizeDetailsWindow = 30
 
-        # Label und "Anzeige"-Felder
+        # Input-Frame
+        inputFrameDetailsWindow = tk.Frame(self, background="white")
+        inputFrameDetailsWindow.grid(row=1, column=0, pady=20)
+
+        inputFrameDetailsWindow.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
+        inputFrameDetailsWindow.grid_columnconfigure(1, weight=1)
+
+        # Service Tag
         serviceTagLabelDetailsWindow = tk.Label(inputFrameDetailsWindow, text="Service Tag",
-                                                 font=("Arial", sizeDetailsWindow), background="white")
+                                                font=("Arial", sizeDetailsWindow), background="white")
         serviceTagLabelDetailsWindow.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.serviceTagEntryDetailsWindow = tk.Label(inputFrameDetailsWindow, text="",
-                                                      font=("Arial", sizeDetailsWindow), background=srhGrey, bd=0,
-                                                      relief=tk.SOLID, anchor="w")
+        self.serviceTagEntryDetailsWindow = tk.Entry(inputFrameDetailsWindow, font=("Arial", sizeDetailsWindow),
+                                                     background=srhGrey, relief=tk.SOLID)
         self.serviceTagEntryDetailsWindow.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        typeLabelDetailsWindow = tk.Label(inputFrameDetailsWindow, text="Typ", font=("Arial", sizeDetailsWindow),
-                                           background="white")
+        # Typ
+        typeLabelDetailsWindow = tk.Label(inputFrameDetailsWindow, text="Typ",
+                                          font=("Arial", sizeDetailsWindow), background="white")
         typeLabelDetailsWindow.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.typeEntryDetailsWindow = tk.Label(inputFrameDetailsWindow, text="", font=("Arial", sizeDetailsWindow),
-                                                background=srhGrey,bd=0, relief=tk.SOLID, anchor="w")
+        self.typeEntryDetailsWindow = tk.Entry(inputFrameDetailsWindow, font=("Arial", sizeDetailsWindow),
+                                               background=srhGrey, relief=tk.SOLID)
         self.typeEntryDetailsWindow.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        roomLabelDetailsWindow = tk.Label(inputFrameDetailsWindow, text="Raum", font=("Arial", sizeDetailsWindow),
-                                           background="white")
+        # Raum
+        roomLabelDetailsWindow = tk.Label(inputFrameDetailsWindow, text="Raum",
+                                          font=("Arial", sizeDetailsWindow), background="white")
         roomLabelDetailsWindow.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.roomEntryDetailsWindow = tk.Label(inputFrameDetailsWindow, text="", font=("Arial", sizeDetailsWindow),
-                                                background=srhGrey,bd=0, relief=tk.SOLID, anchor="w")
+        self.roomEntryDetailsWindow = tk.Entry(inputFrameDetailsWindow, font=("Arial", sizeDetailsWindow),
+                                               background=srhGrey, relief=tk.SOLID)
         self.roomEntryDetailsWindow.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        nameLabelDetailsWindow = tk.Label(inputFrameDetailsWindow, text="Name", font=("Arial", sizeDetailsWindow),
-                                           background="white")
+        # Name
+        nameLabelDetailsWindow = tk.Label(inputFrameDetailsWindow, text="Name",
+                                          font=("Arial", sizeDetailsWindow), background="white")
         nameLabelDetailsWindow.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.nameEntryDetailsWindow = tk.Label(inputFrameDetailsWindow, text="", font=("Arial", sizeDetailsWindow),
-                                                background=srhGrey,bd=0, relief=tk.SOLID, anchor="w")
+        self.nameEntryDetailsWindow = tk.Entry(inputFrameDetailsWindow, font=("Arial", sizeDetailsWindow),
+                                               background=srhGrey, relief=tk.SOLID)
         self.nameEntryDetailsWindow.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
+        # Beschädigung
         damagedLabelDetailsWindow = tk.Label(inputFrameDetailsWindow, text="Beschädigung",
-                                              font=("Arial", sizeDetailsWindow), background="white")
+                                             font=("Arial", sizeDetailsWindow), background="white")
         damagedLabelDetailsWindow.grid(column=0, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.damagedEntryDetailsWindow = tk.Label(inputFrameDetailsWindow, text="", font=("Arial", sizeDetailsWindow),
-                                                    background=srhGrey,bd=0, relief=tk.SOLID, anchor="w")
+        self.damagedEntryDetailsWindow = tk.Entry(inputFrameDetailsWindow, font=("Arial", sizeDetailsWindow),
+                                                  background=srhGrey, relief=tk.SOLID)
         self.damagedEntryDetailsWindow.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Funktion zum Eintrag hinzufügen
-        def editEntry():
-            print("Eintrag hinzugefügt.")
-            goBackDetailsWindow()
+        def refreshEntry():
+            print("nix")
 
         def lend():
-            print("Vorgang abgebrochen")
-            goBackDetailsWindow()
+            from .lendPopup import lendPopup
+            lendPopup(self)
 
-        parent.editBtn = tk.PhotoImage(file="assets/Bearbeiten.png")
+        parent.editBtn = tk.PhotoImage(file="assets/Aktualisieren.png")
         parent.lendBtn = tk.PhotoImage(file="assets/Ausleihen.png")
 
         # Buttons in ein separates Frame
@@ -151,12 +160,12 @@ class detailsWindow(tk.Frame):
 
         lendButton = tk.Button(buttonFrameAddItemPopup, image=parent.lendBtn,
                                              bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                             command=editEntry)
+                                             command=lend)
         lendButton.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
         editButton = tk.Button(buttonFrameAddItemPopup, image=parent.editBtn,
                                            bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                           command=lend)
+                                           command=refreshEntry)
         editButton.pack(side=tk.LEFT, padx=20)  # Links platzieren
 
         self.grid_rowconfigure(0, weight=0)
@@ -166,9 +175,18 @@ class detailsWindow(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
 
     def update_data(self, data):
-        # Aktualisiere die Labels basierend auf den übergebenen Daten
-        self.serviceTagEntryDetailsWindow.config(text=data[1])
-        self.typeEntryDetailsWindow.config(text=data[2])
-        self.roomEntryDetailsWindow.config(text=data[3])
-        self.nameEntryDetailsWindow.config(text=data[4])
-        self.damagedEntryDetailsWindow.config(text=data[5])
+        # Daten in die Entry-Felder einfügen
+        self.serviceTagEntryDetailsWindow.delete(0, tk.END)
+        self.serviceTagEntryDetailsWindow.insert(0, data[1])
+
+        self.typeEntryDetailsWindow.delete(0, tk.END)
+        self.typeEntryDetailsWindow.insert(0, data[2])
+
+        self.roomEntryDetailsWindow.delete(0, tk.END)
+        self.roomEntryDetailsWindow.insert(0, data[3])
+
+        self.nameEntryDetailsWindow.delete(0, tk.END)
+        self.nameEntryDetailsWindow.insert(0, data[4])
+
+        self.damagedEntryDetailsWindow.delete(0, tk.END)
+        self.damagedEntryDetailsWindow.insert(0, data[5])
