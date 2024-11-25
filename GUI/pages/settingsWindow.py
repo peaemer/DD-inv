@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from PIL import Image, ImageTk
 
 
 # Schriftarten / Farbschema
@@ -38,7 +37,7 @@ def popUpSettings(parent):
 
     # Konfiguriere das Grid-Layout fuer die Einstellungen
     popup.grid_rowconfigure(0, weight=0)  # fixiert Zeilenhoehe
-    popup.grid_rowconfigure(1, weight=1)  # Dynamsche hoehe für Inhalte
+    popup.grid_rowconfigure(1, weight=1)  # Dynamische hoehe für Inhalte
     popup.grid_rowconfigure(2, weight=0)
     popup.grid_rowconfigure(3, weight=0)
     popup.grid_columnconfigure(0, weight=1)  # Spalte nimmt gesamte breite
@@ -57,31 +56,32 @@ def popUpSettings(parent):
     popup.optionsHead = tk.PhotoImage(file="assets/option.png")
     headerLabel = tk.Label(headerFrameSettings,
                            image=popup.optionsHead,
+                           bg="#DF4807",
                            foreground="white")
     headerLabel.grid(row=1,
                      column=0,
                      padx=10,
                      pady=10,
-                     sticky=tk.N + tk.W)
+                     sticky=tk.N + tk.W + tk.E)
 
     # Seitenleiste (linker Bereich)
     sideSettings = tk.Frame(popup,
                             height=5,
-                            background="#F4EFEF")
+                            bg="#DF4807")
     sideSettings.grid(row=2,
                       column=0,
                       sticky=tk.W + tk.E + tk.N)  # Vollbreite
 
-    # sidesettings für die Ausrichtung der Seiteleiste
+    # sidesettings für die Ausrichtung der Seitenleiste
     sideSettings.grid_columnconfigure(0, weight=1)
 
-    # Bereich für Einstellungen
+    # Bereich für Einstellungen der sidesettings
     sideSettingsView = tk.Frame(popup)
     sideSettingsView.grid(row=1,
                           column=0,
                           sticky=tk.W + tk.E + tk.N)
 
-    # schrifzug "System" setzen (Label einfügen)
+    # schriftzug "System" setzen (Label einfügen)
     overviewStngSystem = tk.Label(sideSettingsView,
                                   text="System",
                                   bd=0,
@@ -105,7 +105,7 @@ def popUpSettings(parent):
                                  column=0,
                                  sticky=tk.W + tk.S)
 
-    # schrifzug "Benachrichtigungen" setzen (Label einfügen)
+    # schriftzug "Benachrichtigungen" setzen (Label einfügen)
     overviewStngsMessage = tk.Label(sideSettingsView,
                                     text="Benachrichtigungen",
                                     bd=0,
@@ -117,7 +117,7 @@ def popUpSettings(parent):
                               column=0,
                               sticky=tk.W + tk.S)
 
-    # schrifzug "Konten" setzen (Label einfügen)
+    # schriftzug "Konten" setzen (Label einfügen)
     overviewStngsProfile = tk.Label(sideSettingsView,
                                     text="Konten",
                                     bd=0,
@@ -129,7 +129,7 @@ def popUpSettings(parent):
                               column=0,
                               sticky=tk.W + tk.S)
 
-    # schrifzug "Sprache" setzen (Label einfügen)
+    # schriftzug "Sprache" setzen (Label einfügen)
     overviewStngsLangue = tk.Label(sideSettingsView,
                                    text="Sprache",
                                    bd=0,
@@ -170,33 +170,69 @@ def popUpSettings(parent):
                                  variable=storage_variable,
                                  value="Schwarz")
 
-    # Radiobuttons platzieren
-    option_zero.grid()
-    option_one.grid()
-    option_two.grid()
-    option_three.grid()
-    option_for.grid()
+    # Radiobuttons separat anordnen (in Frame)
+    radio_frame = tk.Frame(popup, background="#F4EFEF")
+    radio_frame.grid(row=3,
+                     column=0,
+                     sticky=tk.E + tk.S,
+                     pady=20)
+
+    # Radiobuttons platzieren (jeder in einer eigenen Zeile innerhalb von `radio_frame`)
+    option_zero.grid(row=4, column=0, padx=5, pady=5, sticky=tk.E)
+    option_one.grid(row=5, column=0, padx=5, pady=5, sticky=tk.E)
+    option_two.grid(row=6, column=0, padx=5, pady=5, sticky=tk.E)
+    option_three.grid(row=7, column=0, padx=5, pady=5, sticky=tk.E)
+    option_for.grid(row=8, column=0, padx=5, pady=5, sticky=tk.E)
 
     # Funktion: Hintergrund aendern
-    def set_background(popup, file_path):
-        # Bild laden und Popup-Groeße skalieren
-        image = Image.open(file_path)
-        resize_image = image.resize((popup.winfo_width(), popup.winfo_height()), Image.ANTIALIAS)
-        bg_image = ImageTk.PhotoImage(resize_image)
-        popup.bg_label.config(image=bg_image)  # Hintergrund ändern
-        popup.bg_label.image = bg_image
-        set_background.grid(popup,
-                            row=2)
+    def set_background(file_path):
+        if file_path:
+            # Bild laden und für Tkinter konvertieren
+            bg_image = tk.PhotoImage(file=file_path)
+
+            # Aktualisiere das Hintergrundbild im Popup
+            parent.bg_label.config(image=bg_image)
+            parent.bg_label.image = bg_image  # Referenz halten, damit das Bild nicht vom Speicher gelöscht wird
+        else:
+            # Fehlerfall, falls kein Bild geladen werden konnte
+            print("Error: Could´t load or get image")
 
     # Funktion: Bild auswaehlen
-    def chose_A_Picture(popup):
-        # Datei-Dialog oeffnen fuer Bildauswahl
-        file_path = filedialog.askopenfilename(title="Wähle ein Bild aus...",
-                                               filetypes=[("Bilddateien",
-                                                           "*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.webp")])
-        if file_path:
-            popup.set_background(file_path)  # Hintergrund setzen
-        else:
-            print("Error: Could´t load or get image")
-    chose_A_Picture.grid(popup,
-                         row=2)
+    def chose_A_Picture():
+        # oeffne Dateidialog zum auswaehlen eines Bildes
+        parent.file_path = filedialog.askopenfilename(title="Wähle ein Bild aus... (Windows-Explorer)",  # Titel des Dialogfensters
+                                                      filetypes=[("Bilddateien", "*.png;*.gif")])  # Zulaessige Dateitypen
+        if parent.file_path:
+            # Wenn datei ausgewaehlt wurde, setze Hintergrund
+            set_background(parent.file_path)
+
+    # Frame für die Funktion erstellen
+    functionFrame = tk.Frame(popup, background="#F4EFEF")  #Hintergrundfarbe
+    functionFrame.grid(row=2,  # Positioniere Frame in der dritten Zeile im Layout
+                       column=0,  # Frame erstreckt über erste Spalte (zentral)
+                       sticky=tk.N + tk.W + tk.E + tk.S,  # Zentriert / dehnt sich aus bei Aenderungen
+                       pady=20)  # Vertikaler abstand zwischen Frame und anderen Elementen
+
+    # Konfiguriere Layout inerhalb des Frames
+    functionFrame.grid_rowconfigure(0, weight=1)  # Erlaubt flexible groeße
+    functionFrame.grid_columnconfigure(0, weight=1)
+
+    # Butten zum Bild auswaehlen
+    btn_chose_picature = ttk.Button(functionFrame,
+                                    text="Besseres Aussehen auswählen....",  # Text auf dem Button
+                                    command=chose_A_Picture)  # Funktion die ausgefuehrt wird
+
+    # Button: Hintergrund setzen
+    btn_set_bg = ttk.Button(functionFrame,
+                            text="Hintergrund anwenden",  # Text auf dem Button
+                            command=lambda: set_background("Downloads/images.png"))
+
+    # Funktionale Hauptbereiche (in fuenf Zeilen unterteilt)
+    # 1. Header (row=0), 2. Seitenleiste und Funktionen (row=1 und row=2), 3. Radiobuttons (row=3)
+    # HINWEIS: RADIO OPT BTN AENDERN AUF ZEILE 180 - 184
+    #          HEADERSTYLE AENDERN AUF ZEILE 56 - 59
+    headerFrameSettings.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+    sideSettingsView.grid(row=1, column=0, sticky=tk.W + tk.N + tk.S)
+    btn_set_bg.grid(row=1, column=0, sticky=tk.E, pady=10)
+    btn_chose_picature.grid(row=0, column=0, sticky=tk.E, pady=10)
+    radio_frame.grid(row=3, column=0, sticky=tk.E, pady=10)

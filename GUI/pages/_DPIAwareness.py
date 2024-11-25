@@ -1,8 +1,4 @@
-import tkinter as tk
-from PIL import Image, ImageTk
-from tkinter import ttk
-
-# Richtiges Skallieren der Schrift bei hoeherer Bildschirmaufloesung
+# Richtiges Skalieren der Schrift bei hoeherer Bildschirmaufloesung
 # (e.g. FHD, WQHD, UHD, etc. [only for Windows!!])
 try:
     from ctypes import windll
