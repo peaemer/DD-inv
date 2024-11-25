@@ -16,7 +16,6 @@ class mainPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
-
         def showSettingsWindow():
             from .settingsWindow import popUpSettings
             popUpSettings(self)
@@ -27,7 +26,6 @@ class mainPage(tk.Frame):
 
         def search():                           # funktionalität hinzufügen
             print("I am Searching")
-
 
         def filtr():                            # funktionalität hinzufügen
             print("Do be filtering")
@@ -67,7 +65,6 @@ class mainPage(tk.Frame):
         headerLabel = tk.Label(headerFrame, image=self.srhHead, background="#DF4807", foreground="white")
         headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
-
         # Konvertiere das Bild für Tkinter
         self.logOutBtn = tk.PhotoImage(file="assets/ausloggen.png")
 
@@ -80,17 +77,25 @@ class mainPage(tk.Frame):
         self.optBtn = tk.PhotoImage(file="assets/option.png")
 
         # Füge einen Button mit dem Bild hinzu
-        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=showSettingsWindow, bd=0, relief=tk.FLAT, bg="#DF4807",
-                                 activebackground="#DF4807")
+        optionsButton = tk.Button(headerFrame,
+                                  image=self.optBtn,
+                                  command=showSettingsWindow,
+                                  bd=0,
+                                  relief=tk.FLAT,
+                                  bg="#DF4807",
+                                  activebackground="#DF4807")
         optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
-
-
 
         greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
         greyFrame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Füge den LogIn-Label zur Frame hinzu
-        logInLabel = tk.Label(greyFrame, text="Inventur-Übersicht", bd=0, relief=tk.FLAT, bg="#F4EFEF", font=("Arial", 20))
+        logInLabel = tk.Label(greyFrame,
+                              text="Inventur-Übersicht",
+                              bd=0,
+                              relief=tk.FLAT,
+                              bg="#F4EFEF",
+                              font=("Arial", 20))
         logInLabel.grid(padx=200, pady=5, row=0, column=0, sticky=tk.W)
 
         # Konfiguriere den greyFrame für zentrierte Ausrichtung
@@ -103,15 +108,21 @@ class mainPage(tk.Frame):
         overviewLabel.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        searchFrame = tk.Frame(self,bg="white")
-        searchFrame.grid(pady=50, padx=200,row=1, column=0, sticky=tk.W + tk.E + tk.N)
+        searchFrame = tk.Frame(self, bg="white")
+        searchFrame.grid(pady=50, padx=200, row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         searchFrame.grid_columnconfigure(0, weight=0)
         searchFrame.grid_columnconfigure(1, weight=1)
         searchFrame.grid_columnconfigure(2, weight=0)
 
         self.searchBtn = tk.PhotoImage(file="assets/SearchButton.png")
-        searchButton = tk.Button(searchFrame, image=self.searchBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
+        searchButton = tk.Button(searchFrame,
+                                 image=self.searchBtn,
+                                 bd=0,
+                                 relief=tk.FLAT,
+                                 bg="white",
+                                 activebackground="white",
+                                 command=search)
         searchButton.grid(padx=10, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
@@ -124,7 +135,13 @@ class mainPage(tk.Frame):
         searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
         self.filterBtn = tk.PhotoImage(file="assets/Filter.png")
-        filterButton = tk.Button(searchFrame, image=self.filterBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=filtr)
+        filterButton = tk.Button(searchFrame,
+                                 image=self.filterBtn,
+                                 bd=0,
+                                 relief=tk.FLAT,
+                                 bg="white",
+                                 activebackground="white",
+                                 command=filtr)
         filterButton.grid(row=0, column=3, padx=10)
 
         treeStyle = ttk.Style()
@@ -175,7 +192,7 @@ class mainPage(tk.Frame):
         i = 0
         for entry in sqlapi.fetch_hardware():
             tree.insert("", "end", text=f"{entry['Service_Tag']}", values=(i, entry['Service_Tag'],entry['Geraetetyp'],entry['Standort'],entry['Modell'],entry['Beschaedigung'],entry['Ausgeliehen_von']))
-            i+=1
+            i +=1
 
 
 
