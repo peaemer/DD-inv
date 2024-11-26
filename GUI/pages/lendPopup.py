@@ -40,10 +40,11 @@ def lendPopup(parent, data):
 
     # Funktion, um die Eingaben zu verarbeiten
     def confirmLend():
-        item = itemEntry.get().strip()
-        borrower = borrowerEntry.get().strip()
-        lend_date = dateEntry.get().strip()
-        print(f"Item: {item}, Borrower: {borrower}, Date: {lend_date}")
+        item = nameEntry.get().strip()
+        borrower = entry.get().strip()
+        #lend_date = calEntry.get().strip()
+        print(f"Item: {item}, Borrower: {borrower}, Date:")
+        #lendupdate
         popup.destroy()  # Schließt das Popup nach Bestätigung
 
 
@@ -67,7 +68,7 @@ def lendPopup(parent, data):
     itemVar.set("Itemplatzhalter") #funktion zum eifügen des Namens
 
     userVar = tk.StringVar()
-    userVar.set("Nutzerplatzhalter") #funktion zum eifügen des Namens
+    userVar.set("Affe") #funktion zum eifügen des Namens
 
 
 

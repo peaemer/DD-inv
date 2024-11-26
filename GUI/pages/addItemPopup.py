@@ -84,6 +84,8 @@ def addItemPopup(parent):
 
     # Funktion zum Eintrag hinzufügen
     def submitEntry():
+        # add device
+        # tag, typ,raum,name,damage
         print("Eintrag hinzugefügt.")
         addPopup.destroy()
 

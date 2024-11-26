@@ -186,6 +186,7 @@ class detailsWindow(tk.Frame):
 
         # Funktion zum Eintrag hinzufügen
         def refreshEntry():
+            #update
             print("nix")
 
         def lend(data):
