@@ -48,6 +48,8 @@ class mainPage(tk.Frame):
                 searchEntry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 searchEntry.config(fg='grey')  # Textfarbe auf grau ändern
 
+        global tree
+
         # Konfiguriere das Grid-Layout für die Hauptseite
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
@@ -241,7 +243,7 @@ class mainPage(tk.Frame):
                 )
                 i += 1
         insert_data(self)
-
+        print("2")
         # Funktion für das Ereignis-Binding
         def onItemSelected(event):
             try:
@@ -253,6 +255,20 @@ class mainPage(tk.Frame):
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
-
+        print("1")
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<<TreeviewSelect>>", onItemSelected)
+
+    def update_treeview_with_data():
+        tree.delete(*tree.get_children())
+        i = 0
+        for entry in sqlapi.fetch_hardware():
+            tag = "evenrow" if i % 2 == 0 else "oddrow"
+            tree.insert(
+                "",
+                "end",
+                values=(i, entry['Service_Tag'], entry['Geraetetyp'], entry['Standort'],
+                        entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
+                tags=(tag,)
+            )
+            i += 1
