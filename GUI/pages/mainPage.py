@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 import Datenbank.sqlite3api as sqlapi
-
+import cache_gui as cache
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -11,6 +11,7 @@ srhGrey = "#d9d9d9"
 
 # Hauptseite (zweites Fenster)
 class mainPage(tk.Frame):
+    #if (cache.user_group == "admin"):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)

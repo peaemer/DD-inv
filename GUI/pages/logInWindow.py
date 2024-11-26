@@ -1,6 +1,7 @@
 import sys
 import tkinter as tk
 from tkinter import ttk
+import cache_gui as cache
 
 LARGEFONT = ("Arial", 30)
 LOGINFONT = ("Arial", 30)
@@ -48,6 +49,7 @@ class logInWindow(tk.Frame):
             user = usernameEntry.get().strip()
             import Security.UserSecurity as security
             if security.verifyUser(user, password):
+                cache.user_group = "admin"
                 from .mainPage import mainPage
                 controller.show_frame(mainPage)
             else:
