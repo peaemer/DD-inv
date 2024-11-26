@@ -3,7 +3,7 @@ import os
 from Security.UserSecurity import hashPassword
 
 # Pfad zur Datenbankdatei
-path: str = os.path.join(os.path.dirname(__file__), 'DD-invBeispielDatenbank.sqlite3')
+path: str = 'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 
 def init_connection():
     """
@@ -27,6 +27,9 @@ def create_benutzer(nutzername, passwort, email):
     Fügt einen neuen Benutzer zur Tabelle `Benutzer` hinzu.
     Passwort_hashed_value wird genutzt um Plain_Passwörter in ein Hash wert zu ändern
     {e.args} werden genutzt um genauere Fehlermeldungen zurück zu bekommen
+    :param Nutzername:z.B. LukasFa
+    :param passwort:z.B. #Lukas1234 (Wird ihn ein Hashwert umgewandelt)
+    :param Email:z.B. Lukas.Fabisch@fabisch.com
     """
     try:
         passwort_hashed_value = hashPassword(passwort)
@@ -59,6 +62,7 @@ def read_all_benutzer():
 def read_benutzer(nutzername):
     """
     Ruft die Daten eines spezifischen Benutzers ab.
+    :param Nutzername
     """
     try:
         with init_connection() as con:
@@ -72,6 +76,10 @@ def read_benutzer(nutzername):
 def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_rolle=None):
     """
     Aktualisiert die Daten eines Benutzers (Passwort, Email, Rolle).
+    :param Nutzername
+    :param neues_passwort:(falls kein neues, leer lassen und neues Komma setzten)
+    :param neues_email:(falls kein neues, leer lassen und neues Komma setzten)
+    :param neue_rolle:(falls kein neues, leer lassen und neues Komma setzten)
     """
     try:
         with init_connection() as con:
@@ -121,6 +129,12 @@ def delete_benutzer(nutzername):
 def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort):
     """
     Erstellt einen neuen Eintrag in der Tabelle `Hardware`.
+    :param Service_Tag
+    :param Geraetetyp
+    :param Modell
+    :param Beschaedigung
+    :param Ausgeliehen_von
+    :param Standort
     """
     try:
         with init_connection() as con:
@@ -150,6 +164,7 @@ def fetch_hardware():
 def fetch_hardware_by_id(Service_Tag):
     """
     Ruft die Daten einer spezifischen Hardware anhand ihres `Service_Tag` ab.
+    :param Service_Tag:z.B. ABC123
     """
     try:
         with init_connection() as con:
@@ -163,6 +178,10 @@ def fetch_hardware_by_id(Service_Tag):
 def update_hardware_by_service_tag(Service_Tag, neue_Ausgeliehen_von=None, neue_beschaedigung=None, neue_Standort=None):
     """
     Aktualisiert bestimmte Felder einer Hardware basierend auf dem `Service_Tag`.
+    :param Nutzername
+    :param neue_Ausgeliehen_von:falls kein neues, leer lassen und neues Komma setzten
+    :param neue_beschaedigung:(falls kein neues, leer lassen und neues Komma setzten)
+    :param neue_Standort:(falls kein neues, leer lassen und neues Komma setzten)
     """
     try:
         with init_connection() as con:
@@ -194,6 +213,7 @@ def update_hardware_by_service_tag(Service_Tag, neue_Ausgeliehen_von=None, neue_
 def delete_hardware_by_service_tag(Service_Tag):
     """
     Löscht einen Hardware-Eintrag aus der Tabelle `Hardware`.
+    :param Service_Tag:z.B. ABC123
     """
     try:
         with init_connection() as con:
@@ -213,6 +233,7 @@ def create_rolle(Rolle, **rechte):
     """
     Fügt eine neue Nutzerrolle mit spezifischen Rechten in die Tabelle `NutzerrollenRechte` ein.
     Rollenrechte müssen damit nur noch angehangen werden
+
     """
     try:
         with init_connection() as con:
@@ -288,7 +309,7 @@ def fetch_ausleih_historie():
     except sqlite3.Error as e:
         return f"Fehler beim Abrufen der Ausleih_Historie: {e.args[0]}"
 
-def fetch_ausleih_historie_by_id():
+def fetch_ausleih_historie_by_id(ID):
     """
     Ruft einen spezifischen Eintrag der Tabelle `Ausleih-Historie` anhand der ID ab.
     - Gibt ein Dictionary mit den Daten zurück oder None, falls der Eintrag nicht existiert.
@@ -296,4 +317,114 @@ def fetch_ausleih_historie_by_id():
     try:
         with init_connection() as con:
             cur = con.cursor()
-            cur.execute("SELECT ? FROM Ausleih_Historie")
+            cur.execute("SELECT * FROM Ausleih_Historie WHERE ID = ?", (ID,))
+            row = cur.fetchone()
+            return dict(row) if row else None
+    except sqlite3.Error as e:
+        return None, "Fehler beim Abrufen des Eintrags"
+
+def delete_ausleih_historie(ID):
+     """
+     Löscht einen Eintrag aus der Tabelle `Ausleih-Historie` anhand der ID.
+     """
+     try:
+         with init_connection() as con:
+             cur = con.cursor()
+             con.execute("DELETE FROM Ausleih_Historie WHERE ID = ?", (ID, ))
+             con.commit()
+             return "Eintrag wurde erfolgreich entfernt."
+     except sqlite3.Error as e:
+         return f"Fehler beim löschen des Eintrags {e.args[0]}"
+
+#########################################
+# R O O M _ I N F O - E N D P U N K T E #
+#########################################
+
+def create_room(Raum,Ort):
+    """
+    Wird zum erstellen von neuen Räumen benutzt
+    :param Raum (Raumname z.B. E220)
+    :param Ort (Ortsname z.B. Haus E 1. Etage)
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO Room_Info(Raum, Ort) VALUES(? ,? )", (Raum, Ort))
+            con.commit()
+            return "Raum wurde erfolgreich erstellt"
+    except sqlite3.Error as e:
+        return f"Fehler beim erstellen des Raumes {e.args[0]}"
+
+def fetch_all_rooms():
+    """
+    Mit der Funktion rufen wir alle bis jetzt erstellten Räume in der Datenbank auf
+    :return: Gesamte Liste aller Räume in einer Dictionary
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("SELECT * WHERE Room_Info")
+            rows = cur.fetchall()
+            return [dict(row) for row in rows]
+    except sqlite3.Error as e:
+        return f"Fehler beim erstellen von {e.args[0]}"
+
+def search_room(Raum):
+    """
+
+    :param Raum (Raumname z.B. E220)
+    :return: Gibt nur die Informationen über den einzelnen Raum aus
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("SELECT * FROM Room_Info WHERE Raum = ?", (Raum))
+            row = cur.fetchone()
+            return dict(row) if row else None
+    except sqlite3.Error as e:
+        return f"Fehler beim suchen des Raumes {e.args[0]}"
+
+def update_room(Raum):
+    """
+    If Statement schaut nach, was genau geändert werden soll, if not zum absichern damit keine sachen auf NUll gesetzt werden
+    Query zum updaten von zu updaten
+    :param Raum:
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            update_fields = []
+            parameters = []
+
+            if neue_Ausgeliehen_von:
+                update_fields.append("Raum = ?")
+                parameters.append(neue_Ausgeliehen_von)
+            if neue_beschaedigung:
+                update_fields.append("Ort = ?")
+                parameters.append(neue_beschaedigung)
+
+
+            if not update_fields:
+                return "Keine Aktualisierungsdaten vorhanden."
+
+            sql_query = f"UPDATE Room_Info SET {', '.join(update_fields)} WHERE Raum = ?"
+            parameters.append(Raum)
+            cur.execute(sql_query, parameters)
+            con.commit()
+        return "Raum erfolgreich aktualisiert."
+    except sqlite3.Error as e:
+        return f"Fehler beim Aktualisieren des Raumes: {e.args[0]}"
+
+def delete_room(Raum):
+    """
+    Funktion zum entfernen von Räumen, bitte nur verwenden wenn nötig.
+    :param Raum:
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("DELETE FROM Room_Info WHERE Raum = ?", (Raum))
+            con.commit()
+            return "Raum wurde gelöscht"
+    except sqlite3.Error as e:
+        return f"Fehler beim löschen des Raumes: {e.args[0]}"
