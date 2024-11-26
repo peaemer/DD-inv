@@ -36,6 +36,7 @@ def create_benutzer(nutzername, passwort, email):
                 "INSERT INTO Benutzer (Nutzername, Passwort, Email, Rolle) VALUES (?, ?, ?, 'Guest')",
                 (nutzername, passwort_hashed_value, email)
             )
+            con.commit()
         return "Benutzer wurde hinzugefügt."
     except sqlite3.Error as e:
         return f"Fehler beim Hinzufügen des Benutzers: {e.args[0]}"
@@ -94,6 +95,7 @@ def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_roll
             sql_query = f"UPDATE Benutzer SET {', '.join(update_fields)} WHERE Nutzername = ?"
             parameters.append(nutzername)
             cur.execute(sql_query, parameters)
+            con.commit()
         return "Benutzer erfolgreich aktualisiert."
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren des Benutzers: {e.args[0]}"
@@ -106,6 +108,7 @@ def delete_benutzer(nutzername):
         with init_connection() as con:
             cur = con.cursor()
             cur.execute("DELETE FROM Benutzer WHERE Nutzername = ?", (nutzername,))
+            con.commit()
         return "Benutzer erfolgreich gelöscht."
     except sqlite3.Error as e:
         return f"Fehler beim Löschen des Benutzers: {e.args[0]}"
@@ -115,7 +118,7 @@ def delete_benutzer(nutzername):
 # H A R D W A R E - E N D P U N K T #
 #####################################
 
-def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort):
+def create_hardware(Service_Tag: str, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort):
     """
     Erstellt einen neuen Eintrag in der Tabelle `Hardware`.
     """
@@ -126,6 +129,7 @@ def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_
                 "INSERT INTO Hardware (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort) VALUES (?, ?, ?, ?, ?, ?)",
                 (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort)
             )
+            con.commit()
         return "Hardware-Eintrag wurde erstellt."
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen des Hardware-Eintrags: {e.args[0]}"
@@ -182,6 +186,7 @@ def update_hardware_by_service_tag(Service_Tag, neue_Ausgeliehen_von=None, neue_
             sql_query = f"UPDATE Hardware SET {', '.join(update_fields)} WHERE Service_Tag = ?"
             parameters.append(Service_Tag)
             cur.execute(sql_query, parameters)
+            con.commit()
         return "Hardware erfolgreich aktualisiert."
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren der Hardware: {e.args[0]}"
@@ -194,6 +199,7 @@ def delete_hardware_by_service_tag(Service_Tag):
         with init_connection() as con:
             cur = con.cursor()
             cur.execute("DELETE FROM Hardware WHERE Service_Tag = ?", (Service_Tag,))
+            con.commit()
         return "Hardware-Eintrag wurde erfolgreich entfernt."
     except sqlite3.Error as e:
         return f"Fehler beim Entfernen des Hardware-Eintrags: {e.args[0]}"
@@ -215,6 +221,7 @@ def create_rolle(Rolle, **rechte):
             placeholders = ', '.join(['?'] * len(rechte))
             values = list(rechte.values())
             cur.execute(f"INSERT INTO NutzerrollenRechte (Rolle, {columns}) VALUES (?, {placeholders})", [Rolle] + values)
+            con.commit()
         return "Nutzerrolle wurde erfolgreich erstellt."
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen der Rolle: {e.args[0]}"
@@ -240,6 +247,43 @@ def delete_rolle(Rolle):
         with init_connection() as con:
             cur = con.cursor()
             cur.execute("DELETE FROM NutzerrollenRechte WHERE Rolle = ?", (Rolle,))
+            con.commit()
         return "Rolle wurde erfolgreich entfernt."
     except sqlite3.Error as e:
         return f"Fehler beim Entfernen der Rolle: {e.args[0]}"
+
+
+#######################################################
+# A U S L E I H - H I S T O R I E - E N D P U N K T E #
+#######################################################
+
+def create_ausleih_historie(Service_Tag, Nutzername, Ausgeliehen_am):
+    """
+    Erstellt einen neuen Eintrag in der Tabelle `Ausleih-Historie`.
+    - `Service_Tag`: Fremdschlüssel zur Hardware-Tabelle.
+    - `Nutzername`: Fremdschlüssel zur Benutzer-Tabelle.
+    - Optional können Ausleihdatum und Rückgabedatum angegeben werden.
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO Ausleih_Historie(Ausgeliehen_am,Service_Tag, Nutzername) VALUES (? ,? ,?)",
+                        (Service_Tag,Nutzername,Ausgeliehen_am))
+            con.commit()
+            return "Historien eintrag wurder erstellt."
+    except sqlite3.Error as e:
+        return f"Fehler beim erstellen des Eintrags: {e.args[0]}"
+
+def fetch_ausleih_historie():
+    """
+    Ruft alle Einträge aus der Tabelle `Ausleih-Historie` ab.
+    - Gibt eine Liste von Dictionaries mit den Daten zurück.
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("SELECT * FROM Ausleih_Historie")
+            rows = cur.fetchall()
+            return [dict(row) for row in rows]
+    except sqlite3.Error as e:
+        return f"Fehler beim Abrufen der Ausleih_Historie: {e.args[0]}"

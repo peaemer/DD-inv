@@ -47,6 +47,7 @@ class logInWindow(tk.Frame):
         def logIn():
             password = passwordEntry.get().strip()
             user = usernameEntry.get().strip()
+            print(user, password)
             import Security.UserSecurity as security
             if security.verifyUser(user, password):
                 cache.user_group = "admin"

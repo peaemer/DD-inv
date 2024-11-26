@@ -21,6 +21,9 @@ class mainPage(tk.Frame):
             from .settingsWindow import popUpSettings
             popUpSettings(self)
 
+        def showAdminWindow():
+            print("AAAA")
+
         def logOut():
             from .logInWindow import logInWindow
             controller.show_frame(logInWindow)  # funktionalität hinzufügen
@@ -86,6 +89,22 @@ class mainPage(tk.Frame):
                                   bg="#DF4807",
                                   activebackground="#DF4807")
         optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
+
+        self.adminBtn = tk.PhotoImage(file="assets/Key.png")
+
+        user = "admin"
+        if user == "admin":
+            print("Als Admin Eingeloggt")
+            adminButton = tk.Button(headerFrame,
+                                  image=self.adminBtn,
+                                  command=showAdminWindow,
+                                  bd=0,
+                                  relief=tk.FLAT,
+                                  bg="#DF4807",
+                                  activebackground="#DF4807")
+            adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
+
+
 
         greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
         greyFrame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
