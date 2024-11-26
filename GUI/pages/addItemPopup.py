@@ -1,4 +1,9 @@
 import tkinter as tk
+from tkinter import ttk
+
+import Datenbank.sqlite3api as db
+import cache
+
 
 def addItemPopup(parent):
     # Toplevel-Fenster erstellen
@@ -84,7 +89,17 @@ def addItemPopup(parent):
 
     # Funktion zum Eintrag hinzufügen
     def submitEntry():
+        # add device
+        # tag, typ,raum,name,damage
+        tag = serviceTagEntryAddItemPopup.get() if serviceTagEntryAddItemPopup.get() else ""
+        type = typeEntryAddItemPopup.get() if typeEntryAddItemPopup.get() else ""
+        room = roomEntryAddItemPopup.get() if roomEntryAddItemPopup.get() else ""
+        name = nameEntryAddItemPopup.get() if nameEntryAddItemPopup.get() else ""
+        damage = damagedButtonAddItemPopup.get() if damagedButtonAddItemPopup.get() else ""
+        db.create_hardware(tag,type,name,damage,None,room)
         print("Eintrag hinzugefügt.")
+        from .mainPage import mainPage
+        mainPage.update_treeview_with_data()
         addPopup.destroy()
 
     def exitEntry():

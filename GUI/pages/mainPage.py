@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 import Datenbank.sqlite3api as sqlapi
-
+import cache
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -11,6 +11,7 @@ srhGrey = "#d9d9d9"
 
 # Hauptseite (zweites Fenster)
 class mainPage(tk.Frame):
+    #if (cache.user_group == "admin"):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -19,6 +20,9 @@ class mainPage(tk.Frame):
         def showSettingsWindow():
             from .settingsWindow import popUpSettings
             popUpSettings(self)
+
+        def showAdminWindow():
+            print("AAAA")
 
         def logOut():
             from .logInWindow import logInWindow
@@ -43,6 +47,8 @@ class mainPage(tk.Frame):
             if searchEntry.get() == '':
                 searchEntry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 searchEntry.config(fg='grey')  # Textfarbe auf grau ändern
+
+        global tree
 
         # Konfiguriere das Grid-Layout für die Hauptseite
         self.grid_rowconfigure(0, weight=0)
@@ -85,6 +91,22 @@ class mainPage(tk.Frame):
                                   bg="#DF4807",
                                   activebackground="#DF4807")
         optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
+
+        self.adminBtn = tk.PhotoImage(file="assets/Key.png")
+
+        user = "admin"
+        if user == "admin":
+            print("Als Admin Eingeloggt")
+            adminButton = tk.Button(headerFrame,
+                                  image=self.adminBtn,
+                                  command=showAdminWindow,
+                                  bd=0,
+                                  relief=tk.FLAT,
+                                  bg="#DF4807",
+                                  activebackground="#DF4807")
+            adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
+
+
 
         greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
         greyFrame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
@@ -180,9 +202,9 @@ class mainPage(tk.Frame):
         tree.tag_configure("evenrow", background="white")
 
         ### listbox for directories
-        tree.column("# 1", anchor=CENTER, width=70)
+        tree.column("# 1", anchor=CENTER, width=60)
         tree.heading("# 1", text="ID", )
-        tree.column("# 2", anchor=CENTER, width=115)
+        tree.column("# 2", anchor=CENTER, width=125)
         tree.heading("# 2", text="Service Tag")
         tree.column("# 3", anchor=CENTER, width=250)
         tree.heading("# 3", text="Typ")
@@ -221,7 +243,7 @@ class mainPage(tk.Frame):
                 )
                 i += 1
         insert_data(self)
-
+        print("2")
         # Funktion für das Ereignis-Binding
         def onItemSelected(event):
             try:
@@ -233,6 +255,20 @@ class mainPage(tk.Frame):
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
-
+        print("1")
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<<TreeviewSelect>>", onItemSelected)
+
+    def update_treeview_with_data():
+        tree.delete(*tree.get_children())
+        i = 0
+        for entry in sqlapi.fetch_hardware():
+            tag = "evenrow" if i % 2 == 0 else "oddrow"
+            tree.insert(
+                "",
+                "end",
+                values=(i, entry['Service_Tag'], entry['Geraetetyp'], entry['Standort'],
+                        entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
+                tags=(tag,)
+            )
+            i += 1
