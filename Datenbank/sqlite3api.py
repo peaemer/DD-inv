@@ -126,7 +126,7 @@ def delete_benutzer(nutzername):
 # H A R D W A R E - E N D P U N K T #
 #####################################
 
-def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort):
+def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Raum):
     """
     Erstellt einen neuen Eintrag in der Tabelle `Hardware`.
     :param Service_Tag
