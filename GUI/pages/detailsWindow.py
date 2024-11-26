@@ -39,13 +39,13 @@ class detailsWindow(tk.Frame):
 
         # Erstelle einen Header-Bereich
         headerFrameDetailsWindow = tk.Frame(self, height=10, background="#DF4807")
-        headerFrameDetailsWindow.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+        headerFrameDetailsWindow.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E + tk.N)
 
-        # Konfiguriere die Spalten für den Header
+        # Überschrift mittig zentrieren
         headerFrameDetailsWindow.grid_columnconfigure(0, weight=1)  # Platz links
-        headerFrameDetailsWindow.grid_columnconfigure(1, weight=10)  # Überschrift
-        headerFrameDetailsWindow.grid_columnconfigure(2, weight=0)  # Option-Button
-        headerFrameDetailsWindow.grid_columnconfigure(3, weight=0)  # Zurück-Button
+        headerFrameDetailsWindow.grid_columnconfigure(1, weight=3)  # Überschrift zentriert (größerer Gewichtungsfaktor)
+        headerFrameDetailsWindow.grid_columnconfigure(2, weight=1)  # Option-Button
+
 
         # Zentriere das Label in Spalte 1
         headerLabelDetailsWindow = tk.Label(
@@ -67,7 +67,7 @@ class detailsWindow(tk.Frame):
             bg="#DF4807",
             activebackground="#DF4807"
         )
-        goBackButtonDetailsWindow.grid(row=0, column=3, sticky=tk.E, padx=20)
+        goBackButtonDetailsWindow.grid(row=0, column=0, sticky=tk.W, padx=20)
 
         optionsButtonDetailsWindow = tk.Button(
             headerFrameDetailsWindow,
@@ -80,20 +80,61 @@ class detailsWindow(tk.Frame):
         )
         optionsButtonDetailsWindow.grid(row=0, column=2, sticky=tk.E, padx=20)
 
-        # Input-Frame
-        inputFrameDetailsWindow = tk.Frame(self, background="white")
-        inputFrameDetailsWindow.grid(row=1, column=0, pady=20)
 
-        inputFrameDetailsWindow.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
-        inputFrameDetailsWindow.grid_columnconfigure(1, weight=1)
+        # Container für Input- und Tree-Frame
+        containerFrame = tk.Frame(self, background="white")
+        containerFrame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
+
+        # Konfiguration der Container-Spalten
+        containerFrame.grid_columnconfigure(0, weight=1)  # Baumansicht
+        containerFrame.grid_columnconfigure(1, weight=1)  # Eingabefelder
 
 
 
         sizeDetailsWindow = 30
 
+        treeStyle = ttk.Style()
+        treeStyle.theme_use("default")  # alt, classic,xpnative,winnative, default
+        treeStyle.configure("Treeview.Heading", font=("Arial", 14))
+        treeStyle.configure("Treeview", rowheight=20, font=("Arial", 12))
+
+        # Ändere die Position des TreeFrames auf row=3
+        treeFrameDetailsWindow = tk.Frame(containerFrame, background="red", width=200, height=400)
+        treeFrameDetailsWindow.grid(row=0, column=0, padx=40, sticky="")
+
+        treeDetailsWindow = ttk.Treeview(treeFrameDetailsWindow, column=("c1", "c2", "c3"), show="headings", height=30)
+
+        scrollDetailsWindow = tk.Scrollbar(
+            treeFrameDetailsWindow,
+            orient="vertical",
+            command=treeDetailsWindow.yview,
+            bg="black",
+            activebackground="darkblue",
+            troughcolor="grey",
+            highlightcolor="black",
+            width=15,
+            borderwidth=1
+        )
+        scrollDetailsWindow.grid(row=1, column=1, sticky="ns")
+        treeDetailsWindow.configure(yscrollcommand=scrollDetailsWindow.set)
+
+        # Tags für alternierende Zeilenfarben konfigurieren
+        treeDetailsWindow.tag_configure("oddrow", background="#f7f7f7")
+        treeDetailsWindow.tag_configure("evenrow", background="white")
+
+        ### listbox for directories
+        treeDetailsWindow.column("# 1", anchor=CENTER, width=180)
+        treeDetailsWindow.heading("# 1", text="Ausleiher", )
+        treeDetailsWindow.column("# 2", anchor=CENTER, width=180)
+        treeDetailsWindow.heading("# 2", text="Ausgeliehen")
+        treeDetailsWindow.column("# 3", anchor=CENTER, width=180)
+        treeDetailsWindow.heading("# 3", text="Zurückgegeben")
+        treeDetailsWindow.grid(row=1, column=0)
+        treeDetailsWindow.tkraise()
+
         # Input-Frame
-        inputFrameDetailsWindow = tk.Frame(self, background="white")
-        inputFrameDetailsWindow.grid(row=1, column=0, pady=20)
+        inputFrameDetailsWindow = tk.Frame(containerFrame, background="white")
+        inputFrameDetailsWindow.grid(row=0, column=1, pady=20, sticky="nsew")
 
         inputFrameDetailsWindow.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
         inputFrameDetailsWindow.grid_columnconfigure(1, weight=1)
@@ -147,9 +188,10 @@ class detailsWindow(tk.Frame):
         def refreshEntry():
             print("nix")
 
-        def lend():
+        def lend(data):
+            print("Übergebene Daten:", data)
             from .lendPopup import lendPopup
-            lendPopup(self)
+            lendPopup(self, data)
 
         parent.editBtn = tk.PhotoImage(file="assets/Aktualisieren.png")
         parent.lendBtn = tk.PhotoImage(file="assets/Ausleihen.png")
@@ -160,7 +202,7 @@ class detailsWindow(tk.Frame):
 
         lendButton = tk.Button(buttonFrameAddItemPopup, image=parent.lendBtn,
                                              bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                             command=lend)
+                                             command=lambda: lend({"name": self.nameEntryDetailsWindow.get()}))
         lendButton.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
         editButton = tk.Button(buttonFrameAddItemPopup, image=parent.editBtn,
@@ -172,6 +214,7 @@ class detailsWindow(tk.Frame):
         self.grid_rowconfigure(1, weight=1)
         self.grid_rowconfigure(2, weight=0)
         self.grid_rowconfigure(3, weight=1)
+        self.grid_columnconfigure(0, weight=2)
         self.grid_columnconfigure(0, weight=1)
 
     def update_data(self, data):
