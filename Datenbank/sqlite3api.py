@@ -55,18 +55,18 @@ def read_all_benutzer():
     finally:
         con.close()
 
-def read_benutzer(nutzername):
+def read_benutzer_rolle(nutzername):
     """
-    Ruft die Daten eines spezifischen Benutzers ab.
+    Ruft die Rolle eines Benutzers ab.
     - Der Nutzername dient als Identifikator.
-    - Gibt ein Dictionary mit den Benutzerdaten zurück oder None, falls der Benutzer nicht existiert.
+    - Gibt einen String mit der Rolle des Benutzers zurück.
     """
     try:
         con = init_connection()
         cur = con.cursor()
-        cur.execute("SELECT * FROM Benutzer WHERE Nutzername = ?", (nutzername,))
+        cur.execute("SELECT Rolle FROM Benutzer WHERE Nutzername = ?", (nutzername,))
         row = cur.fetchone()
-        return dict(row) if row else None
+        return dict(row).get('Rolle') if row else None
     except sqlite3.Error as e:
         return None, "Fehler beim Abrufen des Benutzers:", str(e)
     finally:
