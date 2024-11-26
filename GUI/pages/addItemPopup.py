@@ -93,6 +93,7 @@ def addItemPopup(parent):
         name = nameEntryAddItemPopup if nameEntryAddItemPopup else ""
         damage = damagedButtonAddItemPopup if damagedButtonAddItemPopup else ""
         db.create_hardware(tag,type,name,damage,None,room)
+        from .mainPage import mainPage
         print("Eintrag hinzugefügt.")
         addPopup.destroy()
 
