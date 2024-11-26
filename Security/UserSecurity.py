@@ -58,7 +58,7 @@ def __comparePassword(plain_password: str, hashed_password: bytearray) -> bool:
         :return bool: whether the plain password matches the already hashed one after the plain password was hashed
     '''
     #hash the plain password and check if the hash is equal to the given
-    return hashed_password == __hashPassword(plain_password)
+    return hashed_password == str(__hashPassword(plain_password))
 
 
 def hashPassword(plain_password: str) -> str:
@@ -95,10 +95,11 @@ def verifyUser(username: str, plain_password: str) -> bool:
         :return bool: whether the plain password matches the stored one after the plain password was hashed
     '''
     benutzer = db.read_benutzer(username)
+    print(benutzer)
     try:
         if benutzer:
             # Check if the supplied password matches the stored hash
-            if __comparePassword(plain_password, benutzer['hashed_password']):
+            if __comparePassword(plain_password, benutzer['Passwort']):
                 if (DEBUG_MODE == True): print(f'[UserSecurity]: user {username} was successfully verified.')
                 return True
             else:
