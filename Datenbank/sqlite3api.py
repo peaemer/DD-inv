@@ -118,7 +118,7 @@ def delete_benutzer(nutzername):
 # H A R D W A R E - E N D P U N K T #
 #####################################
 
-def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort):
+def create_hardware(Service_Tag: str, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort):
     """
     Erstellt einen neuen Eintrag in der Tabelle `Hardware`.
     """
@@ -287,13 +287,3 @@ def fetch_ausleih_historie():
             return [dict(row) for row in rows]
     except sqlite3.Error as e:
         return f"Fehler beim Abrufen der Ausleih_Historie: {e.args[0]}"
-
-def fetch_ausleih_historie_by_id():
-    """
-    Ruft einen spezifischen Eintrag der Tabelle `Ausleih-Historie` anhand der ID ab.
-    - Gibt ein Dictionary mit den Daten zurück oder None, falls der Eintrag nicht existiert.
-    """
-    try:
-        with init_connection() as con:
-            cur = con.cursor()
-            cur.execute("SELECT ? FROM Ausleih_Historie")

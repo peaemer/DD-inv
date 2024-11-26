@@ -63,7 +63,7 @@ class ddINV(tk.Tk):
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid
 	# Verändert die Seite beim Start
-		self.show_frame(mainPage)
+		self.show_frame(logInWindow)
 
 	# Funktion, um ein Frame (Seite) anzuzeigen
 	def show_frame(self, cont):

@@ -3,7 +3,7 @@ import sys, os
 
 sys.path.append(os.path.dirname(__file__) + r'\..')
 from typing import Final, List
-from Datenbank.sqlite3api import *
+import Datenbank.sqlite3api as db
 
 # from Datenbank.sqlite3api import read_benutzer, update_benutzer
 
@@ -94,8 +94,7 @@ def verifyUser(username: str, plain_password: str) -> bool:
         ------
         :return bool: whether the plain password matches the stored one after the plain password was hashed
     '''
-
-    benutzer = read_benutzer(username)
+    benutzer = db.read_benutzer(username)
     try:
         if benutzer:
             # Check if the supplied password matches the stored hash
