@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 import Datenbank.sqlite3api as sqlapi
-import cache_gui as cache
+import cache
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)

@@ -1,4 +1,5 @@
 import tkinter as tk
+import Datenbank.sqlite3api as db
 
 def addItemPopup(parent):
     # Toplevel-Fenster erstellen
@@ -86,6 +87,12 @@ def addItemPopup(parent):
     def submitEntry():
         # add device
         # tag, typ,raum,name,damage
+        tag = serviceTagEntryAddItemPopup if serviceTagEntryAddItemPopup else ""
+        type = typeEntryAddItemPopup if typeEntryAddItemPopup else ""
+        room = roomEntryAddItemPopup if roomEntryAddItemPopup else ""
+        name = nameEntryAddItemPopup if nameEntryAddItemPopup else ""
+        damage = damagedButtonAddItemPopup if damagedButtonAddItemPopup else ""
+        db.create_hardware(tag,type,name,damage,None,room)
         print("Eintrag hinzugefügt.")
         addPopup.destroy()
 

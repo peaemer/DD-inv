@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkcalendar import Calendar, DateEntry
 
+import cache
+
 LARGEFONT = ("Arial", 20)
 LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
@@ -68,7 +70,7 @@ def lendPopup(parent, data):
     itemVar.set("Itemplatzhalter") #funktion zum eifügen des Namens
 
     userVar = tk.StringVar()
-    userVar.set("Affe") #funktion zum eifügen des Namens
+    userVar.set(cache.user_name) #funktion zum eifügen des Namens
 
 
 
