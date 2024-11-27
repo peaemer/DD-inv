@@ -8,7 +8,7 @@ import Datenbank.sqlite3api as db
 # from Datenbank.sqlite3api import read_benutzer, update_benutzer
 
 #enables or disables debugging messages
-DEBUG_MODE: bool = True
+DEBUG_MODE: bool = False
 
 # __get_user_ptr = read_benutzer
 # get_u_ptr = read_benutzer
@@ -99,14 +99,14 @@ def verifyUser(username: str, plain_password: str) -> bool:
         if benutzer:
             # Check if the supplied password matches the stored hash
             if __comparePassword(plain_password, benutzer['Passwort']):
-                if (DEBUG_MODE == True): print(f'[UserSecurity]: user {username} was successfully verified.')
+                if (DEBUG_MODE == True): print(f'[UserSecurity]: User {username} was successfully verified.')
                 return True
             else:
                 if (DEBUG_MODE == True): print("[UserSecurity]: Incorrect password.")
                 return False
         else:
-            if (DEBUG_MODE == True): print(f"[UserSecurity]: user '{username}' was not found.")
+            if (DEBUG_MODE == True): print(f"[UserSecurity]: User '{username}' was not found.")
             return False
     except:
-        if (DEBUG_MODE == True): print(f"[UserSecurity]: user '{username}' was not found.")
+        if (DEBUG_MODE == True): print(f"[UserSecurity]: User '{username}' was not found.")
         return False
