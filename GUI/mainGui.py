@@ -9,6 +9,7 @@ from pages import logInWindow,\
 				   mainPage,\
 				   settingsWindow, \
 				   detailsWindow, \
+				   adminWindow, \
 			       _DPIAwareness
 
 # Hauptklasse für das Tkinter-Fenster
@@ -69,9 +70,13 @@ class ddINV(tk.Tk):
 
 	# Funktion, um ein Frame (Seite) anzuzeigen
 	def show_frame(self, cont):
+		print(f"show_frame wird für {cont.__name__} aufgerufen")  # Debug
 		frame = self.frames[cont]
-		frame.tkraise()  # Bringt das angegebene Frame in den Vordergrund
+		frame.tkraise()
 
+		if hasattr(frame, 'on_load') and callable(frame.on_load):
+			print(f"on_load wird für {cont.__name__} aufgerufen")  # Debug
+			frame.on_load()
 
 
 # Hauptanwendung starten
