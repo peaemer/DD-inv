@@ -40,11 +40,15 @@ class logInWindow(tk.Frame):
 
         self.srhHead = tk.PhotoImage(file="assets/srhHeader.png")
         srhHeader = tk.Label(headerFrame, image=self.srhHead, bd=0, bg=srhOrange)
-        srhHeader.grid(padx=20, pady=10, row=0, column=0, sticky=tk.W + tk.N)
+        srhHeader.grid(padx=10, pady=10, row=0, column=0, sticky=tk.W + tk.N + tk.E)
 
         # GreyFrame
         greyCanvas = tk.Canvas(self, bg="white", highlightthickness=0)
-        greyCanvas.grid(row=1, column=0, sticky="n")
+        greyCanvas.grid(row=1, column=0, sticky="nsew")  # Verwende "nsew" für vollständige Dehnung
+
+        # Konfiguriere die Spalten- und Zeilenverhältnisse so, dass sie sich dynamisch verteilen
+        self.grid_columnconfigure(0, weight=1)  # Spalte 0 kann sich ausdehnen
+        self.grid_rowconfigure(1, weight=1)  # Zeile 1 (wo das greyCanvas liegt) kann sich ausdehnen
 
         # Login-Formular mit abgerundeten Eingabefeldern
         formFrame = tk.Frame(self, bg="white")
@@ -76,7 +80,7 @@ class logInWindow(tk.Frame):
             return canvas.create_polygon(points, smooth=True, **kwargs)
 
         # Abgerundeter Hintergrund mit der neuen Funktion
-        create_rounded_rectangle(greyCanvas, 20, 20, 550, 90, radius=30, fill=srhGrey, outline="")
+        create_rounded_rectangle(greyCanvas, 20, 20, 490, 90, radius=30, fill=srhGrey, outline="")
         greyCanvas.create_text(
             250, 55, text="Willkommen bei DD-Inv", font=LARGEFONT, fill="black"
         )
