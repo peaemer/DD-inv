@@ -72,14 +72,14 @@ def popUpSettings(parent):
     srhLogoLabel.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
     # Kategorien in der Seitenleiste
-    categories = ["System", "Style", "Profil(e)", "Über"]
+    categories = ["System", "Stiel", "Profil(e)", "Über"]
 
     def on_category_click(label):
         # Setze alle Labels zurück
         for cat in category_labels:
             cat.config(fg="white")
         # Hervorhebung des angeklickten Labels
-        label.config(fg="Black")
+        label.config(fg=srhGrey)
 
     category_labels = []
     for idx, text in enumerate(categories):
@@ -98,20 +98,20 @@ def popUpSettings(parent):
 
 
     ################################
-    # # L A Y O U T : S T Y L E # #
+    # # L A Y O U T : S T I E L # #
     ################################
 
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     middleFrame = tk.Frame(popup, padx=100, pady=30, bg="white")
-    middleFrame.grid(row=1, column=1, rowspan=2, sticky="sew")
+    middleFrame.grid(row=0, column=1, rowspan=2, sticky="sew")
 
     #erstellen der Funktion anzeigen je nach gedrückter Kategorie
 
 
     # Überschrift für Radiobutton-Kategorie
     radiobutton_label = tk.Label(
-        middleFrame, text="Setze einen vordefinierten Style", font=SETTINGSFONT, bg="white"
+        middleFrame, text="Setze einen vordefinierten oder eigenen Style", font=SETTINGSFONT, bg="white"
     )
     radiobutton_label.grid(row=0, column=0, pady=10, sticky="nw")
 
@@ -134,7 +134,7 @@ def popUpSettings(parent):
 
     # Überschrift für Backgroundbutton-Kategorie
     button_bg_label = tk.Label(
-        middleFrame, text="Setze einen eigenen Hintergrund", font=SETTINGSFONT, bg="white"
+        middleFrame, text="Wähle aus einem Eigenem Bild", font=SETTINGSFONT, bg="white"
     )
     button_bg_label.grid(row=6, column=0, pady=10, sticky="nw")
 

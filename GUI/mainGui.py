@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 
+#https://chatgpt.com/share/6746f2eb-67ac-8003-95be-480c6f1bd897
+
 # Importiere Klassen direkt aus dem Modul pages
 from pages import logInWindow,\
 				   mainPage,\
