@@ -72,7 +72,7 @@ def popUpSettings(parent):
     srhLogoLabel.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
     # Kategorien in der Seitenleiste
-    categories = ["System", "Style", "Profil(e)", "Über"]
+    categories = ["System", "Stiel", "Profil(e)", "Über"]
 
     def on_category_click(label):
         # Setze alle Labels zurück
@@ -98,7 +98,7 @@ def popUpSettings(parent):
 
 
     ################################
-    # # L A Y O U T : S T Y L E # #
+    # # L A Y O U T : S T I E L # #
     ################################
 
 
@@ -134,7 +134,7 @@ def popUpSettings(parent):
 
     # Überschrift für Backgroundbutton-Kategorie
     button_bg_label = tk.Label(
-        middleFrame, text="Setze einen eigenen Hintergrund", font=SETTINGSFONT, bg="white"
+        middleFrame, text="Wähle aus einem Eigenem Bild", font=SETTINGSFONT, bg="white"
     )
     button_bg_label.grid(row=6, column=0, pady=10, sticky="nw")
 

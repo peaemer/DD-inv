@@ -10,7 +10,7 @@ srhGrey = "#d9d9d9"
 
 
 # Hauptseite (zweites Fenster)
-class mainPage(tk.Frame):
+class adminWindow(tk.Frame):
     #if (cache.user_group == "admin"):
 
     def __init__(self, parent, controller):
@@ -20,12 +20,6 @@ class mainPage(tk.Frame):
         def showSettingsWindow():
             from .settingsWindow import popUpSettings
             popUpSettings(self)
-
-        def showAdminWindow():
-            print("AAAA")
-
-        # Speichere die Funktion als Attribut, um später darauf zuzugreifen
-        self.showAdminWindow = showAdminWindow
 
         def logOut():
             from .logInWindow import logInWindow
@@ -61,24 +55,24 @@ class mainPage(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
 
         # Erstelle einen Header-Bereich
-        self.headerFrame = tk.Frame(self, height=10, background="#DF4807")
-        self.headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+        headerFrame = tk.Frame(self, height=10, background="#DF4807")
+        headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Konfiguriere die Spalten für den Header
-        self.headerFrame.grid_columnconfigure(0, weight=1)
-        self.headerFrame.grid_rowconfigure(0, weight=1)
+        headerFrame.grid_columnconfigure(0, weight=1)
+        headerFrame.grid_rowconfigure(0, weight=1)
 
         self.srhHead = tk.PhotoImage(file="assets/srh.png")
 
         # Füge ein zentriertes Label hinzu
-        headerLabel = tk.Label(self.headerFrame, image=self.srhHead, background="#DF4807", foreground="white")
+        headerLabel = tk.Label(headerFrame, image=self.srhHead, background="#DF4807", foreground="white")
         headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Konvertiere das Bild für Tkinter
         self.logOutBtn = tk.PhotoImage(file="assets/ausloggen.png")
 
         # Füge einen Button mit dem Bild hinzu
-        logOutButton = tk.Button(self.headerFrame, image=self.logOutBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
+        logOutButton = tk.Button(headerFrame, image=self.logOutBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
                                  activebackground="#DF4807")
         logOutButton.grid(row=0, column=3, sticky=tk.E, padx=20)
 
@@ -86,7 +80,7 @@ class mainPage(tk.Frame):
         self.optBtn = tk.PhotoImage(file="assets/option.png")
 
         # Füge einen Button mit dem Bild hinzu
-        optionsButton = tk.Button(self.headerFrame,
+        optionsButton = tk.Button(headerFrame,
                                   image=self.optBtn,
                                   command=showSettingsWindow,
                                   bd=0,
@@ -94,10 +88,6 @@ class mainPage(tk.Frame):
                                   bg="#DF4807",
                                   activebackground="#DF4807")
         optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
-
-        self.adminBtn = tk.PhotoImage(file="assets/Key.png")
-
-
 
 
         greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
@@ -248,9 +238,9 @@ class mainPage(tk.Frame):
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        tree.bind("<Double-1>", onItemSelected)
+        tree.bind("<<TreeviewSelect>>", onItemSelected)
 
-    def update_treeview_with_data(self):
+    def update_treeview_with_data():
         tree.delete(*tree.get_children())
         i = 0
         for entry in sqlapi.fetch_hardware():
@@ -258,24 +248,8 @@ class mainPage(tk.Frame):
             tree.insert(
                 "",
                 "end",
-                values=(i, entry['Service_Tag'], entry['Geraetetype'], entry['Raum'],
+                values=(i, entry['Service_Tag'], entry['Geraetetyp'], entry['Raum'],
                         entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
                 tags=(tag,)
             )
             i += 1
-
-    def on_load(self):
-        """Diese Methode wird aufgerufen, nachdem die Seite vollständig geladen ist."""
-        print("MainPage wurde vollständig geladen.")
-        # Führe hier die gewünschte Funktion aus.
-        if (cache.user_group == "admin"):
-            print("Als Admin Eingeloggt")
-            adminButton = tk.Button(self.headerFrame,
-                                  image=self.adminBtn,
-                                  command=self.showAdminWindow,
-                                  bd=0,
-                                  relief=tk.FLAT,
-                                  bg="#DF4807",
-                                  activebackground="#DF4807")
-            adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
-            self.update_treeview_with_data()
