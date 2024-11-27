@@ -180,8 +180,10 @@ class mainPage(tk.Frame):
         addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
         addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
+        # Treeview erstellen
         tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=30)
 
+        # Scrollbar hinzufügen
         scroll = tk.Scrollbar(
             treeFrame,
             orient="vertical",
@@ -196,27 +198,50 @@ class mainPage(tk.Frame):
         scroll.grid(row=1, column=1, sticky="ns")
         tree.configure(yscrollcommand=scroll.set)
 
-        # Tags für alternierende Zeilenfarben konfigurieren
+        # Tags für alternierende Zeilenfarben
         tree.tag_configure("oddrow", background="#f7f7f7")
         tree.tag_configure("evenrow", background="white")
 
-        ### listbox for directories
+        # Spalten definieren
         tree.column("# 1", anchor=CENTER, width=60)
-        tree.heading("# 1", text="ID", )
         tree.column("# 2", anchor=CENTER, width=125)
-        tree.heading("# 2", text="Service Tag")
         tree.column("# 3", anchor=CENTER, width=250)
-        tree.heading("# 3", text="Typ")
         tree.column("# 4", anchor=CENTER, width=100)
-        tree.heading("# 4", text="Raum")
         tree.column("# 5", anchor=CENTER, width=250)
-        tree.heading("# 5", text="Name")
         tree.column("# 6", anchor=CENTER, width=300)
-        tree.heading("# 6", text="Beschädigung")
         tree.column("# 7", anchor=CENTER, width=250)
-        tree.heading("# 7", text="Ausgeliehen von")
+
+        # Header-Definitionen
+        headings = {
+            "# 1": "ID",
+            "# 2": "Service Tag",
+            "# 3": "Typ",
+            "# 4": "Raum",
+            "# 5": "Name",
+            "# 6": "Beschädigung",
+            "# 7": "Ausgeliehen von"
+        }
+
+        # Header-Konfiguration mit Sortierfunktion
+        for col, text in headings.items():
+            tree.heading(col, text=text, command=lambda col=col: sort_column_with_indicator(tree, col, False, headings))
+
         tree.grid(row=1, column=0)
         tree.tkraise()
+
+        # Sortierfunktion mit Indikator
+        def sort_column_with_indicator(tree, col, reverse, headings):
+            data = [(tree.set(child, col), child) for child in tree.get_children('')]
+            data.sort(reverse=reverse, key=lambda x: x[0])
+            for index, (value, child) in enumerate(data):
+                tree.move(child, '', index)
+            new_heading_text = f"{headings[col]} {'▲' if reverse else '▼'}"
+            tree.heading(col, text=new_heading_text,
+                         command=lambda: sort_column_with_indicator(tree, col, not reverse, headings))
+            for other_col, original_text in headings.items():
+                if other_col != col:
+                    tree.heading(other_col, text=original_text,
+                                 command=lambda col=other_col: sort_column_with_indicator(tree, col, False, headings))
 
         def insert_data(self):
             i = 0
