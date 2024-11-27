@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-import Datenbank.sqlite3api as sqlapi
+import Datenbank.sqlite3api as db
 
 
 LARGEFONT = ("Arial", 35)
@@ -190,7 +190,10 @@ class detailsWindow(tk.Frame):
             print("nix")
 
         def deleteEntry():
-            print("Bitte machen, danke :)")
+            db.delete_hardware_by_service_tag(self.serviceTagEntryDetailsWindow.get())
+            from .mainPage import mainPage
+            mainPage.update_treeview_with_data()
+            controller.show_frame(mainPage)
 
         def lend(data):
             print("Übergebene Daten:", data)
@@ -213,7 +216,7 @@ class detailsWindow(tk.Frame):
 
         deleteButton = tk.Button(buttonFrameAddItemPopup, image=self.deleteBtn,
                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                               command=lambda: lend({"name": self.nameEntryDetailsWindow.get()}))
+                               command= deleteEntry)
         deleteButton.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 

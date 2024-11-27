@@ -95,7 +95,6 @@ def verifyUser(username: str, plain_password: str) -> bool:
         :return bool: whether the plain password matches the stored one after the plain password was hashed
     '''
     benutzer = db.read_benutzer(username)
-    print(benutzer)
     try:
         if benutzer:
             # Check if the supplied password matches the stored hash
