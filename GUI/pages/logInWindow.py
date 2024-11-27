@@ -1,6 +1,6 @@
 import sys
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import cache
 
 LARGEFONT = ("Arial", 25)
@@ -23,7 +23,8 @@ class logInWindow(tk.Frame):
                 from .mainPage import mainPage
                 controller.show_frame(mainPage)
             else:
-                sys.exit()
+                messagebox.showinfo(title="Fehler", message="Passwort oder Benutzername falsch")
+                passwordEntry.delete(0, 'end')
 
         def on_enter(event):
             logIn()
