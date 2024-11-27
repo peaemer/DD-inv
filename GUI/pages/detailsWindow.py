@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-import Datenbank.sqlite3api as sqlapi
+import Datenbank.sqlite3api as db
 
 
 LARGEFONT = ("Arial", 35)
@@ -189,24 +189,38 @@ class detailsWindow(tk.Frame):
             #update
             print("nix")
 
+        def deleteEntry():
+            db.delete_hardware_by_service_tag(self.serviceTagEntryDetailsWindow.get())
+            from .mainPage import mainPage
+            mainPage.update_treeview_with_data()
+            controller.show_frame(mainPage)
+
         def lend(data):
             print("Übergebene Daten:", data)
             from .lendPopup import lendPopup
             lendPopup(self, data)
 
-        parent.editBtn = tk.PhotoImage(file="assets/Aktualisieren.png")
-        parent.lendBtn = tk.PhotoImage(file="assets/Ausleihen.png")
+        self.editBtn = tk.PhotoImage(file="assets/Aktualisieren.png")
+        self.lendBtn = tk.PhotoImage(file="assets/Ausleihen.png")
+        self.deleteBtn = tk.PhotoImage(file="assets/Loeschen.png")
 
         # Buttons in ein separates Frame
         buttonFrameAddItemPopup = tk.Frame(self, background="white")
         buttonFrameAddItemPopup.grid(row=2, column=0, pady=20)
 
-        lendButton = tk.Button(buttonFrameAddItemPopup, image=parent.lendBtn,
+        lendButton = tk.Button(buttonFrameAddItemPopup, image=self.lendBtn,
                                              bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                              command=lambda: lend({"name": self.nameEntryDetailsWindow.get()}))
         lendButton.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
-        editButton = tk.Button(buttonFrameAddItemPopup, image=parent.editBtn,
+
+        deleteButton = tk.Button(buttonFrameAddItemPopup, image=self.deleteBtn,
+                               bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                               command= deleteEntry)
+        deleteButton.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+
+
+        editButton = tk.Button(buttonFrameAddItemPopup, image=self.editBtn,
                                            bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                            command=refreshEntry)
         editButton.pack(side=tk.LEFT, padx=20)  # Links platzieren

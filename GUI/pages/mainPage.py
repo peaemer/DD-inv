@@ -94,7 +94,7 @@ class mainPage(tk.Frame):
 
         self.adminBtn = tk.PhotoImage(file="assets/Key.png")
 
-        if (cache.user_group == "admin"):
+        if (cache.user_group == "Admin"):
             print("Als Admin Eingeloggt")
             adminButton = tk.Button(headerFrame,
                                   image=self.adminBtn,
@@ -242,7 +242,7 @@ class mainPage(tk.Frame):
                 )
                 i += 1
         insert_data(self)
-        print("2")
+
         # Funktion für das Ereignis-Binding
         def onItemSelected(event):
             try:
@@ -254,7 +254,6 @@ class mainPage(tk.Frame):
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
-        print("1")
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<<TreeviewSelect>>", onItemSelected)
 
