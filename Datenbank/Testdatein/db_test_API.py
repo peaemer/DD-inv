@@ -91,7 +91,7 @@ def test_functions():
 
 def api_test_raum_info():
     print("-------------- Test: Raum erstellen --------------")
-    print(create_room("TestRaum1", "TesGebäude, 1.Etage, Linker Flügel"))
+    print(create_room("TestRaum4", "TesGebäude, 1.Etage, Linker Flügel"))
 
     print("-------------- Test: Raumliste aufrufen --------------")
     print(fetch_all_rooms())
@@ -100,10 +100,10 @@ def api_test_raum_info():
     print(search_room("E220"))
 
     print("-------------- Test: Raum löschen -------------- ")
-    print(delete_room("TestRaum1"))
+    print(delete_room("TestRaum4"))
 
     print("-------------- Test: Raum ändern --------------")
-    print(update_room("E220", "Testbeschreibung"))
+    print(update_room("E220","","Testbeschreibung"))
 
 if __name__ == "__main__":
     api_test_raum_info()

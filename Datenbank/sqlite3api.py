@@ -394,12 +394,14 @@ def search_room(Raum):
     except sqlite3.Error as e:
         return f"Fehler beim Suchen des Raumes: {e}"
 
-def update_room(neu_Raum, neu_Ort):
+def update_room(Raum, neu_Raum, neu_Ort):
     """
     If Statement schaut nach, was genau geändert werden soll, if not zum absichern damit keine sachen auf NUll gesetzt werden
     Query zum updaten von zu updaten
-    :param Raum:
-    :returns geänderter Wert
+    :param Raum:hier wird festgelegt welcher Primarykey angesprochen werden soll
+    :param neu_Raum:die neue Value für Raum
+    :param neu_Ort:die neue Value für Ort
+    :returns geänderter Wert:
     """
     try:
         with init_connection() as con:
