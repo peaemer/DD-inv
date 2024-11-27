@@ -42,9 +42,19 @@ class logInWindow(tk.Frame):
         srhHeader = tk.Label(headerFrame, image=self.srhHead, bd=0, bg=srhOrange)
         srhHeader.grid(padx=10, pady=10, row=0, column=0, sticky=tk.W + tk.N + tk.E)
 
-        # GreyFrame
-        greyCanvas = tk.Canvas(self, bg="white", highlightthickness=0)
-        greyCanvas.grid(row=1, column=0, sticky="nsew")  # Verwende "nsew" für vollständige Dehnung
+        greyFrame = tk.Frame(self, height=10, background=srhGrey)
+        greyFrame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
+
+        # Text im GreyFrame
+        greyLabel = tk.Label(
+            greyFrame,
+            text="Willkommen bei DD-Inv",
+            font=LARGEFONT,
+            bg=srhGrey,
+            fg="black",
+            anchor="center"
+        )
+        greyLabel.pack(expand=True, fill="both")  # Text zentrieren und Frame ausfüllen
 
         # Konfiguriere die Spalten- und Zeilenverhältnisse so, dass sie sich dynamisch verteilen
         self.grid_columnconfigure(0, weight=1)  # Spalte 0 kann sich ausdehnen
@@ -53,37 +63,6 @@ class logInWindow(tk.Frame):
         # Login-Formular mit abgerundeten Eingabefeldern
         formFrame = tk.Frame(self, bg="white")
         formFrame.place(relx=0.5, rely=0.5, anchor="center")
-
-        # Funktion zur Erstellung abgerundeter Ecken
-        def create_rounded_rectangle(canvas, x1, y1, x2, y2, radius=25, **kwargs):
-            """Erstellt ein Rechteck mit abgerundeten Ecken."""
-            points = [
-                x1 + radius, y1,
-                x1 + radius, y1,
-                x2 - radius, y1,
-                x2 - radius, y1,
-                x2, y1,
-                x2, y1 + radius,
-                x2, y2 - radius,
-                x2, y2 - radius,
-                x2, y2,
-                x2 - radius, y2,
-                x2 - radius, y2,
-                x1 + radius, y2,
-                x1 + radius, y2,
-                x1, y2,
-                x1, y2 - radius,
-                x1, y1 + radius,
-                x1, y1 + radius,
-                x1, y1,
-            ]
-            return canvas.create_polygon(points, smooth=True, **kwargs)
-
-        # Abgerundeter Hintergrund mit der neuen Funktion
-        create_rounded_rectangle(greyCanvas, 20, 20, 490, 90, radius=30, fill=srhGrey, outline="")
-        greyCanvas.create_text(
-            250, 55, text="Willkommen bei DD-Inv", font=LARGEFONT, fill="black"
-        )
 
         def create_rounded_entry(canvas, parent, text_var, width=350, height=50):
             """Hilfsfunktion, um ein Eingabefeld mit abgerundeten Ecken zu erstellen."""
