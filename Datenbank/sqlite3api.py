@@ -161,24 +161,24 @@ def fetch_hardware():
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Hardware: {e.args[0]}")
 
-def fetch_hardware_by_id(Service_Tag):
+def fetch_hardware_by_id(ID):
     """
     Ruft die Daten einer spezifischen Hardware anhand ihres `Service_Tag` ab.
-    :param Service_Tag:z.B. ABC123
+    :param ID:zum identifizieren des Datensatzes
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
-            cur.execute("SELECT * FROM Hardware WHERE Service_Tag = ?", (Service_Tag,))
+            cur.execute("SELECT * FROM Hardware WHERE ID = ?", (ID,))
             row = cur.fetchone()
             return dict(row) if row else None
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Hardware: {e.args[0]}")
 
-def update_hardware_by_service_tag(Service_Tag, neue_Ausgeliehen_von=None, neue_beschaedigung=None, neue_Standort=None):
+def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_beschaedigung=None, neue_Standort=None):
     """
     Aktualisiert bestimmte Felder einer Hardware basierend auf dem `Service_Tag`.
-    :param Nutzername
+    :param ID: zum identifizieren des Datensatzes
     :param neue_Ausgeliehen_von:falls kein neues, leer lassen und neues Komma setzten
     :param neue_beschaedigung:(falls kein neues, leer lassen und neues Komma setzten)
     :param neue_Standort:(falls kein neues, leer lassen und neues Komma setzten)
@@ -196,29 +196,29 @@ def update_hardware_by_service_tag(Service_Tag, neue_Ausgeliehen_von=None, neue_
                 update_fields.append("Beschaedigung = ?")
                 parameters.append(neue_beschaedigung)
             if neue_Standort:
-                update_fields.append("Standort = ?")
+                update_fields.append("Raum = ?")
                 parameters.append(neue_Standort)
 
             if not update_fields:
                 return "Keine Aktualisierungsdaten vorhanden."
 
-            sql_query = f"UPDATE Hardware SET {', '.join(update_fields)} WHERE Service_Tag = ?"
-            parameters.append(Service_Tag)
+            sql_query = f"UPDATE Hardware SET {', '.join(update_fields)} WHERE ID = ?"
+            parameters.append(ID)
             cur.execute(sql_query, parameters)
             con.commit()
         return "Hardware erfolgreich aktualisiert."
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren der Hardware: {e.args[0]}"
 
-def delete_hardware_by_service_tag(Service_Tag):
+def delete_hardware_by_id(ID):
     """
     Löscht einen Hardware-Eintrag aus der Tabelle `Hardware`.
-    :param Service_Tag:z.B. ABC123
+    :param ID:zum idenzifizieren des Datensatzes
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
-            cur.execute("DELETE FROM Hardware WHERE Service_Tag = ?", (Service_Tag,))
+            cur.execute("DELETE FROM Hardware WHERE ID = ?", (ID,))
             con.commit()
         return "Hardware-Eintrag wurde erfolgreich entfernt."
     except sqlite3.Error as e:
