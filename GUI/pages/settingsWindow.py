@@ -146,9 +146,10 @@ def popUpSettings(parent):
 
     # Standard-Frame anzeigen
     show_frame("System")
-    show_frame("Style")
-    show_frame("Profile")
-    show_frame("Ueber")
+
+    # Debug Info
+    print("Einstellungen geöffnet")
+
 
     #################################
     # # L A Y O U T : S Y S T E M # #
