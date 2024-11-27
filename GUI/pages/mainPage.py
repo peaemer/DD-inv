@@ -31,8 +31,14 @@ class mainPage(tk.Frame):
             from .logInWindow import logInWindow
             controller.show_frame(logInWindow)  # funktionalität hinzufügen
 
-        def search():                           # funktionalität hinzufügen
-            print("I am Searching")
+        def search(event=None):                           # funktionalität hinzufügen
+            search_entrys = []
+            for entry in sqlapi.fetch_hardware():
+                for value in entry:
+                    if searchEntry.get().lower() in str(entry[value]).lower():
+                        if entry not in search_entrys:
+                            search_entrys.append(entry)
+            self.update_treeview_with_data(data=search_entrys)
 
         def filtr():                            # funktionalität hinzufügen
             print("Do be filtering")
@@ -146,6 +152,7 @@ class mainPage(tk.Frame):
         # Events für Klick und Fokusverlust hinzufügen
         searchEntry.bind('<FocusIn>', onEntryClick)
         searchEntry.bind('<FocusOut>', onFocusOut)
+        searchEntry.bind('<Return>', search)
         searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
         self.filterBtn = tk.PhotoImage(file="assets/Filter.png")
@@ -250,10 +257,16 @@ class mainPage(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<Double-1>", onItemSelected)
 
-    def update_treeview_with_data(self):
+    def update_treeview_with_data(self, data=None):
+        # Clear the current treeview contents
         tree.delete(*tree.get_children())
+
+        # If no data is provided, fetch the data from sqlapi
+        if data is None:
+            data = sqlapi.fetch_hardware()
+
         i = 0
-        for entry in sqlapi.fetch_hardware():
+        for entry in data:
             tag = "evenrow" if i % 2 == 0 else "oddrow"
             tree.insert(
                 "",
@@ -263,6 +276,7 @@ class mainPage(tk.Frame):
                 tags=(tag,)
             )
             i += 1
+
 
     def on_load(self):
         """Diese Methode wird aufgerufen, nachdem die Seite vollständig geladen ist."""
