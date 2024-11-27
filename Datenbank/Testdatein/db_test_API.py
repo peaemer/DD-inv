@@ -89,5 +89,21 @@ def test_functions():
 #
 #     print("\nTests für Nutzerrollen-Funktionen abgeschlossen.")
 
+def api_test_raum_info():
+    print("-------------- Test: Raum erstellen --------------")
+    print(create_room("TestRaum4", "TesGebäude, 1.Etage, Linker Flügel"))
+
+    print("-------------- Test: Raumliste aufrufen --------------")
+    print(fetch_all_rooms())
+
+    print("-------------- Test: Raum aufrufen --------------")
+    print(search_room("E220"))
+
+    print("-------------- Test: Raum löschen -------------- ")
+    print(delete_room("TestRaum4"))
+
+    print("-------------- Test: Raum ändern --------------")
+    print(update_room("E220","","Testbeschreibung"))
+
 if __name__ == "__main__":
-    test_functions()
+    api_test_raum_info()
