@@ -97,7 +97,6 @@ def addItemPopup(parent):
         name = nameEntryAddItemPopup.get() if nameEntryAddItemPopup.get() else ""
         damage = damagedButtonAddItemPopup.get() if damagedButtonAddItemPopup.get() else ""
         db.create_hardware(tag,type,name,damage,None,room)
-        print("Eintrag hinzugefügt.")
         from .mainPage import mainPage
         mainPage.update_treeview_with_data()
         addPopup.destroy()

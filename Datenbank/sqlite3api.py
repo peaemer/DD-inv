@@ -3,7 +3,7 @@ import os
 from Security.UserSecurity import hashPassword
 
 # Pfad zur Datenbankdatei
-path: str = 'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
+path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 
 def init_connection():
     """
@@ -141,7 +141,7 @@ def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_
             cur = con.cursor()
             cur.execute(
                 "INSERT INTO Hardware (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort) VALUES (?, ?, ?, ?, ?, ?)",
-                (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Standort)
+                (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Raum)
             )
             con.commit()
         return "Hardware-Eintrag wurde erstellt."

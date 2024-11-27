@@ -94,8 +94,7 @@ class mainPage(tk.Frame):
 
         self.adminBtn = tk.PhotoImage(file="assets/Key.png")
 
-        user = "admin"
-        if user == "admin":
+        if (cache.user_group == "admin"):
             print("Als Admin Eingeloggt")
             adminButton = tk.Button(headerFrame,
                                   image=self.adminBtn,
@@ -234,7 +233,7 @@ class mainPage(tk.Frame):
                         i,
                         entry['Service_Tag'],
                         entry['Geraetetyp'],
-                        entry['Standort'],
+                        entry['Raum'],
                         entry['Modell'],
                         entry['Beschaedigung'],
                         entry['Ausgeliehen_von']
@@ -267,7 +266,7 @@ class mainPage(tk.Frame):
             tree.insert(
                 "",
                 "end",
-                values=(i, entry['Service_Tag'], entry['Geraetetyp'], entry['Standort'],
+                values=(i, entry['Service_Tag'], entry['Geraetetyp'], entry['Raum'],
                         entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
                 tags=(tag,)
             )
