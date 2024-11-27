@@ -51,7 +51,7 @@ def popUpSettings(parent):
     headerFrameSettings.grid_rowconfigure(0, weight=1)  # Dynamische Inhalte
 
     # Header-Logo laden und anzeigen
-    popup.optionsHead = tk.PhotoImage(file="assets/option.png")
+    popup.optionsHead = tk.PhotoImage(file="assets/Tool.png")
     headerLabel = tk.Label(headerFrameSettings,
                            image=popup.optionsHead,
                            foreground="white")
