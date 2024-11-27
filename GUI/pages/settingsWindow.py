@@ -79,7 +79,7 @@ def popUpSettings(parent):
         for cat in category_labels:
             cat.config(fg="white")
         # Hervorhebung des angeklickten Labels
-        label.config(fg=srhGrey)
+        label.config(fg="Black")
 
     category_labels = []
     for idx, text in enumerate(categories):
@@ -111,7 +111,7 @@ def popUpSettings(parent):
 
     # Überschrift für Radiobutton-Kategorie
     radiobutton_label = tk.Label(
-        middleFrame, text="Setze einen vordefinierten oder eigenen Style", font=SETTINGSFONT, bg="white"
+        middleFrame, text="Setze einen vordefinierten Style", font=SETTINGSFONT, bg="white"
     )
     radiobutton_label.grid(row=0, column=0, pady=10, sticky="nw")
 
