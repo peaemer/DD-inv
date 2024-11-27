@@ -232,7 +232,7 @@ class mainPage(tk.Frame):
                     values=(
                         i,
                         entry['Service_Tag'],
-                        entry['Geraetetyp'],
+                        entry['Geraetetype'],
                         entry['Raum'],
                         entry['Modell'],
                         entry['Beschaedigung'],
