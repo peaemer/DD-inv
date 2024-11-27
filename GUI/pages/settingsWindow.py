@@ -104,7 +104,7 @@ def popUpSettings(parent):
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     middleFrame = tk.Frame(popup, padx=100, pady=30, bg="white")
-    middleFrame.grid(row=0, column=1, rowspan=2, sticky="sew")
+    middleFrame.grid(row=1, column=1, rowspan=2, sticky="sew")
 
     #erstellen der Funktion anzeigen je nach gedrückter Kategorie
 
