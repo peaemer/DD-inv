@@ -33,8 +33,12 @@ def create_benutzer(nutzername, passwort, email):
     """
     try:
         passwort_hashed_value = hashPassword(passwort)
+        # wird benutzt um das Passwort in ein Hashwert zu ändern
         with init_connection() as con:
             cur = con.cursor()
+            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
+            # Values werden als "?" - Platzhalter um fehler beim Übergeben der Values vorzubeugen
+            # Und um eine Variable übergeben zu können
             cur.execute(
                 "INSERT INTO Benutzer (Nutzername, Passwort, Email, Rolle) VALUES (?, ?, ?, 'Guest')",
                 (nutzername, passwort_hashed_value, email)
@@ -42,19 +46,22 @@ def create_benutzer(nutzername, passwort, email):
             con.commit()
         return "Benutzer wurde hinzugefügt."
     except sqlite3.Error as e:
+        # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
         return f"Fehler beim Hinzufügen des Benutzers: {e.args[0]}"
+
 
 def read_all_benutzer():
     """
-    Ruft alle Benutzer aus der Tabelle `Benutzer` ab.
-    Fetchall um jeden einzelnen Eintrag zu bekommen
-    RuntimeError ist dafür da um fehler bei der Dictionary vorzubeugen
-    """
+        Ruft alle Benutzer aus der Tabelle `Benutzer` ab.
+        Fetchall um jeden einzelnen Eintrag zu bekommen
+        RuntimeError ist dafür da um fehler bei der Dictionary vorzubeugen
+        """
     try:
         with init_connection() as con:
             cur = con.cursor()
             cur.execute("SELECT * FROM Benutzer")
             rows = cur.fetchall()
+            # dict ist notwending um die Daten übersichtlicher in einer Tabelle darstellen zu können
             return [dict(row) for row in rows]
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Benutzer: {e.args[0]}")
@@ -169,6 +176,8 @@ def fetch_hardware_by_id(ID):
     try:
         with init_connection() as con:
             cur = con.cursor()
+            # ID muss hier mit einem Komma an ende übergeben werden um als Tuple zu agieren
+            # Warum? keine Ahnung aber der Wert muss ein Tuplse sein sonst findet er nichts
             cur.execute("SELECT * FROM Hardware WHERE ID = ?", (ID,))
             row = cur.fetchone()
             return dict(row) if row else None
