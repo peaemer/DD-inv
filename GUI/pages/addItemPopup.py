@@ -72,34 +72,50 @@ def addItemPopup(parent):
     sizeAddItemPopup = 16
 
     # Label und Eingabefeld hinzufügen
-    serviceTagLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Service Tag", background="white", font=("Arial",sizeAddItemPopup))
+    serviceTagLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Service Tag", background="white",
+                                           font=("Arial", sizeAddItemPopup))
     serviceTagLabelAddItemPopup.grid(row=0, column=0, padx=0, pady=20, sticky=tk.E)
 
-    serviceTagEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
+    serviceTagEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9",
+                                           font=("Arial", sizeAddItemPopup), bd=0)
     serviceTagEntryAddItemPopup.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
-    typeLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Typ", background="white", font=("Arial",sizeAddItemPopup))
+    # Typ
+    typeLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Typ", background="white",
+                                     font=("Arial", sizeAddItemPopup))
     typeLabelAddItemPopup.grid(row=1, column=0, padx=0, pady=20, sticky=tk.E)
 
-    typeEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
+    typeEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial", sizeAddItemPopup),
+                                     bd=0)
     typeEntryAddItemPopup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
-    roomLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Raum", background="white", font=("Arial",sizeAddItemPopup))
+    # Raum (Dropdown-Menü)
+    roomLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Raum", background="white",
+                                     font=("Arial", sizeAddItemPopup))
     roomLabelAddItemPopup.grid(row=2, column=0, padx=0, pady=20, sticky=tk.E)
 
-    roomEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
-    roomEntryAddItemPopup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    # Combobox statt Entry
+    roomValues = ["Raum 101", "Raum 102", "Raum 201", "Raum 202"]  # Beispieleinträge
+    roomComboboxAddItemPopup = ttk.Combobox(inputFrameAddItemPopup, values=roomValues, font=("Arial", sizeAddItemPopup))
+    roomComboboxAddItemPopup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    roomComboboxAddItemPopup.set("Raum auswählen")  # Platzhalter
 
-    nameLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Name", background="white", font=("Arial",sizeAddItemPopup))
+    # Name
+    nameLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Name", background="white",
+                                     font=("Arial", sizeAddItemPopup))
     nameLabelAddItemPopup.grid(row=3, column=0, padx=0, pady=20, sticky=tk.E)
 
-    nameEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
+    nameEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial", sizeAddItemPopup),
+                                     bd=0)
     nameEntryAddItemPopup.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
-    damagedLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Beschädigung", background="white", font=("Arial",sizeAddItemPopup))
+    # Beschädigung
+    damagedLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Beschädigung", background="white",
+                                        font=("Arial", sizeAddItemPopup))
     damagedLabelAddItemPopup.grid(row=4, column=0, padx=0, pady=20, sticky=tk.E)
 
-    damagedButtonAddItemPopup = tk.Entry(inputFrameAddItemPopup,background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
+    damagedButtonAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial", sizeAddItemPopup),
+                                         bd=0)
     damagedButtonAddItemPopup.grid(row=4, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Funktion zum Eintrag hinzufügen
