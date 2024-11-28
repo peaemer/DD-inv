@@ -22,7 +22,8 @@ class mainPage(tk.Frame):
             popUpSettings(self)
 
         def showAdminWindow():
-            print("AAAA")
+            from .adminWindow import adminWindow
+            controller.show_frame(adminWindow)
 
         # Speichere die Funktion als Attribut, um später darauf zuzugreifen
         self.showAdminWindow = showAdminWindow
@@ -42,9 +43,6 @@ class mainPage(tk.Frame):
                         if entry not in search_entrys:
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
-
-        def filtr():                            # funktionalität hinzufügen
-            print("Do be filtering")
 
         def addItem():
             from .addItemPopup import addItemPopup
@@ -132,7 +130,7 @@ class mainPage(tk.Frame):
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
         searchFrame = tk.Frame(self, bg="white")
-        searchFrame.grid(pady=50, padx=200, row=1, column=0, sticky=tk.W + tk.E + tk.N)
+        searchFrame.grid(pady=50, padx=185, row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         searchFrame.grid_columnconfigure(0, weight=0)
         searchFrame.grid_columnconfigure(1, weight=1)
@@ -146,7 +144,7 @@ class mainPage(tk.Frame):
                                  bg="white",
                                  activebackground="white",
                                  command=search)
-        searchButton.grid(padx=10, pady=5, row=0, column=0)
+        searchButton.grid(padx=5, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
         searchEntry = tk.Entry(searchFrame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
@@ -156,34 +154,26 @@ class mainPage(tk.Frame):
         searchEntry.bind('<FocusIn>', onEntryClick)
         searchEntry.bind('<FocusOut>', onFocusOut)
         searchEntry.bind('<Return>', search)
-        searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
+        searchEntry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-        self.filterBtn = tk.PhotoImage(file="assets/Filter.png")
-        filterButton = tk.Button(searchFrame,
-                                 image=self.filterBtn,
-                                 bd=0,
-                                 relief=tk.FLAT,
-                                 bg="white",
-                                 activebackground="white",
-                                 command=filtr)
-        filterButton.grid(row=0, column=3, padx=10)
+
 
         treeStyle = ttk.Style()
         treeStyle.theme_use("default") #alt, classic,xpnative,winnative, default
-        treeStyle.configure("Treeview.Heading", font=("Arial", 14))
-        treeStyle.configure("Treeview", rowheight=20, font=("Arial", 12))
+        treeStyle.configure("Treeview.Heading",rowheight=50, font=("Arial", 20))
+        treeStyle.configure("Treeview", rowheight=40, font=("Arial", 14))
 
 
 
         # Ändere die Position des TreeFrames auf row=3
         treeFrame = tk.Frame(self, background="white")
-        treeFrame.grid(row=1, column=0, padx=260)
+        treeFrame.grid(row=1, column=0, padx=0)
 
         self.addBtn = tk.PhotoImage(file="assets/Erstellen.png")
         addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
         addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
-        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=30)
+        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
 
         scroll = tk.Scrollbar(
             treeFrame,
@@ -206,7 +196,7 @@ class mainPage(tk.Frame):
         ### listbox for directories
         tree.column("# 1", anchor=CENTER, width=60)
         tree.heading("# 1", text="ID", )
-        tree.column("# 2", anchor=CENTER, width=125)
+        tree.column("# 2", anchor=CENTER, width=155)
         tree.heading("# 2", text="Service Tag")
         tree.column("# 3", anchor=CENTER, width=250)
         tree.heading("# 3", text="Typ")

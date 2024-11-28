@@ -94,12 +94,9 @@ class detailsWindow(tk.Frame):
 
         sizeDetailsWindow = 30
 
-        treeStyle = ttk.Style()
-        treeStyle.theme_use("default")  # alt, classic,xpnative,winnative, default
-        treeStyle.configure("Treeview.Heading", font=("Arial", 14))
-        treeStyle.configure("Treeview", rowheight=20, font=("Arial", 12))
 
-        # Ändere die Position des TreeFrames auf row=3
+
+        # Ändere die Position des TreeFrames
         treeFrameDetailsWindow = tk.Frame(containerFrame, background="red", width=200, height=400)
         treeFrameDetailsWindow.grid(row=0, column=0, padx=40, sticky="")
 

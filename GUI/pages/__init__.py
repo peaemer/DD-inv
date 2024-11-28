@@ -5,7 +5,7 @@ from .settingsWindow import popUpSettings
 from .detailsWindow import detailsWindow
 from .lendPopup import lendPopup
 from .adminWindow import adminWindow
+from .userDetailsWindow import userDetailsWindow
 
 
-
-__all__ = ["logInWindow", "mainPage", "addItemPopup", "settingsWindow", "detailsWindow", "adminWindow"]
+__all__ = ["logInWindow", "mainPage", "addItemPopup", "settingsWindow", "detailsWindow", "adminWindow", "userDetailsWindow"]

@@ -11,25 +11,21 @@ srhGrey = "#d9d9d9"
 
 # Hauptseite (zweites Fenster)
 class adminWindow(tk.Frame):
-    #if (cache.user_group == "admin"):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
+        def goBackAdminWindow():
+            from .mainPage import mainPage
+            controller.show_frame(mainPage)
+
         def showSettingsWindow():
             from .settingsWindow import popUpSettings
             popUpSettings(self)
 
-        def logOut():
-            from .logInWindow import logInWindow
-            controller.show_frame(logInWindow)  # funktionalität hinzufügen
-
         def search():                           # funktionalität hinzufügen
             print("I am Searching")
-
-        def filtr():                            # funktionalität hinzufügen
-            print("Do be filtering")
 
         def addItem():
             from .addItemPopup import addItemPopup
@@ -69,10 +65,10 @@ class adminWindow(tk.Frame):
         headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Konvertiere das Bild für Tkinter
-        self.logOutBtn = tk.PhotoImage(file="assets/ausloggen.png")
+        self.logOutBtn = tk.PhotoImage(file="assets/ArrowLeft.png")
 
         # Füge einen Button mit dem Bild hinzu
-        logOutButton = tk.Button(headerFrame, image=self.logOutBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
+        logOutButton = tk.Button(headerFrame, image=self.logOutBtn, command=goBackAdminWindow, bd=0, relief=tk.FLAT, bg="#DF4807",
                                  activebackground="#DF4807")
         logOutButton.grid(row=0, column=3, sticky=tk.E, padx=20)
 
@@ -95,7 +91,7 @@ class adminWindow(tk.Frame):
 
         # Füge den LogIn-Label zur Frame hinzu
         logInLabel = tk.Label(greyFrame,
-                              text="Inventur-Übersicht",
+                              text="User-Übersicht",
                               bd=0,
                               relief=tk.FLAT,
                               bg="#F4EFEF",
@@ -138,37 +134,21 @@ class adminWindow(tk.Frame):
         searchEntry.bind('<FocusOut>', onFocusOut)
         searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
-        self.filterBtn = tk.PhotoImage(file="assets/Filter.png")
-        filterButton = tk.Button(searchFrame,
-                                 image=self.filterBtn,
-                                 bd=0,
-                                 relief=tk.FLAT,
-                                 bg="white",
-                                 activebackground="white",
-                                 command=filtr)
-        filterButton.grid(row=0, column=3, padx=10)
-
-        treeStyle = ttk.Style()
-        treeStyle.theme_use("default") #alt, classic,xpnative,winnative, default
-        treeStyle.configure("Treeview.Heading", font=("Arial", 14))
-        treeStyle.configure("Treeview", rowheight=20, font=("Arial", 12))
-
-
 
         # Ändere die Position des TreeFrames auf row=3
-        treeFrame = tk.Frame(self, background="white")
-        treeFrame.grid(row=1, column=0, padx=260)
+        userTreeFrame = tk.Frame(self, background="white")
+        userTreeFrame.grid(row=1, column=0, padx=260)
 
         self.addBtn = tk.PhotoImage(file="assets/Erstellen.png")
-        addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
-        addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
+        userAddButton = tk.Button(userTreeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
+        userAddButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
-        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=30)
+        user_tree = ttk.Treeview(userTreeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=30)
 
-        scroll = tk.Scrollbar(
-            treeFrame,
+        userScroll = tk.Scrollbar(
+            userTreeFrame,
             orient="vertical",
-            command=tree.yview,
+            command=user_tree.yview,
             bg="black",
             activebackground="darkblue",
             troughcolor="grey",
@@ -176,50 +156,44 @@ class adminWindow(tk.Frame):
             width=15,
             borderwidth=1
         )
-        scroll.grid(row=1, column=1, sticky="ns")
-        tree.configure(yscrollcommand=scroll.set)
+        userScroll.grid(row=1, column=1, sticky="ns")
+        user_tree.configure(yscrollcommand=userScroll.set)
 
         # Tags für alternierende Zeilenfarben konfigurieren
-        tree.tag_configure("oddrow", background="#f7f7f7")
-        tree.tag_configure("evenrow", background="white")
+        user_tree.tag_configure("oddrow", background="#f7f7f7")
+        user_tree.tag_configure("evenrow", background="white")
 
         ### listbox for directories
-        tree.column("# 1", anchor=CENTER, width=60)
-        tree.heading("# 1", text="ID", )
-        tree.column("# 2", anchor=CENTER, width=125)
-        tree.heading("# 2", text="Service Tag")
-        tree.column("# 3", anchor=CENTER, width=250)
-        tree.heading("# 3", text="Typ")
-        tree.column("# 4", anchor=CENTER, width=100)
-        tree.heading("# 4", text="Raum")
-        tree.column("# 5", anchor=CENTER, width=250)
-        tree.heading("# 5", text="Name")
-        tree.column("# 6", anchor=CENTER, width=300)
-        tree.heading("# 6", text="Beschädigung")
-        tree.column("# 7", anchor=CENTER, width=250)
-        tree.heading("# 7", text="Ausgeliehen von")
-        tree.grid(row=1, column=0)
-        tree.tkraise()
-
+        user_tree.column("# 1", anchor=CENTER, width=60)
+        user_tree.heading("# 1", text="ID", )
+        user_tree.column("# 2", anchor=CENTER, width=125)
+        user_tree.heading("# 2", text="Nutzername")
+        user_tree.column("# 3", anchor=CENTER, width=150)
+        user_tree.heading("# 3", text="Passwort")
+        user_tree.column("# 4", anchor=CENTER, width=200)
+        user_tree.heading("# 4", text="E-Mail")
+        user_tree.column("# 5", anchor=CENTER, width=100)
+        user_tree.heading("# 5", text="Rolle")
+        user_tree.tkraise()
+        user_tree.grid(row=1, column=0, sticky="nsew")
         def insert_data(self):
             i = 0
-            for entry in sqlapi.fetch_hardware():
+            for entry in sqlapi.read_all_benutzer():
+                print(entry)
                 # Bestimme das Tag für die aktuelle Zeile
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
 
                 # Daten mit dem Tag in das Treeview einfügen
-                tree.insert(
+                user_tree.insert(
                     "",
                     "end",
-                    text=f"{entry['Service_Tag']}",
+                    text=f"{entry['Nutzername']}",
                     values=(
                         i,
-                        entry['Service_Tag'],
-                        entry['Geraetetype'],
-                        entry['Raum'],
-                        entry['Modell'],
-                        entry['Beschaedigung'],
-                        entry['Ausgeliehen_von']
+                        entry['Nutzername'],
+                        entry['Passwort'],
+                        entry['Email'],
+                        entry['Rolle'],
                     ),
                     tags=(tag,)
                 )
@@ -229,7 +203,7 @@ class adminWindow(tk.Frame):
         # Funktion für das Ereignis-Binding
         def onItemSelected(event):
             try:
-                selectedItem = tree.focus()
+                selectedItem = user_tree.focus()
                 print(f"Ausgewähltes Item: {selectedItem}")  # Debug
                 if selectedItem:
                     from .detailsWindow import detailsWindow, showDetails
@@ -238,14 +212,14 @@ class adminWindow(tk.Frame):
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        tree.bind("<<TreeviewSelect>>", onItemSelected)
+        user_tree.bind("<<TreeviewSelect>>", onItemSelected)
 
     def update_treeview_with_data(self):
-        tree.delete(*tree.get_children())
+        user_tree.delete(*user_tree.get_children())
         i = 0
         for entry in sqlapi.fetch_hardware():
             tag = "evenrow" if i % 2 == 0 else "oddrow"
-            tree.insert(
+            user_tree.insert(
                 "",
                 "end",
                 values=(i, entry['Service_Tag'], entry['Geraetetyp'], entry['Raum'],
