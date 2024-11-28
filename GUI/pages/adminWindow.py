@@ -240,7 +240,7 @@ class adminWindow(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<<TreeviewSelect>>", onItemSelected)
 
-    def update_treeview_with_data():
+    def update_treeview_with_data(self):
         tree.delete(*tree.get_children())
         i = 0
         for entry in sqlapi.fetch_hardware():

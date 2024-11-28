@@ -257,7 +257,7 @@ class mainPage(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<Double-1>", onItemSelected)
 
-    def update_treeview_with_data(self, data=None):
+    def update_treeview_with_data(self = None, data=None):
         # Clear the current treeview contents
         tree.delete(*tree.get_children())
 
@@ -265,17 +265,15 @@ class mainPage(tk.Frame):
         if data is None:
             data = sqlapi.fetch_hardware()
 
-        i = 0
         for entry in data:
-            tag = "evenrow" if i % 2 == 0 else "oddrow"
+            tag = "evenrow" if entry['ID'] % 2 == 0 else "oddrow"
             tree.insert(
                 "",
                 "end",
-                values=(i, entry['Service_Tag'], entry['Geraetetype'], entry['Raum'],
+                values=(entry['ID'], entry['Service_Tag'], entry['Geraetetype'], entry['Raum'],
                         entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
                 tags=(tag,)
             )
-            i += 1
 
 
     def on_load(self):
