@@ -39,10 +39,40 @@ def addItemPopup(parent):
     entry.pack(pady=5)
 
     # Funktion zum Eintrag hinzufügen
-    def submit_entry():
-        item_name = entry.get()
-        print(f"Neuer Eintrag hinzugefügt: {item_name}")
-        popup.destroy()  # Popup schließen
+    def submitEntry():
+        # add device
+        # tag, typ,raum,name,damage
+        tag = serviceTagEntryAddItemPopup if serviceTagEntryAddItemPopup else ""
+        type = typeEntryAddItemPopup if typeEntryAddItemPopup else ""
+        room = roomEntryAddItemPopup if roomEntryAddItemPopup else ""
+        name = nameEntryAddItemPopup if nameEntryAddItemPopup else ""
+        damage = damagedButtonAddItemPopup if damagedButtonAddItemPopup else ""
+        db.create_hardware(tag,type,name,damage,None,room)
+        from .mainPage import mainPage
+        print("Eintrag hinzugefügt.")
+        addPopup.destroy()
 
-    submit_button = tk.Button(popup, text="Hinzufügen", command=submit_entry)
-    submit_button.pack(pady=20)
+    def exitEntry():
+        print("Vorgang abgebrochen")
+        addPopup.destroy()
+
+    parent.addBtnAddItemPopup = tk.PhotoImage(file="assets/ErstellenButton.png")
+    parent.exitBtnAddItemPopup = tk.PhotoImage(file="assets/AbbrechenButton.png")
+
+    # Buttons in ein separates Frame
+    buttonFrameAddItemPopup = tk.Frame(addPopup, background="white")
+    buttonFrameAddItemPopup.grid(row=2, column=0, pady=20)
+
+    exitButtonAddItemPopup = tk.Button(buttonFrameAddItemPopup, image=parent.exitBtnAddItemPopup,
+                                       bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=exitEntry)
+    exitButtonAddItemPopup.pack(side=tk.LEFT, padx=10)  # Links platzieren
+
+    submitButtonAddItemPopup = tk.Button(buttonFrameAddItemPopup, image=parent.addBtnAddItemPopup,
+                                         bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=submitEntry)
+    submitButtonAddItemPopup.pack(side=tk.LEFT, padx=10)  # Neben Exit-Button platzieren
+
+    addPopup.grid_rowconfigure(0, weight=0)
+    addPopup.grid_rowconfigure(1, weight=1)
+    addPopup.grid_rowconfigure(2, weight=0)
+    addPopup.grid_rowconfigure(3, weight=1)
+    addPopup.grid_columnconfigure(0, weight=1)
