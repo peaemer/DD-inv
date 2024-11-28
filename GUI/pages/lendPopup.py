@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkcalendar import Calendar, DateEntry
+#from tkcalendar import Calendar, DateEntry
 
 import cache
 
@@ -10,6 +10,18 @@ srhGrey = "#d9d9d9"
 
 
 def lendPopup(parent, data):
+    """
+    Creates a popup window that facilitates the lending process by allowing the user
+    to input and confirm lending details such as item name, borrower, and lending date.
+    The window is modal, non-resizable, and is positioned to the center of the screen.
+
+    :param parent: The parent window that the popup will be associated with, which helps
+                   in modal configuration and center positioning.
+    :param data: A dictionary that contains initial data for the popup, specifically the
+                 name of the item to be lent, which is pre-filled in the corresponding
+                 entry field.
+    :return: None
+    """
     # Neues Fenster (Popup)
     popup = tk.Toplevel()
     popup.title("Ausleihen")
