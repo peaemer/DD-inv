@@ -6,6 +6,21 @@ import cache
 
 
 def addItemPopup(parent):
+    """
+    Creates a popup window for adding a new item. The popup window includes
+    fields for entering details such as the service tag, type, room, name,
+    and damage condition of an item. The window is configured to remain
+    on top and block interactions with the main application window until it
+    is closed. A submit button allows submission of the entered details,
+    and an exit button allows closing of the popup without submitting.
+
+    :param parent: The parent window to which the popup belongs, providing
+        context for display and blocking interactions.
+    :type parent: tk.Tk or tk.Toplevel
+
+    :return: Returns the Toplevel widget that represents the popup window.
+    :rtype: tk.Toplevel
+    """
     # Toplevel-Fenster erstellen
     addPopup = tk.Toplevel(parent)
     addPopup.title("Neuer Eintrag")
@@ -89,6 +104,18 @@ def addItemPopup(parent):
 
     # Funktion zum Eintrag hinzufügen
     def submitEntry():
+        """
+        Display a popup window to allow users to add a new hardware item to the
+        inventory system. The function creates a user interface for input fields
+        where users can specify details about the hardware item such as
+        service tag, type, room location, name, and damage status. Upon
+        submission, the inputs are saved to the database and the main page
+        treeview is updated to reflect the new entry.
+
+        :param parent: The parent window or component to which the popup belongs.
+        :type parent: Widget
+        :return: None
+        """
         # add device
         # tag, typ,raum,name,damage
         tag = serviceTagEntryAddItemPopup.get() if serviceTagEntryAddItemPopup.get() else ""
@@ -98,10 +125,23 @@ def addItemPopup(parent):
         damage = damagedButtonAddItemPopup.get() if damagedButtonAddItemPopup.get() else ""
         db.create_hardware(tag,type,name,damage,None,room)
         from .mainPage import mainPage
-        mainPage.update_treeview_with_data()
+        mainPage.update_treeview_with_data(data=None)
         addPopup.destroy()
 
     def exitEntry():
+        """
+        Displays a popup window to add an item.
+
+        The function initializes and displays a popup window
+        that allows users to add a new item to a predefined list.
+        The popup will include necessary input fields and buttons
+        for user interaction.
+
+        :param parent: The parent widget that this popup will be
+                       attached to. It is usually a reference to
+                       a tkinter frame or window.
+        :type parent: tkinter.Tk or tkinter.Widget
+        """
         print("Vorgang abgebrochen")
         addPopup.destroy()
 
