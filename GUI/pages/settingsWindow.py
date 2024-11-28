@@ -539,10 +539,10 @@ def popUpSettings(parent):
         webbrowser.open(url)
 
     LogoImage = PhotoImage(file="assets/DD-Inv_Logo.png")
-    BtnLinks_label = ttk.Label(FrameUeber, text="VersionBuild   V. 0.0232 (Alpha)", cursor="hand2")
+    BtnLinks_label = ttk.Label(FrameUeber, text="VersionBuild   V. 0.0234 (Alpha)", cursor="hand2")
     BtnLinks_label.grid(row=18, column=0, pady=2, sticky="new")
     BtnLinks_label.configure(width=30, anchor='center', image=LogoImage, compound="left")
-    BtnLinks_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/f010504196f5d8c601abcf00c799beb76470b839"))
+    BtnLinks_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/e4324e9686511c814ca99f09ab22995352e93073"))
 
     # Github Button
     def open_Github(url):
