@@ -282,7 +282,7 @@ class mainPage(tk.Frame):
         """Diese Methode wird aufgerufen, nachdem die Seite vollständig geladen ist."""
         print("MainPage wurde vollständig geladen.")
         # Führe hier die gewünschte Funktion aus.
-        if (cache.user_group == "admin"):
+        if (cache.user_group == "Admin"):
             print("Als Admin Eingeloggt")
             adminButton = tk.Button(self.headerFrame,
                                   image=self.adminBtn,

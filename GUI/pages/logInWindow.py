@@ -2,6 +2,7 @@ import sys
 import tkinter as tk
 from tkinter import ttk, messagebox
 import cache
+import Datenbank.sqlite3api as db
 
 LARGEFONT = ("Arial", 25)
 LOGINFONT = ("Arial", 15)  # Angepasste Font-Größe für Eingabe
@@ -18,7 +19,7 @@ class logInWindow(tk.Frame):
             user = usernameEntry.get().strip()
             import Security.UserSecurity as security
             if security.verifyUser(user, password):
-                cache.user_group = "admin"
+                cache.user_group = db.read_benutzer(user)['Rolle']
                 cache.user_name = user
                 from .mainPage import mainPage
                 controller.show_frame(mainPage)
