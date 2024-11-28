@@ -1,4 +1,12 @@
 import tkinter as tk
+<<<<<<< HEAD
+=======
+from tkinter import ttk
+
+import Datenbank.sqlite3api as db
+import cache
+
+>>>>>>> 1304aaf9f02d26d692d6f5ae86e93b93e1c5bf13
 
 def addItemPopup(parent):
 
@@ -42,14 +50,14 @@ def addItemPopup(parent):
     def submitEntry():
         # add device
         # tag, typ,raum,name,damage
-        tag = serviceTagEntryAddItemPopup if serviceTagEntryAddItemPopup else ""
-        type = typeEntryAddItemPopup if typeEntryAddItemPopup else ""
-        room = roomEntryAddItemPopup if roomEntryAddItemPopup else ""
-        name = nameEntryAddItemPopup if nameEntryAddItemPopup else ""
-        damage = damagedButtonAddItemPopup if damagedButtonAddItemPopup else ""
+        tag = serviceTagEntryAddItemPopup.get() if serviceTagEntryAddItemPopup.get() else ""
+        type = typeEntryAddItemPopup.get() if typeEntryAddItemPopup.get() else ""
+        room = roomEntryAddItemPopup.get() if roomEntryAddItemPopup.get() else ""
+        name = nameEntryAddItemPopup.get() if nameEntryAddItemPopup.get() else ""
+        damage = damagedButtonAddItemPopup.get() if damagedButtonAddItemPopup.get() else ""
         db.create_hardware(tag,type,name,damage,None,room)
         from .mainPage import mainPage
-        print("Eintrag hinzugefügt.")
+        mainPage.update_treeview_with_data()
         addPopup.destroy()
 
     def exitEntry():

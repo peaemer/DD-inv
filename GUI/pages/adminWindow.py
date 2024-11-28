@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-
-
+import Datenbank.sqlite3api as sqlapi
+import cache
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -10,36 +10,23 @@ srhGrey = "#d9d9d9"
 
 
 # Hauptseite (zweites Fenster)
-class mainPage(tk.Frame):
+class adminWindow(tk.Frame):
+    #if (cache.user_group == "admin"):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
-
         def showSettingsWindow():
             from .settingsWindow import popUpSettings
             popUpSettings(self)
-
-        def showAdminWindow():
-            print("AAAA")
-
-        # Speichere die Funktion als Attribut, um später darauf zuzugreifen
-        self.showAdminWindow = showAdminWindow
 
         def logOut():
             from .logInWindow import logInWindow
             controller.show_frame(logInWindow)  # funktionalität hinzufügen
 
-        def search(event=None):                           # funktionalität hinzufügen
-            search_entrys = []
-            for entry in sqlapi.fetch_hardware():
-                for value in entry:
-                    if searchEntry.get().lower() in str(entry[value]).lower():
-                        if entry not in search_entrys:
-                            search_entrys.append(entry)
-            self.update_treeview_with_data(data=search_entrys)
-
+        def search():                           # funktionalität hinzufügen
+            print("I am Searching")
 
         def filtr():                            # funktionalität hinzufügen
             print("Do be filtering")
@@ -68,25 +55,24 @@ class mainPage(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
 
         # Erstelle einen Header-Bereich
-        self.headerFrame = tk.Frame(self, height=10, background="#DF4807")
-        self.headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+        headerFrame = tk.Frame(self, height=10, background="#DF4807")
+        headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Konfiguriere die Spalten für den Header
-        self.headerFrame.grid_columnconfigure(0, weight=1)
-        self.headerFrame.grid_rowconfigure(0, weight=1)
+        headerFrame.grid_columnconfigure(0, weight=1)
+        headerFrame.grid_rowconfigure(0, weight=1)
 
         self.srhHead = tk.PhotoImage(file="assets/srh.png")
 
         # Füge ein zentriertes Label hinzu
-        headerLabel = tk.Label(self.headerFrame, image=self.srhHead, background="#DF4807", foreground="white")
+        headerLabel = tk.Label(headerFrame, image=self.srhHead, background="#DF4807", foreground="white")
         headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
-
 
         # Konvertiere das Bild für Tkinter
         self.logOutBtn = tk.PhotoImage(file="assets/ausloggen.png")
 
         # Füge einen Button mit dem Bild hinzu
-        logOutButton = tk.Button(self.headerFrame, image=self.logOutBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
+        logOutButton = tk.Button(headerFrame, image=self.logOutBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
                                  activebackground="#DF4807")
         logOutButton.grid(row=0, column=3, sticky=tk.E, padx=20)
 
@@ -94,30 +80,26 @@ class mainPage(tk.Frame):
         self.optBtn = tk.PhotoImage(file="assets/option.png")
 
         # Füge einen Button mit dem Bild hinzu
-<<<<<<< HEAD
-        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=showSettingsWindow, bd=0, relief=tk.FLAT, bg="#DF4807",
-                                 activebackground="#DF4807")
-=======
-        optionsButton = tk.Button(self.headerFrame,
+        optionsButton = tk.Button(headerFrame,
                                   image=self.optBtn,
                                   command=showSettingsWindow,
                                   bd=0,
                                   relief=tk.FLAT,
                                   bg="#DF4807",
                                   activebackground="#DF4807")
->>>>>>> 1304aaf9f02d26d692d6f5ae86e93b93e1c5bf13
         optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
-
-        self.adminBtn = tk.PhotoImage(file="assets/Key.png")
-
-
 
 
         greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
         greyFrame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Füge den LogIn-Label zur Frame hinzu
-        logInLabel = tk.Label(greyFrame, text="Inventurübersicht", bd=0, relief=tk.FLAT, bg="#F4EFEF", font=("Arial", 20))
+        logInLabel = tk.Label(greyFrame,
+                              text="Inventur-Übersicht",
+                              bd=0,
+                              relief=tk.FLAT,
+                              bg="#F4EFEF",
+                              font=("Arial", 20))
         logInLabel.grid(padx=200, pady=5, row=0, column=0, sticky=tk.W)
 
         # Konfiguriere den greyFrame für zentrierte Ausrichtung
@@ -130,15 +112,21 @@ class mainPage(tk.Frame):
         overviewLabel.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        searchFrame = tk.Frame(self,bg="white")
-        searchFrame.grid(pady=50, padx=200,row=1, column=0, sticky=tk.W + tk.E + tk.N)
+        searchFrame = tk.Frame(self, bg="white")
+        searchFrame.grid(pady=50, padx=200, row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         searchFrame.grid_columnconfigure(0, weight=0)
         searchFrame.grid_columnconfigure(1, weight=1)
         searchFrame.grid_columnconfigure(2, weight=0)
 
         self.searchBtn = tk.PhotoImage(file="assets/SearchButton.png")
-        searchButton = tk.Button(searchFrame, image=self.searchBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
+        searchButton = tk.Button(searchFrame,
+                                 image=self.searchBtn,
+                                 bd=0,
+                                 relief=tk.FLAT,
+                                 bg="white",
+                                 activebackground="white",
+                                 command=search)
         searchButton.grid(padx=10, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
@@ -148,22 +136,34 @@ class mainPage(tk.Frame):
         # Events für Klick und Fokusverlust hinzufügen
         searchEntry.bind('<FocusIn>', onEntryClick)
         searchEntry.bind('<FocusOut>', onFocusOut)
-        searchEntry.bind('<Return>', search)
         searchEntry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
         self.filterBtn = tk.PhotoImage(file="assets/Filter.png")
-        filterButton = tk.Button(searchFrame, image=self.filterBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=filtr)
+        filterButton = tk.Button(searchFrame,
+                                 image=self.filterBtn,
+                                 bd=0,
+                                 relief=tk.FLAT,
+                                 bg="white",
+                                 activebackground="white",
+                                 command=filtr)
         filterButton.grid(row=0, column=3, padx=10)
+
+        treeStyle = ttk.Style()
+        treeStyle.theme_use("default") #alt, classic,xpnative,winnative, default
+        treeStyle.configure("Treeview.Heading", font=("Arial", 14))
+        treeStyle.configure("Treeview", rowheight=20, font=("Arial", 12))
+
+
 
         # Ändere die Position des TreeFrames auf row=3
         treeFrame = tk.Frame(self, background="white")
         treeFrame.grid(row=1, column=0, padx=260)
 
-        self.addBtn = tk.PhotoImage(file="assets/ErstellenButton.png")
+        self.addBtn = tk.PhotoImage(file="assets/Erstellen.png")
         addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
         addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
-        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=30)
+        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=30)
 
         scroll = tk.Scrollbar(
             treeFrame,
@@ -173,35 +173,34 @@ class mainPage(tk.Frame):
             activebackground="darkblue",
             troughcolor="grey",
             highlightcolor="black",
-            width=12,
+            width=15,
             borderwidth=1
         )
-        scroll.grid(row=1, column=1,sticky="ns")
+        scroll.grid(row=1, column=1, sticky="ns")
         tree.configure(yscrollcommand=scroll.set)
 
+        # Tags für alternierende Zeilenfarben konfigurieren
+        tree.tag_configure("oddrow", background="#f7f7f7")
+        tree.tag_configure("evenrow", background="white")
+
         ### listbox for directories
-        tree.column("# 1", anchor=CENTER, width=90)
-        tree.heading("# 1", text="ID")
-        tree.column("# 2", anchor=CENTER, width=310)
+        tree.column("# 1", anchor=CENTER, width=60)
+        tree.heading("# 1", text="ID", )
+        tree.column("# 2", anchor=CENTER, width=125)
         tree.heading("# 2", text="Service Tag")
-        tree.column("# 3", anchor=CENTER, width=310)
+        tree.column("# 3", anchor=CENTER, width=250)
         tree.heading("# 3", text="Typ")
-        tree.column("# 4", anchor=CENTER, width=310)
+        tree.column("# 4", anchor=CENTER, width=100)
         tree.heading("# 4", text="Raum")
-        tree.column("# 5", anchor=CENTER, width=310)
+        tree.column("# 5", anchor=CENTER, width=250)
         tree.heading("# 5", text="Name")
+        tree.column("# 6", anchor=CENTER, width=300)
+        tree.heading("# 6", text="Beschädigung")
+        tree.column("# 7", anchor=CENTER, width=250)
+        tree.heading("# 7", text="Ausgeliehen von")
         tree.grid(row=1, column=0)
         tree.tkraise()
 
-<<<<<<< HEAD
-        # Hier muss die Datenbank hinzugefügt werden
-        for i in range(50):
-            tree.insert("", "end", text=f"Item {i}", values=(f"Wert {i}", f"Wert {i + 10}"))
-
-
-
-
-=======
         def insert_data(self):
             i = 0
             for entry in sqlapi.fetch_hardware():
@@ -239,42 +238,18 @@ class mainPage(tk.Frame):
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        tree.bind("<Double-1>", onItemSelected)
+        tree.bind("<<TreeviewSelect>>", onItemSelected)
 
-    def update_treeview_with_data(self, data=None):
-        # Clear the current treeview contents
+    def update_treeview_with_data():
         tree.delete(*tree.get_children())
-
-        # If no data is provided, fetch the data from sqlapi
-        if data is None:
-            data = sqlapi.fetch_hardware()
-
         i = 0
-        for entry in data:
+        for entry in sqlapi.fetch_hardware():
             tag = "evenrow" if i % 2 == 0 else "oddrow"
             tree.insert(
                 "",
                 "end",
-                values=(i, entry['Service_Tag'], entry['Geraetetype'], entry['Raum'],
+                values=(i, entry['Service_Tag'], entry['Geraetetyp'], entry['Raum'],
                         entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
                 tags=(tag,)
             )
             i += 1
-
-
-    def on_load(self):
-        """Diese Methode wird aufgerufen, nachdem die Seite vollständig geladen ist."""
-        print("MainPage wurde vollständig geladen.")
-        # Führe hier die gewünschte Funktion aus.
-        if (cache.user_group == "admin"):
-            print("Als Admin Eingeloggt")
-            adminButton = tk.Button(self.headerFrame,
-                                  image=self.adminBtn,
-                                  command=self.showAdminWindow,
-                                  bd=0,
-                                  relief=tk.FLAT,
-                                  bg="#DF4807",
-                                  activebackground="#DF4807")
-            adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
-            self.update_treeview_with_data()
->>>>>>> 1304aaf9f02d26d692d6f5ae86e93b93e1c5bf13

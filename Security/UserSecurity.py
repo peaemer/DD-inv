@@ -3,11 +3,20 @@ import sys, os
 sys.path.append(os.path.dirname(__file__)+'\..')
 from typing import Final, List
 from typing import Final, List
+<<<<<<< HEAD
 from Datenbank.sqlite3api import *
 # from Datenbank.sqlite3api import read_benutzer, update_benutzer
 
 #enables or disables debugging messages
 DEBUG_MODE:bool = True
+=======
+import Datenbank.sqlite3api as db
+
+# from Datenbank.sqlite3api import read_benutzer, update_benutzer
+
+#enables or disables debugging messages
+DEBUG_MODE: bool = False
+>>>>>>> 1304aaf9f02d26d692d6f5ae86e93b93e1c5bf13
 
 # __get_user_ptr = read_benutzer
 # get_u_ptr = read_benutzer
@@ -54,7 +63,11 @@ def __comparePassword(plain_password:str, hashed_password:bytearray)->bool:
         :return bool: whether the plain password matches the already hashed one after the plain password was hashed
     '''
     #hash the plain password and check if the hash is equal to the given
+<<<<<<< HEAD
     return hashed_password == __hash_password(plain_password)
+=======
+    return hashed_password == str(__hashPassword(plain_password))
+>>>>>>> 1304aaf9f02d26d692d6f5ae86e93b93e1c5bf13
 
 def verifyUser(username:str, plain_password:str)->bool:
     '''
@@ -72,20 +85,31 @@ def verifyUser(username:str, plain_password:str)->bool:
         ------
         :return bool: whether the plain password matches the stored one after the plain password was hashed
     '''
-
-    benutzer = read_benutzer(username)
+    benutzer = db.read_benutzer(username)
     try:
         if benutzer:
             # Check if the supplied password matches the stored hash
+<<<<<<< HEAD
             if __comparePassword(plain_password,benutzer['hashed_password']):
                 if(DEBUG_MODE==True):print(f'[UserSecurity]: user {username} was successfully verified.')
+=======
+            if __comparePassword(plain_password, benutzer['Passwort']):
+                if (DEBUG_MODE == True): print(f'[UserSecurity]: User {username} was successfully verified.')
+>>>>>>> 1304aaf9f02d26d692d6f5ae86e93b93e1c5bf13
                 return True
             else:
                 if(DEBUG_MODE==True):print("[UserSecurity]: Incorrect password.")
                 return False
         else:
+<<<<<<< HEAD
             if(DEBUG_MODE==True):print(f"[UserSecurity]: user '{username}' was not found.")
             return False
     except:
         if(DEBUG_MODE==True):print(f"[UserSecurity]: user '{username}' was not found.")
+=======
+            if (DEBUG_MODE == True): print(f"[UserSecurity]: User '{username}' was not found.")
+            return False
+    except:
+        if (DEBUG_MODE == True): print(f"[UserSecurity]: User '{username}' was not found.")
+>>>>>>> 1304aaf9f02d26d692d6f5ae86e93b93e1c5bf13
         return False
