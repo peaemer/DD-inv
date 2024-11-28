@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 import Datenbank.sqlite3api as db
-
+import cache
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -13,6 +13,7 @@ def showDetails(selectedItem, tree, controller):
     # Daten aus der ausgewählten Zeile
     data = tree.item(selectedItem, "values")
     print(f"Daten des ausgewählten Items: {data}")
+    cache.selected_ID = data[0]
 
     # Frame aktualisieren und anzeigen
     details = controller.frames[detailsWindow]
@@ -190,7 +191,7 @@ class detailsWindow(tk.Frame):
             print("nix")
 
         def deleteEntry():
-            db.delete_hardware_by_service_tag(self.serviceTagEntryDetailsWindow.get())
+            db.delete_hardware_by_id(cache.selected_ID)
             from .mainPage import mainPage
             mainPage.update_treeview_with_data()
             controller.show_frame(mainPage)

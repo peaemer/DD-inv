@@ -147,7 +147,7 @@ def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_
         with init_connection() as con:
             cur = con.cursor()
             cur.execute(
-                "INSERT INTO Hardware (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Raum) VALUES (?, ?, ?, ?, ?, ?)",
+                "INSERT INTO Hardware (Service_Tag, Geraetetype, Modell, Beschaedigung, Ausgeliehen_von, Raum) VALUES (?, ?, ?, ?, ?, ?)",
                 (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Raum)
             )
             con.commit()
