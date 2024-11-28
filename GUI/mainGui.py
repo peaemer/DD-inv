@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+import sys, os
 
 #https://chatgpt.com/share/6746f2eb-67ac-8003-95be-480c6f1bd897
 
@@ -68,17 +69,19 @@ class ddINV(tk.Tk):
 	# Verändert die Seite beim Start
 		self.show_frame(logInWindow)
 
+
 	# Funktion, um ein Frame (Seite) anzuzeigen
 	def show_frame(self, cont):
 		print(f"show_frame wird für {cont.__name__} aufgerufen")  # Debug
 		frame = self.frames[cont]
-		frame.tkraise()
+		if isinstance(frame, tk.Frame):
+			frame.tkraise()
 
-		if hasattr(frame, 'on_load') and callable(frame.on_load):
-			print(f"on_load wird für {cont.__name__} aufgerufen")  # Debug
-			frame.on_load()
+			if hasattr(frame, 'on_load') and callable(frame.on_load):
+				print(f"on_load wird für {cont.__name__} aufgerufen")  # Debug
+				frame.on_load()
 
 
-# Hauptanwendung starten
-app = ddINV()
-app.mainloop()
+if __name__ == "__main__":
+    app = ddINV()
+    app.mainloop()

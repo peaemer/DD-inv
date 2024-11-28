@@ -124,11 +124,11 @@ class detailsWindow(tk.Frame):
 
         ### listbox for directories
         treeDetailsWindow.column("# 1", anchor=CENTER, width=180)
-        treeDetailsWindow.heading("# 1", text="Fick", )
+        treeDetailsWindow.heading("# 1", text="Nutzername", )
         treeDetailsWindow.column("# 2", anchor=CENTER, width=180)
-        treeDetailsWindow.heading("# 2", text="sie")
+        treeDetailsWindow.heading("# 2", text="ServiceTag/ID")
         treeDetailsWindow.column("# 3", anchor=CENTER, width=180)
-        treeDetailsWindow.heading("# 3", text="hartmann")
+        treeDetailsWindow.heading("# 3", text="Ausgeliehen am")
         treeDetailsWindow.grid(row=1, column=0)
         treeDetailsWindow.tkraise()
 

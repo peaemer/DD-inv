@@ -17,17 +17,33 @@ class logInWindow(tk.Frame):
         def logIn():
             password = passwordEntry.get().strip()
             user = usernameEntry.get().strip()
+
+            # Reset cache für Benutzerinformationen
             cache.user_group = ""
             cache.user_name = ""
+
+            # Importiere Sicherheits- und Datenbankmodule
             import Security.UserSecurity as security
-            if security.verifyUser(user, password):
-                cache.user_group = db.read_benutzer(user)['Rolle']
-                cache.user_name = user
+
+            if security.verifyUser(user, password):  # Benutzer authentifizieren
+                # Benutzerinformationen aus der Datenbank abrufen
+                benutzer_info = db.read_benutzer(user)
+                cache.user_group = benutzer_info.get('Rolle', '')  # Rolle des Benutzers speichern
+                cache.user_name = user  # Benutzernamen im Cache speichern
+
+                print(f"Erfolgreich eingeloggt: {user}, Rolle: {cache.user_group}")
+                passwordEntry.delete(0, 'end')
+                usernameEntry.delete(0, 'end')
+                # Zeige die MainPage an
                 from .mainPage import mainPage
                 controller.show_frame(mainPage)
+                print(f"Cache-Status nach Login: user_group={cache.user_group}")
+
             else:
+                # Zeige Fehlermeldung bei falschem Login
                 messagebox.showinfo(title="Fehler", message="Passwort oder Benutzername falsch")
                 passwordEntry.delete(0, 'end')
+
 
         def on_enter(event):
             logIn()

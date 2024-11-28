@@ -29,7 +29,10 @@ class mainPage(tk.Frame):
 
         def logOut():
             from .logInWindow import logInWindow
-            controller.show_frame(logInWindow)  # funktionalität hinzufügen
+            cache.user_group = None  # Benutzergruppe zurücksetzen
+            print("--------------------------------")
+            print(f"Cache-Werte nach logOut: Gruppe={cache.user_group}, Benutzer={cache.user_name}")
+            controller.show_frame(logInWindow)
 
         def search(event=None):                           # funktionalität hinzufügen
             search_entrys = []
@@ -277,19 +280,42 @@ class mainPage(tk.Frame):
             )
             i += 1
 
-
     def on_load(self):
         """Diese Methode wird aufgerufen, nachdem die Seite vollständig geladen ist."""
-        print("MainPage wurde vollständig geladen.")
-        # Führe hier die gewünschte Funktion aus.
-        if (cache.user_group == "Admin"):
-            print("Als Admin Eingeloggt")
-            adminButton = tk.Button(self.headerFrame,
-                                  image=self.adminBtn,
-                                  command=self.showAdminWindow,
-                                  bd=0,
-                                  relief=tk.FLAT,
-                                  bg="#DF4807",
-                                  activebackground="#DF4807")
-            adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
-            self.update_treeview_with_data()
+        print(f"{self.__class__.__name__} geladen")
+
+        # Überprüfe die Benutzergruppe
+        print(f"Überprüfe Benutzergruppe: {cache.user_group}")  # Debug-Print für die Benutzergruppe
+        if cache.user_group == "Admin":
+            print("Als Admin eingeloggt.")
+
+            # Überprüfe, ob der Admin-Button bereits existiert
+            if not hasattr(self, "adminButton"):
+                print(
+                    "Admin-Button existiert noch nicht. Erstelle den Admin-Button.")  # Debug-Print für das Erstellen des Buttons
+                # Erstelle den Admin-Button, wenn er noch nicht existiert
+                self.adminButton = tk.Button(
+                    self.headerFrame,
+                    image=self.adminBtn,
+                    command=self.showAdminWindow,  # Funktion für Admin-Button
+                    bd=0,
+                    relief=tk.FLAT,
+                    bg="#DF4807",
+                    activebackground="#DF4807"
+                )
+                self.adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
+                print("Admin-Button wurde erfolgreich erstellt und platziert.")  # Bestätigung der Erstellung
+            else:
+                self.adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
+                print(
+                    "Admin-Button existiert bereits. Keine Erstellung notwendig.")  # Wenn der Button bereits existiert
+        else:
+            print("Nicht als Admin eingeloggt.")  # Benutzer ist kein Admin
+            # Entferne den Admin-Button, falls er existiert
+            if hasattr(self, "adminButton"):
+                print("Admin-Button existiert, entferne ihn.")  # Debug-Print für das Entfernen des Buttons
+                self.adminButton.grid_remove()
+            else:
+                print("Kein Admin-Button zum Entfernen gefunden.")  # Wenn kein Button vorhanden ist
+
+        self.update_treeview_with_data()
