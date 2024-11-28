@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+import Datenbank.sqlite3api as sqlapi
 
 
 
@@ -94,10 +95,6 @@ class mainPage(tk.Frame):
         self.optBtn = tk.PhotoImage(file="assets/option.png")
 
         # Füge einen Button mit dem Bild hinzu
-<<<<<<< HEAD
-        optionsButton = tk.Button(headerFrame, image=self.optBtn, command=showSettingsWindow, bd=0, relief=tk.FLAT, bg="#DF4807",
-                                 activebackground="#DF4807")
-=======
         optionsButton = tk.Button(self.headerFrame,
                                   image=self.optBtn,
                                   command=showSettingsWindow,
@@ -105,7 +102,6 @@ class mainPage(tk.Frame):
                                   relief=tk.FLAT,
                                   bg="#DF4807",
                                   activebackground="#DF4807")
->>>>>>> 1304aaf9f02d26d692d6f5ae86e93b93e1c5bf13
         optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
 
         self.adminBtn = tk.PhotoImage(file="assets/Key.png")
@@ -193,15 +189,6 @@ class mainPage(tk.Frame):
         tree.grid(row=1, column=0)
         tree.tkraise()
 
-<<<<<<< HEAD
-        # Hier muss die Datenbank hinzugefügt werden
-        for i in range(50):
-            tree.insert("", "end", text=f"Item {i}", values=(f"Wert {i}", f"Wert {i + 10}"))
-
-
-
-
-=======
         def insert_data(self):
             i = 0
             for entry in sqlapi.fetch_hardware():
@@ -277,4 +264,3 @@ class mainPage(tk.Frame):
                                   activebackground="#DF4807")
             adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
             self.update_treeview_with_data()
->>>>>>> 1304aaf9f02d26d692d6f5ae86e93b93e1c5bf13
