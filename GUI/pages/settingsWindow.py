@@ -96,7 +96,7 @@ def popUpSettings(parent):
         "Über DD-Inv": FrameUeber
     }
 
-    current_frame = frames["Style"]  # Halte den aktuell sichtbaren Frame
+    current_frame = frames["Über DD-Inv"]  # Halte den aktuell sichtbaren Frame
 
     # Funktion zum Anzeigen des Frames
     def showFrame_Settings(category):
@@ -200,6 +200,7 @@ def popUpSettings(parent):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     FrameStyle = tk.Frame(popup, padx=100, pady=10, bg="white")
     FrameStyle.grid(row=1, column=1, rowspan=2, sticky="nw")
+    FrameStyle.grid_forget()
 
     # Überschrift für Style
     radiobutton_label = tk.Label(
@@ -302,10 +303,10 @@ def popUpSettings(parent):
     FrameProfile.grid_forget()
 
     # Überschrift Passe dein Profil an
-    radiobutton_label = tk.Label(
+    ProfileBtn_label = tk.Label(
         FrameProfile, text="Passe dein Profil an", font=SETTINGSFONT, bg="white"
     )
-    radiobutton_label.grid(row=1, column=0, pady=10, sticky="nw")
+    ProfileBtn_label.grid(row=1, column=0, pady=10, sticky="nw")
 
     #FrameProfile.imglogin = tk.PhotoImage(
     #    file=root_path + "")
@@ -325,7 +326,7 @@ def popUpSettings(parent):
     FrameProfile.nachname = tk.Label(FrameProfile, text=" ", bd=0, bg='white', fg='black', font=("Poppins", 18))
 
     gruppen = tk.Label(FrameProfile, text="Gruppen", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 15))
-    FrameProfile.usergruppen = tk.Label(FrameProfile, text="xx, xx", bd=0, bg='white', fg='black', font=("Poppins", 18))
+    FrameProfile.usergrupp = tk.Label(FrameProfile, text="xx, xx", bd=0, bg='white', fg='black', font=("Poppins", 18))
 
     email = tk.Label(FrameProfile, text="Email", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 15))
     FrameProfile.useremail = tk.Label(FrameProfile, text="xxx@srhk.de", bd=0, bg='white', fg='black', font=("Poppins", 18))
@@ -337,30 +338,30 @@ def popUpSettings(parent):
                                font=("Poppins", 18))
     userrechte = tk.Label(FrameProfile, text="Schüler", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 18))
 
-    profilbild.grid(x=0, y=0)
+    profilbild.grid(padx=0, pady=0)
 
-    username.grid(x=499, y=10)
-    FrameProfile.username.grid(x=502, y=40)
+    #username.grid(padx=499, pady=10)
+    #parent.username.grid(padx=502, pady=40)
 
-    vorname.grid(x=499, y=90)
-    FrameProfile.vorname.grid(x=502, y=120)
+    #vorname.grid(padx=499, pady=90)
+    #parent.vorname.grid(padx=502, pady=120)
 
-    nachname.place(x=499, y=170)
-    FrameProfile.nachname.grid(x=502, y=200)
+    #nachname.place(padx=499, pady=170)
+    #parent.nachname.grid(x=502, y=200)
 
-    gruppen.grid(x=499, y=250)
-    FrameProfile.usergruppen.grid(x=502, y=280)
+    #gruppen.grid(padx=499, pady=250)
+    #parent.usergrupp.grid(padx=502, pady=280)
 
-    email.grid(x=0, y=500)
-    FrameProfile.useremail.grid(x=3, y=525)
+    #email.grid(padx=0, pady=500)
+    #parent.useremail.grid(padx=3, pady=525)
 
-    rechte.grid(x=0, y=570)
-    rechte_frame.grid(x=3, y=605, width=1, height=80)
-    adminrechte.grid(x=13, y=590)
-    ausbilderrechte.grid(x=13, y=630)
-    userrechte.grid(x=13, y=670)
+    #rechte.grid(padx=0, pady=570)
+    #rechte_frame.grid(padx=3, pady=605, width=1, height=80)
+    #adminrechte.grid(padx=13, pady=590)
+    #ausbilderrechte.grid(padx=13, pady=630)
+    #userrechte.grid(padx=13, pady=670)
 
-    FrameProfile.grid(relx=0.21, rely=0.15, relwidth=1, relheight=0.85)
+    #FrameProfile.grid(padx=0.21, pady=0.15, relwidth=1, relheight=0.85)
 
 
     ###############################
@@ -371,7 +372,7 @@ def popUpSettings(parent):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     FrameUeber = tk.Frame(popup, padx=10, pady=1, bg="white")
     FrameUeber.grid(row=1, column=1, rowspan=2, sticky="new")
-    FrameUeber.grid_forget()
+    #FrameUeber.grid_forget()
 
     # Überschrift erstellen Über das DD-Inv Tool
     Ueber_label = tk.Label(
@@ -389,60 +390,60 @@ def popUpSettings(parent):
     def open_Jack(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    JackImage = PhotoImage(file="")
     BtnLinks_label = ttk.Label(FrameUeber, text="Peaemer (Jack)", cursor="hand2")
     BtnLinks_label.grid(row=2, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=JackImage)
     BtnLinks_label.bind("<Button-1>", lambda e: open_Jack("https://github.com/peaemer/"))
 
     # Alex Button
     def open_Alex(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    AlexImage = PhotoImage(file="")
     BtnLinks_label = ttk.Label(FrameUeber, text="Alex5X5 (Alex)", cursor="hand2")
     BtnLinks_label.grid(row=3, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=AlexImage)
     BtnLinks_label.bind("<Button-1>", lambda e: open_Alex("https://github.com/Alex5X5"))
 
     # Fabian Button
     def open_Fabian(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    FabianImage = PhotoImage(file="")
     BtnLinks_label = ttk.Label(FrameUeber, text="GitSchwan (Fabian)", cursor="hand2")
     BtnLinks_label.grid(row=4, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=FabianImage)
     BtnLinks_label.bind("<Button-1>", lambda e: open_Fabian("https://github.com/GitSchwan"))
 
     # Anakin Button
     def open_Anakin(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    AnakinImage = PhotoImage(file="")
     BtnLinks_label = ttk.Label(FrameUeber, text="Chauto (Anakin)", cursor="hand2")
     BtnLinks_label.grid(row=5, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=AnakinImage)
     BtnLinks_label.bind("<Button-1>", lambda e: open_Anakin("https://github.com/Chautoo"))
 
     # Rene Button
     def open_Rene(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    ReneImage = PhotoImage(file="")
     BtnLinks_label = ttk.Label(FrameUeber, text="FemRene (Rene)", cursor="hand2")
     BtnLinks_label.grid(row=6, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=ReneImage)
     BtnLinks_label.bind("<Button-1>", lambda e: open_Rene("https://github.com/FemRene"))
 
     # Tam Button
     def open_Tam(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
-    BtnLinks_label = ttk.Label(FrameUeber, text="Tam", cursor="hand2")
+    TamImage = PhotoImage(file="")
+    BtnLinks_label = ttk.Label(FrameUeber, text="Tam")
     BtnLinks_label.grid(row=7, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=TamImage)
     BtnLinks_label.bind("<Button-1>", lambda e: open_Tam(""))
 
     # Unterüberschrift erstellen Anwendung erstellt mit folgenden Tools
@@ -458,47 +459,47 @@ def popUpSettings(parent):
     SQL3Image = PhotoImage(file="assets/SQL3Settings.png")
     BtnLinks_label = ttk.Label(FrameUeber, text="SQLite", cursor="hand2")
     BtnLinks_label.grid(row=9, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image, compound="left")
     BtnLinks_label.bind("<Button-1>", lambda e: open_SQL3("https://www.sqlite.org/"))
 
     # Figma Button
     def open_Figma(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    FigmaImage = PhotoImage(file="assets/FigmaSettings.png")
     BtnLinks_label = ttk.Label(FrameUeber, text="Figma", cursor="hand2")
     BtnLinks_label.grid(row=10, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=FigmaImage, compound="left")
     BtnLinks_label.bind("<Button-1>", lambda e: open_Figma("https://www.figma.com/"))
 
     # PyCharm Button
     def open_PyCharm(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    PyCharmImage = PhotoImage(file="assets/PyCharmSettings.png")
     BtnLinks_label = ttk.Label(FrameUeber, text="PyCharm", cursor="hand2")
     BtnLinks_label.grid(row=11, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=PyCharmImage, compound="left")
     BtnLinks_label.bind("<Button-1>", lambda e: open_PyCharm("https://www.jetbrains.com/de-de/pycharm/"))
 
     # Python Button
     def open_Python(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    PythonImage = PhotoImage(file="assets/PythonSettings.png")
     BtnLinks_label = ttk.Label(FrameUeber, text="Python", cursor="hand2")
     BtnLinks_label.grid(row=12, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=PythonImage, compound="left")
     BtnLinks_label.bind("<Button-1>", lambda e: open_Python("https://www.python.org/"))
 
     # WindowsXP Button
     def open_WindowsXP(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    WindowsXPImage = PhotoImage(file="assets/WindowsXPSettings.png")
     BtnLinks_label = ttk.Label(FrameUeber, text="WindowsXP", cursor="hand2")
     BtnLinks_label.grid(row=13, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=WindowsXPImage, compound="left")
     BtnLinks_label.bind("<Button-1>", lambda e: open_WindowsXP("https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07"))
 
     # Unterüberschrift Du möchtest das Projekt Unterstützen?
@@ -511,23 +512,23 @@ def popUpSettings(parent):
     def open_KoFi(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    KoFiImage = PhotoImage(file="assets/KoFiSettings.png")
     BtnLinks_label = ttk.Label(FrameUeber, text="Ko-Fi (Spende)", cursor="hand2")
     BtnLinks_label.grid(row=15, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=KoFiImage, compound="left")
     BtnLinks_label.bind("<Button-1>", lambda e: open_KoFi("https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white"))
 
     # Feedback Button
     def open_Feedback(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    FeedbackImage = PhotoImage(file="assets/FeedbackSettings.png")
     BtnLinks_label = ttk.Label(FrameUeber, text="Feedback (E-Mail)", cursor="hand2")
     BtnLinks_label.grid(row=16, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=FeedbackImage, compound="left")
     BtnLinks_label.bind("<Button-1>", lambda e: open_Feedback("mailto:Jack-Mike.Saering@srhk.de"))
 
-    # Unterüberschrift Info?
+    # Unterüberschrift Info
     Build_label = tk.Label(
         FrameUeber, text="Info", font=BTNFONT, bg="white"
     )
@@ -537,18 +538,18 @@ def popUpSettings(parent):
     def open_VersionBuild(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
-    BtnLinks_label = ttk.Label(FrameUeber, text="VersionBuild   V. 0.0230 (Alpha)", cursor="hand2")
+    LogoImage = PhotoImage(file="assets/DD-Inv_Logo.png")
+    BtnLinks_label = ttk.Label(FrameUeber, text="VersionBuild   V. 0.0234 (Alpha)", cursor="hand2")
     BtnLinks_label.grid(row=18, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
-    BtnLinks_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/564ab5425610792cb844f07cf447e2c84a4794fd"))
+    BtnLinks_label.configure(width=30, anchor='center', image=LogoImage, compound="left")
+    BtnLinks_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/e4324e9686511c814ca99f09ab22995352e93073"))
 
     # Github Button
     def open_Github(url):
         webbrowser.open(url)
 
-    SQL3Image = PhotoImage(file="")
+    GitHubImage = PhotoImage(file="assets/GitHubSettings.png")
     BtnLinks_label = ttk.Label(FrameUeber, text="Visit our Github", cursor="hand2")
     BtnLinks_label.grid(row=19, column=0, pady=2, sticky="new")
-    BtnLinks_label.configure(width=30, anchor='center', image=SQL3Image)
+    BtnLinks_label.configure(width=30, anchor='center', image=GitHubImage, compound="left")
     BtnLinks_label.bind("<Button-1>", lambda e: open_Github("https://github.com/peaemer/DD-inv"))
