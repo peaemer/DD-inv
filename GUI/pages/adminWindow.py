@@ -143,7 +143,7 @@ class adminWindow(tk.Frame):
         userAddButton = tk.Button(userTreeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
         userAddButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
-        user_tree = ttk.Treeview(userTreeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=30)
+        user_tree = ttk.Treeview(userTreeFrame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=15)
 
         userScroll = tk.Scrollbar(
             userTreeFrame,
@@ -166,11 +166,11 @@ class adminWindow(tk.Frame):
         ### listbox for directories
         user_tree.column("# 1", anchor=CENTER, width=60)
         user_tree.heading("# 1", text="ID", )
-        user_tree.column("# 2", anchor=CENTER, width=125)
+        user_tree.column("# 2", anchor=CENTER, width=200)
         user_tree.heading("# 2", text="Nutzername")
-        user_tree.column("# 3", anchor=CENTER, width=150)
+        user_tree.column("# 3", anchor=CENTER, width=200)
         user_tree.heading("# 3", text="Passwort")
-        user_tree.column("# 4", anchor=CENTER, width=200)
+        user_tree.column("# 4", anchor=CENTER, width=300)
         user_tree.heading("# 4", text="E-Mail")
         user_tree.column("# 5", anchor=CENTER, width=100)
         user_tree.heading("# 5", text="Rolle")

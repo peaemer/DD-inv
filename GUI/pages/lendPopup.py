@@ -103,12 +103,6 @@ def lendPopup(parent, data):
     label = tk.Label(popup, text="Ausleihdatum", font=LARGEFONT, bg="white", anchor="w")
     label.grid(row=3, column=0, padx=20, pady=10, sticky="w")
 
-    calEntry = DateEntry(popup, width= 16,locale="de_DE" , background="grey", foreground="white", bd=2)
-    calEntry.grid(row=3, column=1, padx=20, pady=10, sticky="w")
-
-    calEntry2 = DateEntry(popup, width=16,locale="de_DE" , background="grey", foreground="white", bd=2)
-    calEntry2.grid(row=3, column=1, padx=20, pady=10, sticky="w")
-
     popup.grid_columnconfigure(1, weight=1)  # Spalte 1 flexibel
 
     userVar = tk.StringVar()
