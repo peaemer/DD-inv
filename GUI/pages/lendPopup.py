@@ -101,12 +101,19 @@ def lend_popup(parent, data):
     borrower_label = tk.Label(popup, text="Ausleiher", font=LARGEFONT, bg="white", anchor="w")
     borrower_label.grid(row=2, column=0, padx=20, pady=10, sticky="w")
 
-    users = []
-    for user in db.read_all_benutzer():
-        users.append(user['Nutzername'])
-    entry = ttk.Combobox(popup, font=("Arial", 16), values=users)
-    entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
-    entry.set(cache.user_name)
+
+    if cache.user_group == "Admin":
+        users = []
+        for user in db.read_all_benutzer():
+            users.append(user['Nutzername'])
+        entry = ttk.Combobox(popup, font=("Arial", 16), values=users)
+        entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
+        entry.set(cache.user_name)
+    else:
+        entry_var = tk.StringVar()
+        entry_var.set(cache.user_name)
+        entry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT, textvariable=entry_var, state="disabled")
+        entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
 
     label = tk.Label(popup, text="Ausleihdatum", font=LARGEFONT, bg="white", anchor="w")
     label.grid(row=3, column=0, padx=20, pady=10, sticky="w")
