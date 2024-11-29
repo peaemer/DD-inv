@@ -79,14 +79,31 @@ def read_benutzer(nutzername):
             return dict(row) if row else None
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen des Benutzers: {e.args[0]}")
+    
+def read_benutzer_suchverlauf(nutzername):
+    """
+       Ruft den Suchverlauf eines spezifischen Benutzers ab.
+       :param nutzername: Der Benutzername, dessen Suchverlauf abgerufen werden soll.
+       :return: Der Suchverlauf des Benutzers oder None, falls keiner vorhanden ist.
+       """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("SELECT Suchverlauf FROM Benutzer WHERE Nutzername = ?", (nutzername,))
+            row = cur.fetchone()
+            return row["Suchverlauf"] if row else None
+    except sqlite3.Error as e:
+        raise RuntimeError(f"Fehler beim Abrufen des Suchverlaufs: {e.args[0]}")
 
-def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_rolle=None):
+
+def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_rolle=None, neue_suchverlauf=None):
     """
     Aktualisiert die Daten eines Benutzers (Passwort, Email, Rolle).
     :param Nutzername
     :param neues_passwort:(falls kein neues, leer lassen und neues Komma setzten)
     :param neues_email:(falls kein neues, leer lassen und neues Komma setzten)
     :param neue_rolle:(falls kein neues, leer lassen und neues Komma setzten)
+    :param neue_suchverlauf:(falls kein neues, leer lassen und neues Komma setzten)
     """
     try:
         with init_connection() as con:
@@ -103,6 +120,9 @@ def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_roll
             if neue_rolle:
                 update_fields.append("Rolle = ?")
                 parameters.append(neue_rolle)
+            if neue_suchverlauf:
+                update_fields.append("Suchverlauf = ?")
+                parameters.append(neue_suchverlauf)
 
             if not update_fields:
                 return "Keine Aktualisierungsdaten vorhanden."
