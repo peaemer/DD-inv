@@ -104,9 +104,7 @@ class mainPage(tk.Frame):
 
         self.adminBtn = tk.PhotoImage(file="assets/Key.png")
 
-
-
-
+        #Subheader für schriftzug Inventur übersicht
         greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
         greyFrame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
@@ -128,9 +126,12 @@ class mainPage(tk.Frame):
         overviewLabel = tk.Label(greyFrameSide, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
         overviewLabel.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
 
+        middleFrame = tk.Frame(self, bg="red")
+        middleFrame.grid(row=3, column=0, sticky=tk.N + tk.W + tk.S + tk.E)
+
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        searchFrame = tk.Frame(self, bg="white")
-        searchFrame.grid(pady=50, padx=185, row=1, column=0, sticky=tk.W + tk.E + tk.N)
+        searchFrame = tk.Frame(middleFrame, bg="white")
+        searchFrame.grid(pady=50, padx=15, row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         searchFrame.grid_columnconfigure(0, weight=0)
         searchFrame.grid_columnconfigure(1, weight=1)
@@ -156,18 +157,14 @@ class mainPage(tk.Frame):
         searchEntry.bind('<Return>', search)
         searchEntry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-
-
         treeStyle = ttk.Style()
         treeStyle.theme_use("default") #alt, classic,xpnative,winnative, default
         treeStyle.configure("Treeview.Heading",rowheight=50, font=("Arial", 20))
         treeStyle.configure("Treeview", rowheight=40, font=("Arial", 14))
 
-
-
         # Ändere die Position des TreeFrames auf row=3
-        treeFrame = tk.Frame(self, background="white")
-        treeFrame.grid(row=1, column=0, padx=0)
+        treeFrame = tk.Frame(middleFrame, background="black")
+        treeFrame.grid(row=2, column=0, padx=0)
 
         self.addBtn = tk.PhotoImage(file="assets/Erstellen.png")
         addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
