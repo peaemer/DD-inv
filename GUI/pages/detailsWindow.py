@@ -32,6 +32,7 @@ class detailsWindow(tk.Frame):
             controller.show_frame(mainPage)
 
         def show_settings_window_details_window():
+            print("Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
