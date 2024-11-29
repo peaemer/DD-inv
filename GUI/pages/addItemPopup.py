@@ -136,7 +136,8 @@ def addItemPopup(parent):
         # tag, typ,raum,name,damage
         tag = serviceTagEntryAddItemPopup.get() if serviceTagEntryAddItemPopup.get() else ""
         type = typeEntryAddItemPopup.get() if typeEntryAddItemPopup.get() else ""
-        room = roomEntryAddItemPopup.get() if roomEntryAddItemPopup.get() else ""
+        room = roomComboboxAddItemPopup.get() if roomComboboxAddItemPopup.get() else ""
+
         name = nameEntryAddItemPopup.get() if nameEntryAddItemPopup.get() else ""
         damage = damagedButtonAddItemPopup.get() if damagedButtonAddItemPopup.get() else ""
         db.create_hardware(tag,type,name,damage,None,room)
