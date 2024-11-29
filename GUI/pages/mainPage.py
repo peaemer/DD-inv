@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import *
 import Datenbank.sqlite3api as sqlapi
 import cache
+from GUI.SearchBar import SearchBar
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -36,6 +37,7 @@ class mainPage(tk.Frame):
             controller.show_frame(logInWindow)
 
         def search(event=None):                           # funktionalität hinzufügen
+            SearchBar.completed_search(searchEntry.get())
             search_entrys = []
             for entry in sqlapi.fetch_hardware():
                 for value in entry:
