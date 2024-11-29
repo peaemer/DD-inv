@@ -20,7 +20,7 @@ def pending_search(current_term:str)->None:
 
 def completed_search(final_term:str)->None:
 
-    sorted_list = sorted(None, key=lambda x: x['age'])
+#    sorted_list = sorted(None, key=lambda x: x['age'])
     pass
 
 

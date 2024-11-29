@@ -44,13 +44,12 @@ class mainPage(tk.Frame):
     :ivar add_btn: Image for the add item button.
     :type add_btn: tk.PhotoImage
     """
-    #if (cache.user_group == "admin"):
-
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
         def show_settings_window():
+            print("Show Settings")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 

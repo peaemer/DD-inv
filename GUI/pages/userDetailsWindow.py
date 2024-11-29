@@ -9,7 +9,7 @@ LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
 
 
-def showUserDetails(controller, data):
+def show_user_details(controller, data):
     """
     Zeigt die Details des Benutzers im `userDetailsWindow`.
     :param controller: Der Frame-Controller.

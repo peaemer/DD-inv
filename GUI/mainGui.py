@@ -8,7 +8,6 @@ import sys, os
 # Importiere Klassen direkt aus dem Modul pages
 from pages import logInWindow,\
 				   mainPage,\
-				   settingsWindow, \
 				   detailsWindow, \
 				   adminWindow, \
 			       _DPIAwareness
@@ -38,20 +37,10 @@ class ddINV(tk.Tk):
 		self.configure(background="white")
 		self.state("zoomed")
 
-		# Fensterbreite und -höhe definieren
-		window_width = 1920
-		window_height = 1080
 
-		# Bildschirmbreite und -höhe ermitteln
-		screen_width = self.winfo_screenwidth()
-		screen_height = self.winfo_screenheight()
-
-		# Berechne die Position, um das Fenster in der Mitte des Bildschirms zu platzieren
-		center_x = int(screen_width / 2 - window_width / 2)
-		center_y = int(screen_height / 2 - window_height / 2)
 
 		# Setze die Fenstergröße und Position
-		self.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
+		self.geometry("1920x1080")
 		self.resizable(True, True)  # Ermögliche Größenanpassung des Fensters
 		self.iconbitmap("assets/srhIcon.ico")  # Setze das Fenster-Icon
 
