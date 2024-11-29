@@ -1,7 +1,11 @@
 import tkinter as tk
+from tkinter import ttk
+from datetime import datetime
+
 #from tkcalendar import Calendar, DateEntry
 
 import cache
+import Datenbank.sqlite3api as db
 
 LARGEFONT = ("Arial", 20)
 LOGINFONT = ("Arial", 40)
@@ -97,17 +101,22 @@ def lend_popup(parent, data):
     borrower_label = tk.Label(popup, text="Ausleiher", font=LARGEFONT, bg="white", anchor="w")
     borrower_label.grid(row=2, column=0, padx=20, pady=10, sticky="w")
 
-    entry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT, textvariable=user_var)
+    users = []
+    for user in db.read_all_benutzer():
+        users.append(user['Nutzername'])
+    entry = ttk.Combobox(popup, font=("Arial", 16), values=users)
     entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
+    entry.set(cache.user_name)
 
     label = tk.Label(popup, text="Ausleihdatum", font=LARGEFONT, bg="white", anchor="w")
     label.grid(row=3, column=0, padx=20, pady=10, sticky="w")
 
+    time_entry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT)
+    time_entry.grid(row=3, column=1, padx=20, pady=10, sticky="ew")
+
     popup.grid_columnconfigure(1, weight=1)  # Spalte 1 flexibel
 
-    user_var = tk.StringVar()
-    user_var.set("Itemplatzhalter") #funktion zum eifügen des Namens
-
+    time_entry.insert(0, f'{datetime.now():%d.%m.%Y %H:%M}')
     name_entry.insert(0, data["name"])
 
     # Buttonbereich

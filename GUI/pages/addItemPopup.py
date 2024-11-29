@@ -95,7 +95,9 @@ def add_item_popup(parent):
     room_label_add_item_popup.grid(row=2, column=0, padx=0, pady=20, sticky=tk.E)
 
     # Combobox statt Entry
-    room_values = ["Raum 101", "Raum 102", "Raum 201", "Raum 202"]  # Beispieleinträge
+    room_values = []
+    for room in db.fetch_all_rooms():
+        room_values.append(room['Raum']+" - "+room['Ort'])
     room_combobox_add_item_popup = ttk.Combobox(input_frame_add_item_popup, values=room_values, font=("Arial", size_add_item_popup))
     room_combobox_add_item_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
     room_combobox_add_item_popup.set("Raum auswählen")  # Platzhalter

@@ -106,7 +106,6 @@ class mainPage(tk.Frame):
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
         self.grid_rowconfigure(2, weight=0)
-        self.grid_rowconfigure(3, weight=0)
         self.grid_columnconfigure(0, weight=1)
 
         # Erstelle einen Header-Bereich
@@ -149,35 +148,40 @@ class mainPage(tk.Frame):
 
 
 
-        grey_frame = tk.Frame(self, height=10, background="#F4EFEF")
-        grey_frame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
+        sub_grey_frame = tk.Frame(self, height=10, background="#F4EFEF")
+        sub_grey_frame.grid(row=2, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Füge den LogIn-Label zur Frame hinzu
-        log_in_label = tk.Label(grey_frame,
+        log_in_label = tk.Label(sub_grey_frame,
                               text="Inventur-Übersicht",
                               bd=0,
                               relief=tk.FLAT,
                               bg="#F4EFEF",
                               font=("Arial", 20))
-        log_in_label.grid(padx=200, pady=5, row=0, column=0, sticky=tk.W)
+        log_in_label.grid(padx=200, pady=5, row=1, column=0, sticky=tk.W)
 
         # Konfiguriere den grey_frame für zentrierte Ausrichtung
-        grey_frame.grid_columnconfigure(0, weight=1)
+        sub_grey_frame.grid_columnconfigure(0, weight=1)
 
         grey_frame_side = tk.Frame(self, height=10, background=srhGrey)
-        grey_frame_side.grid(row=1, column=0, sticky=tk.W + tk.N + tk.S)
+        grey_frame_side.grid(row=2, column=0, sticky=tk.W + tk.N + tk.S)
 
         overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        overview_label.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
+        overview_label.grid(padx=40, pady=50, row=0, column=0, sticky=tk.W +tk.N + tk.S)
+
+        # Erstellen des MiddleFrame
+        middle_frame = tk.Frame(self, bg="white", padx=40)
+        middle_frame.grid(row=2, padx=190, pady=60, column=0, sticky="nesw")
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        search_frame = tk.Frame(self, bg="white")
-        search_frame.grid(pady=50, padx=185, row=1, column=0, sticky=tk.W + tk.E + tk.N)
+        search_frame = tk.Frame(middle_frame, bg="white")
+        search_frame.grid(pady=50, padx=185, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         search_frame.grid_columnconfigure(0, weight=0)
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
+        # Search Btn def und neben dem Entry platzieren
         self.search_btn = tk.PhotoImage(file="assets/SearchButton.png")
         search_button = tk.Button(search_frame,
                                  image=self.search_btn,
@@ -199,22 +203,20 @@ class mainPage(tk.Frame):
         search_entry.bind("<Key>", on_key_press)
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-
-
+        # style der Tabelle
         tree_style = ttk.Style()
         tree_style.theme_use("default") #alt, classic,xpnative,winnative, default
         tree_style.configure("Treeview.Heading",rowheight=50, font=("Arial", 20))
         tree_style.configure("Treeview", rowheight=40, font=("Arial", 14))
 
+        # Ändere die Position des TreeFrames auf row=2
+        tree_frame = tk.Frame(middle_frame, background="white")
+        tree_frame.grid(row=1, column=0, padx=100)
 
-
-        # Ändere die Position des TreeFrames auf row=3
-        tree_frame = tk.Frame(self, background="white")
-        tree_frame.grid(row=1, column=0, padx=0)
-
+        # Btn Erstellen def mit Image und grid
         self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
-        add_button = tk.Button(tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
-        add_button.grid(padx=10, pady=5, row=0, column=0, sticky="e")
+        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
 
@@ -238,12 +240,12 @@ class mainPage(tk.Frame):
 
         ### listbox for directories
         tree.column("# 1", anchor=CENTER, width=60)
-        tree.heading("# 1", text="ID", )
-        tree.column("# 2", anchor=CENTER, width=155)
+        tree.heading("# 1", text="ID")
+        tree.column("# 2", anchor=CENTER, width=175)
         tree.heading("# 2", text="Service Tag")
-        tree.column("# 3", anchor=CENTER, width=250)
+        tree.column("# 3", anchor=CENTER, width=230)
         tree.heading("# 3", text="Typ")
-        tree.column("# 4", anchor=CENTER, width=100)
+        tree.column("# 4", anchor=CENTER, width=120)
         tree.heading("# 4", text="Raum")
         tree.column("# 5", anchor=CENTER, width=250)
         tree.heading("# 5", text="Name")
