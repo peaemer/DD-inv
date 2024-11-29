@@ -204,8 +204,8 @@ class mainPage(tk.Frame):
 
         # Btn Erstellen def mit Image und grid
         self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
-        add_button = tk.Button(tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
-        add_button.grid(padx=10, pady=5, row=1, column=0, sticky="e")
+        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
 
