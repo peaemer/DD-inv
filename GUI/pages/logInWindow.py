@@ -10,13 +10,26 @@ srhGrey = "#d9d9d9"
 srhOrange = "#DF4807"
 
 class logInWindow(tk.Frame):
+    """
+    Represents a login window frame for the application, designed to interface with
+    a `controller` to facilitate user authentication and navigation. This class
+    manages user input for authentication, updates cache with user details, and
+    controls the display transition based on authentication success. It includes
+    UI elements like rounded entry fields and buttons, constructed using the
+    Tkinter library.
+
+    :ivar srh_head: Image for the header logo located at 'assets/srhHeader.png'.
+    :type srh_head: tk.PhotoImage
+    :ivar log_out_btn: Image for the login button located at 'assets/Anmelden.png'.
+    :type log_out_btn: tk.PhotoImage
+    """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
-        def logIn():
-            password = passwordEntry.get().strip()
-            user = usernameEntry.get().strip()
+        def log_in():
+            password = password_entry.get().strip()
+            user = username_entry.get().strip()
 
             # Reset cache für Benutzerinformationen
             cache.user_group = ""
@@ -32,8 +45,8 @@ class logInWindow(tk.Frame):
                 cache.user_name = user  # Benutzernamen im Cache speichern
 
                 print(f"Erfolgreich eingeloggt: {user}, Rolle: {cache.user_group}")
-                passwordEntry.delete(0, 'end')
-                usernameEntry.delete(0, 'end')
+                password_entry.delete(0, 'end')
+                username_entry.delete(0, 'end')
                 # Zeige die MainPage an
                 from .mainPage import mainPage
                 controller.show_frame(mainPage)
@@ -42,11 +55,11 @@ class logInWindow(tk.Frame):
             else:
                 # Zeige Fehlermeldung bei falschem Login
                 messagebox.showinfo(title="Fehler", message="Passwort oder Benutzername falsch")
-                passwordEntry.delete(0, 'end')
+                password_entry.delete(0, 'end')
 
 
         def on_enter(event):
-            logIn()
+            log_in()
 
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
@@ -54,34 +67,34 @@ class logInWindow(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
 
         # Header
-        headerFrame = tk.Frame(self, height=10, background=srhOrange)
-        headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+        header_frame = tk.Frame(self, height=10, background=srhOrange)
+        header_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
-        self.srhHead = tk.PhotoImage(file="assets/srhHeader.png")
-        srhHeader = tk.Label(headerFrame, image=self.srhHead, bd=0, bg=srhOrange)
-        srhHeader.grid(padx=10, pady=10, row=0, column=0, sticky=tk.W + tk.N + tk.E)
+        self.srh_head = tk.PhotoImage(file="assets/srhHeader.png")
+        srh_header = tk.Label(header_frame, image=self.srh_head, bd=0, bg=srhOrange)
+        srh_header.grid(padx=10, pady=10, row=0, column=0, sticky=tk.W + tk.N + tk.E)
 
-        greyFrame = tk.Frame(self, height=10, background=srhGrey)
-        greyFrame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
+        grey_frame = tk.Frame(self, height=10, background=srhGrey)
+        grey_frame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Text im GreyFrame
-        greyLabel = tk.Label(
-            greyFrame,
+        grey_label = tk.Label(
+            grey_frame,
             text="Willkommen bei DD-Inv",
             font=LARGEFONT,
             bg=srhGrey,
             fg="black",
             anchor="center"
         )
-        greyLabel.pack(expand=True, fill="both")  # Text zentrieren und Frame ausfüllen
+        grey_label.pack(expand=True, fill="both")  # Text zentrieren und Frame ausfüllen
 
         # Konfiguriere die Spalten- und Zeilenverhältnisse so, dass sie sich dynamisch verteilen
         self.grid_columnconfigure(0, weight=1)  # Spalte 0 kann sich ausdehnen
         self.grid_rowconfigure(1, weight=1)  # Zeile 1 (wo das greyCanvas liegt) kann sich ausdehnen
 
         # Login-Formular mit abgerundeten Eingabefeldern
-        formFrame = tk.Frame(self, bg="white")
-        formFrame.place(relx=0.5, rely=0.5, anchor="center")
+        form_frame = tk.Frame(self, bg="white")
+        form_frame.place(relx=0.5, rely=0.5, anchor="center")
 
         def create_rounded_entry(canvas, parent, text_var, width=350, height=50):
             """Hilfsfunktion, um ein Eingabefeld mit abgerundeten Ecken zu erstellen."""
@@ -132,36 +145,36 @@ class logInWindow(tk.Frame):
 
         # Username
         tk.Label(
-            formFrame, text="Benutzername", font=LARGEFONT, bg="white"
+            form_frame, text="Benutzername", font=LARGEFONT, bg="white"
         ).grid(column=0, row=0, pady=10)
-        usernameCanvas = tk.Canvas(formFrame, width=350, height=50, bg="white", highlightthickness=0)
-        usernameCanvas.grid(column=0, row=1, pady=10)
-        usernameVar = tk.StringVar()
-        usernameEntry = create_rounded_entry(usernameCanvas, formFrame, usernameVar)
+        username_canvas = tk.Canvas(form_frame, width=350, height=50, bg="white", highlightthickness=0)
+        username_canvas.grid(column=0, row=1, pady=10)
+        username_var = tk.StringVar()
+        username_entry = create_rounded_entry(username_canvas, form_frame, username_var)
 
         # Passwort
         tk.Label(
-            formFrame, text="Passwort", font=LARGEFONT, bg="white"
+            form_frame, text="Passwort", font=LARGEFONT, bg="white"
         ).grid(column=0, row=2, pady=10)
-        passwordCanvas = tk.Canvas(formFrame, width=350, height=50, bg="white", highlightthickness=0)
-        passwordCanvas.grid(column=0, row=3, pady=10)
-        passwordVar = tk.StringVar()
-        passwordEntry = create_rounded_entry(passwordCanvas, formFrame, passwordVar)
-        passwordEntry.config(show="*")
+        password_canvas = tk.Canvas(form_frame, width=350, height=50, bg="white", highlightthickness=0)
+        password_canvas.grid(column=0, row=3, pady=10)
+        password_var = tk.StringVar()
+        password_entry = create_rounded_entry(password_canvas, form_frame, password_var)
+        password_entry.config(show="*")
 
         # Login-Button
-        self.logOutBtn = tk.PhotoImage(file="assets/Anmelden.png")
-        loginButton = tk.Button(
-            formFrame,
-            image=self.logOutBtn,
+        self.log_out_btn = tk.PhotoImage(file="assets/Anmelden.png")
+        login_button = tk.Button(
+            form_frame,
+            image=self.log_out_btn,
             bg="white",
-            command=logIn,
+            command=log_in,
             bd=0,
             relief=tk.FLAT,
             activebackground="white",
         )
-        loginButton.grid(column=0, row=4, pady=20, sticky="ew")
+        login_button.grid(column=0, row=4, pady=20, sticky="ew")
 
         # Bind die Enter-Taste
-        usernameEntry.bind("<Return>", on_enter)
-        passwordEntry.bind("<Return>", on_enter)
+        username_entry.bind("<Return>", on_enter)
+        password_entry.bind("<Return>", on_enter)

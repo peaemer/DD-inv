@@ -5,7 +5,7 @@ import Datenbank.sqlite3api as db
 import cache
 
 
-def addItemPopup(parent):
+def add_item_popup(parent):
     """
     Creates a popup window for adding a new item. The popup window includes
     fields for entering details such as the service tag, type, room, name,
@@ -22,12 +22,12 @@ def addItemPopup(parent):
     :rtype: tk.Toplevel
     """
     # Toplevel-Fenster erstellen
-    addPopup = tk.Toplevel(parent)
-    addPopup.title("Neuer Eintrag")
-    addPopup.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
-    addPopup.grab_set()         # Blockiere Interaktionen mit dem Hauptfenster
-    addPopup.attributes('-topmost', True)  # Erzwinge den Fokus auf das Popup
-    addPopup.configure(background="white")
+    add_popup = tk.Toplevel(parent)
+    add_popup.title("Neuer Eintrag")
+    add_popup.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
+    add_popup.grab_set()         # Blockiere Interaktionen mit dem Hauptfenster
+    add_popup.attributes('-topmost', True)  # Erzwinge den Fokus auf das Popup
+    add_popup.configure(background="white")
 
     # Bildschirmbreite und -höhe ermitteln
     screen_width = parent.winfo_screenwidth()
@@ -41,85 +41,85 @@ def addItemPopup(parent):
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
 
-    addPopup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
-    addPopup.resizable(False, False)
+    add_popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
+    add_popup.resizable(False, False)
 
     # Icon setzen (optional)
     try:
-        addPopup.iconbitmap("assets/srhIcon.ico")
+        add_popup.iconbitmap("assets/srhIcon.ico")
     except Exception as e:
         print(f"Fehler beim Laden des Icons: {e}")
 
     # Erstelle einen Header-Bereich
-    headerFrameAddItemPopup = tk.Frame(addPopup, height=10, background="#DF4807")
-    headerFrameAddItemPopup.grid(row=0, column=0, columnspan=2, sticky=tk.W + tk.E + tk.N)
+    header_frame_add_item_popup = tk.Frame(add_popup, height=10, background="#DF4807")
+    header_frame_add_item_popup.grid(row=0, column=0, columnspan=2, sticky=tk.W + tk.E + tk.N)
 
     # Spaltenkonfiguration für Zentrierung im Frame
-    headerFrameAddItemPopup.grid_columnconfigure(0, weight=1)
+    header_frame_add_item_popup.grid_columnconfigure(0, weight=1)
 
     # Füge ein zentriertes Label hinzu
-    headerLabelAddItemPopup = tk.Label(headerFrameAddItemPopup, background="#DF4807",
+    header_label_add_item_popup = tk.Label(header_frame_add_item_popup, background="#DF4807",
                                        text="Erstellen", foreground="white", font=("Arial", 40))
-    headerLabelAddItemPopup.grid(row=0, column=0, sticky=tk.NSEW)
+    header_label_add_item_popup.grid(row=0, column=0, sticky=tk.NSEW)
 
     # Input-Frame
-    inputFrameAddItemPopup = tk.Frame(addPopup, background="white")
-    inputFrameAddItemPopup.grid(row=1, column=0, pady=20)
+    input_frame_add_item_popup = tk.Frame(add_popup, background="white")
+    input_frame_add_item_popup.grid(row=1, column=0, pady=20)
 
-    inputFrameAddItemPopup.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
-    inputFrameAddItemPopup.grid_columnconfigure(1, weight=1)
+    input_frame_add_item_popup.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
+    input_frame_add_item_popup.grid_columnconfigure(1, weight=1)
 
-    sizeAddItemPopup = 16
+    size_add_item_popup = 16
 
     # Label und Eingabefeld hinzufügen
-    serviceTagLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Service Tag", background="white",
-                                           font=("Arial", sizeAddItemPopup))
-    serviceTagLabelAddItemPopup.grid(row=0, column=0, padx=0, pady=20, sticky=tk.E)
+    service_tag_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Service Tag", background="white",
+                                           font=("Arial", size_add_item_popup))
+    service_tag_label_add_item_popup.grid(row=0, column=0, padx=0, pady=20, sticky=tk.E)
 
-    serviceTagEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9",
-                                           font=("Arial", sizeAddItemPopup), bd=0)
-    serviceTagEntryAddItemPopup.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    service_tag_entry_add_item_popup = tk.Entry(input_frame_add_item_popup, background="#d9d9d9",
+                                           font=("Arial", size_add_item_popup), bd=0)
+    service_tag_entry_add_item_popup.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Typ
-    typeLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Typ", background="white",
-                                     font=("Arial", sizeAddItemPopup))
-    typeLabelAddItemPopup.grid(row=1, column=0, padx=0, pady=20, sticky=tk.E)
+    type_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Typ", background="white",
+                                     font=("Arial", size_add_item_popup))
+    type_label_add_item_popup.grid(row=1, column=0, padx=0, pady=20, sticky=tk.E)
 
-    typeEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial", sizeAddItemPopup),
+    type_entry_add_item_popup = tk.Entry(input_frame_add_item_popup, background="#d9d9d9", font=("Arial", size_add_item_popup),
                                      bd=0)
-    typeEntryAddItemPopup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    type_entry_add_item_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Raum (Dropdown-Menü)
-    roomLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Raum", background="white",
-                                     font=("Arial", sizeAddItemPopup))
-    roomLabelAddItemPopup.grid(row=2, column=0, padx=0, pady=20, sticky=tk.E)
+    room_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Raum", background="white",
+                                     font=("Arial", size_add_item_popup))
+    room_label_add_item_popup.grid(row=2, column=0, padx=0, pady=20, sticky=tk.E)
 
     # Combobox statt Entry
-    roomValues = ["Raum 101", "Raum 102", "Raum 201", "Raum 202"]  # Beispieleinträge
-    roomComboboxAddItemPopup = ttk.Combobox(inputFrameAddItemPopup, values=roomValues, font=("Arial", sizeAddItemPopup))
-    roomComboboxAddItemPopup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
-    roomComboboxAddItemPopup.set("Raum auswählen")  # Platzhalter
+    room_values = ["Raum 101", "Raum 102", "Raum 201", "Raum 202"]  # Beispieleinträge
+    room_combobox_add_item_popup = ttk.Combobox(input_frame_add_item_popup, values=room_values, font=("Arial", size_add_item_popup))
+    room_combobox_add_item_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    room_combobox_add_item_popup.set("Raum auswählen")  # Platzhalter
 
     # Name
-    nameLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Name", background="white",
-                                     font=("Arial", sizeAddItemPopup))
-    nameLabelAddItemPopup.grid(row=3, column=0, padx=0, pady=20, sticky=tk.E)
+    name_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Name", background="white",
+                                     font=("Arial", size_add_item_popup))
+    name_label_add_item_popup.grid(row=3, column=0, padx=0, pady=20, sticky=tk.E)
 
-    nameEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial", sizeAddItemPopup),
+    name_entry_add_item_popup = tk.Entry(input_frame_add_item_popup, background="#d9d9d9", font=("Arial", size_add_item_popup),
                                      bd=0)
-    nameEntryAddItemPopup.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    name_entry_add_item_popup.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Beschädigung
-    damagedLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Beschädigung", background="white",
-                                        font=("Arial", sizeAddItemPopup))
-    damagedLabelAddItemPopup.grid(row=4, column=0, padx=0, pady=20, sticky=tk.E)
+    damaged_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Beschädigung", background="white",
+                                        font=("Arial", size_add_item_popup))
+    damaged_label_add_item_popup.grid(row=4, column=0, padx=0, pady=20, sticky=tk.E)
 
-    damagedButtonAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial", sizeAddItemPopup),
+    damaged_button_add_item_popup = tk.Entry(input_frame_add_item_popup, background="#d9d9d9", font=("Arial", size_add_item_popup),
                                          bd=0)
-    damagedButtonAddItemPopup.grid(row=4, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    damaged_button_add_item_popup.grid(row=4, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Funktion zum Eintrag hinzufügen
-    def submitEntry():
+    def submit_entry():
         """
         Display a popup window to allow users to add a new hardware item to the
         inventory system. The function creates a user interface for input fields
@@ -134,18 +134,18 @@ def addItemPopup(parent):
         """
         # add device
         # tag, typ,raum,name,damage
-        tag = serviceTagEntryAddItemPopup.get() if serviceTagEntryAddItemPopup.get() else ""
-        type = typeEntryAddItemPopup.get() if typeEntryAddItemPopup.get() else ""
-        room = roomComboboxAddItemPopup.get() if roomComboboxAddItemPopup.get() else ""
+        tag = service_tag_entry_add_item_popup.get() if service_tag_entry_add_item_popup.get() else ""
+        type = type_entry_add_item_popup.get() if type_entry_add_item_popup.get() else ""
+        room = room_combobox_add_item_popup.get() if room_combobox_add_item_popup.get() else ""
 
-        name = nameEntryAddItemPopup.get() if nameEntryAddItemPopup.get() else ""
-        damage = damagedButtonAddItemPopup.get() if damagedButtonAddItemPopup.get() else ""
+        name = name_entry_add_item_popup.get() if name_entry_add_item_popup.get() else ""
+        damage = damaged_button_add_item_popup.get() if damaged_button_add_item_popup.get() else ""
         db.create_hardware(tag,type,name,damage,None,room)
         from .mainPage import mainPage
         mainPage.update_treeview_with_data(data=None)
-        addPopup.destroy()
+        add_popup.destroy()
 
-    def exitEntry():
+    def exit_entry():
         """
         Displays a popup window to add an item.
 
@@ -160,25 +160,25 @@ def addItemPopup(parent):
         :type parent: tkinter.Tk or tkinter.Widget
         """
         print("Vorgang abgebrochen")
-        addPopup.destroy()
+        add_popup.destroy()
 
-    parent.addBtnAddItemPopup = tk.PhotoImage(file="assets/ErstellenButton.png")
-    parent.exitBtnAddItemPopup = tk.PhotoImage(file="assets/AbbrechenButton.png")
+    parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/ErstellenButton.png")
+    parent.exit_btn_add_item_popup = tk.PhotoImage(file="assets/AbbrechenButton.png")
 
     # Buttons in ein separates Frame
-    buttonFrameAddItemPopup = tk.Frame(addPopup, background="white")
-    buttonFrameAddItemPopup.grid(row=2, column=0, pady=20)
+    button_frame_add_item_popup = tk.Frame(add_popup, background="white")
+    button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
-    exitButtonAddItemPopup = tk.Button(buttonFrameAddItemPopup, image=parent.exitBtnAddItemPopup,
-                                       bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=exitEntry)
-    exitButtonAddItemPopup.pack(side=tk.LEFT, padx=10)  # Links platzieren
+    exit_button_add_item_popup = tk.Button(button_frame_add_item_popup, image=parent.exit_btn_add_item_popup,
+                                       bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=exit_entry)
+    exit_button_add_item_popup.pack(side=tk.LEFT, padx=10)  # Links platzieren
 
-    submitButtonAddItemPopup = tk.Button(buttonFrameAddItemPopup, image=parent.addBtnAddItemPopup,
-                                         bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=submitEntry)
-    submitButtonAddItemPopup.pack(side=tk.LEFT, padx=10)  # Neben Exit-Button platzieren
+    submit_button_add_item_popup = tk.Button(button_frame_add_item_popup, image=parent.add_btn_add_item_popup,
+                                         bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=submit_entry)
+    submit_button_add_item_popup.pack(side=tk.LEFT, padx=10)  # Neben Exit-Button platzieren
 
-    addPopup.grid_rowconfigure(0, weight=0)
-    addPopup.grid_rowconfigure(1, weight=1)
-    addPopup.grid_rowconfigure(2, weight=0)
-    addPopup.grid_rowconfigure(3, weight=1)
-    addPopup.grid_columnconfigure(0, weight=1)
+    add_popup.grid_rowconfigure(0, weight=0)
+    add_popup.grid_rowconfigure(1, weight=1)
+    add_popup.grid_rowconfigure(2, weight=0)
+    add_popup.grid_rowconfigure(3, weight=1)
+    add_popup.grid_columnconfigure(0, weight=1)

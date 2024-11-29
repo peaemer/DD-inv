@@ -9,7 +9,7 @@ srhGrey = "#d9d9d9"
 
 
 
-def lendPopup(parent, data):
+def lend_popup(parent, data):
     """
     Creates a popup window that facilitates the lending process by allowing the user
     to input and confirm lending details such as item name, borrower, and lending date.
@@ -53,8 +53,8 @@ def lendPopup(parent, data):
         print(f"Fehler beim Laden des Icons: {e}")
 
     # Funktion, um die Eingaben zu verarbeiten
-    def confirmLend():
-        item = nameEntry.get().strip()
+    def confirm_lend():
+        item = name_entry.get().strip()
         borrower = entry.get().strip()
         #lend_date = calEntry.get().strip()
         print(f"Item: {item}, Borrower: {borrower}, Date:")
@@ -72,32 +72,32 @@ def lendPopup(parent, data):
 
 
     # Titelbereich
-    titleLabel = tk.Label(
+    title_label = tk.Label(
         popup, text="Ausleihen", font=("Arial", 35), bg="#DF4807", fg="white"
     )
-    titleLabel.grid(row=0, column=0, columnspan=2, ipady=10, sticky="new")
+    title_label.grid(row=0, column=0, columnspan=2, ipady=10, sticky="new")
 
 
-    itemVar = tk.StringVar()
-    itemVar.set("Itemplatzhalter") #funktion zum eifügen des Namens
+    item_var = tk.StringVar()
+    item_var.set("Itemplatzhalter") #funktion zum eifügen des Namens
 
-    userVar = tk.StringVar()
-    userVar.set(cache.user_name) #funktion zum eifügen des Namens
+    user_var = tk.StringVar()
+    user_var.set(cache.user_name) #funktion zum eifügen des Namens
 
 
 
     # Formularbereich
 
-    nameLabel = tk.Label(popup, text="Name", font=LARGEFONT, bg="white", anchor="w")
-    nameLabel.grid(row=1, column=0, padx=20, pady=10, sticky="w")
+    name_label = tk.Label(popup, text="Name", font=LARGEFONT, bg="white", anchor="w")
+    name_label.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
-    nameEntry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT)
-    nameEntry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
+    name_entry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT)
+    name_entry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
 
-    borrowerlabel = tk.Label(popup, text="Ausleiher", font=LARGEFONT, bg="white", anchor="w")
-    borrowerlabel.grid(row=2, column=0, padx=20, pady=10, sticky="w")
+    borrower_label = tk.Label(popup, text="Ausleiher", font=LARGEFONT, bg="white", anchor="w")
+    borrower_label.grid(row=2, column=0, padx=20, pady=10, sticky="w")
 
-    entry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT, textvariable=userVar)
+    entry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT, textvariable=user_var)
     entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
 
     label = tk.Label(popup, text="Ausleihdatum", font=LARGEFONT, bg="white", anchor="w")
@@ -105,23 +105,23 @@ def lendPopup(parent, data):
 
     popup.grid_columnconfigure(1, weight=1)  # Spalte 1 flexibel
 
-    userVar = tk.StringVar()
-    userVar.set("Itemplatzhalter") #funktion zum eifügen des Namens
+    user_var = tk.StringVar()
+    user_var.set("Itemplatzhalter") #funktion zum eifügen des Namens
 
-    nameEntry.insert(0, data["name"])
+    name_entry.insert(0, data["name"])
 
     # Buttonbereich
-    buttonFrame = tk.Frame(popup, bg="white")
-    buttonFrame.grid(row=4, column=0, columnspan=2, pady=20)
+    button_frame = tk.Frame(popup, bg="white")
+    button_frame.grid(row=4, column=0, columnspan=2, pady=20)
 
-    confirmBtn = tk.Button(
-        buttonFrame, text="Bestätigen", font=LARGEFONT, bg="#DF4807", fg="white",
-        relief=tk.FLAT, command=confirmLend
+    confirm_btn = tk.Button(
+        button_frame, text="Bestätigen", font=LARGEFONT, bg="#DF4807", fg="white",
+        relief=tk.FLAT, command=confirm_lend
     )
-    confirmBtn.grid(row=0, column=0, padx=10)
+    confirm_btn.grid(row=0, column=0, padx=10)
 
-    cancelBtn = tk.Button(
-        buttonFrame, text="Abbrechen", font=LARGEFONT, bg=srhGrey, relief=tk.FLAT,
+    cancel_btn = tk.Button(
+        button_frame, text="Abbrechen", font=LARGEFONT, bg=srhGrey, relief=tk.FLAT,
         command=popup.destroy
     )
-    cancelBtn.grid(row=0, column=1, padx=10)
+    cancel_btn.grid(row=0, column=1, padx=10)

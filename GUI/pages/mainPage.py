@@ -11,52 +11,85 @@ srhGrey = "#d9d9d9"
 
 # Hauptseite (zweites Fenster)
 class mainPage(tk.Frame):
+    """
+    The mainPage class provides the graphical user interface for the main
+    application page, utilizing the Tkinter framework. It handles user interactions,
+    layout management, and various functionalities such as searching, logging out,
+    and navigating to different windows within the application. This class is
+    responsible for rendering the main interface that users interact with after
+    logging in, including headers, buttons, and data views.
+
+    The class efficiently manages widgets like frames, buttons, and labels, and
+    implements key functionalities that enhance user experience, such as placeholders
+    in search entries, focus events, and grid layout configurations. It makes extensive
+    use of Tkinter's components and styles to deliver an aesthetically organized
+    interface. Additionally, this class interacts with different modules within the
+    application to transition between various windows and maintain usability and
+    navigation flow.
+
+    :ivar header_frame: The header section that includes logos and option buttons.
+    :type header_frame: tk.Frame
+    :ivar greyFrame: A secondary frame used for additional layout and labels.
+    :type greyFrame: tk.Frame
+    :ivar headerLabel: A label for header display.
+    :type headerLabel: tk.Label
+    :ivar log_out_btn: Image for the logout button.
+    :type log_out_btn: tk.PhotoImage
+    :ivar opt_btn: Image for the settings button.
+    :type opt_btn: tk.PhotoImage
+    :ivar admin_btn: Image for the admin button.
+    :type admin_btn: tk.PhotoImage
+    :ivar search_btn: Image for the search button.
+    :type search_btn: tk.PhotoImage
+    :ivar add_btn: Image for the add item button.
+    :type add_btn: tk.PhotoImage
+    """
     #if (cache.user_group == "admin"):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
-        def showSettingsWindow():
-            from .settingsWindow import popUpSettings
-            popUpSettings(self)
+        def show_settings_window():
+            from .settingsWindow import pop_up_settings
+            pop_up_settings(self)
 
-        def showAdminWindow():
+        def show_admin_window():
             from .adminWindow import adminWindow
             controller.show_frame(adminWindow)
 
         # Speichere die Funktion als Attribut, um später darauf zuzugreifen
-        self.showAdminWindow = showAdminWindow
+        self.show_admin_window = show_admin_window
 
-        def logOut():
+        def log_out():
             from .logInWindow import logInWindow
             cache.user_group = None  # Benutzergruppe zurücksetzen
             print("--------------------------------")
-            print(f"Cache-Werte nach logOut: Gruppe={cache.user_group}, Benutzer={cache.user_name}")
+            print(f"Cache-Werte nach log_out: Gruppe={cache.user_group}, Benutzer={cache.user_name}")
             controller.show_frame(logInWindow)
 
         def search(event=None):                           # funktionalität hinzufügen
             search_entrys = []
             for entry in sqlapi.fetch_hardware():
                 for value in entry:
-                    if searchEntry.get().lower() in str(entry[value]).lower():
+                    if search_entry.get().lower() in str(entry[value]).lower():
                         if entry not in search_entrys:
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
 
-        def addItem():
-            from .addItemPopup import addItemPopup
-            addItemPopup(self)
+        def add_item():
+            from .addItemPopup import add_item_popup
+            add_item_popup(self)
 
-        def onEntryClick(event):
-            if searchEntry.get() == 'Suche':
-                searchEntry.delete(0, "end")  # Lösche den Platzhalter-Text
-                searchEntry.config(fg='black')  # Setze Textfarbe auf schwarz
+        def on_entry_click(event):
+            if search_entry.get() == 'Suche':
+                search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
+                search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
 
-        def onFocusOut(event):
-            if searchEntry.get() == '':
-                searchEntry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                searchEntry.config(fg='grey')  # Textfarbe auf grau ändern
+        def on_focus_out(event):
+            if search_entry.get() == '':
+                search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
+                search_entry.config(fg='grey')  # Textfarbe auf grau ändern
 
         global tree
 
@@ -68,115 +101,115 @@ class mainPage(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
 
         # Erstelle einen Header-Bereich
-        self.headerFrame = tk.Frame(self, height=10, background="#DF4807")
-        self.headerFrame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+        self.header_frame = tk.Frame(self, height=10, background="#DF4807")
+        self.header_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Konfiguriere die Spalten für den Header
-        self.headerFrame.grid_columnconfigure(0, weight=1)
-        self.headerFrame.grid_rowconfigure(0, weight=1)
+        self.header_frame.grid_columnconfigure(0, weight=1)
+        self.header_frame.grid_rowconfigure(0, weight=1)
 
-        self.srhHead = tk.PhotoImage(file="assets/srh.png")
+        self.srh_head = tk.PhotoImage(file="assets/srh.png")
 
         # Füge ein zentriertes Label hinzu
-        headerLabel = tk.Label(self.headerFrame, image=self.srhHead, background="#DF4807", foreground="white")
-        headerLabel.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
+        header_label = tk.Label(self.header_frame, image=self.srh_head, background="#DF4807", foreground="white")
+        header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Konvertiere das Bild für Tkinter
-        self.logOutBtn = tk.PhotoImage(file="assets/ausloggen.png")
+        self.log_out_btn = tk.PhotoImage(file="assets/ausloggen.png")
 
         # Füge einen Button mit dem Bild hinzu
-        logOutButton = tk.Button(self.headerFrame, image=self.logOutBtn, command=logOut, bd=0, relief=tk.FLAT, bg="#DF4807",
+        log_out_button = tk.Button(self.header_frame, image=self.log_out_btn, command=log_out, bd=0, relief=tk.FLAT, bg="#DF4807",
                                  activebackground="#DF4807")
-        logOutButton.grid(row=0, column=3, sticky=tk.E, padx=20)
+        log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         # Konvertiere das Bild für Tkinter
-        self.optBtn = tk.PhotoImage(file="assets/option.png")
+        self.opt_btn = tk.PhotoImage(file="assets/option.png")
 
         # Füge einen Button mit dem Bild hinzu
-        optionsButton = tk.Button(self.headerFrame,
-                                  image=self.optBtn,
-                                  command=showSettingsWindow,
+        options_button = tk.Button(self.header_frame,
+                                  image=self.opt_btn,
+                                  command=show_settings_window,
                                   bd=0,
                                   relief=tk.FLAT,
                                   bg="#DF4807",
                                   activebackground="#DF4807")
-        optionsButton.grid(row=0, column=2, sticky=tk.E, padx=20)
+        options_button.grid(row=0, column=2, sticky=tk.E, padx=20)
 
-        self.adminBtn = tk.PhotoImage(file="assets/Key.png")
-
-
+        self.admin_btn = tk.PhotoImage(file="assets/Key.png")
 
 
-        greyFrame = tk.Frame(self, height=10, background="#F4EFEF")
-        greyFrame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
+
+
+        grey_frame = tk.Frame(self, height=10, background="#F4EFEF")
+        grey_frame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Füge den LogIn-Label zur Frame hinzu
-        logInLabel = tk.Label(greyFrame,
+        log_in_label = tk.Label(grey_frame,
                               text="Inventur-Übersicht",
                               bd=0,
                               relief=tk.FLAT,
                               bg="#F4EFEF",
                               font=("Arial", 20))
-        logInLabel.grid(padx=200, pady=5, row=0, column=0, sticky=tk.W)
+        log_in_label.grid(padx=200, pady=5, row=0, column=0, sticky=tk.W)
 
-        # Konfiguriere den greyFrame für zentrierte Ausrichtung
-        greyFrame.grid_columnconfigure(0, weight=1)
+        # Konfiguriere den grey_frame für zentrierte Ausrichtung
+        grey_frame.grid_columnconfigure(0, weight=1)
 
-        greyFrameSide = tk.Frame(self, height=10, background=srhGrey)
-        greyFrameSide.grid(row=1, column=0, sticky=tk.W + tk.N + tk.S)
+        grey_frame_side = tk.Frame(self, height=10, background=srhGrey)
+        grey_frame_side.grid(row=1, column=0, sticky=tk.W + tk.N + tk.S)
 
-        overviewLabel = tk.Label(greyFrameSide, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        overviewLabel.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
+        overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
+        overview_label.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        searchFrame = tk.Frame(self, bg="white")
-        searchFrame.grid(pady=50, padx=185, row=1, column=0, sticky=tk.W + tk.E + tk.N)
+        search_frame = tk.Frame(self, bg="white")
+        search_frame.grid(pady=50, padx=185, row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
-        searchFrame.grid_columnconfigure(0, weight=0)
-        searchFrame.grid_columnconfigure(1, weight=1)
-        searchFrame.grid_columnconfigure(2, weight=0)
+        search_frame.grid_columnconfigure(0, weight=0)
+        search_frame.grid_columnconfigure(1, weight=1)
+        search_frame.grid_columnconfigure(2, weight=0)
 
-        self.searchBtn = tk.PhotoImage(file="assets/SearchButton.png")
-        searchButton = tk.Button(searchFrame,
-                                 image=self.searchBtn,
+        self.search_btn = tk.PhotoImage(file="assets/SearchButton.png")
+        search_button = tk.Button(search_frame,
+                                 image=self.search_btn,
                                  bd=0,
                                  relief=tk.FLAT,
                                  bg="white",
                                  activebackground="white",
                                  command=search)
-        searchButton.grid(padx=5, pady=5, row=0, column=0)
+        search_button.grid(padx=5, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
-        searchEntry = tk.Entry(searchFrame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
-        searchEntry.insert(0, 'Suche')  # Setze den Platzhalter-Text
+        search_entry = tk.Entry(search_frame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
+        search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
-        searchEntry.bind('<FocusIn>', onEntryClick)
-        searchEntry.bind('<FocusOut>', onFocusOut)
-        searchEntry.bind('<Return>', search)
-        searchEntry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
+        search_entry.bind('<FocusIn>', on_entry_click)
+        search_entry.bind('<FocusOut>', on_focus_out)
+        search_entry.bind('<Return>', search)
+        search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
 
 
-        treeStyle = ttk.Style()
-        treeStyle.theme_use("default") #alt, classic,xpnative,winnative, default
-        treeStyle.configure("Treeview.Heading",rowheight=50, font=("Arial", 20))
-        treeStyle.configure("Treeview", rowheight=40, font=("Arial", 14))
+        tree_style = ttk.Style()
+        tree_style.theme_use("default") #alt, classic,xpnative,winnative, default
+        tree_style.configure("Treeview.Heading",rowheight=50, font=("Arial", 20))
+        tree_style.configure("Treeview", rowheight=40, font=("Arial", 14))
 
 
 
         # Ändere die Position des TreeFrames auf row=3
-        treeFrame = tk.Frame(self, background="white")
-        treeFrame.grid(row=1, column=0, padx=0)
+        tree_frame = tk.Frame(self, background="white")
+        tree_frame.grid(row=1, column=0, padx=0)
 
-        self.addBtn = tk.PhotoImage(file="assets/Erstellen.png")
-        addButton = tk.Button(treeFrame,image=self.addBtn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=addItem)
-        addButton.grid(padx=10, pady=5, row=0, column=0, sticky="e")
+        self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
+        add_button = tk.Button(tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        add_button.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
-        tree = ttk.Treeview(treeFrame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
+        tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
 
         scroll = tk.Scrollbar(
-            treeFrame,
+            tree_frame,
             orient="vertical",
             command=tree.yview,
             bg="black",
@@ -237,18 +270,18 @@ class mainPage(tk.Frame):
         insert_data(self)
 
         # Funktion für das Ereignis-Binding
-        def onItemSelected(event):
+        def on_item_selected(event):
             try:
-                selectedItem = tree.focus()
-                print(f"Ausgewähltes Item: {selectedItem}")  # Debug
-                if selectedItem:
-                    from .detailsWindow import detailsWindow, showDetails
-                    showDetails(selectedItem, tree, controller)
+                selected_item = tree.focus()
+                print(f"Ausgewähltes Item: {selected_item}")  # Debug
+                if selected_item:
+                    from .detailsWindow import detailsWindow, show_details
+                    show_details(selected_item, tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        tree.bind("<Double-1>", onItemSelected)
+        tree.bind("<Double-1>", on_item_selected)
 
     def update_treeview_with_data(self = None, data=None):
         # Clear the current treeview contents
@@ -282,19 +315,19 @@ class mainPage(tk.Frame):
                 print(
                     "Admin-Button existiert noch nicht. Erstelle den Admin-Button.")  # Debug-Print für das Erstellen des Buttons
                 # Erstelle den Admin-Button, wenn er noch nicht existiert
-                self.adminButton = tk.Button(
-                    self.headerFrame,
-                    image=self.adminBtn,
-                    command=self.showAdminWindow,  # Funktion für Admin-Button
+                self.admin_button = tk.Button(
+                    self.header_frame,
+                    image=self.admin_btn,
+                    command=self.show_admin_window,  # Funktion für Admin-Button
                     bd=0,
                     relief=tk.FLAT,
                     bg="#DF4807",
                     activebackground="#DF4807"
                 )
-                self.adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
+                self.admin_button.grid(row=0, column=1, sticky=tk.E, padx=20)
                 print("Admin-Button wurde erfolgreich erstellt und platziert.")  # Bestätigung der Erstellung
             else:
-                self.adminButton.grid(row=0, column=1, sticky=tk.E, padx=20)
+                self.admin_button.grid(row=0, column=1, sticky=tk.E, padx=20)
                 print(
                     "Admin-Button existiert bereits. Keine Erstellung notwendig.")  # Wenn der Button bereits existiert
         else:
@@ -302,7 +335,7 @@ class mainPage(tk.Frame):
             # Entferne den Admin-Button, falls er existiert
             if hasattr(self, "adminButton"):
                 print("Admin-Button existiert, entferne ihn.")  # Debug-Print für das Entfernen des Buttons
-                self.adminButton.grid_remove()
+                self.admin_button.grid_remove()
             else:
                 print("Kein Admin-Button zum Entfernen gefunden.")  # Wenn kein Button vorhanden ist
 
