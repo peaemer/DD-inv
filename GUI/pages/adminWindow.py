@@ -41,7 +41,8 @@ class adminWindow(tk.Frame):
             from .mainPage import mainPage
             controller.show_frame(mainPage)
 
-        def show_settings_window():
+        def show_settings_window_admin_window():
+            print("show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
@@ -99,7 +100,7 @@ class adminWindow(tk.Frame):
         # Füge einen Button mit dem Bild hinzu
         options_button = tk.Button(header_frame,
                                    image=self.opt_btn,
-                                   command=show_settings_window(),
+                                   command=show_settings_window_admin_window,
                                    bd=0,
                                    relief=tk.FLAT,
                                    bg="#DF4807",
