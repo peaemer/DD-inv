@@ -85,6 +85,16 @@ class mainPage(tk.Frame):
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
 
+        def on_key_press(event):
+            typed_key = event.char  # The character of the typed key
+            print(f"Key pressed: {typed_key}")
+
+            # Check if a specific key was pressed
+            if typed_key == "a":
+                print("You typed the letter 'a'")
+            elif typed_key == "b":
+                print("You typed the letter 'b'")
+
         def on_focus_out(event):
             if search_entry.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
@@ -190,6 +200,7 @@ class mainPage(tk.Frame):
         search_entry.bind('<FocusIn>', on_entry_click)
         search_entry.bind('<FocusOut>', on_focus_out)
         search_entry.bind('<Return>', search)
+        search_entry.bind("<Key>", on_key_press)
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
         # style der Tabelle
@@ -204,8 +215,8 @@ class mainPage(tk.Frame):
 
         # Btn Erstellen def mit Image und grid
         self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
-        add_button = tk.Button(tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
-        add_button.grid(padx=10, pady=5, row=1, column=0, sticky="e")
+        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
 
