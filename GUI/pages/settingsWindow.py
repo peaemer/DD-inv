@@ -89,7 +89,6 @@ def pop_up_settings(parent):
     srh_logo_label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
 
-
     #################################
     # # L A Y O U T : S Y S T E M # #
     #################################
@@ -456,7 +455,7 @@ def pop_up_settings(parent):
     btn_links_label = ttk.Label(frame_ueber, text="Ko-Fi (Spende)", cursor="hand2")
     btn_links_label.grid(row=15, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=ko_fi_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_KoFi("https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white"))
+    btn_links_label.bind("<Button-1>", lambda e: open_KoFi("https://ko-fi.com/dd_inv"))
 
     # Feedback Button
     def open_Feedback(url):
@@ -479,10 +478,10 @@ def pop_up_settings(parent):
         webbrowser.open(url)
 
     logo_image = PhotoImage(file="assets/DD-Inv_Logo.png")
-    btn_links_label = ttk.Label(frame_ueber, text="VersionBuild   V. 0.0234 (Alpha)", cursor="hand2")
+    btn_links_label = ttk.Label(frame_ueber, text="VersionBuild   V. 0.0.271 (Alpha)", cursor="hand2")
     btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/e4324e9686511c814ca99f09ab22995352e93073"))
+    btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/4134a852d14b4553834637a10922ed4fadb2b15e"))
 
     # Github Button
     def open_Github(url):

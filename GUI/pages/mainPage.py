@@ -227,7 +227,7 @@ class mainPage(tk.Frame):
         tree.tag_configure("oddrow", background="#f7f7f7")
         tree.tag_configure("evenrow", background="white")
 
-        ### listbox for directories
+        # listbox for directories
         tree.column("# 1", anchor=CENTER, width=60)
         tree.heading("# 1", text="ID")
         tree.column("# 2", anchor=CENTER, width=175)

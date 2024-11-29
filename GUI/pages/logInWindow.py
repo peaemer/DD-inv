@@ -1,5 +1,7 @@
 import sys
 import tkinter as tk
+import webbrowser
+from tkinter import *
 from tkinter import ttk, messagebox
 import cache
 import Datenbank.sqlite3api as db
@@ -178,3 +180,16 @@ class logInWindow(tk.Frame):
         # Bind die Enter-Taste
         username_entry.bind("<Return>", on_enter)
         password_entry.bind("<Return>", on_enter)
+
+        # Bottom
+        bottom_frame = tk.Frame(self, height=10, background="white")
+        bottom_frame.grid(row=3, column=0, sticky=tk.W + tk.E + tk.S)
+
+        def open_VersionBuild(url):
+            webbrowser.open(url)
+
+        logo_image = PhotoImage(file="assets/DD-Inv_Logo.png")
+        btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.0.271 (Alpha)", cursor="hand2", font=("Arial", 12))
+        btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
+        btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
+        btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/4134a852d14b4553834637a10922ed4fadb2b15e"))
