@@ -9,19 +9,22 @@ LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
 
 
-def showDetails(selectedItem, tree, controller):
-    # Daten aus der ausgewählten Zeile
-    data = tree.item(selectedItem, "values")
-    print(f"Daten des ausgewählten Items: {data}")
-    cache.selected_ID = data[0]
+def showUserDetails(controller, data):
+    """
+    Zeigt die Details des Benutzers im `userDetailsWindow`.
+    :param controller: Der Frame-Controller.
+    :param data: Die Daten des Benutzers als Liste oder Dictionary.
+    """
+    print(f"Angezeigte Daten: {data}")
+    cache.selected_ID = data[0]  # ID zwischenspeichern
 
     # Frame aktualisieren und anzeigen
-    details = controller.frames[detailsWindow]
-    details.update_data(data)  # Methode in detailsWindow aufrufen
-    controller.show_frame(detailsWindow)  # Zeige die Details-Seite
+    details = controller.frames[userDetailsWindow]
+    details.update_data(data)  # Methode in userDetailsWindow aufrufen
+    controller.show_frame(userDetailsWindow)
 
 
-class detailsWindow(tk.Frame):
+class userDetailsWindow(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -94,9 +97,7 @@ class detailsWindow(tk.Frame):
 
         sizeDetailsWindow = 30
 
-
-
-        # Ändere die Position des TreeFrames
+        # Ändere die Position des TreeFrames auf row=3
         treeFrameDetailsWindow = tk.Frame(containerFrame, background="red", width=200, height=400)
         treeFrameDetailsWindow.grid(row=0, column=0, padx=40, sticky="")
 

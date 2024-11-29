@@ -6,6 +6,21 @@ import cache
 
 
 def addItemPopup(parent):
+    """
+    Creates a popup window for adding a new item. The popup window includes
+    fields for entering details such as the service tag, type, room, name,
+    and damage condition of an item. The window is configured to remain
+    on top and block interactions with the main application window until it
+    is closed. A submit button allows submission of the entered details,
+    and an exit button allows closing of the popup without submitting.
+
+    :param parent: The parent window to which the popup belongs, providing
+        context for display and blocking interactions.
+    :type parent: tk.Tk or tk.Toplevel
+
+    :return: Returns the Toplevel widget that represents the popup window.
+    :rtype: tk.Toplevel
+    """
     # Toplevel-Fenster erstellen
     addPopup = tk.Toplevel(parent)
     addPopup.title("Neuer Eintrag")
@@ -57,51 +72,93 @@ def addItemPopup(parent):
     sizeAddItemPopup = 16
 
     # Label und Eingabefeld hinzufügen
-    serviceTagLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Service Tag", background="white", font=("Arial",sizeAddItemPopup))
+    serviceTagLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Service Tag", background="white",
+                                           font=("Arial", sizeAddItemPopup))
     serviceTagLabelAddItemPopup.grid(row=0, column=0, padx=0, pady=20, sticky=tk.E)
 
-    serviceTagEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
+    serviceTagEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9",
+                                           font=("Arial", sizeAddItemPopup), bd=0)
     serviceTagEntryAddItemPopup.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
-    typeLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Typ", background="white", font=("Arial",sizeAddItemPopup))
+    # Typ
+    typeLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Typ", background="white",
+                                     font=("Arial", sizeAddItemPopup))
     typeLabelAddItemPopup.grid(row=1, column=0, padx=0, pady=20, sticky=tk.E)
 
-    typeEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
+    typeEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial", sizeAddItemPopup),
+                                     bd=0)
     typeEntryAddItemPopup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
-    roomLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Raum", background="white", font=("Arial",sizeAddItemPopup))
+    # Raum (Dropdown-Menü)
+    roomLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Raum", background="white",
+                                     font=("Arial", sizeAddItemPopup))
     roomLabelAddItemPopup.grid(row=2, column=0, padx=0, pady=20, sticky=tk.E)
 
-    roomEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
-    roomEntryAddItemPopup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    # Combobox statt Entry
+    roomValues = ["Raum 101", "Raum 102", "Raum 201", "Raum 202"]  # Beispieleinträge
+    roomComboboxAddItemPopup = ttk.Combobox(inputFrameAddItemPopup, values=roomValues, font=("Arial", sizeAddItemPopup))
+    roomComboboxAddItemPopup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    roomComboboxAddItemPopup.set("Raum auswählen")  # Platzhalter
 
-    nameLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Name", background="white", font=("Arial",sizeAddItemPopup))
+    # Name
+    nameLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Name", background="white",
+                                     font=("Arial", sizeAddItemPopup))
     nameLabelAddItemPopup.grid(row=3, column=0, padx=0, pady=20, sticky=tk.E)
 
-    nameEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
+    nameEntryAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial", sizeAddItemPopup),
+                                     bd=0)
     nameEntryAddItemPopup.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
-    damagedLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Beschädigung", background="white", font=("Arial",sizeAddItemPopup))
+    # Beschädigung
+    damagedLabelAddItemPopup = tk.Label(inputFrameAddItemPopup, text="Beschädigung", background="white",
+                                        font=("Arial", sizeAddItemPopup))
     damagedLabelAddItemPopup.grid(row=4, column=0, padx=0, pady=20, sticky=tk.E)
 
-    damagedButtonAddItemPopup = tk.Entry(inputFrameAddItemPopup,background="#d9d9d9", font=("Arial",sizeAddItemPopup), bd=0)
+    damagedButtonAddItemPopup = tk.Entry(inputFrameAddItemPopup, background="#d9d9d9", font=("Arial", sizeAddItemPopup),
+                                         bd=0)
     damagedButtonAddItemPopup.grid(row=4, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Funktion zum Eintrag hinzufügen
     def submitEntry():
+        """
+        Display a popup window to allow users to add a new hardware item to the
+        inventory system. The function creates a user interface for input fields
+        where users can specify details about the hardware item such as
+        service tag, type, room location, name, and damage status. Upon
+        submission, the inputs are saved to the database and the main page
+        treeview is updated to reflect the new entry.
+
+        :param parent: The parent window or component to which the popup belongs.
+        :type parent: Widget
+        :return: None
+        """
         # add device
         # tag, typ,raum,name,damage
         tag = serviceTagEntryAddItemPopup.get() if serviceTagEntryAddItemPopup.get() else ""
         type = typeEntryAddItemPopup.get() if typeEntryAddItemPopup.get() else ""
-        room = roomEntryAddItemPopup.get() if roomEntryAddItemPopup.get() else ""
+        room = roomComboboxAddItemPopup.get() if roomComboboxAddItemPopup.get() else ""
+
         name = nameEntryAddItemPopup.get() if nameEntryAddItemPopup.get() else ""
         damage = damagedButtonAddItemPopup.get() if damagedButtonAddItemPopup.get() else ""
         db.create_hardware(tag,type,name,damage,None,room)
         from .mainPage import mainPage
-        mainPage.update_treeview_with_data()
+        mainPage.update_treeview_with_data(data=None)
         addPopup.destroy()
 
     def exitEntry():
+        """
+        Displays a popup window to add an item.
+
+        The function initializes and displays a popup window
+        that allows users to add a new item to a predefined list.
+        The popup will include necessary input fields and buttons
+        for user interaction.
+
+        :param parent: The parent widget that this popup will be
+                       attached to. It is usually a reference to
+                       a tkinter frame or window.
+        :type parent: tkinter.Tk or tkinter.Widget
+        """
         print("Vorgang abgebrochen")
         addPopup.destroy()
 

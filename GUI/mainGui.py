@@ -15,7 +15,19 @@ from pages import logInWindow,\
 
 # Hauptklasse für das Tkinter-Fenster
 class ddINV(tk.Tk):
+	"""
+	The ddINV class represents the main application window for an inventory tool.
 
+	This class is responsible for initializing and configuring the main window
+	of the inventory tool application. It sets up the application window with
+	a specified title, size, and position on the screen. Additionally, it manages
+	the frames (or pages) within the window, allowing for navigation between
+	different sections of the application.
+
+	:ivar frames: A dictionary that stores the different frames/pages within the
+	              application, keyed by frame class.
+	:type frames: dict
+	"""
 	# Initialisierungsfunktion für das Hauptfenster
 	def __init__(self, *args, **kwargs):
 		# Initialisiere die Tkinter-Basis-Klasse
@@ -62,7 +74,7 @@ class ddINV(tk.Tk):
 		self.frames = {}
 
 		# Erstelle die Seiten (Frames) und speichere sie im Dictionary
-		for F in (logInWindow, mainPage, detailsWindow):
+		for F in (logInWindow, mainPage, detailsWindow, adminWindow):
 			frame = F(container, self)
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid
