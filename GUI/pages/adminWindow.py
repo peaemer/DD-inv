@@ -90,7 +90,7 @@ class adminWindow(tk.Frame):
         self.log_out_btn = tk.PhotoImage(file="assets/ArrowLeft.png")
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window(), bd=0, relief=tk.FLAT, bg="#DF4807",
+        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0, relief=tk.FLAT, bg="#DF4807",
                                  activebackground="#DF4807")
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
@@ -225,27 +225,37 @@ class adminWindow(tk.Frame):
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
             try:
-                selected_item = user_tree.focus()
-                print(f"Ausgewähltes Item: {selected_item}")  # Debug
-                if selected_item:
-                    from .detailsWindow import detailsWindow, show_details
-                    show_details(selected_item, tree, controller)
+                selected_user = user_tree.focus()
+                print(f"Ausgewählter User: {selected_user}")  # Debug
+                if selected_user:
+                    from .userDetailsWindow import userDetailsWindow, show_user_details
+                    show_user_details(selected_item, user_tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        user_tree.bind("<<TreeviewSelect>>", on_item_selected)
+        user_tree.bind("<Double-1>", on_item_selected)
 
     def update_treeview_with_data(self):
         user_tree.delete(*user_tree.get_children())
         i = 0
-        for entry in sqlapi.fetch_hardware():
+        for entry in sqlapi.read_all_benutzer():
+            print(entry)
+            # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
+
+            # Daten mit dem Tag in das Treeview einfügen
             user_tree.insert(
                 "",
                 "end",
-                values=(i, entry['Service_Tag'], entry['Geraetetyp'], entry['Raum'],
-                        entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
+                text=f"{entry['Nutzername']}",
+                values=(
+                    i,
+                    entry['Nutzername'],
+                    entry['Passwort'],
+                    entry['Email'],
+                    entry['Rolle'],
+                ),
                 tags=(tag,)
             )
             i += 1

@@ -88,107 +88,6 @@ def pop_up_settings(parent):
     srh_logo_label = tk.Label(side_settings, image=popup.srh_logo, bg=srhOrange)
     srh_logo_label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
-    # Kategorien in der Seitenleiste
-    categories = ["System",
-                  "Style",
-                  "Profil",
-                  "Über DD-Inv"]
-
-    category_labels_settings = []
-    # Dynamische Frames erstellen
-    frame_system = tk.Frame(popup, padx=10, pady=30, bg="white")
-    frame_style = tk.Frame(popup, padx=10, pady=30, bg="white")
-    frame_profile = tk.Frame(popup, padx=10, pady=30, bg="white")
-    frame_ueber = tk.Frame(popup, padx=10, pady=30, bg="white")
-
-    # Zuordnung der Frames zu den Kategorien
-    frames = {
-        "System": frame_system,
-        "Style": frame_style,
-        "Profil": frame_profile,
-        "Über DD-Inv": frame_ueber
-    }
-
-    current_frame = frames["Über DD-Inv"]  # Halte den aktuell sichtbaren Frame
-
-    # Funktion zum Anzeigen des Frames
-    def show_frame_settings(category):
-        """
-        Updates the visible frame in a user interface based on the provided category.
-
-        This function manages the display of frames by hiding the currently visible
-        frame and revealing the new frame associated with the given category. It
-        ensures that only one frame is visible at a time, corresponding to the user's
-        selection.
-
-        :param category: The category used to determine which frame to display. A
-                         corresponding frame must exist within the frames collection.
-        :return: None
-        """
-        print(f"Aktuell sichtbarer Frame vor Verstecken: {frames}")
-        nonlocal current_frame  # Zugriff auf die äußere Variable
-        print(current_frame)
-        if current_frame:  # Falls bereits ein Frame angezeigt wird
-            current_frame.grid_forget()  # Verstecke den aktuellen Frame
-            print("if current_frame")
-        new_frame = frames.get(category)
-        if new_frame:  # Wenn der neue Frame existiert
-            new_frame.grid(row=1, column=1, rowspan=2, sticky="nw")
-            current_frame = new_frame
-            print(f"Neuer aktueller Frame: {current_frame}")
-
-    # Funktion für Klick auf Kategorie
-    def on_category_click_settings(label_settings, category_settings):
-        """
-        Manages the label and category settings when a category is clicked.
-
-        This function is responsible for updating the visual appearance of
-        category labels and displaying the associated frame when a category
-        is selected. It resets all other category labels to a default state
-        and highlights the selected category for user clarity.
-
-        :param label_settings: The label widget associated with the selected
-                              category. It requires configuration to highlight
-                              the selected label.
-        :param category_settings: The settings or information related to the
-                                 selected category. This data is used to
-                                 determine which frame to display.
-        :return: None
-        """
-        # Setze alle Labels zurück
-        for cat in category_labels_settings:
-            cat.config(fg="white")
-            print("if on_category_click")
-        # Hervorhebung des angeklickten Labels
-        label_settings.config(fg="Black")
-        # Zeige den zugehörigen Frame
-        show_frame_settings(category_settings)
-
-    # Kategorien in der Seitenleiste erstellen
-    category_labels_settings = []  # Liste für die Label-Referenzen
-    for idx, category in enumerate(categories):
-        label = tk.Label(
-            side_settings,
-            text=category,
-            bd=0,
-            relief=tk.FLAT,
-            font=SETTINGSFONT,
-            fg="white",
-            bg=srhOrange,
-        )
-        label.grid(padx=10, pady=8, row=idx + 1, column=0, sticky="w")
-        label.bind(
-            "<Button-1>",
-            lambda event, lbl=label, cat=category: on_category_click_settings(lbl, cat)
-        )
-        category_labels_settings.append(label)
-
-    # Alle Frames initial verstecken
-    for frame in frames.values():
-        frame.grid_forget()
-
-    # Debug Info
-    print("Einstellungen vollständig geladen")
 
 
     #################################
@@ -199,7 +98,7 @@ def pop_up_settings(parent):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_system = tk.Frame(popup, padx=100, pady=30, bg="white")
     frame_system.grid(row=1, column=1, rowspan=2, sticky="nw")
-    frame_system.grid_forget()
+    #frame_system.grid_remove()
 
     # Überschrift System erstellen
     radiobutton_label = tk.Label(
@@ -241,7 +140,7 @@ def pop_up_settings(parent):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_style = tk.Frame(popup, padx=100, pady=10, bg="white")
     frame_style.grid(row=1, column=1, rowspan=2, sticky="nw")
-    frame_style.grid_forget()
+    #frame_style.grid_forget()
 
     # Überschrift für Style
     radiobutton_label = tk.Label(
@@ -340,8 +239,8 @@ def pop_up_settings(parent):
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_profile = tk.Frame(popup, padx=100, pady=30, bg="white")
-    frame_profile.grid(row=1, column=1, rowspan=2, sticky="nw")
-    frame_profile.grid_forget()
+    #frame_profile.grid(row=1, column=1, rowspan=2, sticky="nw")
+    #frame_profile.grid_forget()
 
     # Überschrift Passe dein Profil an
     ProfileBtn_label = tk.Label(
@@ -594,3 +493,112 @@ def pop_up_settings(parent):
     btn_links_label.grid(row=19, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=git_hub_image, compound="left")
     btn_links_label.bind("<Button-1>", lambda e: open_Github("https://github.com/peaemer/DD-inv"))
+
+
+    ###############################
+    # # F R A M E : S W I T C H # #
+    ###############################
+
+
+    # Kategorien in der Seitenleiste
+    categories = ["System",
+                  "Style",
+                  "Profil",
+                  "Über DD-Inv"]
+
+    category_labels_settings = []
+    # Dynamische Frames erstellen
+    frame_system = tk.Frame(popup, padx=10, pady=30, bg="white")
+    frame_style = tk.Frame(popup, padx=10, pady=30, bg="white")
+    frame_profile = tk.Frame(popup, padx=10, pady=30, bg="white")
+    frame_ueber = tk.Frame(popup, padx=10, pady=30, bg="white")
+
+    # Zuordnung der Frames zu den Kategorien
+    frames = {
+        "System": frame_system,
+        "Style": frame_style,
+        "Profil": frame_profile,
+        "Über DD-Inv": frame_ueber
+    }
+
+    current_frame = frames["System"]  # Halte den aktuell sichtbaren Frame
+    current_frame.grid(row=1, column=1, rowspan=2, sticky="nw")
+
+    # Funktion zum Anzeigen des Frames
+    def show_frame_settings(category):
+        """
+        Updates the visible frame in a user interface based on the provided category.
+
+        This function manages the display of frames by hiding the currently visible
+        frame and revealing the new frame associated with the given category. It
+        ensures that only one frame is visible at a time, corresponding to the user's
+        selection.
+
+        :param category: The category used to determine which frame to display. A
+                         corresponding frame must exist within the frames collection.
+        :return: None
+        """
+        print(f"Aktuell sichtbarer Frame vor Verstecken: {frames}")
+        nonlocal current_frame  # Zugriff auf die äußere Variable
+        print(current_frame)
+        if current_frame:  # Falls bereits ein Frame angezeigt wird
+            current_frame.grid_remove()  # Verstecke den aktuellen Frame
+            print("if current_frame")
+        new_frame = frames.get(category)
+        if new_frame:  # Wenn der neue Frame existiert
+            new_frame.grid(row=1, column=1, rowspan=2, sticky="nw")
+            current_frame = new_frame
+            print(f"Neuer aktueller Frame: {current_frame}")
+
+    # Funktion für Klick auf Kategorie
+    def on_category_click_settings(label_settings, category_settings):
+        """
+        Manages the label and category settings when a category is clicked.
+
+        This function is responsible for updating the visual appearance of
+        category labels and displaying the associated frame when a category
+        is selected. It resets all other category labels to a default state
+        and highlights the selected category for user clarity.
+
+        :param label_settings: The label widget associated with the selected
+                              category. It requires configuration to highlight
+                              the selected label.
+        :param category_settings: The settings or information related to the
+                                 selected category. This data is used to
+                                 determine which frame to display.
+        :return: None
+        """
+        # Setze alle Labels zurück
+        for cat in category_labels_settings:
+            cat.config(fg="white")
+            print("if on_category_click")
+        # Hervorhebung des angeklickten Labels
+        label_settings.config(fg="Black")
+        # Zeige den zugehörigen Frame
+        show_frame_settings(category_settings)
+
+    # Kategorien in der Seitenleiste erstellen
+    category_labels_settings = []  # Liste für die Label-Referenzen
+    for idx, category in enumerate(categories):
+        label = tk.Label(
+            side_settings,
+            text=category,
+            bd=0,
+            relief=tk.FLAT,
+            font=SETTINGSFONT,
+            fg="white",
+            bg=srhOrange,
+        )
+        label.grid(padx=10, pady=8, row=idx + 1, column=0, sticky="w")
+        label.bind(
+            "<Button-1>",
+            lambda event, lbl=label, cat=category: on_category_click_settings(lbl, cat)
+        )
+        category_labels_settings.append(label)
+
+    # Alle Frames initial verstecken
+    for frame in frames.values():
+        frame.grid_remove()
+
+    # Debug Info
+    print("Einstellungen vollständig geladen")
