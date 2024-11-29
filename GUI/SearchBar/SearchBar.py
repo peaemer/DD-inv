@@ -11,10 +11,10 @@ json_object = json.loads(initial_history)
 
 def pending_search(current_term:str)->None:
     print('[SearchBar]: running pending search')
-#    user_data:str = db.read_benutzer_suchverlauf('Alex')
-#    print('[SearchBar]: read history as string, data='+str(user_data))
-#    history_object = json.loads(user_data)
-#    print('[SearchBar]: converted string to object, object='+str(history_object))
+    user_data:str = db.read_benutzer_suchverlauf('Alex')
+    print('[SearchBar]: read history as string, data='+str(user_data))
+    history_object = json.loads(user_data)
+    print('[SearchBar]: converted string to object, object='+str(history_object))
 
 
 
