@@ -1,18 +1,27 @@
 import sqlite3
 import os
+import sys
 from Security.UserSecurity import hashPassword
 
 # Pfad zur Datenbankdatei
 path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
+use_fallback_path:bool = True
+fallback_path:str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
 
 def init_connection():
     """
     Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
-    - Überprüft, ob die Datenbankdatei existiert.
+    - Überprüft, ob die Datenbankdatei existiert
+    - falls die Daternbank nicht existiert, wird entweder die Fallback Datenbankt oder eine Exception geworfen.
     - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
     """
     if not os.path.exists(path):
-        raise FileNotFoundError(f"Datenbankdatei nicht gefunden: {path}")
+        if use_fallback_path:
+            con = sqlite3.connect(fallback_path)
+            con.row_factory = sqlite3.Row
+            return con
+        else:
+            raise FileNotFoundError(f"Datenbankdatei nicht gefunden: {path}")
     con = sqlite3.connect(path)
     con.row_factory = sqlite3.Row
     return con
