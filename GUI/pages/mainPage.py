@@ -168,6 +168,8 @@ class mainPage(tk.Frame):
 
         side_tree = ttk.Treeview(grey_frame_side, show="headings")
         side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
+        for room in sqlapi.fetch_all_rooms():
+            side_tree.insert("", tk.END, text=room['Raum'])
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white", padx=40)
