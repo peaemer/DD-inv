@@ -202,7 +202,6 @@ class adminRoomWindow(tk.Frame):
         def insert_data(self):
             i = 0
             for entry in sqlapi.fetch_all_rooms():
-                print(entry)
                 # Bestimme das Tag für die aktuelle Zeile
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
 
@@ -238,7 +237,6 @@ class adminRoomWindow(tk.Frame):
         room_tree.delete(*room_tree.get_children())
         i = 0
         for entry in sqlapi.fetch_all_rooms():
-            print(entry)
             # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
 

@@ -1,8 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from tkinter import *
 import Datenbank.sqlite3api as db
+import Security.UserSecurity as sec
 import cache
+import random, string
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -38,7 +40,12 @@ class userDetailsWindow(tk.Frame):
 
 
         def reset_pass():
-            print("AAAAAAAA")
+            pw = str(''.join(random.choices(string.ascii_letters, k=7)))
+            db.update_benutzer(self.name.get(), neues_passwort=pw)
+            messagebox.showinfo(title="Reseted User Password", message="New password: " + pw)
+            from .adminUserWindow import adminUserWindow
+            adminUserWindow.update_treeview_with_data(parent)
+            controller.show_frame(adminUserWindow)
 
         self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
         self.opt_btn_details_window = tk.PhotoImage(file="assets/option.png")
@@ -177,26 +184,23 @@ class userDetailsWindow(tk.Frame):
         role_values = []
         for room in db.read_all_rollen():
             role_values.append(room['Rolle'])
-        self.room_combobox_add_item_popup = ttk.Combobox(input_frame_details_window, values=role_values,
-                                                    font=("Arial", size_details_window))
-        self.room_combobox_add_item_popup.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+        self.role_combobox = ttk.Combobox(input_frame_details_window, values=role_values,
+                                          font=("Arial", size_details_window))
+        self.role_combobox.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
             #update
-            print("nix")
+            db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
+            from .adminUserWindow import adminUserWindow
+            controller.show_frame(adminUserWindow)
 
         def delete_entry():
-            db.delete_hardware_by_id(cache.selected_ID)
-            from .mainPage import mainPage
-            mainPage.update_treeview_with_data()
-            controller.show_frame(mainPage)
-
-        def lend(data):
-            print("Übergebene Daten:", data)
-            from .lendPopup import lend_popup
-            lend_popup(self, data)
+            db.delete_benutzer(self.name.get())
+            from .adminUserWindow import adminUserWindow
+            # adminUserWindow.update_treeview_with_data(parent)
+            controller.show_frame(adminUserWindow)
 
         self.edit_btn = tk.PhotoImage(file="assets/Aktualisieren.png")
         self.lend_btn = tk.PhotoImage(file="assets/Ausleihen.png")
@@ -232,4 +236,4 @@ class userDetailsWindow(tk.Frame):
         self.email.delete(0, tk.END)
         self.email.insert(0, data[3])
 
-        self.room_combobox_add_item_popup.set(data[4])  # Platzhalter
+        self.role_combobox.set(data[4])  # Platzhalter

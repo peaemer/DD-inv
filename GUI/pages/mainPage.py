@@ -49,7 +49,6 @@ class mainPage(tk.Frame):
         self.configure(background="white")
 
         def show_settings_window():
-            print("Show Settings")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
@@ -63,8 +62,6 @@ class mainPage(tk.Frame):
         def log_out():
             from .logInWindow import logInWindow
             cache.user_group = None  # Benutzergruppe zurücksetzen
-            print("--------------------------------")
-            print(f"Cache-Werte nach log_out: Gruppe={cache.user_group}, Benutzer={cache.user_name}")
             controller.show_frame(logInWindow)
 
         def search(event=None):                           # funktionalität hinzufügen
@@ -87,13 +84,6 @@ class mainPage(tk.Frame):
 
         def on_key_press(event):
             typed_key = event.char  # The character of the typed key
-            print(f"Key pressed: {typed_key}")
-
-            # Check if a specific key was pressed
-            if typed_key == "a":
-                print("You typed the letter 'a'")
-            elif typed_key == "b":
-                print("You typed the letter 'b'")
 
         def on_focus_out(event):
             if search_entry.get() == '':
@@ -322,7 +312,6 @@ class mainPage(tk.Frame):
         def on_item_selected(event):
             try:
                 selected_item = tree.focus()
-                print(f"Ausgewähltes Item: {selected_item}")  # Debug
                 if selected_item:
                     from .detailsWindow import detailsWindow, show_details
                     show_details(selected_item, tree, controller)
@@ -360,17 +349,12 @@ class mainPage(tk.Frame):
 
     def on_load(self):
         """Diese Methode wird aufgerufen, nachdem die Seite vollständig geladen ist."""
-        print(f"{self.__class__.__name__} geladen")
 
         # Überprüfe die Benutzergruppe
-        print(f"Überprüfe Benutzergruppe: {cache.user_group}")  # Debug-Print für die Benutzergruppe
         if cache.user_group == "Admin":
-            print("Als Admin eingeloggt.")
 
             # Überprüfe, ob der Admin-Button bereits existiert
             if not hasattr(self, "adminButton"):
-                print(
-                    "Admin-Button existiert noch nicht. Erstelle den Admin-Button.")  # Debug-Print für das Erstellen des Buttons
                 # Erstelle den Admin-Button, wenn er noch nicht existiert
                 self.admin_button = tk.Button(
                     self.header_frame,
@@ -382,18 +366,11 @@ class mainPage(tk.Frame):
                     activebackground="#DF4807"
                 )
                 self.admin_button.grid(row=0, column=1, sticky=tk.E, padx=20)
-                print("Admin-Button wurde erfolgreich erstellt und platziert.")  # Bestätigung der Erstellung
             else:
                 self.admin_button.grid(row=0, column=1, sticky=tk.E, padx=20)
-                print(
-                    "Admin-Button existiert bereits. Keine Erstellung notwendig.")  # Wenn der Button bereits existiert
         else:
-            print("Nicht als Admin eingeloggt.")  # Benutzer ist kein Admin
             # Entferne den Admin-Button, falls er existiert
             if hasattr(self, "adminButton"):
-                print("Admin-Button existiert, entferne ihn.")  # Debug-Print für das Entfernen des Buttons
                 self.admin_button.grid_remove()
-            else:
-                print("Kein Admin-Button zum Entfernen gefunden.")  # Wenn kein Button vorhanden ist
 
         self.update_treeview_with_data()

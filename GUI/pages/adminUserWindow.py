@@ -209,7 +209,6 @@ class adminUserWindow(tk.Frame):
         def insert_data(self):
             i = 0
             for entry in sqlapi.read_all_benutzer():
-                print(entry)
                 # Bestimme das Tag für die aktuelle Zeile
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
 
@@ -248,7 +247,6 @@ class adminUserWindow(tk.Frame):
         user_tree.delete(*user_tree.get_children())
         i = 0
         for entry in sqlapi.read_all_benutzer():
-            print(entry)
             # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
 
