@@ -126,8 +126,13 @@ class mainPage(tk.Frame):
         self.log_out_btn = tk.PhotoImage(file="assets/ausloggen.png")
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(self.header_frame, image=self.log_out_btn, command=log_out, bd=0, relief=tk.FLAT, bg="#DF4807",
-                                 activebackground="#DF4807")
+        log_out_button = tk.Button(self.header_frame,
+                                   image=self.log_out_btn,
+                                   command=log_out,
+                                   bd=0,
+                                   relief=tk.FLAT,
+                                   bg="#DF4807",
+                                   activebackground="#DF4807")
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         # Konvertiere das Bild für Tkinter
@@ -135,43 +140,67 @@ class mainPage(tk.Frame):
 
         # Füge einen Button mit dem Bild hinzu
         options_button = tk.Button(self.header_frame,
-                                  image=self.opt_btn,
-                                  command=show_settings_window,
-                                  bd=0,
-                                  relief=tk.FLAT,
-                                  bg="#DF4807",
-                                  activebackground="#DF4807")
+                                   image=self.opt_btn,
+                                   command=show_settings_window,
+                                   bd=0,
+                                   relief=tk.FLAT,
+                                   bg="#DF4807",
+                                   activebackground="#DF4807")
         options_button.grid(row=0, column=2, sticky=tk.E, padx=20)
 
+        # Platzieren des Adminbuttons
         self.admin_btn = tk.PhotoImage(file="assets/Key.png")
 
-
-
-
-        sub_grey_frame = tk.Frame(self, height=10, background="#F4EFEF")
+        # Erstellen des sub_grey_frame
+        sub_grey_frame = tk.Frame(self, height=10, background="white")
         sub_grey_frame.grid(row=2, column=0, sticky=tk.W + tk.E + tk.N)
 
-        # Füge den LogIn-Label zur Frame hinzu
+        # Füge einen Subheader hinzu
         log_in_label = tk.Label(sub_grey_frame,
-                              text="Inventur-Übersicht",
-                              bd=0,
-                              relief=tk.FLAT,
-                              bg="#F4EFEF",
-                              font=("Arial", 20))
-        log_in_label.grid(padx=200, pady=5, row=1, column=0, sticky=tk.W)
+                                text="Übersicht der Inventur",
+                                bd=0,
+                                padx=300,
+                                relief=tk.FLAT,
+                                bg="white",
+                                font=("Arial", 20))
+        log_in_label.grid(padx=500, pady=5, row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
-        # Konfiguriere den grey_frame für zentrierte Ausrichtung
+        # Konfiguriere den sub_grey_frame für zentrierte Ausrichtung
         sub_grey_frame.grid_columnconfigure(0, weight=1)
 
+        # Erstellen des Grayframes für linke Seite
         grey_frame_side = tk.Frame(self, height=10, background=srhGrey)
         grey_frame_side.grid(row=2, column=0, sticky=tk.W + tk.N + tk.S)
 
+        # Label auf dem Grayframe der linken Seite
         overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        overview_label.grid(padx=40, pady=50, row=0, column=0, sticky=tk.W +tk.N + tk.S)
+        overview_label.grid(padx=40, pady=10, row=0, column=0, sticky=tk.W +tk.N + tk.S)
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white", padx=40)
         middle_frame.grid(row=2, padx=190, pady=60, column=0, sticky="nesw")
+
+        # Konfiguration des übergeordneten Layouts (self)
+        self.grid_rowconfigure(2, weight=1)  # Macht die Zeile mit middle_frame dehnbar
+        self.grid_columnconfigure(0, weight=1)  # Macht die Spalte mit middle_frame dehnbar
+
+        # Funktion zur manuellen Größenänderung mit der Maus
+        def resize_middle_frame(event):
+            new_width = event.x
+            new_height = event.y
+            if new_width > 100:  # Mindestbreite festlegen
+                middle_frame.config(width=new_width)
+            if new_height > 100:  # Mindesthöhe festlegen
+                middle_frame.config(height=new_height)
+
+        # Hinzufügen von Bindings für manuelle Größenanpassung
+        middle_frame.bind("<B1-Motion>", resize_middle_frame)
+
+        # Optionale Größenanzeige (falls nützlich)
+        def show_size(event):
+            print(f"Neue Größe - Breite: {event.x} Höhe: {event.y}")
+
+        middle_frame.bind("<Motion>", show_size)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
         search_frame = tk.Frame(middle_frame, bg="white")
@@ -184,12 +213,12 @@ class mainPage(tk.Frame):
         # Search Btn def und neben dem Entry platzieren
         self.search_btn = tk.PhotoImage(file="assets/SearchButton.png")
         search_button = tk.Button(search_frame,
-                                 image=self.search_btn,
-                                 bd=0,
-                                 relief=tk.FLAT,
-                                 bg="white",
-                                 activebackground="white",
-                                 command=search)
+                                  image=self.search_btn,
+                                  bd=0,
+                                  relief=tk.FLAT,
+                                  bg="white",
+                                  activebackground="white",
+                                  command=search)
         search_button.grid(padx=5, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
@@ -256,6 +285,7 @@ class mainPage(tk.Frame):
         tree.grid(row=1, column=0)
         tree.tkraise()
 
+        # Funktion zum eintragen von Daten in die Tabelle
         def insert_data(self):
             i = 0
             for entry in sqlapi.fetch_hardware():
@@ -295,6 +325,7 @@ class mainPage(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<Double-1>", on_item_selected)
 
+    # Aktualisieren der Data in der Tabelle
     def update_treeview_with_data(self = None, data=None):
         # Clear the current treeview contents
         tree.delete(*tree.get_children())
