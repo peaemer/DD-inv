@@ -1,7 +1,7 @@
 import sqlite3
 import os
 import sys
-from Security.UserSecurity import hashPassword
+from Security.UserSecurity import *
 
 # Pfad zur Datenbankdatei
 path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
