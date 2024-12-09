@@ -54,8 +54,8 @@ class mainPage(tk.Frame):
             pop_up_settings(self)
 
         def show_admin_window():
-            from .adminWindow import adminWindow
-            controller.show_frame(adminWindow)
+            from .adminUserWindow import adminUserWindow
+            controller.show_frame(adminUserWindow)
 
         # Speichere die Funktion als Attribut, um später darauf zuzugreifen
         self.show_admin_window = show_admin_window
@@ -239,15 +239,19 @@ class mainPage(tk.Frame):
         tree_style.configure("Treeview", rowheight=40, font=("Arial", 14))
 
         # Ändere die Position des TreeFrames auf row=2
+        # Ändere die Position des TreeFrames auf row=2
         tree_frame = tk.Frame(middle_frame, background="white")
-        tree_frame.grid(row=1, column=0, padx=100)
 
+        tree_frame.grid(row=1, column=0, padx=100, sticky=tk.N + tk.S + tk.E + tk.W)
+        tree_frame.grid_rowconfigure(1, weight=1)
+        tree_frame.grid_columnconfigure(0, weight=1)
         # Btn Erstellen def mit Image und grid
         self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
         add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
         add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
+        # Das Binding des Configure-Events wurde verschoben
 
         scroll = tk.Scrollbar(
             tree_frame,
@@ -291,7 +295,10 @@ class mainPage(tk.Frame):
             for entry in sqlapi.fetch_hardware():
                 # Bestimme das Tag für die aktuelle Zeile
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
-
+                if entry['Beschaedigung'] == "None":
+                    damage = ""
+                else:
+                    damage = entry['Beschaedigung']
                 # Daten mit dem Tag in das Treeview einfügen
                 tree.insert(
                     "",
@@ -303,7 +310,7 @@ class mainPage(tk.Frame):
                         entry['Geraetetype'],
                         entry['Raum'],
                         entry['Modell'],
-                        entry['Beschaedigung'],
+                        damage,
                         entry['Ausgeliehen_von']
                     ),
                     tags=(tag,)
@@ -328,6 +335,8 @@ class mainPage(tk.Frame):
     # Aktualisieren der Data in der Tabelle
     def update_treeview_with_data(self = None, data=None):
         # Clear the current treeview contents
+        global i
+        i = 0
         tree.delete(*tree.get_children())
 
         # If no data is provided, fetch the data from sqlapi
@@ -335,12 +344,17 @@ class mainPage(tk.Frame):
             data = sqlapi.fetch_hardware()
 
         for entry in data:
-            tag = "evenrow" if entry['ID'] % 2 == 0 else "oddrow"
+            i+=1
+            if entry['Beschaedigung'] == "None":
+                damage = ""
+            else:
+                damage = entry['Beschaedigung']
+            tag = "evenrow" if i % 2 == 0 else "oddrow"
             tree.insert(
                 "",
                 "end",
                 values=(entry['ID'], entry['Service_Tag'], entry['Geraetetype'], entry['Raum'],
-                        entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
+                        entry['Modell'], damage, entry['Ausgeliehen_von']),
                 tags=(tag,)
             )
 

@@ -9,7 +9,9 @@ import sys, os
 from pages import logInWindow,\
 				   mainPage,\
 				   detailsWindow, \
-				   adminWindow, \
+				   adminUserWindow, \
+				   userDetailsWindow, \
+				   adminRoomWindow, \
 			       _DPIAwareness
 
 # Hauptklasse für das Tkinter-Fenster
@@ -63,7 +65,7 @@ class ddINV(tk.Tk):
 		self.frames = {}
 
 		# Erstelle die Seiten (Frames) und speichere sie im Dictionary
-		for F in (logInWindow, mainPage, detailsWindow, adminWindow):
+		for F in (logInWindow, mainPage, detailsWindow, adminUserWindow, userDetailsWindow, adminRoomWindow):
 			frame = F(container, self)
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid
