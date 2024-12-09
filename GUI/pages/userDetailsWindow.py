@@ -160,7 +160,7 @@ class userDetailsWindow(tk.Frame):
                                                   background=srhGrey, relief=tk.SOLID)
         self.reset_password.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        #EMail
+        #Email
         email_label_details_window = tk.Label(input_frame_details_window, text="E-Mail",
                                           font=("Arial", size_details_window), background="white")
         email_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)

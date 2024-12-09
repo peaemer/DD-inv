@@ -174,7 +174,10 @@ class mainPage(tk.Frame):
 
         # Label auf dem Grayframe der linken Seite
         overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        overview_label.grid(padx=40, pady=10, row=0, column=0, sticky=tk.W +tk.N + tk.S)
+        overview_label.grid(padx=10, pady=10, row=2, column=0, sticky=tk.W +tk.N + tk.S)
+
+        side_tree = ttk.Treeview(grey_frame_side, show="headings")
+        side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white", padx=40)

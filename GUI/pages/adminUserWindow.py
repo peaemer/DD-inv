@@ -49,9 +49,9 @@ class adminUserWindow(tk.Frame):
         def search():                           # funktionalität hinzufügen
             print("I am Searching")
 
-        def add_item():
-            from .addItemPopup import add_item_popup
-            add_item_popup(self)
+        def add_user_item():
+            from .addUserPopup import add_user_popup
+            add_user_popup(self)
 
         def on_entry_click(event):
             if search_entry.get() == 'Suche':
@@ -66,6 +66,10 @@ class adminUserWindow(tk.Frame):
         def change_to_room():
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
+
+        def add_user():
+            from .addUserPopup import add_user_popup
+            add_user_popup(self)
 
         global tree
 
@@ -168,8 +172,8 @@ class adminUserWindow(tk.Frame):
         user_tree_frame = tk.Frame(self, background="white")
         user_tree_frame.grid(row=1, column=0, padx=260)
 
-        self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
-        user_add_button = tk.Button(user_tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        self.add_btn = tk.PhotoImage(file="assets/HinzuSmall.png")
+        user_add_button = tk.Button(user_tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_user)
         user_add_button.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
         user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=15)

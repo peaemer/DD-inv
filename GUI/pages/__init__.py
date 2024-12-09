@@ -6,6 +6,7 @@ from .settingsWindow import pop_up_settings
 from .detailsWindow import detailsWindow
 from .lendPopup import lend_popup
 from .adminUserWindow import adminUserWindow
+from .addUserPopup import add_user_popup
 from .userDetailsWindow import userDetailsWindow
 from .adminRoomWindow import adminRoomWindow
 
