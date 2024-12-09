@@ -10,7 +10,7 @@ srhGrey = "#d9d9d9"
 
 
 # Hauptseite (zweites Fenster)
-class adminWindow(tk.Frame):
+class adminRoomWindow(tk.Frame):
     """
     The adminWindow class provides a graphical interface for managing user information and
     performing administrative tasks within a Tkinter application. It allows navigation between
@@ -63,6 +63,9 @@ class adminWindow(tk.Frame):
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.config(fg='grey')  # Textfarbe auf grau ändern
 
+        def change_to_user():
+            from .adminUserWindow import adminUserWindow
+            controller.show_frame(adminUserWindow)
         global tree
 
         # Konfiguriere das Grid-Layout für die Hauptseite
@@ -126,8 +129,11 @@ class adminWindow(tk.Frame):
         grey_frame_side = tk.Frame(self, height=10, background=srhGrey)
         grey_frame_side.grid(row=1, column=0, sticky=tk.W + tk.N + tk.S)
 
-        overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        overview_label.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
+        user_label = tk.Label(grey_frame_side, text="Nutzer", bd=0, relief=tk.FLAT , bg=srhGrey, font=("Arial", 20))
+        user_label.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
+
+        room_button = tk.Button(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
+        room_button.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
         search_frame = tk.Frame(self, bg="white")
@@ -158,19 +164,19 @@ class adminWindow(tk.Frame):
 
 
         # Ändere die Position des TreeFrames auf row=3
-        user_tree_frame = tk.Frame(self, background="white")
-        user_tree_frame.grid(row=1, column=0, padx=260)
+        room_tree_frame = tk.Frame(self, background="white")
+        room_tree_frame.grid(row=1, column=0, padx=260)
 
         self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
-        user_add_button = tk.Button(user_tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
-        user_add_button.grid(padx=10, pady=5, row=0, column=0, sticky="e")
+        room_add_button = tk.Button(room_tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        room_add_button.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
-        user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=15)
+        room_tree = ttk.Treeview(room_tree_frame, column=("c1", "c2"), show="headings")
 
-        user_scroll = tk.Scrollbar(
-            user_tree_frame,
+        room_scroll = tk.Scrollbar(
+            room_tree_frame,
             orient="vertical",
-            command=user_tree.yview,
+            command=room_tree.yview,
             bg="black",
             activebackground="darkblue",
             troughcolor="grey",
@@ -178,44 +184,36 @@ class adminWindow(tk.Frame):
             width=15,
             borderwidth=1
         )
-        user_scroll.grid(row=1, column=1, sticky="ns")
-        user_tree.configure(yscrollcommand=user_scroll.set)
+        room_scroll.grid(row=1, column=1, sticky="ns")
+        room_tree.configure(yscrollcommand=room_scroll.set)
 
         # Tags für alternierende Zeilenfarben konfigurieren
-        user_tree.tag_configure("oddrow", background="#f7f7f7")
-        user_tree.tag_configure("evenrow", background="white")
+        room_tree.tag_configure("oddrow", background="#f7f7f7")
+        room_tree.tag_configure("evenrow", background="white")
 
         ### listbox for directories
-        user_tree.column("# 1", anchor=CENTER, width=60)
-        user_tree.heading("# 1", text="ID", )
-        user_tree.column("# 2", anchor=CENTER, width=200)
-        user_tree.heading("# 2", text="Nutzername")
-        user_tree.column("# 3", anchor=CENTER, width=200)
-        user_tree.heading("# 3", text="Passwort")
-        user_tree.column("# 4", anchor=CENTER, width=300)
-        user_tree.heading("# 4", text="E-Mail")
-        user_tree.column("# 5", anchor=CENTER, width=100)
-        user_tree.heading("# 5", text="Rolle")
-        user_tree.tkraise()
-        user_tree.grid(row=1, column=0, sticky="nsew")
+        room_tree.column("# 1", anchor=CENTER, width=200)
+        room_tree.heading("# 1", text="Raum", )
+        room_tree.column("# 2", anchor=CENTER, width=300)
+        room_tree.heading("# 2", text="Ort")
+        room_tree.tkraise()
+        room_tree.grid(row=1, column=0, sticky="nsew")
+
         def insert_data(self):
             i = 0
-            for entry in sqlapi.read_all_benutzer():
+            for entry in sqlapi.fetch_all_rooms():
                 print(entry)
                 # Bestimme das Tag für die aktuelle Zeile
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
 
                 # Daten mit dem Tag in das Treeview einfügen
-                user_tree.insert(
+                room_tree.insert(
                     "",
                     "end",
-                    text=f"{entry['Nutzername']}",
+                    text=f"{str(entry['Raum'])}",
                     values=(
-                        i,
-                        entry['Nutzername'],
-                        entry['Passwort'],
-                        entry['Email'],
-                        entry['Rolle'],
+                        entry['Raum'],
+                        entry['Ort']
                     ),
                     tags=(tag,)
                 )
@@ -225,36 +223,34 @@ class adminWindow(tk.Frame):
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
             try:
-                selected_user = user_tree.focus()
-                print(f"Ausgewählter User: {selected_user}")  # Debug
-                if selected_user:
+                selected_room = room_tree.focus()
+                print(f"Ausgewählter User: {selected_room}")  # Debug
+                if selected_room:
                     from .userDetailsWindow import userDetailsWindow, show_user_details
-                    show_user_details(selected_item, user_tree, controller)
+                    show_user_details(selected_room, room_tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        user_tree.bind("<Double-1>", on_item_selected)
+        room_tree.bind("<Double-1>", on_item_selected)
 
     def update_treeview_with_data(self):
-        user_tree.delete(*user_tree.get_children())
+        room_tree.delete(*room_tree.get_children())
         i = 0
-        for entry in sqlapi.read_all_benutzer():
+        for entry in sqlapi.fetch_all_rooms():
             print(entry)
             # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
 
             # Daten mit dem Tag in das Treeview einfügen
-            user_tree.insert(
+            room_tree.insert(
                 "",
                 "end",
-                text=f"{entry['Nutzername']}",
+                text=f"{entry['Raum']}",
                 values=(
                     i,
-                    entry['Nutzername'],
-                    entry['Passwort'],
-                    entry['Email'],
-                    entry['Rolle'],
+                    entry['Raum'],
+                    entry['Ort'],
                 ),
                 tags=(tag,)
             )

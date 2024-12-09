@@ -54,8 +54,8 @@ class mainPage(tk.Frame):
             pop_up_settings(self)
 
         def show_admin_window():
-            from .adminWindow import adminWindow
-            controller.show_frame(adminWindow)
+            from .adminUserWindow import adminUserWindow
+            controller.show_frame(adminUserWindow)
 
         # Speichere die Funktion als Attribut, um später darauf zuzugreifen
         self.show_admin_window = show_admin_window
@@ -239,15 +239,19 @@ class mainPage(tk.Frame):
         tree_style.configure("Treeview", rowheight=40, font=("Arial", 14))
 
         # Ändere die Position des TreeFrames auf row=2
+        # Ändere die Position des TreeFrames auf row=2
         tree_frame = tk.Frame(middle_frame, background="white")
-        tree_frame.grid(row=1, column=0, padx=100)
 
+        tree_frame.grid(row=1, column=0, padx=100, sticky=tk.N + tk.S + tk.E + tk.W)
+        tree_frame.grid_rowconfigure(1, weight=1)
+        tree_frame.grid_columnconfigure(0, weight=1)
         # Btn Erstellen def mit Image und grid
         self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
         add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
         add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
+        # Das Binding des Configure-Events wurde verschoben
 
         scroll = tk.Scrollbar(
             tree_frame,
