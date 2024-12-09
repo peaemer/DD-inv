@@ -4,8 +4,13 @@ from tkinter import *
 import Datenbank.sqlite3api as sqlapi
 import cache
 
+# Importieren der extra Schriftart
+from ._SRHFont import load_font, SRHHeadline
+
+
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
+load_font(SRHHeadline)
 srhGrey = "#d9d9d9"
 
 
@@ -110,7 +115,7 @@ class mainPage(tk.Frame):
 
         # Erstelle einen Header-Bereich
         self.header_frame = tk.Frame(self, height=10, background="#DF4807")
-        self.header_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+        self.header_frame.grid(row=0, column=0, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
         self.header_frame.grid_columnconfigure(0, weight=1)
@@ -121,6 +126,10 @@ class mainPage(tk.Frame):
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(self.header_frame, image=self.srh_head, background="#DF4807", foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
+
+        # Erstellen eines Schriftzuges im Header
+        text_header_label = Label(self.header_frame, background="#DF4807", text="Inventur-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label.grid(row=0, column=0, padx=660, pady=50, sticky=tk.N)
 
         # Konvertiere das Bild für Tkinter
         self.log_out_btn = tk.PhotoImage(file="assets/ausloggen.png")
@@ -151,26 +160,14 @@ class mainPage(tk.Frame):
         # Platzieren des Adminbuttons
         self.admin_btn = tk.PhotoImage(file="assets/Key.png")
 
-        # Erstellen des sub_grey_frame
-        sub_grey_frame = tk.Frame(self, height=10, background="white")
-        sub_grey_frame.grid(row=2, column=0, sticky=tk.W + tk.E + tk.N)
-
-        # Füge einen Subheader hinzu
-        log_in_label = tk.Label(sub_grey_frame,
-                                text="Übersicht der Inventur",
-                                bd=0,
-                                padx=300,
-                                relief=tk.FLAT,
-                                bg="white",
-                                font=("Arial", 20))
-        log_in_label.grid(padx=500, pady=5, row=1, column=0, sticky=tk.W + tk.E + tk.N)
-
-        # Konfiguriere den sub_grey_frame für zentrierte Ausrichtung
-        sub_grey_frame.grid_columnconfigure(0, weight=1)
-
         # Erstellen des Grayframes für linke Seite
-        grey_frame_side = tk.Frame(self, height=10, background=srhGrey)
-        grey_frame_side.grid(row=2, column=0, sticky=tk.W + tk.N + tk.S)
+        grey_frame_side = tk.Frame(self, background=srhGrey)
+        grey_frame_side.grid(row=2, column=0, rowspan=2, sticky="nsw")
+
+        # Konfiguration der Zeilen- und Spaltengewichte
+        self.grid_rowconfigure(1, weight=0)  # Sicherstellen, dass row=1 keinen Platz einnimmt
+        self.grid_rowconfigure(2, weight=1)  # Zeile 2 kann sich dynamisch anpassen
+        self.grid_columnconfigure(0, weight=1)  # Spalte 0 kann sich dynamisch anpassen
 
         # Label auf dem Grayframe der linken Seite
         overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
@@ -178,29 +175,12 @@ class mainPage(tk.Frame):
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white", padx=40)
-        middle_frame.grid(row=2, padx=190, pady=60, column=0, sticky="nesw")
+        middle_frame.grid(row=3, padx=190, pady=60, column=0, sticky="nesw")
 
-        # Konfiguration des übergeordneten Layouts (self)
-        self.grid_rowconfigure(2, weight=1)  # Macht die Zeile mit middle_frame dehnbar
-        self.grid_columnconfigure(0, weight=1)  # Macht die Spalte mit middle_frame dehnbar
-
-        # Funktion zur manuellen Größenänderung mit der Maus
-        def resize_middle_frame(event):
-            new_width = event.x
-            new_height = event.y
-            if new_width > 100:  # Mindestbreite festlegen
-                middle_frame.config(width=new_width)
-            if new_height > 100:  # Mindesthöhe festlegen
-                middle_frame.config(height=new_height)
-
-        # Hinzufügen von Bindings für manuelle Größenanpassung
-        middle_frame.bind("<B1-Motion>", resize_middle_frame)
-
-        # Optionale Größenanzeige (falls nützlich)
+        # Dbug Info Anzeige der Fenstergroesse
         def show_size(event):
             print(f"Neue Größe - Breite: {event.x} Höhe: {event.y}")
-
-        middle_frame.bind("<Motion>", show_size)
+        print(show_size)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
         search_frame = tk.Frame(middle_frame, bg="white")

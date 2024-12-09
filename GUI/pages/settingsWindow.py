@@ -60,8 +60,8 @@ def pop_up_settings(parent):
     # Erstelle Header-Bereich (oben im Fenster)
     header_frame_settings = tk.Frame(popup, height=0)
     header_frame_settings.grid(row=0,
-                             column=1,
-                             sticky=tk.W + tk.E + tk.N)  # Header erstreckt sich Horizontal,
+                               column=1,
+                               sticky=tk.W + tk.E + tk.N)  # Header erstreckt sich Horizontal,
 
     # Konfiguriere die Spalten für den Header
     header_frame_settings.grid_columnconfigure(0, weight=1)
@@ -70,13 +70,13 @@ def pop_up_settings(parent):
     # Header-Logo laden und anzeigen
     popup.optionsHead = tk.PhotoImage(file="assets/Tool.png")
     header_label = tk.Label(header_frame_settings,
-                           image=popup.optionsHead,
-                           foreground="white")
+                            image=popup.optionsHead,
+                            foreground="white")
     header_label.grid(row=1,
-                     column=0,
-                     padx=10,
-                     pady=10,
-                     sticky=tk.N + tk.W + tk.E)
+                      column=0,
+                      padx=10,
+                      pady=10,
+                      sticky=tk.N + tk.W + tk.E)
 
     # Seitenleiste
     side_settings = tk.Frame(popup, width=200, bg=srhOrange)
@@ -478,10 +478,10 @@ def pop_up_settings(parent):
         webbrowser.open(url)
 
     logo_image = PhotoImage(file="assets/DD-Inv_Logo.png")
-    btn_links_label = ttk.Label(frame_ueber, text="VersionBuild   V. 0.0.271 (Alpha)", cursor="hand2")
+    btn_links_label = ttk.Label(frame_ueber, text="VersionBuild   V. 0.0.291 (Alpha)", cursor="hand2")
     btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/4134a852d14b4553834637a10922ed4fadb2b15e"))
+    btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/2253443a1349e58db31ef8592bf77d3a7afda198"))
 
     # Github Button
     def open_Github(url):

@@ -1,16 +1,14 @@
 import tkinter as tk
-from tkinter import ttk
-from tkinter import *
-import sys, os
 
 #https://chatgpt.com/share/6746f2eb-67ac-8003-95be-480c6f1bd897
 
 # Importiere Klassen direkt aus dem Modul pages
 from pages import logInWindow,\
-				   mainPage,\
-				   detailsWindow, \
-				   adminWindow, \
-			       _DPIAwareness
+				  mainPage,\
+				  detailsWindow,\
+				  adminWindow,\
+			      _DPIAwareness
+
 
 # Hauptklasse für das Tkinter-Fenster
 class ddINV(tk.Tk):
@@ -37,15 +35,15 @@ class ddINV(tk.Tk):
 		self.configure(background="white")
 		self.state("zoomed")
 
-
-
 		# Setze die Fenstergröße und Position
-		self.geometry("1920x1080")
+		width, height = self.winfo_screenwidth(), self.winfo_screenheight()
+		self.geometry('%dx%d+0+0' % (width, height))
+		self.tk.call('tk', 'scaling', 1.2)  # Vergroessert / verkleinert den Inhalt innerhalb des Fensters
 		self.resizable(True, True)  # Ermögliche Größenanpassung des Fensters
 		self.iconbitmap("assets/srhIcon.ico")  # Setze das Fenster-Icon
 
 		# Setze das Fenster in den Vordergrund
-		self.attributes('-topmost', 1)
+		self.attributes('-topmost', 0)
 
 		# Konfiguriere das Grid-Layout für das Hauptfenster
 		self.columnconfigure(0, weight=1)
