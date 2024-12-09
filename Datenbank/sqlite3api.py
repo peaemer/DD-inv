@@ -12,7 +12,7 @@ def init_connection():
     """
     Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
     - Überprüft, ob die Datenbankdatei existiert
-    - falls die Daternbank nicht existiert, wird entweder die Fallback Datenbankt oder eine Exception geworfen.
+    - falls die Datenbank nicht existiert, wird entweder die Fallback Datenbankt oder eine Exception geworfen.
     - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
     """
     if not os.path.exists(path):
