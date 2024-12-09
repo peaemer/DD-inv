@@ -291,7 +291,10 @@ class mainPage(tk.Frame):
             for entry in sqlapi.fetch_hardware():
                 # Bestimme das Tag für die aktuelle Zeile
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
-
+                if entry['Beschaedigung'] == "None":
+                    damage = ""
+                else:
+                    damage = entry['Beschaedigung']
                 # Daten mit dem Tag in das Treeview einfügen
                 tree.insert(
                     "",
@@ -303,7 +306,7 @@ class mainPage(tk.Frame):
                         entry['Geraetetype'],
                         entry['Raum'],
                         entry['Modell'],
-                        entry['Beschaedigung'],
+                        damage,
                         entry['Ausgeliehen_von']
                     ),
                     tags=(tag,)
@@ -328,6 +331,8 @@ class mainPage(tk.Frame):
     # Aktualisieren der Data in der Tabelle
     def update_treeview_with_data(self = None, data=None):
         # Clear the current treeview contents
+        global i
+        i = 0
         tree.delete(*tree.get_children())
 
         # If no data is provided, fetch the data from sqlapi
@@ -335,12 +340,17 @@ class mainPage(tk.Frame):
             data = sqlapi.fetch_hardware()
 
         for entry in data:
-            tag = "evenrow" if entry['ID'] % 2 == 0 else "oddrow"
+            i+=1
+            if entry['Beschaedigung'] == "None":
+                damage = ""
+            else:
+                damage = entry['Beschaedigung']
+            tag = "evenrow" if i % 2 == 0 else "oddrow"
             tree.insert(
                 "",
                 "end",
                 values=(entry['ID'], entry['Service_Tag'], entry['Geraetetype'], entry['Raum'],
-                        entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
+                        entry['Modell'], damage, entry['Ausgeliehen_von']),
                 tags=(tag,)
             )
 
