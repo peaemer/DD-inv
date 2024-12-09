@@ -5,8 +5,8 @@ from Security.UserSecurity import *
 
 # Pfad zur Datenbankdatei
 path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
-use_fallback_path:bool = True
-fallback_path:str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
+__use__fallback_path:bool = True
+__fallback_path:str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
 
 def init_connection():
     """
@@ -16,8 +16,8 @@ def init_connection():
     - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
     """
     if not os.path.exists(path):
-        if use_fallback_path:
-            con = sqlite3.connect(fallback_path)
+        if __use__fallback_path:
+            con = sqlite3.connect(__fallback_path)
             con.row_factory = sqlite3.Row
             return con
         else:
