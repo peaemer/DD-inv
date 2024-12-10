@@ -163,6 +163,7 @@ class mainPage(tk.Frame):
 
         side_tree = ttk.Treeview(grey_frame_side, show="tree")
         side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
+        side_tree.insert("", tk.END, text="Alle Räume")
         for room in sqlapi.fetch_all_rooms():
             side_tree.insert("", tk.END, text=room['Raum'])
 
@@ -312,6 +313,23 @@ class mainPage(tk.Frame):
                     show_details(selected_item, tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
+
+        def on_side_tree_select(event):
+            # Hole ausgewähltes Element aus dem side_tree
+            selected_item = side_tree.selection()
+            if selected_item:
+                selected_text = side_tree.item(selected_item, 'text')
+                if selected_text == "Alle Räume":
+                    # Alle Daten in der Haupttabelle anzeigen
+                    self.update_treeview_with_data()
+                else:
+                    # Daten nach Raum filtern
+                    filtered_data = []
+                    for hw in sqlapi.fetch_hardware():
+                        if hw.get("Raum") and hw.get("Raum").startswith(selected_text):
+                            filtered_data.append(hw)
+                    self.update_treeview_with_data(data=filtered_data)
+        side_tree.bind("<<TreeviewSelect>>", on_side_tree_select)
 
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<Double-1>", on_item_selected)
