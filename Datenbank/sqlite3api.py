@@ -484,3 +484,67 @@ def delete_room(Raum):
             return "Raum erfolgreich gelöscht."
     except sqlite3.Error as e:
         return f"Fehler beim Löschen des Raumes: {e}"
+
+    ###########################################################
+    # A V A T A R _ I N F O R M A T I O N - E N D P U N K T E #
+    ###########################################################
+
+    def create_avatar(Avatar_link):
+        """
+        Erstellt ein neues Avatar in der Datenbank.
+        ID Sollte automatisch erstellt werden,
+        der Nutzer muss seperat hinzugefügt werden.
+
+        :param Link des Avatars.
+        """
+        try:
+            with init_connection() as con:
+                cur = con.cursor()
+                cur.execute("INSERT INTO Avatar_Informationen VALUES (?)", (Avatar_link,))
+                con.commit()
+                return "Avatar erfolgreich erstellt."
+        except sqlite3.Error as e:
+            return f"Fehler beim erstellen der Avatar: {e}"
+
+    def update_avatar(ID, neue_Nutzername=None, neue_Avatar_link=None):
+        """
+        Damit können die Daten in Avatar_link geändert werden.
+        Wichtig ist das ID muss angegeben werden.
+        Nutzername wird als Foreignkey angesprochen
+
+        :param ID: Unique identifier of the user whose avatar information is
+                   to be updated.
+        :type ID: int
+        :param neue_Nutzername: New username to update, if any.
+        :type neue_Nutzername: str, optional
+        :param neue_Avatar_link: New avatar link to update, if any.
+        :type neue_Avatar_link: str, optional
+        :return: Returns a success message if the room information is updated
+                 successfully, otherwise returns an error message if no update
+                 fields are provided or if a database error occurs.
+        :rtype: str
+        """
+        try:
+            with init_connection() as con:
+                cur = con.cursor()
+                update_fields = []
+                parameters = []
+
+            if neue_Nutzername:
+                update_fields.append("Nutzername = ?")
+                parameters.append(neue_Nutzername)
+            if neue_Avatar_link:
+                update_fields.append("Avatar_Link = ?")
+                parameters.append(neue_Avatar_link)
+
+            if not update_fields:
+                return "Keine Aktualisierungsdaten vorhanden."
+
+            sql_query = f"UPDATE Avatar_information SET {', '.join(update_fields)} WHERE ID = ?"
+            parameters.append(Raum)
+            cur.execute(sql_query, parameters)
+            con.commit()
+            return "Raum erfolgreich aktualisiert."
+
+        except sqlite3.Error as e:
+            return f"Fehler beim Aktualisieren des Raumes: {e}"

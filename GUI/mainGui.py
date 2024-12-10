@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from GUI.pages import adminUserWindow
+from GUI.pages import adminUserWindow, roomDetailsWindow
 #https://chatgpt.com/share/6746f2eb-67ac-8003-95be-480c6f1bd897
 
 # Importiere Klassen direkt aus dem Modul pages
@@ -8,6 +8,7 @@ from pages import logInWindow,\
 				  mainPage,\
 				  userDetailsWindow,\
 				  detailsWindow,\
+				  roomDetailsWindow,\
 				  adminRoomWindow,\
 				  adminUserWindow,\
 			      _DPIAwareness
@@ -42,7 +43,9 @@ class ddINV(tk.Tk):
 		width, height = self.winfo_screenwidth(), self.winfo_screenheight()
 		self.geometry('%dx%d+0+0' % (width, height))
 		self.tk.call('tk', 'scaling', 1.2)  # Vergroessert / verkleinert den Inhalt innerhalb des Fensters
-		self.resizable(True, True)  # Ermögliche Größenanpassung des Fensters
+		self.resizable(False, False)  # Ermögliche Größenanpassung des Fensters
+		self.minsize(1280, 720)
+		self.maxsize(1920,1080)
 		self.iconbitmap("assets/srhIcon.ico")  # Setze das Fenster-Icon
 
 		# Setze das Fenster in den Vordergrund
@@ -64,7 +67,7 @@ class ddINV(tk.Tk):
 		self.frames = {}
 
 		# Erstelle die Seiten (Frames) und speichere sie im Dictionary
-		for F in (logInWindow, mainPage,detailsWindow , userDetailsWindow, adminRoomWindow, adminUserWindow):
+		for F in (logInWindow, mainPage,detailsWindow , userDetailsWindow, adminRoomWindow, adminUserWindow, roomDetailsWindow):
 			frame = F(container, self)
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid

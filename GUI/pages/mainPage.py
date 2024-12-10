@@ -155,16 +155,32 @@ class mainPage(tk.Frame):
 
         # Erstellen des Grayframes für linke Seite
         grey_frame_side = tk.Frame(self, background=srhGrey)
-        grey_frame_side.grid(row=1, column=0, rowspan=2, sticky="nsw")
+        grey_frame_side.grid(row=1, column=0, sticky="nsw")
 
-        # Label auf dem Grayframe der linken Seite
-        overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        overview_label.grid(padx=10, pady=10, row=2, column=0, sticky=tk.W +tk.N + tk.S)
+        tree_style_side_tree = ttk.Style()
+        tree_style_side_tree.theme_use("default")
+        tree_style_side_tree.configure("Treeview_side",
+                                       background=srhGrey,
+                                       font=("Arial", 20),
+                                       rowheight=40,  # Zeilenhöhe für größere Abstände
+                                       selectbackground="blue",  # Markierungshintergrund
+                                       selectforeground="white")  # Markierungstextfarbe
+        tree_style_side_tree.layout("Treeview_side", [('Treeview.treearea', {'sticky': 'nswe'})])
 
-        side_tree = ttk.Treeview(grey_frame_side, show="headings")
-        side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
+        # Treeview erstellen
+        side_tree = ttk.Treeview(grey_frame_side, show="tree", style="Treeview_side")
+        side_tree.grid(row=2, column=0, sticky=tk.W + tk.N + tk.S)
+
+        side_tree.insert("", tk.END, text="Alle Räume")
         for room in sqlapi.fetch_all_rooms():
-            side_tree.insert("", tk.END, text=room['Raum'])
+            cats = []
+            tree_parent = side_tree.insert("", tk.END, text=room['Raum'])
+            for hw in sqlapi.fetch_hardware():
+                if hw['Raum'] and hw['Raum'].startswith(room['Raum']):
+                    if not hw['Geraetetype'] in cats:
+                        cats.append(hw['Geraetetype'])
+                        side_tree.insert(tree_parent, tk.END, text=hw['Geraetetype'])
+        side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white")
@@ -224,7 +240,7 @@ class mainPage(tk.Frame):
         tree_style.configure("Treeview", rowheight=40, font=("Arial", 14))
 
         # Frame für die Tabelle und Scrollbar
-        tree_frame = tk.Frame(middle_frame, background="darkgreen")
+        tree_frame = tk.Frame(middle_frame, background="white")
         tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         # Spaltenkonfiguration für das TreeFrame
@@ -234,7 +250,6 @@ class mainPage(tk.Frame):
 
         # Treeview erstellen
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings")
-        tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
 
         # Scrollbar erstellen
         scroll = tk.Scrollbar(
@@ -272,7 +287,7 @@ class mainPage(tk.Frame):
         tree.heading("# 6", text="Beschädigung")
         tree.column("# 7", anchor=CENTER, width=250)
         tree.heading("# 7", text="Ausgeliehen von")
-        tree.grid(row=1, column=0)
+        tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
         tree.tkraise()
 
         # Funktion zum eintragen von Daten in die Tabelle
@@ -313,6 +328,23 @@ class mainPage(tk.Frame):
                     show_details(selected_item, tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
+
+        def on_side_tree_select(event):
+            # Hole ausgewähltes Element aus dem side_tree
+            selected_item = side_tree.selection()
+            if selected_item:
+                selected_text = side_tree.item(selected_item, 'text')
+                if selected_text == "Alle Räume":
+                    # Alle Daten in der Haupttabelle anzeigen
+                    self.update_treeview_with_data()
+                else:
+                    # Daten nach Raum filtern
+                    filtered_data = []
+                    for hw in sqlapi.fetch_hardware():
+                        if hw.get("Raum") and hw.get("Raum").startswith(selected_text):
+                            filtered_data.append(hw)
+                    self.update_treeview_with_data(data=filtered_data)
+        side_tree.bind("<<TreeviewSelect>>", on_side_tree_select)
 
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<Double-1>", on_item_selected)

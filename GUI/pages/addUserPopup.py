@@ -1,6 +1,7 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import Datenbank.sqlite3api as db
+import string, random
 
 
 def add_user_popup(parent):
@@ -88,18 +89,25 @@ def add_user_popup(parent):
         font=("Arial", size_add_user_popup)
     )
     role_combobox_add_user_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    role_combobox_add_user_popup.set("Rolle auswählen")
 
 
-    error_label = tk.Label(input_frame_add_item_popup, text="Biite eingeben von Kontodaten IbAN bitte und geheim pin", background="white",fg="darkred",font=("Arial", 14))
-    error_label.grid(row=3, column=0,columnspan=2, padx=0, pady=20, sticky=tk.E)
+    error_label = tk.Label(input_frame_add_user_popup, text="", background="white",fg="darkred",font=("Arial", 14))
+    error_label.grid(row=3, column=0,columnspan=2, padx=0, pady=20)
 
     # Buttons
     def submit_entry():
-        print("Eintrag abgesendet.")
-        add_popup.destroy()
+        pw = str(''.join(random.choices(string.ascii_letters, k=7)))
+        if not username_entry_add_user_popup.get() or username_entry_add_user_popup.get() == "" or not role_combobox_add_user_popup.get() or role_combobox_add_user_popup.get() == "Rolle auswählen":
+            error_label.configure(text="Please enter all required fields (Username)")
+        else:
+            db.create_benutzer(username_entry_add_user_popup.get(), pw, email_entry_add_user_popup.get())
+            messagebox.showinfo(title="Added User", message="Nutzername: "+username_entry_add_user_popup.get()+"\nNew password: " + pw)
+            from .adminUserWindow import adminUserWindow
+            adminUserWindow.update_treeview_with_data()
+            add_popup.destroy()
 
     def exit_entry():
-        print("Vorgang abgebrochen.")
         add_popup.destroy()
 
     parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/Hinzu.png")
