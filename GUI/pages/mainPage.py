@@ -155,13 +155,13 @@ class mainPage(tk.Frame):
 
         # Erstellen des Grayframes für linke Seite
         grey_frame_side = tk.Frame(self, background=srhGrey)
-        grey_frame_side.grid(row=1, column=0, rowspan=2, sticky="nsw")
+        grey_frame_side.grid(row=1, column=0, sticky="nsw")
 
         # Label auf dem Grayframe der linken Seite
         overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
         overview_label.grid(padx=10, pady=10, row=2, column=0, sticky=tk.W +tk.N + tk.S)
 
-        side_tree = ttk.Treeview(grey_frame_side, show="headings")
+        side_tree = ttk.Treeview(grey_frame_side)
         side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
         for room in sqlapi.fetch_all_rooms():
             side_tree.insert("", tk.END, text=room['Raum'])
@@ -224,7 +224,7 @@ class mainPage(tk.Frame):
         tree_style.configure("Treeview", rowheight=40, font=("Arial", 14))
 
         # Frame für die Tabelle und Scrollbar
-        tree_frame = tk.Frame(middle_frame, background="darkgreen")
+        tree_frame = tk.Frame(middle_frame, background="white")
         tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         # Spaltenkonfiguration für das TreeFrame
@@ -234,7 +234,6 @@ class mainPage(tk.Frame):
 
         # Treeview erstellen
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings")
-        tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
 
         # Scrollbar erstellen
         scroll = tk.Scrollbar(
@@ -272,7 +271,7 @@ class mainPage(tk.Frame):
         tree.heading("# 6", text="Beschädigung")
         tree.column("# 7", anchor=CENTER, width=250)
         tree.heading("# 7", text="Ausgeliehen von")
-        tree.grid(row=1, column=0)
+        tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
         tree.tkraise()
 
         # Funktion zum eintragen von Daten in die Tabelle
