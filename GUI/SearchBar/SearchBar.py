@@ -14,22 +14,25 @@ loaded_history:List[Dict[str,str]] = json.loads(initial_history)
 json_object = json.loads(initial_history)
 
 search_is_running = False
-
 fallback_username = 'Alex'
 
 root = tk.Tk()
-root.geometry("1920x1080")
+root.geometry("800x600")
 root.title("Searchbar with Custom Dropdown")
-dropdown_items = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
-dropdown = tk.Listbox(root, width=int(100),selectmode=tk.SINGLE,font=("Arial",14))
-dropdown_var = tk.StringVar()
+
+dropdown_items:List[str] = []
+dropdown_var:tk.StringVar = tk.StringVar()
+dropdown:tk.Listbox = tk.Listbox(root, width=int(100), selectmode=tk.SINGLE, font=("Arial",14), listvariable=dropdown_var)
 dropdown.place_forget()
+
 search_button = tk.Button(root, text="Search")
 search_button.place(x=100,y=100)
 search_button.configure(width=6,height=1)
-search_var = tk.StringVar()
+
+search_var:tk.StringVar = tk.StringVar()
 searchbar = tk.Entry(root, textvariable= search_var,width=100,font=("Arial",14))
 searchbar.place(x=160,y=100)
+
 select_item_button = tk.Button(root, text="Select Item")
 
 def fetch_limited_hardware(term:str, username:str=fallback_username)->list[str,dict[str,str]]:
@@ -74,48 +77,65 @@ def start_search(event:tk.Event)->None:
     print(f"""[SearchBar]:starting search""")
     global search_is_running, loaded_history
     loaded_history = json.loads(db.read_benutzer_suchverlauf('Alex'))
+    print(f"""[SearchBar]: loaded: "{loaded_history}" """)
     search_is_running = True
+    update_search(None)
 
 def update_search(*args):
     search_term = search_var.get()
-    print(f"""[SearchBar]:running pending search with searchbar text: "{search_term}" """)
+    print(f"""[SearchBar]:running pending search with searchbar text:"{search_term}" """)
     new_options:List[str] = []
-    for history_search_term in sorted(loaded_history,key=lambda x:x['weight']):
-        if search_term in history_search_term['text']:
-            new_options.append(history_search_term['text'])
+    sorted_history:list[dict[str, str]] = sorted(loaded_history,key=lambda x:x['weight'])
+    i:int = 0
+    for entry in sorted_history:
+        if str(search_term) in entry['text']:
+            new_options.append(entry['text'])
+            i = i+1
+        if(i>=6):
+            break
     update_dropdown(new_options)
 
-def finish_search(event:tk.Event)->None:
-    search_term = search_var.get()
+def finish_search(search_term:str)->None:
+    #search_term:str = str(search_var.get())
     print(f"""[SearchBar]:finishing search with searchbar text: "{search_term}" """)
     term_existed:bool = False
     weight:int = 100
-    for history_search_term in sorted(loaded_history, key=lambda x: x['weight']):
-        print(f"""[SearchBar]:processing:"{search_term}" """)
-        weight = int(history_search_term['weight'])
-        if history_search_term['text'] == search_term:
+    sorted_history:list[dict[str, str]] = sorted(loaded_history,key=lambda x:x['weight'])
+    for entry in sorted_history:
+        print(f"""[SearchBar]:processing:"{entry['text']}" """)
+        weight = int(entry['weight'])
+        if entry['text'] == search_term:
             if weight*2 <= 100:
                 weight *= 2
             else:
                 weight = 100
-            history_search_term['weight'] = str(math.floor(weight))
+            entry['weight'] = str(math.floor(weight))
             term_existed = True
         else:
-            weight *= math.floor(0.9)
+            weight = math.floor(weight*0.7)
             if weight-1 >= 0:
                 weight -= 1
             else:
                 weight = 0
+        print(f"weight is now:{entry['weight']} ")
         if weight == 0:
-            loaded_history.remove(history_search_term)
+            print(f"removing:{entry}")
+            sorted_history.remove(entry)
+        else:
+            entry['weight'] = str(weight)
     if not term_existed:
-        if len(loaded_history) == 30:
-            sorted(loaded_history, key=lambda x: x['weight']).pop()
-        temp:dict[str,str] = {"weight":"100","text":search_term}
-        loaded_history.append(temp)
+        while len(sorted_history) >= 30:
+            sorted_history.pop()
+        print(f"""[SearchBar]:loaded history was before: "{sorted_history}" """)
+#        temp:json_object = json.loads("{\"weight\":\"100\",\"text\":\""+search_term+"\"}")
+        temp = {"weight":"100","text":search_term}
+        sorted_history.append(temp)
         print(f"""[SearchBar]:adding: "{temp}" """)
-    print(loaded_history)
-    db.update_benutzer('Alex', neue_suchverlauf=json.dumps(loaded_history))
+        print(f"""[SearchBar]:loaded history is now: "{sorted_history}" """)
+    print(sorted_history)
+    db.update_benutzer('Alex', neue_suchverlauf=json.dumps(sorted_history))
+    searchbar.delete(0, tk.END)
+    print(f"""[SearchBar]: wrote: "{json.dumps(sorted_history)}" """)
 
 
 
@@ -123,9 +143,9 @@ def finish_search(event:tk.Event)->None:
 # Bind the focus events to show or hide the dropdown
 searchbar.bind("<FocusIn>", start_search)
 searchbar.bind("<FocusOut>", hide_dropdown)
-search_button.bind("<Button-1>", finish_search)
+search_button.bind("<Button-1>", lambda event:finish_search(dropdown_var.get()))
 dropdown.bind("<<ListboxSelect>>", on_dropdown_select)
 search_var.trace_add("write", update_search)
-select_item_button.bind("<Button-2>", finish_search)
+select_item_button.bind("<Button-2>", lambda event:finish_search(event.widget.curselection()[0]))
 
 root.mainloop()
