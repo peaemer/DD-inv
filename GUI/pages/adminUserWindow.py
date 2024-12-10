@@ -134,8 +134,12 @@ class adminUserWindow(tk.Frame):
         grey_frame_side = tk.Frame(self, background=srhGrey)
         grey_frame_side.grid(row=1, column=0, sticky=tk.W + tk.N + tk.S)
 
-        user_label = tk.Label(grey_frame_side, text="Nutzer", bd=0, relief=tk.FLAT , bg=srhGrey, font=("Arial", 20))
-        user_label.grid(padx=40, pady=20, row=0, column=0, sticky=tk.W + tk.E)
+
+        #wip
+        grey_frame_side.grid_columnconfigure(0, weight=1)
+
+        user_button = tk.Button(grey_frame_side, text="Nutzer", bd=0, relief=tk.FLAT , bg=srhGrey, font=("Arial", 20))
+        user_button.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
 
         room_button = tk.Button(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey,command=change_to_room, font=("Arial", 20))
         room_button.grid(padx=40, pady=5, row=1, column=0, sticky=tk.W + tk.E)
@@ -172,7 +176,7 @@ class adminUserWindow(tk.Frame):
         user_tree_frame = tk.Frame(self, background="white")
         user_tree_frame.grid(row=1, column=0, padx=260)
 
-        self.add_btn = tk.PhotoImage(file="assets/HinzuSmall.png")
+        self.add_btn = tk.PhotoImage(file="assets/Hinzusmall.png")
         user_add_button = tk.Button(user_tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_user)
         user_add_button.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 

@@ -77,7 +77,7 @@ class adminRoomWindow(tk.Frame):
 
         # Erstelle einen Header-Bereich
         header_frame = tk.Frame(self, height=10, background="#DF4807")
-        header_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+        header_frame.grid(row=0, column=0 ,sticky=tk.W + tk.E + tk.N)
 
         # Konfiguriere die Spalten für den Header
         header_frame.grid_columnconfigure(0, weight=1)
@@ -126,14 +126,14 @@ class adminRoomWindow(tk.Frame):
         # Konfiguriere den grey_frame für zentrierte Ausrichtung
         grey_frame.grid_columnconfigure(0, weight=1)
 
-        grey_frame_side = tk.Frame(self, height=10, background=srhGrey)
+        grey_frame_side = tk.Frame(self, background=srhGrey)
         grey_frame_side.grid(row=1, column=0, sticky=tk.W + tk.N + tk.S)
 
-        user_label = tk.Label(grey_frame_side, text="Nutzer", bd=0, relief=tk.FLAT , bg=srhGrey, font=("Arial", 20))
-        user_label.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
+        user_button = tk.Button(grey_frame_side, text="Nutzer", bd=0, relief=tk.FLAT ,command=change_to_user, bg=srhGrey, font=("Arial", 20))
+        user_button.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
 
         room_button = tk.Button(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        room_button.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
+        room_button.grid(padx=40, pady=5, row=1, column=0, sticky=tk.W + tk.E)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
         search_frame = tk.Frame(self, bg="white")
@@ -165,7 +165,7 @@ class adminRoomWindow(tk.Frame):
 
         # Ändere die Position des TreeFrames auf row=3
         room_tree_frame = tk.Frame(self, background="white")
-        room_tree_frame.grid(row=1, column=0, padx=260)
+        room_tree_frame.grid(row=1, column=0, padx=0)
 
         self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
         room_add_button = tk.Button(room_tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)

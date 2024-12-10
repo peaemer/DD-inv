@@ -1,12 +1,14 @@
 import tkinter as tk
 
+from GUI.pages import adminUserWindow
 #https://chatgpt.com/share/6746f2eb-67ac-8003-95be-480c6f1bd897
 
 # Importiere Klassen direkt aus dem Modul pages
 from pages import logInWindow,\
 				  mainPage,\
-				  detailsWindow,\
+				  userDetailsWindow,\
 				  adminRoomWindow,\
+				  adminUserWindow,\
 			      _DPIAwareness
 
 
@@ -61,7 +63,7 @@ class ddINV(tk.Tk):
 		self.frames = {}
 
 		# Erstelle die Seiten (Frames) und speichere sie im Dictionary
-		for F in (logInWindow, mainPage, detailsWindow, adminRoomWindow):
+		for F in (logInWindow, mainPage, userDetailsWindow, adminRoomWindow, adminUserWindow):
 			frame = F(container, self)
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid
