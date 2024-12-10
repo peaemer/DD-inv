@@ -6,7 +6,7 @@ import tkinter as tk
 from pages import logInWindow,\
 				  mainPage,\
 				  detailsWindow,\
-				  adminWindow,\
+				  adminRoomWindow,\
 			      _DPIAwareness
 
 
