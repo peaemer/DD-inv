@@ -44,7 +44,7 @@ class userDetailsWindow(tk.Frame):
             db.update_benutzer(self.name.get(), neues_passwort=pw)
             messagebox.showinfo(title="Reseted User Password", message="New password: " + pw)
             from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data(parent)
+            adminUserWindow.update_treeview_with_data()
             controller.show_frame(adminUserWindow)
 
         self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
@@ -194,12 +194,13 @@ class userDetailsWindow(tk.Frame):
             #update
             db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
             from .adminUserWindow import adminUserWindow
+            adminUserWindow.update_treeview_with_data()
             controller.show_frame(adminUserWindow)
 
         def delete_entry():
             db.delete_benutzer(self.name.get())
             from .adminUserWindow import adminUserWindow
-            # adminUserWindow.update_treeview_with_data(parent)
+            adminUserWindow.update_treeview_with_data()
             controller.show_frame(adminUserWindow)
 
         self.edit_btn = tk.PhotoImage(file="assets/Aktualisieren.png")

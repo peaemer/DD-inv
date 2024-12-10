@@ -171,6 +171,7 @@ class adminRoomWindow(tk.Frame):
         room_add_button = tk.Button(room_tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
         room_add_button.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
+        global room_tree
         room_tree = ttk.Treeview(room_tree_frame, column=("c1", "c2"), show="headings")
 
         room_scroll = tk.Scrollbar(

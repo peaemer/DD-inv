@@ -171,7 +171,6 @@ class adminUserWindow(tk.Frame):
         search_entry.bind('<FocusOut>', on_focus_out)
         search_entry.grid(column=1, row=0, columnspan=2, sticky=tk.W + tk.E, padx=5, pady=5)
 
-
         # Ändere die Position des TreeFrames auf row=3
         user_tree_frame = tk.Frame(self, background="white")
         user_tree_frame.grid(row=1, column=0, padx=260)
@@ -180,6 +179,7 @@ class adminUserWindow(tk.Frame):
         user_add_button = tk.Button(user_tree_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_user)
         user_add_button.grid(padx=10, pady=5, row=0, column=0, sticky="e")
 
+        global user_tree
         user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5"), show="headings", height=15)
 
         user_scroll = tk.Scrollbar(
@@ -251,7 +251,7 @@ class adminUserWindow(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)
 
-    def update_treeview_with_data(self):
+    def update_treeview_with_data(self=None):
         user_tree.delete(*user_tree.get_children())
         i = 0
         for entry in sqlapi.read_all_benutzer():

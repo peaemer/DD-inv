@@ -121,7 +121,7 @@ def add_item_popup(parent):
     damaged_button_add_item_popup.grid(row=4, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
 
-    error_label = tk.Label(input_frame_add_item_popup, text="Biite eingeben von Kontodaten IbAN bitte und geheim pin", background="white",fg="darkred",font=("Arial", 14))
+    error_label = tk.Label(input_frame_add_item_popup, text="", background="white",fg="darkred",font=("Arial", 14))
     error_label.grid(row=5, column=0,columnspan=2, padx=0, pady=20, sticky=tk.E)
 
     # Funktion zum Eintrag hinzufügen
@@ -145,10 +145,13 @@ def add_item_popup(parent):
         room = room_combobox_add_item_popup.get() if room_combobox_add_item_popup.get() else ""
         name = name_entry_add_item_popup.get() if name_entry_add_item_popup.get() else ""
         damage = damaged_button_add_item_popup.get() if damaged_button_add_item_popup.get() else ""
-        db.create_hardware(tag,type,name,damage,None,room)
-        from .mainPage import mainPage
-        mainPage.update_treeview_with_data(data=None)
-        add_popup.destroy()
+        if type == "" or room == "Raum auswählen" or name == "":
+            error_label.configure(text="Please enter all required fields (type, room, name)")
+        else:
+            db.create_hardware(tag,type,name,damage,None,room)
+            from .mainPage import mainPage
+            mainPage.update_treeview_with_data(data=None)
+            add_popup.destroy()
 
     def exit_entry():
         """
@@ -164,7 +167,6 @@ def add_item_popup(parent):
                        a tkinter frame or window.
         :type parent: tkinter.Tk or tkinter.Widget
         """
-        print("Vorgang abgebrochen")
         add_popup.destroy()
 
     parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/ErstellenButton.png")
