@@ -232,18 +232,18 @@ class adminRoomWindow(tk.Frame):
         insert_data(self)
 
         # Funktion für das Ereignis-Binding
-        def on_item_selected(event):
+        def on_room_selected(event):
             try:
                 selected_room = room_tree.focus()
-                print(f"Ausgewählter User: {selected_room}")  # Debug
+                print(f"Ausgewählter Raum: {selected_room}")  # Debug
                 if selected_room:
-                    from .userDetailsWindow import userDetailsWindow, show_user_details
-                    show_user_details(selected_room, room_tree, controller)
+                    from .roomDetailsWindow import roomDetailsWindow, show_room_details
+                    show_room_details(selected_room, room_tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        room_tree.bind("<Double-1>", on_item_selected)
+        room_tree.bind("<Double-1>", on_room_selected)
 
     def update_treeview_with_data(self):
         room_tree.delete(*room_tree.get_children())
