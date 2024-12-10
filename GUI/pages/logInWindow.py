@@ -45,6 +45,7 @@ class logInWindow(tk.Frame):
                 benutzer_info = db.read_benutzer(user)
                 cache.user_group = benutzer_info.get('Rolle', '')  # Rolle des Benutzers speichern
                 cache.user_name = user  # Benutzernamen im Cache speichern
+                # cache.user_avatar = benutzer_info.get("Avatar", "")  Für Profilbilder in Datenbank
 
                 password_entry.delete(0, 'end')
                 username_entry.delete(0, 'end')
@@ -191,7 +192,7 @@ class logInWindow(tk.Frame):
             webbrowser.open(url)
 
         logo_image = PhotoImage(file="assets/DD-Inv_Logo.png")
-        btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.0.291 (Alpha)", cursor="hand2", font=("Arial", 12))
+        btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.0.311 (Alpha)", cursor="hand1", font=("Arial", 12))
         btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
         btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
-        btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/2253443a1349e58db31ef8592bf77d3a7afda198"))
+        btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/3cf34836049538c57b3cac282a740703e0312ba7"))

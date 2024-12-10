@@ -41,7 +41,7 @@ def pop_up_settings(parent):
     # erstellt ein neues Fenster
     popup = tk.Toplevel(parent)
     popup.title("Einstellungen")
-    popup.geometry("960x540")  # groeße des Fensters
+    popup.geometry("550x750")  # groeße des Fensters
     popup.configure(background="white")  # Hintergrundfarbe
     popup.transient(parent)  # Setzt Hauptfenster in Hintergrund
     popup.grab_set()  # Fokus auf Popup
@@ -50,7 +50,7 @@ def pop_up_settings(parent):
     # Bildschirmbreite und hoehe ermitteln (fenster mittig auf Bildschirm setzten)
     screen_width = parent.winfo_screenwidth()
     screen_height = parent.winfo_screenheight()
-    window_width, window_height = 660, 550
+    window_width, window_height = 550, 750
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
@@ -80,7 +80,7 @@ def pop_up_settings(parent):
                             image=popup.optionsHead,
                             foreground="white")
     header_label.grid(row=1,
-                      column=2,
+                      column=1,
                       padx=20,
                       pady=10,
                       sticky="nesw")
@@ -258,8 +258,11 @@ def pop_up_settings(parent):
 
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
-    frame_profile = tk.Frame(popup, bg="green")
+    frame_profile = tk.Frame(popup, bg="white")
     frame_profile.grid(row=1, column=1, rowspan=2, sticky="nesw")
+    scrollbar_profile = ttk.Scrollbar(orient=tk.VERTICAL)
+    scrollbar_profile.set(0.2, 0.5)
+    scrollbar_profile.pack()
     #frame_profile.grid_forget()
 
     # Überschrift Dein Profil
@@ -510,10 +513,10 @@ def pop_up_settings(parent):
         webbrowser.open(url)
 
     logo_image = tk.PhotoImage(file="assets/DD-Inv_Logo.png")
-    btn_links_label = ttk.Label(frame_ueber, text="VersionBuild   V. 0.0.291 (Alpha)", cursor="hand2")
+    btn_links_label = ttk.Label(frame_ueber, text="VersionBuild   V. 0.0.311 (Alpha)", cursor="hand2")
     btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/2253443a1349e58db31ef8592bf77d3a7afda198"))
+    btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/3cf34836049538c57b3cac282a740703e0312ba7"))
 
     # Github Button
     def open_Github(url):
