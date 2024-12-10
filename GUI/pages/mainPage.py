@@ -161,7 +161,7 @@ class mainPage(tk.Frame):
         overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
         overview_label.grid(padx=10, pady=10, row=2, column=0, sticky=tk.W +tk.N + tk.S)
 
-        side_tree = ttk.Treeview(grey_frame_side)
+        side_tree = ttk.Treeview(grey_frame_side, show="tree")
         side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
         for room in sqlapi.fetch_all_rooms():
             side_tree.insert("", tk.END, text=room['Raum'])

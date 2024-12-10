@@ -11,41 +11,32 @@ LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
 
 
-def show_user_details(selected_user, tree, controller):
+def show_room_details(selected_room, tree, controller):
     # Daten aus der ausgewählten Zeile
-    data = tree.item(selected_user, "values")
+    data = tree.item(selected_room, "values")
     print(f"Daten des ausgewählten Items: {data}")
     cache.selected_ID = data[0]
 
     # Frame aktualisieren und anzeigen
-    details = controller.frames[userDetailsWindow]
+    details = controller.frames[roomDetailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-    controller.show_frame(userDetailsWindow)  # Zeige die Details-Seite
+    controller.show_frame(roomDetailsWindow)  # Zeige die Details-Seite
 
 
-class userDetailsWindow(tk.Frame):
+class roomDetailsWindow(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.configure(background="white")
 
         def go_back_details_window():
-            from .adminUserWindow import adminUserWindow
-            controller.show_frame(adminUserWindow)
+            from .adminRoomWindow import adminRoomWindow
+            controller.show_frame(adminRoomWindow)
 
         def show_settings_window_details_window():
             print("Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
-
-
-        def reset_pass():
-            pw = str(''.join(random.choices(string.ascii_letters, k=7)))
-            db.update_benutzer(self.name.get(), neues_passwort=pw)
-            messagebox.showinfo(title="Reseted User Password", message="New password: " + pw)
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
 
         self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
         self.opt_btn_details_window = tk.PhotoImage(file="assets/option.png")
@@ -82,7 +73,6 @@ class userDetailsWindow(tk.Frame):
         )
         go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
-
         options_button_details_window = tk.Button(
             header_frame_details_window,
             image=self.opt_btn_details_window,
@@ -104,90 +94,32 @@ class userDetailsWindow(tk.Frame):
         container_frame.grid_columnconfigure(1, weight=1)  # Eingabefelder
 
 
-
         size_details_window = 30
-
-
-
-        # Ändere die Position des TreeFrames
-        tree_frame_details_window = tk.Frame(container_frame, background="red", width=200, height=400)
-        tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
-
-        tree_details_window = ttk.Treeview(tree_frame_details_window, column=("c1", "c2", "c3"), show="headings", height=30)
-
-        scroll_details_window = tk.Scrollbar(
-            tree_frame_details_window,
-            orient="vertical",
-            command=tree_details_window.yview,
-            bg="black",
-            activebackground="darkblue",
-            troughcolor="grey",
-            highlightcolor="black",
-            width=15,
-            borderwidth=1
-        )
-        scroll_details_window.grid(row=1, column=1, sticky="ns")
-        tree_details_window.configure(yscrollcommand=scroll_details_window.set)
-
-        # Tags für alternierende Zeilenfarben konfigurieren
-        tree_details_window.tag_configure("oddrow", background="#f7f7f7")
-        tree_details_window.tag_configure("evenrow", background="white")
-
-        ### listbox for directories
-        tree_details_window.column("# 1", anchor=CENTER, width=180)
-        tree_details_window.heading("# 1", text="Name", )
-        tree_details_window.column("# 2", anchor=CENTER, width=200)
-        tree_details_window.heading("# 2", text="ServiceTag/ID")
-        tree_details_window.column("# 3", anchor=CENTER, width=220)
-        tree_details_window.heading("# 3", text="Ausgeliehen am")
-        tree_details_window.grid(row=1, column=0)
-        tree_details_window.tkraise()
 
         # Input-Frame
         input_frame_details_window = tk.Frame(container_frame, background="white")
-        input_frame_details_window.grid(row=0, column=1, pady=20, sticky="nsew")
+        input_frame_details_window.grid(row=0, column=0, pady=20,padx=0, sticky="nsew")
 
         input_frame_details_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
-        input_frame_details_window.grid_columnconfigure(1, weight=1)
 
-        #Nutzername
-        name = tk.Label(input_frame_details_window, text="Nutzername",
+        #Raum
+        room_num = tk.Label(input_frame_details_window, text="Raum",
                                                 font=("Arial", size_details_window), background="white")
-        name.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
+        room_num.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.name = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
+        self.room_num_entry = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
                              background=srhGrey, relief=tk.SOLID)
-        self.name.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
+        self.room_num_entry.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        #Passwort
-        password_label_details_window = tk.Label(input_frame_details_window, text="Passwort",
+
+        #Ort
+        place_label_details_window = tk.Label(input_frame_details_window, text="Ort",
                                           font=("Arial", size_details_window), background="white")
-        password_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
+        place_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.reset_password = tk.Button(input_frame_details_window, font=("Arial", 24),text="Passwort zurücksetzen" ,command=reset_pass,
-                                                  background=srhGrey, relief=tk.SOLID)
-        self.reset_password.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
-
-        #Email
-        email_label_details_window = tk.Label(input_frame_details_window, text="E-Mail",
-                                          font=("Arial", size_details_window), background="white")
-        email_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
-
-        self.email = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
+        self.place_entry = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
                               background=srhGrey, relief=tk.SOLID)
-        self.email.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
-
-        #Rolle
-        role_label_details_window = tk.Label(input_frame_details_window, text="Rolle",
-                                          font=("Arial", size_details_window), background="white")
-        role_label_details_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
-
-        role_values = []
-        for room in db.read_all_rollen():
-            role_values.append(room['Rolle'])
-        self.role_combobox = ttk.Combobox(input_frame_details_window, values=role_values,
-                                          font=("Arial", size_details_window))
-        self.role_combobox.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+        self.place_entry.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
 
         # Funktion zum Eintrag hinzufügen
@@ -232,10 +164,8 @@ class userDetailsWindow(tk.Frame):
 
     def update_data(self, data):
         # Daten in die Entry-Felder einfügen
-        self.name.delete(0, tk.END)
-        self.name.insert(0, data[1])
+        self.room_num_entry.delete(0, tk.END)
+        self.room_num_entry.insert(0, data[0])
 
-        self.email.delete(0, tk.END)
-        self.email.insert(0, data[3])
-
-        self.role_combobox.set(data[4])  # Platzhalter
+        self.place_entry.delete(0, tk.END)
+        self.place_entry.insert(0, data[1])
