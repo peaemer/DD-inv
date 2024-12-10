@@ -157,11 +157,20 @@ class mainPage(tk.Frame):
         grey_frame_side = tk.Frame(self, background=srhGrey)
         grey_frame_side.grid(row=1, column=0, sticky="nsw")
 
-        # Label auf dem Grayframe der linken Seite
-        overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        overview_label.grid(padx=10, pady=10, row=2, column=0, sticky=tk.W +tk.N + tk.S)
+        tree_style_side_tree = ttk.Style()
+        tree_style_side_tree.theme_use("default")
+        tree_style_side_tree.configure("Treeview_side",
+                                       background=srhGrey,
+                                       font=("Arial", 20),
+                                       rowheight=40,  # Zeilenhöhe für größere Abstände
+                                       selectbackground="blue",  # Markierungshintergrund
+                                       selectforeground="white")  # Markierungstextfarbe
+        tree_style_side_tree.layout("Treeview_side", [('Treeview.treearea', {'sticky': 'nswe'})])
 
-        side_tree = ttk.Treeview(grey_frame_side, show="tree")
+        # Treeview erstellen
+        side_tree = ttk.Treeview(grey_frame_side, show="tree", style="Treeview_side")
+        side_tree.grid(row=2, column=0, sticky=tk.W + tk.N + tk.S)
+
         side_tree.insert("", tk.END, text="Alle Räume")
         for room in sqlapi.fetch_all_rooms():
             cats = []
