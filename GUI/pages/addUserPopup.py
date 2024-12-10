@@ -93,7 +93,7 @@ def add_user_popup(parent):
 
 
     error_label = tk.Label(input_frame_add_user_popup, text="", background="white",fg="darkred",font=("Arial", 14))
-    error_label.grid(row=3, column=0,columnspan=2, padx=0, pady=20, sticky=tk.E)
+    error_label.grid(row=3, column=0,columnspan=2, padx=0, pady=20)
 
     # Buttons
     def submit_entry():

@@ -157,11 +157,20 @@ class mainPage(tk.Frame):
         grey_frame_side = tk.Frame(self, background=srhGrey)
         grey_frame_side.grid(row=1, column=0, sticky="nsw")
 
-        # Label auf dem Grayframe der linken Seite
-        overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        overview_label.grid(padx=10, pady=10, row=2, column=0, sticky=tk.W +tk.N + tk.S)
+        tree_style_side_tree = ttk.Style()
+        tree_style_side_tree.theme_use("default")
+        tree_style_side_tree.configure("Treeview_side",
+                                       background=srhGrey,
+                                       font=("Arial", 20),
+                                       rowheight=40,  # Zeilenhöhe für größere Abstände
+                                       selectbackground="blue",  # Markierungshintergrund
+                                       selectforeground="white")  # Markierungstextfarbe
+        tree_style_side_tree.layout("Treeview_side", [('Treeview.treearea', {'sticky': 'nswe'})])
 
-        side_tree = ttk.Treeview(grey_frame_side, show="tree")
+        # Treeview erstellen
+        side_tree = ttk.Treeview(grey_frame_side, show="tree", style="Treeview_side")
+        side_tree.grid(row=2, column=0, sticky=tk.W + tk.N + tk.S)
+
         side_tree.insert("", tk.END, text="Alle Räume")
         for room in sqlapi.fetch_all_rooms():
             cats = []
@@ -325,16 +334,25 @@ class mainPage(tk.Frame):
             selected_item = side_tree.selection()
             if selected_item:
                 selected_text = side_tree.item(selected_item, 'text')
+                print(selected_text)
                 if selected_text == "Alle Räume":
                     # Alle Daten in der Haupttabelle anzeigen
                     self.update_treeview_with_data()
-                else:
+                elif selected_text in [room['Raum'] for room in sqlapi.fetch_all_rooms()]:
                     # Daten nach Raum filtern
                     filtered_data = []
                     for hw in sqlapi.fetch_hardware():
                         if hw.get("Raum") and hw.get("Raum").startswith(selected_text):
                             filtered_data.append(hw)
                     self.update_treeview_with_data(data=filtered_data)
+                else:
+                    parent_name = side_tree.item(side_tree.parent(side_tree.selection()[0]),'text') if side_tree.selection() else None
+                    filtered_data = []
+                    for hw in sqlapi.fetch_hardware():
+                        if hw.get("Raum") and hw.get("Raum").startswith(parent_name) and hw.get("Geraetetype") and hw.get("Geraetetype").startswith(selected_text):
+                            filtered_data.append(hw)
+                    self.update_treeview_with_data(data=filtered_data)
+
         side_tree.bind("<<TreeviewSelect>>", on_side_tree_select)
 
         # Binde die Ereignisfunktion an die Treeview
