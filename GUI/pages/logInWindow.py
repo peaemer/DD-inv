@@ -65,6 +65,7 @@ class logInWindow(tk.Frame):
         self.grid_rowconfigure(1, weight=1)
         self.grid_rowconfigure(2, weight=1)
         self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0)
 
         # Header
         header_frame = tk.Frame(self, height=10, background=srhOrange)
@@ -90,11 +91,14 @@ class logInWindow(tk.Frame):
 
         # Konfiguriere die Spalten- und Zeilenverhältnisse so, dass sie sich dynamisch verteilen
         self.grid_columnconfigure(0, weight=1)  # Spalte 0 kann sich ausdehnen
-        self.grid_rowconfigure(1, weight=1)  # Zeile 1 (wo das greyCanvas liegt) kann sich ausdehnen
+        self.grid_rowconfigure(1, weight=0)  # Zeile 1 (wo das greyCanvas liegt) kann sich ausdehnen
+
 
         # Login-Formular mit abgerundeten Eingabefeldern
         form_frame = tk.Frame(self, bg="white")
-        form_frame.place(relx=0.5, rely=0.5, anchor="center")
+        form_frame.grid(row=2, column=0, sticky="nesw", pady=60)
+
+        form_frame.grid_columnconfigure(0, weight=1)
 
         def create_rounded_entry(canvas, parent, text_var, width=350, height=50):
             """Hilfsfunktion, um ein Eingabefeld mit abgerundeten Ecken zu erstellen."""
