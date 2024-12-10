@@ -1,23 +1,23 @@
 import sqlite3
 import os
 import sys
-from Security.UserSecurity import hashPassword
+from Security.UserSecurity import *
 
 # Pfad zur Datenbankdatei
 path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
-use_fallback_path:bool = True
-fallback_path:str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
+__use__fallback_path:bool = True
+__fallback_path:str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
 
 def init_connection():
     """
     Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
     - Überprüft, ob die Datenbankdatei existiert
-    - falls die Daternbank nicht existiert, wird entweder die Fallback Datenbankt oder eine Exception geworfen.
+    - falls die Datenbank nicht existiert, wird entweder die Fallback Datenbankt oder eine Exception geworfen.
     - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
     """
     if not os.path.exists(path):
-        if use_fallback_path:
-            con = sqlite3.connect(fallback_path)
+        if __use__fallback_path:
+            con = sqlite3.connect(__fallback_path)
             con.row_factory = sqlite3.Row
             return con
         else:
@@ -46,7 +46,7 @@ def create_benutzer(nutzername, passwort, email):
         with init_connection() as con:
             cur = con.cursor()
             # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
-            # Values werden als "?" - Platzhalter um fehler beim Übergeben der Values vorzubeugen
+            # Values werden als "?" - Platzhalter um fehler beim Übergeben der Values vorzubeugen,
             # Und um eine Variable übergeben zu können
             cur.execute(
                 "INSERT INTO Benutzer (Nutzername, Passwort, Email, Rolle) VALUES (?, ?, ?, 'Guest')",
@@ -213,7 +213,7 @@ def fetch_hardware_by_id(ID):
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Hardware: {e.args[0]}")
 
-def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_beschaedigung=None, neue_Standort=None):
+def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_Modell=None, neue_Geraetetyp=None,  neue_beschaedigung=None, neue_Standort=None):
     """
     Aktualisiert bestimmte Felder einer Hardware basierend auf dem `Service_Tag`.
     :param ID: zum identifizieren des Datensatzes
@@ -236,6 +236,12 @@ def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_beschaedigung=None
             if neue_Standort:
                 update_fields.append("Raum = ?")
                 parameters.append(neue_Standort)
+            if neue_Modell:
+                update_fields.append("Modell = ?")
+                parameters.append(neue_Modell)
+            if neue_Geraetetyp:
+                update_fields.append("Geraetetype = ?")
+                parameters.append(neue_Geraetetyp)
 
             if not update_fields:
                 return "Keine Aktualisierungsdaten vorhanden."

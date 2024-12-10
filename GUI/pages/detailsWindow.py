@@ -186,7 +186,15 @@ class detailsWindow(tk.Frame):
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
             #update
-            print("nix")
+            type = self.type_entry_details_window.get() if self.type_entry_details_window.get() != "" else "None"
+            room = self.room_entry_details_window.get() if self.room_entry_details_window.get() != "" else "None"
+            name = self.name_entry_details_window.get() if self.name_entry_details_window.get() != "" else "None"
+            if not self.damaged_entry_details_window.get() or self.damaged_entry_details_window.get() == "":
+                damage = "None"
+            else:
+                damage = self.damaged_entry_details_window.get()
+            print(damage)
+            print(db.update_hardware_by_ID(cache.selected_ID, neue_beschaedigung=damage, neue_Standort=room, neue_Modell=name, neue_Geraetetyp=type))
 
         def delete_entry():
             db.delete_hardware_by_id(cache.selected_ID)
@@ -230,6 +238,7 @@ class detailsWindow(tk.Frame):
         self.grid_rowconfigure(3, weight=1)
         self.grid_columnconfigure(0, weight=2)
         self.grid_columnconfigure(0, weight=1)
+
 
     def update_data(self, data):
         # Daten in die Entry-Felder einfügen

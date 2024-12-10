@@ -46,13 +46,11 @@ class logInWindow(tk.Frame):
                 cache.user_group = benutzer_info.get('Rolle', '')  # Rolle des Benutzers speichern
                 cache.user_name = user  # Benutzernamen im Cache speichern
 
-                print(f"Erfolgreich eingeloggt: {user}, Rolle: {cache.user_group}")
                 password_entry.delete(0, 'end')
                 username_entry.delete(0, 'end')
                 # Zeige die MainPage an
                 from .mainPage import mainPage
                 controller.show_frame(mainPage)
-                print(f"Cache-Status nach Login: user_group={cache.user_group}")
 
             else:
                 # Zeige Fehlermeldung bei falschem Login

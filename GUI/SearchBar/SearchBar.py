@@ -1,84 +1,131 @@
+import math
+from importlib.resources import read_text
+
 from Datenbank import sqlite3api as db
 import json
 from typing import List,Dict
-obj = json.loads("""[{"text":"test","weight":2},{"text":"bla","weight":5}]""")
+import tkinter as tk
+
+obj = json.loads("""[{"text":"test","weight":2,"decline_history":"0","peek_wheight":"10"},{"text":"bla","weight":5}]""")
 
 initial_history:str = """[{"text":"","weight":0}]"""
-# initial_history:str=''
 history_object:any = ''
 loaded_history:List[Dict[str,str]] = json.loads(initial_history)
 json_object = json.loads(initial_history)
 
-def pending_search(current_term:str)->None:
-    print('[SearchBar]: running pending search')
-    user_data:str = db.read_benutzer_suchverlauf('Alex')
-    print('[SearchBar]: read history as string, data='+str(user_data))
-    history_object = json.loads(user_data)
-    print('[SearchBar]: converted string to object, object='+str(history_object))
+search_is_running = False
 
+fallback_username = 'Alex'
 
-
-def completed_search(final_term:str)->None:
-
-#    sorted_list = sorted(None, key=lambda x: x['age'])
-    pass
-
-
-
-pending_search('as')
-
-
-
-import tkinter as tk
-
-# Create the main application window
 root = tk.Tk()
+root.geometry("1920x1080")
 root.title("Searchbar with Custom Dropdown")
-
-# Create the search bar (Entry widget)
-searchbar = tk.Entry(root, width=30)
-searchbar.pack(pady=10)
-
-# Create a list of items for the dropdown
 dropdown_items = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
+dropdown = tk.Listbox(root, width=int(100),selectmode=tk.SINGLE,font=("Arial",14))
+dropdown_var = tk.StringVar()
+dropdown.place_forget()
+search_button = tk.Button(root, text="Search")
+search_button.place(x=100,y=100)
+search_button.configure(width=6,height=1)
+search_var = tk.StringVar()
+searchbar = tk.Entry(root, textvariable= search_var,width=100,font=("Arial",14))
+searchbar.place(x=160,y=100)
+select_item_button = tk.Button(root, text="Select Item")
 
-# Create a Listbox to act as a dropdown menu
-dropdown = tk.Listbox(root, height=5, selectmode=tk.SINGLE, width=28)
-dropdown.place_forget()  # Initially hide the dropdown
+def fetch_limited_hardware(term:str, username:str=fallback_username)->list[str,dict[str,str]]:
+    data:list[str,dict[str,str]]
+    for item_key, database_entry in db.fetch_hardware():
+        print(f"{item_key}: {database_entry}")
+        for value in database_entry:
+            if term.lower() in str(database_entry[value]).lower():
+                if database_entry not in data:
+                    data.append(database_entry)
+    return data
 
-# Function to handle search input and dropdown selection
-def search_action():
-    search_term = searchbar.get()  # Get the text entered in the search bar
-    print(f"Searching for: {search_term}")
+def pending_search(username:str=fallback_username)->None:
+    search_term = searchbar.get()
+    print(f"""[SearchBar]:running pending search with searchbar text: "{search_term}" """)
+    user_data:str = db.read_benutzer_suchverlauf('Alex')
+    print(f"""[SearchBar]: read history as string, data="{user_data}" """)
+    history_object_ = json.loads(user_data)
+    print('[SearchBar]: converted string to object, object='+str(history_object_))
 
-# Function to show the dropdown below the search bar when it gets focused
-def show_dropdown(event):
-    # Position the dropdown right below the search bar
-    dropdown.place(x=searchbar.winfo_x(), y=searchbar.winfo_y() + searchbar.winfo_height() + 5)
-    dropdown.delete(0, tk.END)  # Clear any previous entries
-    for item in dropdown_items:  # Insert the dropdown items dynamically
+def update_dropdown(new_items:List[str])->None:
+    print(f"show dropdown")
+    dropdown.place(x=100,y=135)
+    dropdown.delete(0, tk.END)
+    for item in new_items:
         dropdown.insert(tk.END, item)
-
-# Function to hide the dropdown when focus is lost
+        
 def hide_dropdown(event):
     dropdown.place_forget()
 
 # Function to handle selection from the dropdown
-def on_dropdown_select(event):
-    selected_item = dropdown.get(dropdown.curselection())  # Get the selected item
-    print(f"Selected item: {selected_item}")
-    dropdown.place_forget()  # Optionally hide dropdown after selection
+def on_dropdown_select(event:tk.Event)->None:
+    selected_values = [dropdown.get(i) for i in dropdown.curselection()]
+    selected_item:str = selected_values[0]
+    print(f"Selected item: {selected_item} from dropdown")
+    searchbar.delete(0, tk.END)
+    searchbar.insert(0, selected_item)
+    searchbar.focus()
+
+def start_search(event:tk.Event)->None:
+    search_term = search_var.get()
+    print(f"""[SearchBar]:starting search""")
+    global search_is_running, loaded_history
+    loaded_history = json.loads(db.read_benutzer_suchverlauf('Alex'))
+    search_is_running = True
+
+def update_search(*args):
+    search_term = search_var.get()
+    print(f"""[SearchBar]:running pending search with searchbar text: "{search_term}" """)
+    new_options:List[str] = []
+    for history_search_term in sorted(loaded_history,key=lambda x:x['weight']):
+        if search_term in history_search_term['text']:
+            new_options.append(history_search_term['text'])
+    update_dropdown(new_options)
+
+def finish_search(event:tk.Event)->None:
+    search_term = search_var.get()
+    print(f"""[SearchBar]:finishing search with searchbar text: "{search_term}" """)
+    term_existed:bool = False
+    weight:int = 100
+    for history_search_term in sorted(loaded_history, key=lambda x: x['weight']):
+        print(f"""[SearchBar]:processing:"{search_term}" """)
+        weight = int(history_search_term['weight'])
+        if history_search_term['text'] == search_term:
+            if weight*2 <= 100:
+                weight *= 2
+            else:
+                weight = 100
+            history_search_term['weight'] = str(math.floor(weight))
+            term_existed = True
+        else:
+            weight *= math.floor(0.9)
+            if weight-1 >= 0:
+                weight -= 1
+            else:
+                weight = 0
+        if weight == 0:
+            loaded_history.remove(history_search_term)
+    if not term_existed:
+        if len(loaded_history) == 30:
+            sorted(loaded_history, key=lambda x: x['weight']).pop()
+        temp:dict[str,str] = {"weight":"100","text":search_term}
+        loaded_history.append(temp)
+        print(f"""[SearchBar]:adding: "{temp}" """)
+    print(loaded_history)
+    db.update_benutzer('Alex', neue_suchverlauf=json.dumps(loaded_history))
+
+
+
 
 # Bind the focus events to show or hide the dropdown
-searchbar.bind("<FocusIn>", show_dropdown)  # Show dropdown when the search bar gets focused
-searchbar.bind("<FocusOut>", hide_dropdown)  # Hide dropdown when the search bar loses focus
+searchbar.bind("<FocusIn>", start_search)
+searchbar.bind("<FocusOut>", hide_dropdown)
+search_button.bind("<Button-1>", finish_search)
+dropdown.bind("<<ListboxSelect>>", on_dropdown_select)
+search_var.trace_add("write", update_search)
+select_item_button.bind("<Button-2>", finish_search)
 
-# Bind the selection event in the listbox to handle dropdown item selection
-dropdown.bind("<ButtonRelease-1>", on_dropdown_select)  # Handle click on a listbox item
-
-# Create a button to trigger the search action
-search_button = tk.Button(root, text="Search", command=search_action)
-search_button.pack(pady=10)
-
-# Run the Tkinter event loop
 root.mainloop()

@@ -1,54 +1,29 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from tkinter import *
 import Datenbank.sqlite3api as db
+import Security.UserSecurity as sec
 import cache
+import random, string
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
 
 
-def show_user_details(controller, data):
-    """
-    Zeigt die Details des Benutzers im `userDetailsWindow`.
-    :param controller: Der Frame-Controller.
-    :param data: Die Daten des Benutzers als Liste oder Dictionary.
-    """
-    print(f"Angezeigte Daten: {data}")
-    cache.selected_ID = data[0]  # ID zwischenspeichern
+def show_user_details(selected_user, tree, controller):
+    # Daten aus der ausgewählten Zeile
+    data = tree.item(selected_user, "values")
+    print(f"Daten des ausgewählten Items: {data}")
+    cache.selected_ID = data[0]
 
     # Frame aktualisieren und anzeigen
     details = controller.frames[userDetailsWindow]
-    details.update_data(data)  # Methode in userDetailsWindow aufrufen
-    controller.show_frame(userDetailsWindow)
+    details.update_data(data)  # Methode in detailsWindow aufrufen
+    controller.show_frame(userDetailsWindow)  # Zeige die Details-Seite
 
 
 class userDetailsWindow(tk.Frame):
-    """
-    The `userDetailsWindow` class is a frame within a Tkinter application that
-    displays user details and provides interactive elements for navigation and
-    interaction with the application's dataset. It contains a header with
-    navigation buttons, and panels for displaying and entering user-related
-    information.
-
-    This frame extends from the Tkinter `Frame` widget and is designed to be
-    integrated into a larger application, potentially a user management system.
-    It includes buttons that allow navigation to other frames and popups within
-    the application. The frame is laid out with a header for navigation, a
-    treeview for listing user details, and input fields for editing attributes
-    such as Service Tag, Type, Room, Name, and Damage status.
-
-    :ivar controller: Reference to the main controller managing the frame navigation.
-    :ivar go_back_btn_details_window: PhotoImage for the "Go Back" button used in the header.
-    :ivar opt_btn_details_window: PhotoImage for the "Options" button used in the header.
-    :ivar service_tag_entry_details_window: Entry widget for inputting service tag information.
-    :ivar type_entry_details_window: Entry widget for inputting type information.
-    :ivar room_entry_details_window: Entry widget for inputting room information.
-    :ivar name_entry_details_window: Entry widget for inputting name information.
-    :ivar damaged_entry_details_window: Entry widget for inputting damage information.
-    :ivar edit_btn: PhotoImage for the "Edit" button to update entries.
-    """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -59,8 +34,18 @@ class userDetailsWindow(tk.Frame):
             controller.show_frame(mainPage)
 
         def show_settings_window_details_window():
+            print("Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
+
+
+        def reset_pass():
+            pw = str(''.join(random.choices(string.ascii_letters, k=7)))
+            db.update_benutzer(self.name.get(), neues_passwort=pw)
+            messagebox.showinfo(title="Reseted User Password", message="New password: " + pw)
+            from .adminUserWindow import adminUserWindow
+            adminUserWindow.update_treeview_with_data(parent)
+            controller.show_frame(adminUserWindow)
 
         self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
         self.opt_btn_details_window = tk.PhotoImage(file="assets/option.png")
@@ -78,7 +63,7 @@ class userDetailsWindow(tk.Frame):
         # Zentriere das Label in Spalte 1
         header_label_details_window = tk.Label(
             header_frame_details_window,
-            text="Details",
+            text="Nutzer Details",
             background="#DF4807",
             foreground="white",
             font=("Arial", 60)
@@ -121,7 +106,9 @@ class userDetailsWindow(tk.Frame):
 
         size_details_window = 30
 
-        # Ändere die Position des TreeFrames auf row=3
+
+
+        # Ändere die Position des TreeFrames
         tree_frame_details_window = tk.Frame(container_frame, background="red", width=200, height=400)
         tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
 
@@ -147,10 +134,10 @@ class userDetailsWindow(tk.Frame):
 
         ### listbox for directories
         tree_details_window.column("# 1", anchor=CENTER, width=180)
-        tree_details_window.heading("# 1", text="Nutzername", )
-        tree_details_window.column("# 2", anchor=CENTER, width=180)
+        tree_details_window.heading("# 1", text="Name", )
+        tree_details_window.column("# 2", anchor=CENTER, width=200)
         tree_details_window.heading("# 2", text="ServiceTag/ID")
-        tree_details_window.column("# 3", anchor=CENTER, width=180)
+        tree_details_window.column("# 3", anchor=CENTER, width=220)
         tree_details_window.heading("# 3", text="Ausgeliehen am")
         tree_details_window.grid(row=1, column=0)
         tree_details_window.tkraise()
@@ -162,66 +149,58 @@ class userDetailsWindow(tk.Frame):
         input_frame_details_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
         input_frame_details_window.grid_columnconfigure(1, weight=1)
 
-        # Service Tag
-        service_tag_label_details_window = tk.Label(input_frame_details_window, text="Service Tag",
+        #Nutzername
+        name = tk.Label(input_frame_details_window, text="Nutzername",
                                                 font=("Arial", size_details_window), background="white")
-        service_tag_label_details_window.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
+        name.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.service_tag_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                                         background=srhGrey, relief=tk.SOLID)
-        self.service_tag_entry_details_window.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
+        self.name = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.name.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        # Typ
-        type_label_details_window = tk.Label(input_frame_details_window, text="Typ",
+        #Passwort
+        password_label_details_window = tk.Label(input_frame_details_window, text="Passwort",
                                           font=("Arial", size_details_window), background="white")
-        type_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
+        password_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.type_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
+        self.reset_password = tk.Button(input_frame_details_window, font=("Arial", 24),text="Passwort zurücksetzen" ,command=reset_pass,
                                                   background=srhGrey, relief=tk.SOLID)
-        self.type_entry_details_window.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
+        self.reset_password.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        # Raum
-        room_label_details_window = tk.Label(input_frame_details_window, text="Raum",
+        #Email
+        email_label_details_window = tk.Label(input_frame_details_window, text="E-Mail",
                                           font=("Arial", size_details_window), background="white")
-        room_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
+        email_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.room_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                                  background=srhGrey, relief=tk.SOLID)
-        self.room_entry_details_window.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
+        self.email = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
+                              background=srhGrey, relief=tk.SOLID)
+        self.email.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        # Name
-        name_label_details_window = tk.Label(input_frame_details_window, text="Name",
+        #Rolle
+        role_label_details_window = tk.Label(input_frame_details_window, text="Rolle",
                                           font=("Arial", size_details_window), background="white")
-        name_label_details_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
+        role_label_details_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.name_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                                  background=srhGrey, relief=tk.SOLID)
-        self.name_entry_details_window.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
+        role_values = []
+        for room in db.read_all_rollen():
+            role_values.append(room['Rolle'])
+        self.role_combobox = ttk.Combobox(input_frame_details_window, values=role_values,
+                                          font=("Arial", size_details_window))
+        self.role_combobox.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
-        # Beschädigung
-        damaged_label_details_window = tk.Label(input_frame_details_window, text="Beschädigung",
-                                             font=("Arial", size_details_window), background="white")
-        damaged_label_details_window.grid(column=0, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
-
-        self.damaged_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                                     background=srhGrey, relief=tk.SOLID)
-        self.damaged_entry_details_window.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
             #update
-            print("nix")
+            db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
+            from .adminUserWindow import adminUserWindow
+            controller.show_frame(adminUserWindow)
 
         def delete_entry():
-            db.delete_hardware_by_id(cache.selected_ID)
-            from .mainPage import mainPage
-            mainPage.update_treeview_with_data()
-            controller.show_frame(mainPage)
-
-        def lend(data):
-            print("Übergebene Daten:", data)
-            from .lendPopup import lend_popup
-            lend_popup(self, data)
+            db.delete_benutzer(self.name.get())
+            from .adminUserWindow import adminUserWindow
+            # adminUserWindow.update_treeview_with_data(parent)
+            controller.show_frame(adminUserWindow)
 
         self.edit_btn = tk.PhotoImage(file="assets/Aktualisieren.png")
         self.lend_btn = tk.PhotoImage(file="assets/Ausleihen.png")
@@ -230,12 +209,6 @@ class userDetailsWindow(tk.Frame):
         # Buttons in ein separates Frame
         button_frame_add_item_popup = tk.Frame(self, background="white")
         button_frame_add_item_popup.grid(row=2, column=0, pady=20)
-
-        lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
-                               bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                               command=lambda: lend({"name": self.name_entry_details_window.get()}))
-        lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
-
 
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
@@ -257,17 +230,10 @@ class userDetailsWindow(tk.Frame):
 
     def update_data(self, data):
         # Daten in die Entry-Felder einfügen
-        self.service_tag_entry_details_window.delete(0, tk.END)
-        self.service_tag_entry_details_window.insert(0, data[1])
+        self.name.delete(0, tk.END)
+        self.name.insert(0, data[1])
 
-        self.type_entry_details_window.delete(0, tk.END)
-        self.type_entry_details_window.insert(0, data[2])
+        self.email.delete(0, tk.END)
+        self.email.insert(0, data[3])
 
-        self.room_entry_details_window.delete(0, tk.END)
-        self.room_entry_details_window.insert(0, data[3])
-
-        self.name_entry_details_window.delete(0, tk.END)
-        self.name_entry_details_window.insert(0, data[4])
-
-        self.damaged_entry_details_window.delete(0, tk.END)
-        self.damaged_entry_details_window.insert(0, data[5])
+        self.role_combobox.set(data[4])  # Platzhalter

@@ -54,13 +54,12 @@ class mainPage(tk.Frame):
         self.configure(background="white")
 
         def show_settings_window():
-            print("Show Settings")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
         def show_admin_window():
-            from .adminWindow import adminWindow
-            controller.show_frame(adminWindow)
+            from .adminUserWindow import adminUserWindow
+            controller.show_frame(adminUserWindow)
 
         # Speichere die Funktion als Attribut, um später darauf zuzugreifen
         self.show_admin_window = show_admin_window
@@ -68,8 +67,6 @@ class mainPage(tk.Frame):
         def log_out():
             from .logInWindow import logInWindow
             cache.user_group = None  # Benutzergruppe zurücksetzen
-            print("--------------------------------")
-            print(f"Cache-Werte nach log_out: Gruppe={cache.user_group}, Benutzer={cache.user_name}")
             controller.show_frame(logInWindow)
 
         def search(event=None):                           # funktionalität hinzufügen
@@ -92,13 +89,6 @@ class mainPage(tk.Frame):
 
         def on_key_press(event):
             typed_key = event.char  # The character of the typed key
-            print(f"Key pressed: {typed_key}")
-
-            # Check if a specific key was pressed
-            if typed_key == "a":
-                print("You typed the letter 'a'")
-            elif typed_key == "b":
-                print("You typed the letter 'b'")
 
         def on_focus_out(event):
             if search_entry.get() == '':
@@ -171,7 +161,12 @@ class mainPage(tk.Frame):
 
         # Label auf dem Grayframe der linken Seite
         overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        overview_label.grid(padx=40, pady=10, row=0, column=0, sticky=tk.W +tk.N + tk.S)
+        overview_label.grid(padx=10, pady=10, row=2, column=0, sticky=tk.W +tk.N + tk.S)
+
+        side_tree = ttk.Treeview(grey_frame_side, show="headings")
+        side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
+        for room in sqlapi.fetch_all_rooms():
+            side_tree.insert("", tk.END, text=room['Raum'])
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white", padx=40)
@@ -219,15 +214,19 @@ class mainPage(tk.Frame):
         tree_style.configure("Treeview", rowheight=40, font=("Arial", 14))
 
         # Ändere die Position des TreeFrames auf row=2
+        # Ändere die Position des TreeFrames auf row=2
         tree_frame = tk.Frame(middle_frame, background="white")
-        tree_frame.grid(row=1, column=0, padx=100)
 
+        tree_frame.grid(row=1, column=0, padx=100, sticky=tk.N + tk.S + tk.E + tk.W)
+        tree_frame.grid_rowconfigure(1, weight=1)
+        tree_frame.grid_columnconfigure(0, weight=1)
         # Btn Erstellen def mit Image und grid
         self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
         add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
         add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
+        # Das Binding des Configure-Events wurde verschoben
 
         scroll = tk.Scrollbar(
             tree_frame,
@@ -271,7 +270,10 @@ class mainPage(tk.Frame):
             for entry in sqlapi.fetch_hardware():
                 # Bestimme das Tag für die aktuelle Zeile
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
-
+                if entry['Beschaedigung'] == "None":
+                    damage = ""
+                else:
+                    damage = entry['Beschaedigung']
                 # Daten mit dem Tag in das Treeview einfügen
                 tree.insert(
                     "",
@@ -283,7 +285,7 @@ class mainPage(tk.Frame):
                         entry['Geraetetype'],
                         entry['Raum'],
                         entry['Modell'],
-                        entry['Beschaedigung'],
+                        damage,
                         entry['Ausgeliehen_von']
                     ),
                     tags=(tag,)
@@ -295,7 +297,6 @@ class mainPage(tk.Frame):
         def on_item_selected(event):
             try:
                 selected_item = tree.focus()
-                print(f"Ausgewähltes Item: {selected_item}")  # Debug
                 if selected_item:
                     from .detailsWindow import detailsWindow, show_details
                     show_details(selected_item, tree, controller)
@@ -308,6 +309,8 @@ class mainPage(tk.Frame):
     # Aktualisieren der Data in der Tabelle
     def update_treeview_with_data(self = None, data=None):
         # Clear the current treeview contents
+        global i
+        i = 0
         tree.delete(*tree.get_children())
 
         # If no data is provided, fetch the data from sqlapi
@@ -315,28 +318,28 @@ class mainPage(tk.Frame):
             data = sqlapi.fetch_hardware()
 
         for entry in data:
-            tag = "evenrow" if entry['ID'] % 2 == 0 else "oddrow"
+            i+=1
+            if entry['Beschaedigung'] == "None":
+                damage = ""
+            else:
+                damage = entry['Beschaedigung']
+            tag = "evenrow" if i % 2 == 0 else "oddrow"
             tree.insert(
                 "",
                 "end",
                 values=(entry['ID'], entry['Service_Tag'], entry['Geraetetype'], entry['Raum'],
-                        entry['Modell'], entry['Beschaedigung'], entry['Ausgeliehen_von']),
+                        entry['Modell'], damage, entry['Ausgeliehen_von']),
                 tags=(tag,)
             )
 
     def on_load(self):
         """Diese Methode wird aufgerufen, nachdem die Seite vollständig geladen ist."""
-        print(f"{self.__class__.__name__} geladen")
 
         # Überprüfe die Benutzergruppe
-        print(f"Überprüfe Benutzergruppe: {cache.user_group}")  # Debug-Print für die Benutzergruppe
         if cache.user_group == "Admin":
-            print("Als Admin eingeloggt.")
 
             # Überprüfe, ob der Admin-Button bereits existiert
             if not hasattr(self, "adminButton"):
-                print(
-                    "Admin-Button existiert noch nicht. Erstelle den Admin-Button.")  # Debug-Print für das Erstellen des Buttons
                 # Erstelle den Admin-Button, wenn er noch nicht existiert
                 self.admin_button = tk.Button(
                     self.header_frame,
@@ -348,18 +351,11 @@ class mainPage(tk.Frame):
                     activebackground="#DF4807"
                 )
                 self.admin_button.grid(row=0, column=1, sticky=tk.E, padx=20)
-                print("Admin-Button wurde erfolgreich erstellt und platziert.")  # Bestätigung der Erstellung
             else:
                 self.admin_button.grid(row=0, column=1, sticky=tk.E, padx=20)
-                print(
-                    "Admin-Button existiert bereits. Keine Erstellung notwendig.")  # Wenn der Button bereits existiert
         else:
-            print("Nicht als Admin eingeloggt.")  # Benutzer ist kein Admin
             # Entferne den Admin-Button, falls er existiert
             if hasattr(self, "adminButton"):
-                print("Admin-Button existiert, entferne ihn.")  # Debug-Print für das Entfernen des Buttons
                 self.admin_button.grid_remove()
-            else:
-                print("Kein Admin-Button zum Entfernen gefunden.")  # Wenn kein Button vorhanden ist
 
         self.update_treeview_with_data()
