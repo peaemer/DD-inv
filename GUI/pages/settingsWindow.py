@@ -1,8 +1,14 @@
+import base64
 import tkinter as tk
 import webbrowser
+from io import BytesIO
 from tkinter import ttk
-from tkinter import *
 from tkinter import filedialog
+import requests
+from PIL import Image, ImageTk
+import Datenbank.sqlite3api as db
+import cache
+
 
 
 # Schriftarten / Farbschema
@@ -39,12 +45,12 @@ def pop_up_settings(parent):
     popup.configure(background="white")  # Hintergrundfarbe
     popup.transient(parent)  # Setzt Hauptfenster in Hintergrund
     popup.grab_set()  # Fokus auf Popup
-    popup.attributes('-topmost', True)  # Fenster immer im Vordergrund
+    popup.attributes('-topmost', 0)  # Fenster immer im Vordergrund der Anwendung selbst
 
     # Bildschirmbreite und hoehe ermitteln (fenster mittig auf Bildschirm setzten)
     screen_width = parent.winfo_screenwidth()
     screen_height = parent.winfo_screenheight()
-    window_width, window_height = 960, 540
+    window_width, window_height = 660, 550
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
@@ -52,20 +58,21 @@ def pop_up_settings(parent):
     popup.iconbitmap("assets/srhIcon.ico")  # Fenster-Icon
 
     # Grid-Layout für Popup konfigurieren (danymische groeße)
-    popup.grid_rowconfigure(0, weight=1)  # Bereich fuer Kategorien
-    popup.grid_rowconfigure(1, weight=10)  # Hauptbereich
+    popup.grid_rowconfigure(0, weight=0)  # Bereich fuer Kategorien
+    popup.grid_rowconfigure(1, weight=1)  # Hauptbereich
     popup.grid_columnconfigure(0, weight=0)  # Seitenleiste
     popup.grid_columnconfigure(1, weight=1)  # Hauptinhalt
 
     # Erstelle Header-Bereich (oben im Fenster)
-    header_frame_settings = tk.Frame(popup, height=0)
+    header_frame_settings = tk.Frame(popup)
     header_frame_settings.grid(row=0,
-                               column=1,
-                               sticky=tk.W + tk.E + tk.N)  # Header erstreckt sich Horizontal,
+                               column=0,
+                               columnspan=2,
+                               sticky="nesw")  # Header erstreckt sich Horizontal,
 
     # Konfiguriere die Spalten für den Header
-    header_frame_settings.grid_columnconfigure(0, weight=1)
-    header_frame_settings.grid_rowconfigure(0, weight=1)
+    header_frame_settings.grid_columnconfigure(1, weight=1)
+    header_frame_settings.grid_rowconfigure(1, weight=1)
 
     # Header-Logo laden und anzeigen
     popup.optionsHead = tk.PhotoImage(file="assets/Tool.png")
@@ -73,10 +80,10 @@ def pop_up_settings(parent):
                             image=popup.optionsHead,
                             foreground="white")
     header_label.grid(row=1,
-                      column=0,
-                      padx=10,
+                      column=2,
+                      padx=20,
                       pady=10,
-                      sticky=tk.N + tk.W + tk.E)
+                      sticky="nesw")
 
     # Seitenleiste
     side_settings = tk.Frame(popup, width=200, bg=srhOrange)
@@ -97,7 +104,7 @@ def pop_up_settings(parent):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_system = tk.Frame(popup, padx=100, pady=30, bg="white")
     frame_system.grid(row=1, column=1, rowspan=2, sticky="nw")
-    #frame_system.grid_remove()
+    frame_system.grid_remove()
 
     # Überschrift System erstellen
     radiobutton_label = tk.Label(
@@ -110,6 +117,20 @@ def pop_up_settings(parent):
         frame_system, text="Auflösung ändern", font=BTNFONT, bg="white"
     )
     button_bg_label.grid(row=6, column=0, pady=10, sticky="nw")
+
+    def load_image_from_url(url):
+        """Lädt ein Bild von einer URL."""
+        response = requests.get(url)
+        response.raise_for_status()  # Überprüft, ob die Anfrage erfolgreich war
+        img_data = BytesIO(response.content)  # Bilddaten in einen BytesIO-Stream laden
+        return Image.open(img_data)
+
+    def load_image_from_base64(base64_string):
+        """Lädt ein Bild aus einem Base64-String."""
+        img_data = base64.b64decode(base64_string)
+        img = Image.open(BytesIO(img_data))
+        return img
+
 
     def set_default_background():
         parent.configure(bg="white")
@@ -139,7 +160,7 @@ def pop_up_settings(parent):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_style = tk.Frame(popup, padx=100, pady=10, bg="white")
     frame_style.grid(row=1, column=1, rowspan=2, sticky="nw")
-    #frame_style.grid_forget()
+    frame_style.grid_forget()
 
     # Überschrift für Style
     radiobutton_label = tk.Label(
@@ -237,70 +258,81 @@ def pop_up_settings(parent):
 
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
-    frame_profile = tk.Frame(popup, padx=100, pady=30, bg="white")
-    #frame_profile.grid(row=1, column=1, rowspan=2, sticky="nw")
+    frame_profile = tk.Frame(popup, bg="green")
+    frame_profile.grid(row=1, column=1, rowspan=2, sticky="nesw")
     #frame_profile.grid_forget()
 
-    # Überschrift Passe dein Profil an
-    ProfileBtn_label = tk.Label(
-        frame_profile, text="Passe dein Profil an", font=SETTINGSFONT, bg="white"
-    )
-    ProfileBtn_label.grid(row=1, column=0, pady=10, sticky="nw")
+    # Überschrift Dein Profil
+    profile_btn_label = tk.Label(frame_profile,
+                                 text="Dein Profil",
+                                 font=SETTINGSFONT,
+                                 bg="white")
+    profile_btn_label.grid(row=0, column=0, pady=10, sticky="nw")
 
-    #frame_profile.imglogin = tk.PhotoImage(
-    #    file=root_path + "")
-    #frame_profile.imgmainpage = tk.PhotoImage(
-    #    file=root_path + "")
-    #frame_profile.imgProfileTest = tk.PhotoImage(file=root_path + "")
+    # Bild des Benutzers laden
+    if cache.user_avatar.startswith("http"):
+        # Bild von der URL laden und anzeigen
+        try:
+            img = load_image_from_url(cache.user_avatar)
 
-    # Seiteninhalt
-    profilbild = tk.Button(frame_profile, bd=0, bg='white')
-    username = tk.Label(frame_profile, text="Username", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 15))
-    frame_profile.username = tk.Label(frame_profile, text=" ", bd=0, bg='white', fg='black', font=("Poppins", 18))
+            # Bild skalieren (z. B. auf 100x100 Pixel)
+            img = img.resize((128, 128))
 
-    vorname = tk.Label(frame_profile, text="Vorname", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 15))
-    frame_profile.vorname = tk.Label(frame_profile, text=" ", bd=0, bg='white', fg='black', font=("Poppins", 18))
+            parent.img_tk = ImageTk.PhotoImage(img)
+            label = tk.Label(frame_profile, image=parent.img_tk)
+            label.grid()
+        except Exception as e:
+            label = tk.Label(frame_profile, text=f"Fehler beim Laden von URL: {e}")
+            label.grid()
+    else:
+        # Bild aus Base64-String laden und anzeigen
+        try:
+            img = load_image_from_base64(cache.user_avatar)
 
-    nachname = tk.Label(frame_profile, text="Nachname", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 15))
-    frame_profile.nachname = tk.Label(frame_profile, text=" ", bd=0, bg='white', fg='black', font=("Poppins", 18))
+            # Bild skalieren (z. B. auf 100x100 Pixel)
+            img = img.resize((128, 128))
 
-    gruppen = tk.Label(frame_profile, text="Gruppen", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 15))
-    frame_profile.usergrupp = tk.Label(frame_profile, text="xx, xx", bd=0, bg='white', fg='black', font=("Poppins", 18))
+            parent.img_tk = ImageTk.PhotoImage(img)
+            label = tk.Label(frame_profile, image=parent.img_tk)
+            label.grid()
+        except Exception as e:
+            label = tk.Label(frame_profile, text=f"Fehler beim Laden von Base64: {e}")
+            label.grid()
 
-    email = tk.Label(frame_profile, text="Email", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 15))
-    frame_profile.useremail = tk.Label(frame_profile, text="xxx@srhk.de", bd=0, bg='white', fg='black', font=("Poppins", 18))
+    # Schriftzug Eingeloggt als
+    profile_btn_label = tk.Label(frame_profile,
+                                 text="Eingeloggt als\n"+cache.user_name,
+                                 font=BTNFONT,
+                                 bg="white")
+    profile_btn_label.grid(row=2, column=0, pady=10, sticky="nw")
 
-    rechte = tk.Label(frame_profile, text="Rechte", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 15))
-    rechte_frame = tk.Frame(frame_profile, bg='#D9D9D9')
-    adminrechte = tk.Label(frame_profile, text="Admin", bd=0, bg='white', fg='black', font=("Poppins", 18))
-    ausbilderrechte = tk.Label(frame_profile, text="Ausbilder", bd=0, bg='white', fg='#6F6C6C',
-                               font=("Poppins", 18))
-    userrechte = tk.Label(frame_profile, text="Schüler", bd=0, bg='white', fg='#6F6C6C', font=("Poppins", 18))
+    # Schriftzug Gruppe
+    profile_btn_label = tk.Label(frame_profile,
+                                 text="Gruppe\n"+cache.user_group,
+                                 font=BTNFONT,
+                                 bg="white")
+    profile_btn_label.grid(row=3, column=0, pady=10, sticky="nw")
 
-    profilbild.grid(padx=0, pady=0)
+    frame_role = tk.Frame(frame_profile, padx=100, pady=30, bg="white", highlightcolor="blue")
+    frame_role.grid(row=4, column=0, rowspan=1, sticky="nw")
+    iR = 0
+    for role in db.read_all_rollen():
+        role2_btn_label = tk.Label(frame_role,
+                                   text=role["Rolle"],
+                                   font=BTNFONT,
+                                   bg="white",
+                                   fg="gray")
+        if cache.user_group == role["Rolle"]:
+            role2_btn_label.configure(fg="black")
+        role2_btn_label.grid(row=iR, column=0, pady=0, sticky="nw")
+        iR += 1
 
-    #username.grid(padx=499, pady=10)
-    #parent.username.grid(padx=502, pady=40)
-
-    #vorname.grid(padx=499, pady=90)
-    #parent.vorname.grid(padx=502, pady=120)
-
-    #nachname.place(padx=499, pady=170)
-    #parent.nachname.grid(x=502, y=200)
-
-    #gruppen.grid(padx=499, pady=250)
-    #parent.usergrupp.grid(padx=502, pady=280)
-
-    #email.grid(padx=0, pady=500)
-    #parent.useremail.grid(padx=3, pady=525)
-
-    #rechte.grid(padx=0, pady=570)
-    #rechte_frame.grid(padx=3, pady=605, width=1, height=80)
-    #adminrechte.grid(padx=13, pady=590)
-    #ausbilderrechte.grid(padx=13, pady=630)
-    #userrechte.grid(padx=13, pady=670)
-
-    #frame_profile.grid(padx=0.21, pady=0.15, relwidth=1, relheight=0.85)
+    # Schriftzug Benutzer Abmelden
+    profile_btn_label = tk.Label(frame_profile,
+                                 text="Benutzer Abmelden",
+                                 font=BTNFONT,
+                                 bg="white")
+    profile_btn_label.grid(row=5, column=0, pady=10, sticky="nw")
 
 
     ###############################
@@ -311,7 +343,7 @@ def pop_up_settings(parent):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_ueber = tk.Frame(popup, padx=10, pady=1, bg="white")
     frame_ueber.grid(row=1, column=1, rowspan=2, sticky="new")
-    #frame_ueber.grid_forget()
+    frame_ueber.grid_forget()
 
     # Überschrift erstellen Über das DD-Inv Tool
     Ueber_label = tk.Label(
@@ -329,7 +361,7 @@ def pop_up_settings(parent):
     def open_Jack(url):
         webbrowser.open(url)
 
-    jack_image = PhotoImage(file="")
+    jack_image = tk.PhotoImage(file="")
     btn_links_label = ttk.Label(frame_ueber, text="Peaemer (Jack)", cursor="hand2")
     btn_links_label.grid(row=2, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=jack_image)
@@ -339,7 +371,7 @@ def pop_up_settings(parent):
     def open_Alex(url):
         webbrowser.open(url)
 
-    alex_image = PhotoImage(file="")
+    alex_image = tk.PhotoImage(file="")
     btn_links_label = ttk.Label(frame_ueber, text="Alex5X5 (Alex)", cursor="hand2")
     btn_links_label.grid(row=3, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=alex_image)
@@ -349,7 +381,7 @@ def pop_up_settings(parent):
     def open_Fabian(url):
         webbrowser.open(url)
 
-    fabian_image = PhotoImage(file="")
+    fabian_image = tk.PhotoImage(file="")
     btn_links_label = ttk.Label(frame_ueber, text="GitSchwan (Fabian)", cursor="hand2")
     btn_links_label.grid(row=4, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=fabian_image)
@@ -359,7 +391,7 @@ def pop_up_settings(parent):
     def open_Anakin(url):
         webbrowser.open(url)
 
-    anakin_image = PhotoImage(file="")
+    anakin_image = tk.PhotoImage(file="")
     btn_links_label = ttk.Label(frame_ueber, text="Chauto (Anakin)", cursor="hand2")
     btn_links_label.grid(row=5, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=anakin_image)
@@ -369,7 +401,7 @@ def pop_up_settings(parent):
     def open_Rene(url):
         webbrowser.open(url)
 
-    rene_image = PhotoImage(file="")
+    rene_image = tk.PhotoImage(file="")
     btn_links_label = ttk.Label(frame_ueber, text="FemRene (Rene)", cursor="hand2")
     btn_links_label.grid(row=6, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=rene_image)
@@ -379,7 +411,7 @@ def pop_up_settings(parent):
     def open_Tam(url):
         webbrowser.open(url)
 
-    tam_image = PhotoImage(file="")
+    tam_image = tk.PhotoImage(file="")
     btn_links_label = ttk.Label(frame_ueber, text="Tam")
     btn_links_label.grid(row=7, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=tam_image)
@@ -395,7 +427,7 @@ def pop_up_settings(parent):
     def open_SQL3(url):
         webbrowser.open(url)
 
-    sql3_image = PhotoImage(file="assets/SQL3Settings.png")
+    sql3_image = tk.PhotoImage(file="assets/SQL3Settings.png")
     btn_links_label = ttk.Label(frame_ueber, text="SQLite", cursor="hand2")
     btn_links_label.grid(row=9, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=sql3_image, compound="left")
@@ -405,7 +437,7 @@ def pop_up_settings(parent):
     def open_Figma(url):
         webbrowser.open(url)
 
-    figma_image = PhotoImage(file="assets/FigmaSettings.png")
+    figma_image = tk.PhotoImage(file="assets/FigmaSettings.png")
     btn_links_label = ttk.Label(frame_ueber, text="Figma", cursor="hand2")
     btn_links_label.grid(row=10, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=figma_image, compound="left")
@@ -415,7 +447,7 @@ def pop_up_settings(parent):
     def open_PyCharm(url):
         webbrowser.open(url)
 
-    py_charm_image = PhotoImage(file="assets/PyCharmSettings.png")
+    py_charm_image = tk.PhotoImage(file="assets/PyCharmSettings.png")
     btn_links_label = ttk.Label(frame_ueber, text="PyCharm", cursor="hand2")
     btn_links_label.grid(row=11, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=py_charm_image, compound="left")
@@ -425,7 +457,7 @@ def pop_up_settings(parent):
     def open_Python(url):
         webbrowser.open(url)
 
-    python_image = PhotoImage(file="assets/PythonSettings.png")
+    python_image = tk.PhotoImage(file="assets/PythonSettings.png")
     btn_links_label = ttk.Label(frame_ueber, text="Python", cursor="hand2")
     btn_links_label.grid(row=12, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=python_image, compound="left")
@@ -435,7 +467,7 @@ def pop_up_settings(parent):
     def open_WindowsXP(url):
         webbrowser.open(url)
 
-    windows_xp_image = PhotoImage(file="assets/WindowsXPSettings.png")
+    windows_xp_image = tk.PhotoImage(file="assets/WindowsXPSettings.png")
     btn_links_label = ttk.Label(frame_ueber, text="WindowsXP", cursor="hand2")
     btn_links_label.grid(row=13, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=windows_xp_image, compound="left")
@@ -451,7 +483,7 @@ def pop_up_settings(parent):
     def open_KoFi(url):
         webbrowser.open(url)
 
-    ko_fi_image = PhotoImage(file="assets/KoFiSettings.png")
+    ko_fi_image = tk.PhotoImage(file="assets/KoFiSettings.png")
     btn_links_label = ttk.Label(frame_ueber, text="Ko-Fi (Spende)", cursor="hand2")
     btn_links_label.grid(row=15, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=ko_fi_image, compound="left")
@@ -461,7 +493,7 @@ def pop_up_settings(parent):
     def open_Feedback(url):
         webbrowser.open(url)
 
-    feedback_image = PhotoImage(file="assets/FeedbackSettings.png")
+    feedback_image = tk.PhotoImage(file="assets/FeedbackSettings.png")
     btn_links_label = ttk.Label(frame_ueber, text="Feedback (E-Mail)", cursor="hand2")
     btn_links_label.grid(row=16, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=feedback_image, compound="left")
@@ -477,7 +509,7 @@ def pop_up_settings(parent):
     def open_VersionBuild(url):
         webbrowser.open(url)
 
-    logo_image = PhotoImage(file="assets/DD-Inv_Logo.png")
+    logo_image = tk.PhotoImage(file="assets/DD-Inv_Logo.png")
     btn_links_label = ttk.Label(frame_ueber, text="VersionBuild   V. 0.0.291 (Alpha)", cursor="hand2")
     btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
@@ -487,7 +519,7 @@ def pop_up_settings(parent):
     def open_Github(url):
         webbrowser.open(url)
 
-    git_hub_image = PhotoImage(file="assets/GitHubSettings.png")
+    git_hub_image = tk.PhotoImage(file="assets/GitHubSettings.png")
     btn_links_label = ttk.Label(frame_ueber, text="Visit our Github", cursor="hand2")
     btn_links_label.grid(row=19, column=0, pady=2, sticky="new")
     btn_links_label.configure(width=30, anchor='center', image=git_hub_image, compound="left")
