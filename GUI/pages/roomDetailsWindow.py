@@ -54,7 +54,7 @@ class roomDetailsWindow(tk.Frame):
         # Zentriere das Label in Spalte 1
         header_label_details_window = tk.Label(
             header_frame_details_window,
-            text="Nutzer Details",
+            text="Raum Details",
             background="#DF4807",
             foreground="white",
             font=("Arial", 60)
@@ -90,36 +90,34 @@ class roomDetailsWindow(tk.Frame):
         container_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
 
         # Konfiguration der Container-Spalten
-        container_frame.grid_columnconfigure(0, weight=1)  # Baumansicht
-        container_frame.grid_columnconfigure(1, weight=1)  # Eingabefelder
-
+        container_frame.grid_columnconfigure(0, weight=1)
 
         size_details_window = 30
 
         # Input-Frame
         input_frame_details_window = tk.Frame(container_frame, background="white")
-        input_frame_details_window.grid(row=0, column=0, pady=20,padx=0, sticky="nsew")
+        input_frame_details_window.grid(row=0, column=0, pady=20, padx=20, sticky="nsew")
 
         input_frame_details_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
+        input_frame_details_window.grid_columnconfigure(1, weight=1)
 
-        #Raum
+        # Raum
         room_num = tk.Label(input_frame_details_window, text="Raum",
-                                                font=("Arial", size_details_window), background="white")
-        room_num.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
+                            font=("Arial", size_details_window), background="white")
+        room_num.grid(column=0, row=0, sticky=tk.EW, padx=20, pady=10)
 
         self.room_num_entry = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                             background=srhGrey, relief=tk.SOLID)
-        self.room_num_entry.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
+                                       background=srhGrey, relief=tk.SOLID)
+        self.room_num_entry.grid(column=1, row=0, sticky=tk.EW, padx=20, pady=10)
 
-
-        #Ort
+        # Ort
         place_label_details_window = tk.Label(input_frame_details_window, text="Ort",
-                                          font=("Arial", size_details_window), background="white")
-        place_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
+                                              font=("Arial", size_details_window), background="white")
+        place_label_details_window.grid(column=0, row=2, sticky=tk.EW, padx=20, pady=10)
 
         self.place_entry = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                              background=srhGrey, relief=tk.SOLID)
-        self.place_entry.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
+                                    background=srhGrey, relief=tk.SOLID)
+        self.place_entry.grid(column=1, row=2, sticky=tk.EW, padx=20, pady=10)
 
 
         # Funktion zum Eintrag hinzufügen
