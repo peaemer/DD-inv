@@ -89,6 +89,10 @@ def add_user_popup(parent):
     )
     role_combobox_add_user_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
+
+    error_label = tk.Label(input_frame_add_item_popup, text="Biite eingeben von Kontodaten IbAN bitte und geheim pin", background="white",fg="darkred",font=("Arial", 14))
+    error_label.grid(row=3, column=0,columnspan=2, padx=0, pady=20, sticky=tk.E)
+
     # Buttons
     def submit_entry():
         print("Eintrag abgesendet.")
