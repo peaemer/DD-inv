@@ -162,10 +162,16 @@ class mainPage(tk.Frame):
         overview_label.grid(padx=10, pady=10, row=2, column=0, sticky=tk.W +tk.N + tk.S)
 
         side_tree = ttk.Treeview(grey_frame_side, show="tree")
-        side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
         side_tree.insert("", tk.END, text="Alle Räume")
         for room in sqlapi.fetch_all_rooms():
-            side_tree.insert("", tk.END, text=room['Raum'])
+            cats = []
+            tree_parent = side_tree.insert("", tk.END, text=room['Raum'])
+            for hw in sqlapi.fetch_hardware():
+                if hw['Raum'] and hw['Raum'].startswith(room['Raum']):
+                    if not hw['Geraetetype'] in cats:
+                        cats.append(hw['Geraetetype'])
+                        side_tree.insert(tree_parent, tk.END, text=hw['Geraetetype'])
+        side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white")
