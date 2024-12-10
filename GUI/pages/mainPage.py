@@ -101,25 +101,28 @@ class mainPage(tk.Frame):
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
         self.grid_rowconfigure(2, weight=0)
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
 
         # Erstelle einen Header-Bereich
-        self.header_frame = tk.Frame(self, height=10, background="#DF4807")
-        self.header_frame.grid(row=0, column=0, sticky=tk.W + tk.E)
+        self.header_frame = tk.Frame(self, background="#DF4807")
+        self.header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
-        self.header_frame.grid_columnconfigure(0, weight=1)
+        self.header_frame.grid_columnconfigure(0, weight=1)  # Platz links
+        self.header_frame.grid_columnconfigure(1, weight=2)  # Zentrale Spalte
+        self.header_frame.grid_columnconfigure(2, weight=1)  # Platz rechts
         self.header_frame.grid_rowconfigure(0, weight=1)
 
         self.srh_head = tk.PhotoImage(file="assets/srh.png")
 
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(self.header_frame, image=self.srh_head, background="#DF4807", foreground="white")
-        header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
+        header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = Label(self.header_frame, background="#DF4807", text="Inventur-Übersicht", font=(SRHHeadline, 30), foreground="white")
-        text_header_label.grid(row=0, column=0, padx=660, pady=50, sticky=tk.N)
+        text_header_label = tk.Label(self.header_frame, background="#DF4807", text="Inventur-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
         self.log_out_btn = tk.PhotoImage(file="assets/ausloggen.png")
@@ -132,7 +135,7 @@ class mainPage(tk.Frame):
                                    relief=tk.FLAT,
                                    bg="#DF4807",
                                    activebackground="#DF4807")
-        log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
+        log_out_button.grid(row=0, column=4, sticky=tk.E, padx=20)
 
         # Konvertiere das Bild für Tkinter
         self.opt_btn = tk.PhotoImage(file="assets/option.png")
@@ -145,19 +148,14 @@ class mainPage(tk.Frame):
                                    relief=tk.FLAT,
                                    bg="#DF4807",
                                    activebackground="#DF4807")
-        options_button.grid(row=0, column=2, sticky=tk.E, padx=20)
+        options_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         # Platzieren des Adminbuttons
         self.admin_btn = tk.PhotoImage(file="assets/Key.png")
 
         # Erstellen des Grayframes für linke Seite
         grey_frame_side = tk.Frame(self, background=srhGrey)
-        grey_frame_side.grid(row=2, column=0, rowspan=2, sticky="nsw")
-
-        # Konfiguration der Zeilen- und Spaltengewichte
-        self.grid_rowconfigure(1, weight=0)  # Sicherstellen, dass row=1 keinen Platz einnimmt
-        self.grid_rowconfigure(2, weight=1)  # Zeile 2 kann sich dynamisch anpassen
-        self.grid_columnconfigure(0, weight=1)  # Spalte 0 kann sich dynamisch anpassen
+        grey_frame_side.grid(row=1, column=0, rowspan=2, sticky="nsw")
 
         # Label auf dem Grayframe der linken Seite
         overview_label = tk.Label(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
@@ -169,8 +167,11 @@ class mainPage(tk.Frame):
             side_tree.insert("", tk.END, text=room['Raum'])
 
         # Erstellen des MiddleFrame
-        middle_frame = tk.Frame(self, bg="white", padx=40)
-        middle_frame.grid(row=3, padx=190, pady=60, column=0, sticky="nesw")
+        middle_frame = tk.Frame(self, bg="white")
+        middle_frame.grid(row=1, padx=10, pady=10, column=1, sticky="nesw")
+
+        middle_frame.columnconfigure(0, weight=1)
+        middle_frame.rowconfigure(1, weight=1)
 
         # Dbug Info Anzeige der Fenstergroesse
         def show_size(event):
@@ -179,11 +180,17 @@ class mainPage(tk.Frame):
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
         search_frame = tk.Frame(middle_frame, bg="white")
-        search_frame.grid(pady=50, padx=185, row=0, column=0, sticky=tk.W + tk.E + tk.N)
+        search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         search_frame.grid_columnconfigure(0, weight=0)
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
+
+        # Btn Erstellen def mit Image und grid
+        self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
+        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
+                               activebackground="white", command=add_item)
+        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         # Search Btn def und neben dem Entry platzieren
         self.search_btn = tk.PhotoImage(file="assets/SearchButton.png")
@@ -207,27 +214,29 @@ class mainPage(tk.Frame):
         search_entry.bind("<Key>", on_key_press)
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
+
+
+
         # style der Tabelle
         tree_style = ttk.Style()
         tree_style.theme_use("default") #alt, classic,xpnative,winnative, default
         tree_style.configure("Treeview.Heading",rowheight=50, font=("Arial", 20))
         tree_style.configure("Treeview", rowheight=40, font=("Arial", 14))
 
-        # Ändere die Position des TreeFrames auf row=2
-        # Ändere die Position des TreeFrames auf row=2
-        tree_frame = tk.Frame(middle_frame, background="white")
+        # Frame für die Tabelle und Scrollbar
+        tree_frame = tk.Frame(middle_frame, background="darkgreen")
+        tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
-        tree_frame.grid(row=1, column=0, padx=100, sticky=tk.N + tk.S + tk.E + tk.W)
+        # Spaltenkonfiguration für das TreeFrame
         tree_frame.grid_rowconfigure(1, weight=1)
-        tree_frame.grid_columnconfigure(0, weight=1)
-        # Btn Erstellen def mit Image und grid
-        self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
-        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
-        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
+        tree_frame.grid_columnconfigure(0, weight=1)  # Spalte für die Tabelle
+        tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
-        tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings", height=15)
-        # Das Binding des Configure-Events wurde verschoben
+        # Treeview erstellen
+        tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings")
+        tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
 
+        # Scrollbar erstellen
         scroll = tk.Scrollbar(
             tree_frame,
             orient="vertical",
@@ -239,7 +248,9 @@ class mainPage(tk.Frame):
             width=15,
             borderwidth=1
         )
-        scroll.grid(row=1, column=1, sticky="ns")
+        scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
+
+        # Treeview mit Scrollbar verbinden
         tree.configure(yscrollcommand=scroll.set)
 
         # Tags für alternierende Zeilenfarben konfigurieren
@@ -350,9 +361,9 @@ class mainPage(tk.Frame):
                     bg="#DF4807",
                     activebackground="#DF4807"
                 )
-                self.admin_button.grid(row=0, column=1, sticky=tk.E, padx=20)
+                self.admin_button.grid(row=0, column=2, sticky=tk.E, padx=20)
             else:
-                self.admin_button.grid(row=0, column=1, sticky=tk.E, padx=20)
+                self.admin_button.grid(row=0, column=2, sticky=tk.E, padx=20)
         else:
             # Entferne den Admin-Button, falls er existiert
             if hasattr(self, "adminButton"):
