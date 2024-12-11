@@ -10,7 +10,6 @@ import Datenbank.sqlite3api as db
 import cache
 
 
-
 # Schriftarten / Farbschema
 LARGEFONT = ("Arial", 30)
 SETTINGSFONT = ("Arial", 18, 'bold')
@@ -24,7 +23,7 @@ srhOrange = "#DF4807"
 ##############################
 
 # Funktion erstellt Popupfenster "Einstellungen"
-def pop_up_settings(parent):
+def pop_up_settings(parent, controller):
     """
     Creates a new settings window as a pop-up.
 
@@ -41,7 +40,7 @@ def pop_up_settings(parent):
     # erstellt ein neues Fenster
     popup = tk.Toplevel(parent)
     popup.title("Einstellungen")
-    popup.geometry("550x750")  # groeße des Fensters
+    popup.geometry("550x700")  # groeße des Fensters
     popup.configure(background="white")  # Hintergrundfarbe
     popup.transient(parent)  # Setzt Hauptfenster in Hintergrund
     popup.grab_set()  # Fokus auf Popup
@@ -50,7 +49,7 @@ def pop_up_settings(parent):
     # Bildschirmbreite und hoehe ermitteln (fenster mittig auf Bildschirm setzten)
     screen_width = parent.winfo_screenwidth()
     screen_height = parent.winfo_screenheight()
-    window_width, window_height = 550, 750
+    window_width, window_height = 550, 700
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
@@ -80,8 +79,8 @@ def pop_up_settings(parent):
                             image=popup.optionsHead,
                             foreground="white")
     header_label.grid(row=1,
-                      column=1,
-                      padx=20,
+                      column=0,
+                      padx=320,
                       pady=10,
                       sticky="nesw")
 
@@ -96,27 +95,22 @@ def pop_up_settings(parent):
     srh_logo_label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
 
-    #################################
-    # # L A Y O U T : S Y S T E M # #
-    #################################
+    ###################################
+    # # L A Y O U T : P R O F I L E # #
+    ###################################
 
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
-    frame_system = tk.Frame(popup, padx=100, pady=30, bg="white")
-    frame_system.grid(row=1, column=1, rowspan=2, sticky="nw")
-    frame_system.grid_remove()
+    frame_profile = tk.Frame(popup, bg="white")
+    frame_profile.grid(row=1, column=1, rowspan=2, sticky="nesw")
+    #frame_profile.grid_forget()
 
-    # Überschrift System erstellen
-    radiobutton_label = tk.Label(
-        frame_system, text="System", font=SETTINGSFONT, bg="white"
-    )
-    radiobutton_label.grid(row=0, column=0, pady=10, sticky="nw")
-
-    # Überschrift Auflösung ändern
-    button_bg_label = tk.Label(
-        frame_system, text="Auflösung ändern", font=BTNFONT, bg="white"
-    )
-    button_bg_label.grid(row=6, column=0, pady=10, sticky="nw")
+    # Überschrift Dein Profil
+    profile_btn_label = tk.Label(frame_profile,
+                                 text="Dein Profil",
+                                 font=SETTINGSFONT,
+                                 bg="white")
+    profile_btn_label.grid(row=0, column=0, pady=10, sticky="nw")
 
     def load_image_from_url(url):
         """Lädt ein Bild von einer URL."""
@@ -131,154 +125,13 @@ def pop_up_settings(parent):
         img = Image.open(BytesIO(img_data))
         return img
 
-
-    def set_default_background():
-        parent.configure(bg="white")
-        popup.configure(bg="white")
-        if hasattr(parent, "bg_label"):
-            parent.bg_label.destroy()
-
-    btn_set_bg = ttk.Button(
-        frame_system,
-        text="Hintergrund zurücksetzen",
-        style="Custom.TButton",
-        command=set_default_background,
-    )
-    btn_set_bg.grid(column=0, pady=10)
-
-    # Style anpassen
-    style = ttk.Style()
-    style.configure("Custom.TButton", background="white", font=BTNFONT)
-    style.configure("Custom.TRadiobutton", background="white", font=BTNFONT)
-
-
-    ################################
-    # # L A Y O U T : S T Y L E # #
-    ################################
-
-
-    # Dynamischer Frame mit Einstellungsmöglichkeiten
-    frame_style = tk.Frame(popup, padx=100, pady=10, bg="white")
-    frame_style.grid(row=1, column=1, rowspan=2, sticky="nw")
-    frame_style.grid_forget()
-
-    # Überschrift für Style
-    radiobutton_label = tk.Label(
-        frame_style, text="Style", font=SETTINGSFONT, bg="white"
-    )
-    radiobutton_label.grid(row=0, column=0, pady=1, sticky="nw")
-
-    # Überschrift für Radiobutton-Kategorie
-    radiobutton_label = tk.Label(
-        frame_style, text="Setze einen vordefinierten Style", font=BTNFONT, bg="white"
-    )
-    radiobutton_label.grid(row=1, column=0, pady=1, sticky="nw")
-
-    # Radiobuttons zur Auswahl von Farben (Themes)
-    storage_variable = tk.StringVar(value="White")
-
-    parent.option_zero = tk.PhotoImage(file="assets/DefaultBtnSettings.png")
-    parent.option_one = tk.PhotoImage(file="assets/GreenBtnSettings.png")
-    parent.option_two = tk.PhotoImage(file="assets/BlueBtnSettings.png")
-    parent.option_three = tk.PhotoImage(file="assets/YellowBtnSettings.png")
-    parent.option_for = tk.PhotoImage(file="assets/BlackBtnSettings.png")
-
-    radio_buttons = [
-        ("Standard", parent.option_zero, "White"),
-        ("Grün", parent.option_one, "Green"),
-        ("Blau", parent.option_two, "Blue"),
-        ("Gelb", parent.option_three, "Yellow"),
-        ("Schwarz", parent.option_for, "Black"),
-    ]
-
-    # Überschrift für Backgroundbutton-Kategorie
-    button_bg_label = tk.Label(
-        frame_style, text="Wähle aus einem Eigenem Bild", font=BTNFONT, bg="white"
-    )
-    button_bg_label.grid(row=7, column=0, pady=1, sticky="nw")
-
-    def change_app_background(color):
-        parent.configure(bg=color)
-        popup.configure(bg=color)
-
-    for idx, (text, image, value) in enumerate(radio_buttons):
-        ttk.Radiobutton(
-            frame_style,
-            image=image,
-            text=text,
-            variable=storage_variable,
-            value=value,
-            style="Custom.TRadiobutton",
-            command=lambda color=value: change_app_background(color),
-        ).grid(row=idx + 2, column=0, pady=5)
-
-    # Hintergrundbild-Auswahl
-    def apply_selected_image():
-        file_path = filedialog.askopenfilename(
-            title="Wähle ein Bild aus...",
-            filetypes=[("Bilddateien", "*.png;*.jpg;*.jpeg")])
-
-        if file_path:
-            bg_image = tk.PhotoImage(file=file_path)
-            parent.bg_label = tk.Label(parent, image=bg_image)
-            parent.bg_label.image = bg_image
-            parent.bg_label.place(relx=0, rely=0, relwidth=1, relheight=1)
-
-    btn_chose_picture = ttk.Button(
-        frame_style,
-        text="Besseres Aussehen auswählen...",
-        style="Custom.TButton",
-        command=apply_selected_image,
-    )
-    btn_chose_picture.grid(row=len(radio_buttons) + 3, column=0, pady=10)
-
-    def set_default_background():
-        parent.configure(bg="white")
-        popup.configure(bg="white")
-        if hasattr(parent, "bg_label"):
-            parent.bg_label.destroy()
-
-    btn_set_bg = ttk.Button(
-        frame_style,
-        text="Hintergrund zurücksetzen",
-        style="Custom.TButton",
-        command=set_default_background,
-    )
-    btn_set_bg.grid(row=len(radio_buttons) + 4, column=0, pady=10)
-
-    # Style anpassen
-    style = ttk.Style()
-    style.configure("Custom.TButton", background="white", font=BTNFONT)
-    style.configure("Custom.TRadiobutton", background="white", font=BTNFONT)
-
-
-    ###################################
-    # # L A Y O U T : P R O F I L E # #
-    ###################################
-
-
-    # Dynamischer Frame mit Einstellungsmöglichkeiten
-    frame_profile = tk.Frame(popup, bg="white")
-    frame_profile.grid(row=1, column=1, rowspan=2, sticky="nesw")
-    scrollbar_profile = ttk.Scrollbar(orient=tk.VERTICAL)
-    scrollbar_profile.set(0.2, 0.5)
-    scrollbar_profile.pack()
-    #frame_profile.grid_forget()
-
-    # Überschrift Dein Profil
-    profile_btn_label = tk.Label(frame_profile,
-                                 text="Dein Profil",
-                                 font=SETTINGSFONT,
-                                 bg="white")
-    profile_btn_label.grid(row=0, column=0, pady=10, sticky="nw")
-
     # Bild des Benutzers laden
     if cache.user_avatar.startswith("http"):
         # Bild von der URL laden und anzeigen
         try:
             img = load_image_from_url(cache.user_avatar)
 
-            # Bild skalieren (z. B. auf 100x100 Pixel)
+            # Bild skalieren (z. B. auf 128x128 Pixel)
             img = img.resize((128, 128))
 
             parent.img_tk = ImageTk.PhotoImage(img)
@@ -292,7 +145,7 @@ def pop_up_settings(parent):
         try:
             img = load_image_from_base64(cache.user_avatar)
 
-            # Bild skalieren (z. B. auf 100x100 Pixel)
+            # Bild skalieren (z. B. auf 128x128 Pixel)
             img = img.resize((128, 128))
 
             parent.img_tk = ImageTk.PhotoImage(img)
@@ -309,16 +162,17 @@ def pop_up_settings(parent):
                                  bg="white")
     profile_btn_label.grid(row=2, column=0, pady=10, sticky="nw")
 
-    # Schriftzug Gruppe
-    profile_btn_label = tk.Label(frame_profile,
-                                 text="Gruppe\n"+cache.user_group,
+    frame_role = tk.Frame(frame_profile, padx=10, pady=30, bg="white", highlightcolor="blue")
+    frame_role.grid(row=3, column=0, rowspan=1, sticky="nw")
+    iR = 0
+
+    # Schriftzug Rechte in der Gruppe
+    profile_btn_label = tk.Label(frame_role,
+                                 text="Rechte in der Gruppe",
                                  font=BTNFONT,
                                  bg="white")
-    profile_btn_label.grid(row=3, column=0, pady=10, sticky="nw")
+    profile_btn_label.grid(row=0, column=0, pady=0, sticky="nw")
 
-    frame_role = tk.Frame(frame_profile, padx=100, pady=30, bg="white", highlightcolor="blue")
-    frame_role.grid(row=4, column=0, rowspan=1, sticky="nw")
-    iR = 0
     for role in db.read_all_rollen():
         role2_btn_label = tk.Label(frame_role,
                                    text=role["Rolle"],
@@ -327,15 +181,188 @@ def pop_up_settings(parent):
                                    fg="gray")
         if cache.user_group == role["Rolle"]:
             role2_btn_label.configure(fg="black")
-        role2_btn_label.grid(row=iR, column=0, pady=0, sticky="nw")
+        role2_btn_label.grid(row=iR+1, column=0, pady=0, sticky="nw")
         iR += 1
 
+    # PNG-Bild für Btn
+    def load_button_images_profile():
+        btn_image_logout = tk.PhotoImage(file="assets/BenutzerAbmeldenSettings.png")
+        return btn_image_logout
+
+    # Laden des Bildes auf den Bts
+    parent.btn_image_logout = load_button_images_profile()
+
+    # def zum Abmelden des Benutzers
+    def log_out(controller):
+        from .logInWindow import logInWindow
+        cache.user_group = None  # Benutzergruppe zurücksetzen
+        controller.show_frame(logInWindow)
+        popup.destroy()
+
     # Schriftzug Benutzer Abmelden
-    profile_btn_label = tk.Label(frame_profile,
-                                 text="Benutzer Abmelden",
+    profile_btn_label = tk.Button(frame_profile,
+                                  command=lambda:log_out(controller),
+                                  text="Benutzer Abmelden",
+                                  font=BTNFONT,
+                                  bg="white",
+                                  cursor="hand2",
+                                  image=parent.btn_image_logout,
+                                  borderwidth=0)
+    profile_btn_label.grid(row=5, column=0, pady=10, sticky="nw")
+
+
+    #################################
+    # # L A Y O U T : S Y S T E M # #
+    #################################
+
+
+    # Dynamischer Frame mit Einstellungsmöglichkeiten
+    frame_system = tk.Frame(popup, bg="white")
+    frame_system.grid(row=1, column=1, rowspan=2, sticky="nesw")
+    frame_system.grid_remove()
+
+    # Überschrift System erstellen
+    radiobutton_label = tk.Label(frame_system,
+                                 text="System",
+                                 font=SETTINGSFONT,
+                                 bg="white")
+    radiobutton_label.grid(row=0, column=0, pady=10, sticky="new")
+
+    # Überschrift Auflösung ändern
+    button_bg_label = tk.Label(frame_system,
+                               text="Auflösung ändern",
+                               font=BTNFONT,
+                               bg="white")
+    button_bg_label.grid(row=6, column=0, pady=10, sticky="nw")
+
+    def set_default_background():
+        parent.configure(bg="white")
+        popup.configure(bg="white")
+        if hasattr(parent, "bg_label"):
+            parent.bg_label.destroy()
+
+    btn_set_bg = ttk.Button(frame_system,
+                            text="Hintergrund zurücksetzen",
+                            style="Custom.TButton",
+                            command=set_default_background)
+    btn_set_bg.grid(column=0, pady=10)
+
+    # Style anpassen
+    style = ttk.Style()
+    style.configure("Custom.TButton", background="white", font=BTNFONT)
+    style.configure("Custom.TRadiobutton", background="white", font=BTNFONT)
+
+
+    ################################
+    # # L A Y O U T : S T Y L E # #
+    ################################
+
+
+    # Dynamischer Frame mit Einstellungsmöglichkeiten
+    frame_style = tk.Frame(popup, bg="white")
+    frame_style.grid(row=1, column=1, rowspan=2, sticky="nesw")
+    frame_style.grid_forget()
+
+    frame_style.columnconfigure(0, weight=1)
+
+    # Überschrift für Style
+    radiobutton_label = tk.Label(frame_style,
+                                 text="Style",
+                                 font=SETTINGSFONT,
+                                 bg="white")
+    radiobutton_label.grid(row=0, column=0, pady=1, sticky="new")
+
+    # Überschrift für Radiobutton-Kategorie
+    radiobutton_label = tk.Label(frame_style,
+                                 text="Setze einen vordefinierten Style",
                                  font=BTNFONT,
                                  bg="white")
-    profile_btn_label.grid(row=5, column=0, pady=10, sticky="nw")
+    radiobutton_label.grid(row=1, column=0, pady=1, sticky="nw")
+
+    # Radiobuttons zur Auswahl von Farben (Themes)
+    storage_variable = tk.StringVar(value="White")
+
+    parent.option_zero = tk.PhotoImage(file="assets/DefaultBtnSettings.png")
+    parent.option_one = tk.PhotoImage(file="assets/GreenBtnSettings.png")
+    parent.option_two = tk.PhotoImage(file="assets/BlueBtnSettings.png")
+    parent.option_three = tk.PhotoImage(file="assets/YellowBtnSettings.png")
+    parent.option_for = tk.PhotoImage(file="assets/BlackBtnSettings.png")
+
+    radio_buttons = [("Standard", parent.option_zero, "White"),
+                     ("Grün", parent.option_one, "dark Green"),
+                     ("Blau", parent.option_two, "light Blue"),
+                     ("Gelb", parent.option_three, "Yellow"),
+                     ("Schwarz", parent.option_for, "Black")]
+
+    # Überschrift für Backgroundbutton-Kategorie
+    button_bg_label = tk.Label(frame_style,
+                               text="Wähle aus einem Eigenem Bild",
+                               font=BTNFONT,
+                               bg="white")
+    button_bg_label.grid(row=7, column=0, pady=1, sticky="nw")
+
+    # def fuer btn change app background
+    def change_app_background(color):
+        parent.configure(bg=color)
+        popup.configure(bg=color)
+
+    for idx, (text, image, value) in enumerate(radio_buttons):
+        ttk.Radiobutton(frame_style,
+                        image=image,
+                        text=text,
+                        variable=storage_variable,
+                        value=value,
+                        style="Custom.TRadiobutton",
+                        command=lambda color=value: change_app_background(color)).grid(row=idx + 2,
+                                                                                       column=0,
+                                                                                       pady=5,
+                                                                                       sticky="w")
+
+    # PNG-Bilder für Buttons laden
+    def load_button_images_style():
+        btn_image_select = tk.PhotoImage(file="assets/BesseresAussehenWählen.png")
+        btn_image_reset = tk.PhotoImage(file="assets/HintergrundZurücksetzen.png")
+        return btn_image_select, btn_image_reset
+
+    # Laden der Bilder auf den Bts
+    parent.btn_image_select, parent.btn_image_reset = load_button_images_style()
+
+    # Hintergrundbild-Auswahl
+    def apply_selected_image_style():
+        file_path = filedialog.askopenfilename(title="Wähle ein Bild aus...",
+                                               filetypes=[("Bilddateien", "*.png;*.jpg;*.jpeg")])
+
+        if file_path:
+            bg_image = tk.PhotoImage(file=file_path)
+            parent.bg_label = tk.Label(parent, image=bg_image)
+            parent.bg_label.image = bg_image
+            parent.bg_label.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+    btn_chose_picture = ttk.Button(frame_style,
+                                   text="Besseres Aussehen auswählen...",
+                                   style="Custom.TButton",
+                                   image=parent.btn_image_select,
+                                   command=apply_selected_image_style)
+    btn_chose_picture.grid(row=len(radio_buttons) + 3, column=0, pady=10, sticky="w")
+
+    # Hintergrund setzen
+    def set_default_background():
+        parent.configure(bg="white")
+        popup.configure(bg="white")
+        if hasattr(parent, "bg_label"):
+            parent.bg_label.destroy()
+
+    btn_set_bg = ttk.Button(frame_style,
+                            text="Hintergrund zurücksetzen",
+                            style="Custom.TButton",
+                            image=parent.btn_image_reset,
+                            command=set_default_background)
+    btn_set_bg.grid(row=len(radio_buttons) + 4, column=0, pady=10, sticky="w")
+
+    # Style anpassen
+    style = ttk.Style()
+    style.configure("Custom.TButton", background="white", font=BTNFONT, borderwidth=0)
+    style.configure("Custom.TRadiobutton", background="white", font=BTNFONT)
 
 
     ###############################
@@ -344,20 +371,22 @@ def pop_up_settings(parent):
 
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
-    frame_ueber = tk.Frame(popup, padx=10, pady=1, bg="white")
+    frame_ueber = tk.Frame(popup, bg="white")
     frame_ueber.grid(row=1, column=1, rowspan=2, sticky="new")
     frame_ueber.grid_forget()
 
-    # Überschrift erstellen Über das DD-Inv Tool
-    Ueber_label = tk.Label(
-        frame_ueber, text="Über das DD-Inv Tool", font=SETTINGSFONT, bg="white"
-    )
-    Ueber_label.grid(row=0, column=0, pady=1, sticky="new")
+    # Ueberschrift erstellen Über das DD-Inv Tool
+    ueber_label = tk.Label(frame_ueber,
+                           text="Über das DD-Inv Tool",
+                           font=SETTINGSFONT,
+                           bg="white")
+    ueber_label.grid(row=0, column=0, pady=1, sticky="new")
 
     # Unterüberschrift erstellen Credits
-    Credits_label = tk.Label(
-        frame_ueber, text="Credits", font=BTNFONT, bg="white"
-    )
+    Credits_label = tk.Label(frame_ueber,
+                             text="Credits",
+                             font=BTNFONT,
+                             bg="white")
     Credits_label.grid(row=1, column=0, pady=10, sticky="new")
 
     # Jack Button
@@ -420,10 +449,11 @@ def pop_up_settings(parent):
     btn_links_label.configure(width=30, anchor='center', image=tam_image)
     btn_links_label.bind("<Button-1>", lambda e: open_Tam(""))
 
-    # Unterüberschrift erstellen Anwendung erstellt mit folgenden Tools
-    build_label = tk.Label(
-        frame_ueber, text="Anwendung erstellt mit folgenden Tools", font=BTNFONT, bg="white"
-    )
+    # Unterueberschrift erstellen Anwendung erstellt mit folgenden Tools
+    build_label = tk.Label(frame_ueber,
+                           text="Anwendung erstellt mit folgenden Tools",
+                           font=BTNFONT,
+                           bg="white")
     build_label.grid(row=8, column=0, pady=10, sticky="new")
 
     # SQL3 Button
@@ -476,10 +506,11 @@ def pop_up_settings(parent):
     btn_links_label.configure(width=30, anchor='center', image=windows_xp_image, compound="left")
     btn_links_label.bind("<Button-1>", lambda e: open_WindowsXP("https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07"))
 
-    # Unterüberschrift Du möchtest das Projekt Unterstützen?
-    build_label = tk.Label(
-        frame_ueber, text="Du möchtest das Projekt unterstützen?", font=BTNFONT, bg="white"
-    )
+    # Unterueberschrift Du möchtest das Projekt Unterstützen?
+    build_label = tk.Label(frame_ueber,
+                           text="Du möchtest das Projekt unterstützen?",
+                           font=BTNFONT,
+                           bg="white")
     build_label.grid(row=14, column=0, pady=10, sticky="new")
 
     # Ko-Fi Button
@@ -502,10 +533,11 @@ def pop_up_settings(parent):
     btn_links_label.configure(width=30, anchor='center', image=feedback_image, compound="left")
     btn_links_label.bind("<Button-1>", lambda e: open_Feedback("mailto:Jack-Mike.Saering@srhk.de"))
 
-    # Unterüberschrift Info
-    build_label = tk.Label(
-        frame_ueber, text="Info", font=BTNFONT, bg="white"
-    )
+    # Unterueberschrift Info
+    build_label = tk.Label(frame_ueber,
+                           text="Info",
+                           font=BTNFONT,
+                           bg="white")
     build_label.grid(row=17, column=0, pady=10, sticky="new")
 
     # VersionBuild Button
@@ -535,25 +567,23 @@ def pop_up_settings(parent):
 
 
     # Kategorien in der Seitenleiste
-    categories = ["System",
+    categories = ["Profil",
+                  "System",
                   "Style",
-                  "Profil",
                   "Über DD-Inv"]
 
     category_labels_settings = []
     # Dynamische Frames erstellen
+    frame_profile = tk.Frame(popup, padx=10, pady=30, bg="white")
     frame_system = tk.Frame(popup, padx=10, pady=30, bg="white")
     frame_style = tk.Frame(popup, padx=10, pady=30, bg="white")
-    frame_profile = tk.Frame(popup, padx=10, pady=30, bg="white")
     frame_ueber = tk.Frame(popup, padx=10, pady=30, bg="white")
 
     # Zuordnung der Frames zu den Kategorien
-    frames = {
-        "System": frame_system,
-        "Style": frame_style,
-        "Profil": frame_profile,
-        "Über DD-Inv": frame_ueber
-    }
+    frames = {"Profil": frame_profile,
+              "System": frame_system,
+              "Style": frame_style,
+              "Über DD-Inv": frame_ueber}
 
     current_frame = frames["System"]  # Halte den aktuell sichtbaren Frame
     current_frame.grid(row=1, column=1, rowspan=2, sticky="nw")
@@ -614,20 +644,19 @@ def pop_up_settings(parent):
     # Kategorien in der Seitenleiste erstellen
     category_labels_settings = []  # Liste für die Label-Referenzen
     for idx, category in enumerate(categories):
-        label = tk.Label(
-            side_settings,
-            text=category,
-            bd=0,
-            relief=tk.FLAT,
-            font=SETTINGSFONT,
-            fg="white",
-            bg=srhOrange,
-        )
+        label = tk.Label(side_settings,
+                         text=category,
+                         bd=0,
+                         relief=tk.FLAT,
+                         font=SETTINGSFONT,
+                         fg="white",
+                         bg=srhOrange)
         label.grid(padx=10, pady=8, row=idx + 1, column=0, sticky="w")
-        label.bind(
-            "<Button-1>",
-            lambda event, lbl=label, cat=category: on_category_click_settings(lbl, cat)
-        )
+        label.bind("<Button-1>",
+                   lambda event,
+                   lbl=label,
+                   cat=category:
+                   on_category_click_settings(lbl, cat))
         category_labels_settings.append(label)
 
     # Alle Frames initial verstecken
