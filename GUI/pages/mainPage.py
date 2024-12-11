@@ -56,7 +56,7 @@ class mainPage(tk.Frame):
 
         def show_settings_window():
             from .settingsWindow import pop_up_settings
-            pop_up_settings(self)
+            pop_up_settings(self, controller)
 
         def show_admin_window():
             from .adminUserWindow import adminUserWindow
