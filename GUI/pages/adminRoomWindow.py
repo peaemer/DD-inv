@@ -3,11 +3,13 @@ from tkinter import ttk
 from tkinter import *
 import Datenbank.sqlite3api as sqlapi
 import cache
+import customtkinter as ctk
+from ._SRHFont import load_font, SRHHeadline
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
-from ._SRHFont import load_font, SRHHeadline
+
 
 # Hauptseite (zweites Fenster)
 class adminRoomWindow(tk.Frame):
@@ -70,14 +72,16 @@ class adminRoomWindow(tk.Frame):
         def change_to_user():
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
+
+        def change_to_roles():
+            from .adminRoomWindow import adminRoomWindow
+            controller.show_frame(adminRoomWindow)
+
+
         global tree
 
-        # Konfiguriere das Grid-Layout für die Hauptseite
-        self.grid_rowconfigure(0, weight=0)
-        self.grid_rowconfigure(1, weight=1)
-        self.grid_rowconfigure(2, weight=0)
-        self.grid_columnconfigure(0, weight=0)
-        self.grid_columnconfigure(1, weight=1)
+        # Konfiguriere das Grid-Layout für das adminRoomWindow
+        self.grid_columnconfigure(0, weight=1)
 
         # Erstelle einen Header-Bereich
         header_frame = tk.Frame(self, background="#DF4807")
@@ -120,19 +124,35 @@ class adminRoomWindow(tk.Frame):
                                    activebackground="#DF4807")
         options_button.grid(row=0, column=2, sticky=tk.E, padx=20)
 
-        grey_frame_side = tk.Frame(self, background=srhGrey)
-        grey_frame_side.grid(row=1, column=0, sticky=tk.W + tk.N + tk.S)
 
-        user_button = tk.Button(grey_frame_side, text="Nutzer", bd=0, relief=tk.FLAT ,command=change_to_user, bg=srhGrey, font=("Arial", 20))
-        user_button.grid(padx=40, pady=5, row=0, column=0, sticky=tk.W + tk.E)
+        #########
+        #NAV:BAR#
+        #########
 
-        room_button = tk.Button(grey_frame_side, text="Räume", bd=0, relief=tk.FLAT, bg=srhGrey, font=("Arial", 20))
-        room_button.grid(padx=40, pady=5, row=1, column=0, sticky=tk.W + tk.E)
+        navi = tk.Frame(self, background=srhGrey)
+        navi.grid(row=1, column=0, sticky="nesw")
+
+        navi.grid_columnconfigure(0, weight=1)
+        navi.grid_columnconfigure(1, weight=1)
+        navi.grid_columnconfigure(2, weight=1)
+
+        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=0, command=change_to_user, corner_radius=20, fg_color="#C5C5C5",
+                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
+        user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
+
+        room_nav = ctk.CTkButton(navi, text="Räume", border_width=0, corner_radius=20, fg_color="#C5C5C5",
+                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
+        room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
+
+        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20, fg_color="#C5C5C5",
+                                 text_color="black", command=change_to_roles, font=("Arial", 20),
+                                 hover_color="darkgray")
+        role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white")
-        middle_frame.grid(row=1, padx=10, pady=10, column=1, sticky="nesw")
+        middle_frame.grid(row=2, padx=10, pady=10, column=0, sticky="nesw")
 
         middle_frame.columnconfigure(0, weight=1)
         middle_frame.rowconfigure(1, weight=1)
@@ -196,6 +216,7 @@ class adminRoomWindow(tk.Frame):
             width=15,
             borderwidth=1
         )
+
         room_scroll.grid(row=1, column=1, sticky="ns")
         room_tree.configure(yscrollcommand=room_scroll.set)
 

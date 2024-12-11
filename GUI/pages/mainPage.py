@@ -138,6 +138,8 @@ class mainPage(tk.Frame):
                                    activebackground="#DF4807")
         log_out_button.grid(row=0, column=4, sticky=tk.E, padx=20)
 
+
+
         # Konvertiere das Bild für Tkinter
         self.opt_btn = tk.PhotoImage(file="assets/option.png")
 
