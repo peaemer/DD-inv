@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import *
 import Datenbank.sqlite3api as sqlapi
 import cache
+import customtkinter as ctk
 
 # Importieren der extra Schriftart
 from ._SRHFont import load_font, SRHHeadline
@@ -85,7 +86,7 @@ class mainPage(tk.Frame):
         def on_entry_click(event):
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
-                search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+                search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
 
         def on_key_press(event):
             typed_key = event.char  # The character of the typed key
@@ -93,7 +94,7 @@ class mainPage(tk.Frame):
         def on_focus_out(event):
             if search_entry.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+                search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
 
         global tree
 
@@ -220,7 +221,7 @@ class mainPage(tk.Frame):
         search_button.grid(padx=5, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
-        search_entry = tk.Entry(search_frame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
+        search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=20, border_width=0)
         search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -252,16 +253,15 @@ class mainPage(tk.Frame):
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings")
 
         # Scrollbar erstellen
-        scroll = tk.Scrollbar(
+        scroll = ctk.CTkScrollbar(
             tree_frame,
-            orient="vertical",
+            orientation="vertical",
             command=tree.yview,
-            bg="black",
-            activebackground="darkblue",
-            troughcolor="grey",
-            highlightcolor="black",
-            width=15,
-            borderwidth=1
+            fg_color="white",
+            width=20,
+            corner_radius=10,
+            button_color = srhGrey,
+            button_hover_color="#2980b9"
         )
         scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
 

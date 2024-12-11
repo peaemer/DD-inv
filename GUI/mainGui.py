@@ -43,7 +43,7 @@ class ddINV(tk.Tk):
 		width, height = self.winfo_screenwidth(), self.winfo_screenheight()
 		self.geometry('%dx%d+0+0' % (width, height))
 		self.tk.call('tk', 'scaling', 1.2)  # Vergroessert / verkleinert den Inhalt innerhalb des Fensters
-		self.resizable(False, False)  # Ermögliche Größenanpassung des Fensters
+		self.resizable(True, True)  # Ermögliche Größenanpassung des Fensters
 		self.minsize(1280, 720)
 		self.maxsize(1920,1080)
 		self.iconbitmap("assets/srhIcon.ico")  # Setze das Fenster-Icon

@@ -9,7 +9,7 @@ def add_user_popup(parent):
     add_popup.title("User Hinzufügen")
     add_popup.transient(parent)
     add_popup.grab_set()
-    add_popup.attributes('-topmost', True)
+    add_popup.attributes('-topmost', 0)
     add_popup.configure(background="white")
 
     screen_width = parent.winfo_screenwidth()
@@ -31,7 +31,7 @@ def add_user_popup(parent):
 
     # Header
     header_frame_add_item_popup = tk.Frame(add_popup, background="#DF4807")
-    header_frame_add_item_popup.grid(row=0, column=0, sticky=tk.NSEW)
+    header_frame_add_item_popup.grid(row=0, column=0, sticky="new")
     header_frame_add_item_popup.grid_columnconfigure(0, weight=1)
 
     header_label_add_item_popup = tk.Label(
@@ -75,11 +75,11 @@ def add_user_popup(parent):
     email_entry_add_user_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Rolle
-    roll_label_add_user_popup = tk.Label(
+    role_label_add_user_popup = tk.Label(
         input_frame_add_user_popup, text="Rolle", background="white",
         font=("Arial", size_add_user_popup)
     )
-    roll_label_add_user_popup.grid(row=2, column=0, padx=10, pady=20, sticky=tk.E)
+    role_label_add_user_popup.grid(row=2, column=0, padx=10, pady=20, sticky=tk.E)
 
     role_values = []
     for room in db.read_all_rollen():

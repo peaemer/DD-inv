@@ -33,7 +33,7 @@ def lend_popup(parent, data):
     popup.transient(parent)
     popup.configure(background="white")
     popup.grab_set()  # Macht das Popup modal
-    popup.attributes("-topmost", True)
+    popup.attributes("-topmost", 0)
 
     # Bildschirmbreite und -höhe ermitteln
     screen_width = parent.winfo_screenwidth()
