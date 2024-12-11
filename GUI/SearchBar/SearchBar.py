@@ -102,12 +102,13 @@ def __scale_history_weights(search_term:str, history:list[dict[str, str]])->bool
             entry['weight'] = str(weight)
     return term_existed
 
-def __update_dropdown(new_items:List[str])->None:
+def __update_dropdown(new_items:List[str], dropdown:tk.Listbox)->None:
     print(f"[SearchBar]:update dropdown")
-    dropdown.place(x=100,y=135)
+    dropdown.place(x=0,y=0)
     dropdown.delete(0, tk.END)
     for item in new_items:
         dropdown.insert(tk.END, item)
+    dropdown.tkraise()
 
 def on_dropdown_select(event:tk.Event)->None:
     """

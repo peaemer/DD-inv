@@ -1,5 +1,6 @@
 import tkinter as tk
 
+import cache
 from GUI.pages import adminUserWindow
 #https://chatgpt.com/share/6746f2eb-67ac-8003-95be-480c6f1bd897
 
@@ -69,7 +70,8 @@ class ddINV(tk.Tk):
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid
 	# Verändert die Seite beim Start
-		self.show_frame(logInWindow)
+		cache.user_name = 'Pierreß'
+		self.show_frame(mainPage)
 
 
 	# Funktion, um ein Frame (Seite) anzuzeigen
