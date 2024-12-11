@@ -1,5 +1,5 @@
-import math
-from importlib.resources import read_text
+#import math
+#from importlib.resources import read_text
 
 from Datenbank import sqlite3api as db
 import json
@@ -41,16 +41,16 @@ def fetch_limited_hardware(term:str, username:str=fallback_username)->list[str,d
                     data.append(database_entry)
     return data
 
-def pending_search(username:str=fallback_username)->None:
-    search_term = searchbar.get()
-    print(f"""[SearchBar]:running pending search with searchbar text: "{search_term}" """)
-    user_data:str = db.read_benutzer_suchverlauf('Alex')
-    print(f"""[SearchBar]: read history as string, data="{user_data}" """)
-    history_object_ = json.loads(user_data)
-    print('[SearchBar]: converted string to object, object='+str(history_object_))
+#def pending_search(username:str=fallback_username)->None:
+#    search_term = searchbar.get()
+#    print(f"""[SearchBar]:running pending search with searchbar text: "{search_term}" """)
+#    user_data:str = db.read_benutzer_suchverlauf('Alex')
+#    print(f"""[SearchBar]: read history as string, data="{user_data}" """)
+#    history_object_ = json.loads(user_data)
+#    print('[SearchBar]: converted string to object, object='+str(history_object_))
 
-def hide_dropdown(event):
-    dropdown.place_forget()
+#def hide_dropdown(event):
+#    dropdown.place_forget()
 
 def __limit_scl(factor1:float, factor2:float, limit:float)->float: return limit if factor1*factor2 > limit else factor1 * factor2
 def __limit_div(dividend:float, divisor:float, limit:float)->float: return limit if dividend / divisor < limit else dividend / divisor
@@ -104,19 +104,19 @@ def __scale_history_weights(search_term:str, history:list[dict[str, str]])->bool
 
 def __update_dropdown(new_items:List[str], dropdown:tk.Listbox)->None:
     print(f"[SearchBar]:update dropdown")
-    dropdown.place(x=0,y=0)
+    dropdown.place(x=100,y=130)
     dropdown.delete(0, tk.END)
     for item in new_items:
         dropdown.insert(tk.END, item)
     dropdown.tkraise()
 
-def on_dropdown_select(event:tk.Event)->None:
+def on_dropdown_select(dropdown:tk.Listbox)->None:
     """
         called when dropdown selection is clicked
 
         Parameters
         ----------
-        :param tk.event event: the event args passed by the button
+        :param tk.Listbox dropdown: the dropdown where th past search terms are displayed
     """
     selected_values = [dropdown.get(i) for i in dropdown.curselection()]
     selected_item:str = selected_values[0]
@@ -125,14 +125,14 @@ def on_dropdown_select(event:tk.Event)->None:
     searchbar.insert(0, selected_item)
     searchbar.focus()
 
-def update_search(*args):
+def update_search(dropdown:tk.Listbox, searchbar_var:tk.StringVar)->None:
     """
         called when the user types an additional character into the search bar
 
         Parameters:
-        :param Tk.Event args: the event args passed by the button
+        :param tk.Listbox dropdown: dropdown to be updated later
+        :param tk.StringVar searchbar_var: a string variable to get the newly typed character from
     """
-    global searchbar_var
     search_term = searchbar_var.get()
     print(f"""[SearchBar]:running pending search with searchbar text "{search_term}" """)
     new_options:List[str] = []
@@ -144,24 +144,25 @@ def update_search(*args):
             i = i+1
         if i>=6:
             break
-    __update_dropdown(new_options)
+    __update_dropdown(new_options, dropdown)
 
-def start_search(event:tk.Event)->None:
+def start_search(dropdown:tk.Listbox, searchbar_var:tk.StringVar, username:str = fallback_username)->None:
     """
         called when the user stops typing into the search bar
 
         Parameters:
-        :param Tk.Event event: the event args passed by the button
+
     """
     global search_is_running, loaded_history
     search_term = searchbar_var.get()
     print(f"""[SearchBar]:starting search""")
-    loaded_history = json.loads(db.read_benutzer_suchverlauf('Alex'))
+    loaded_history = json.loads(db.read_benutzer_suchverlauf(username))
     print(f"""[SearchBar]:loaded "{loaded_history}" """)
     search_is_running = True
-    update_search(None)
+    update_search(dropdown, searchbar_var)
 
-def finish_search(search_term:str)->None:
+
+def finish_search(searchbar_:tk.Entry, search_term:str, username:str = fallback_username)->None:
     """
         Called once user stops typing into the search bar.
         Recalculates the weight and spree of each term.
@@ -169,12 +170,12 @@ def finish_search(search_term:str)->None:
 
         Parameters:
         :param str search_term: the final string to search for
+        :param str username: the username of the user who is currently searching
+        :param Tk.Entry searchbar_: the searchbar entry where the user was typing in
     """
     global search_is_running, loaded_history
     print(f"""[SearchBar]:finishing search with searchbar text "{search_term}" """)
     sorted_history:list[dict[str, str]] = sorted(loaded_history,key=lambda x:x['weight'])
-    #sorted_history = sorted(sorted_history,key=lambda x:x['spree'])
-
     if not __scale_history_weights(search_term, sorted_history):
         while len(sorted_history) >= 30:
             sorted_history.pop()
@@ -184,20 +185,20 @@ def finish_search(search_term:str)->None:
         print(f"""[SearchBar]:adding: "{temp}" """)
         print(f"""[SearchBar]:loaded history is now "{sorted_history}" """)
     print(sorted_history)
-    db.update_benutzer('Alex', neue_suchverlauf=json.dumps(sorted_history))
-    searchbar.delete(0, tk.END)
+    db.update_benutzer(username, neue_suchverlauf=json.dumps(sorted_history))
+    searchbar_.delete(0, tk.END)
     print(f"""[SearchBar]: writing to database "{json.dumps(sorted_history)}" """)
-    loaded_history = json.loads(db.read_benutzer_suchverlauf('Alex'))
+    loaded_history = json.loads(db.read_benutzer_suchverlauf(username))
     print(f"""[SearchBar]: reloaded loaded_history is now "{loaded_history}" """)
 
 
 # Bind the focus events to the test gui
-searchbar.bind("<FocusIn>", start_search)
+searchbar.bind("<FocusIn>", lambda event: start_search(dropdown, searchbar_var, 'Alex'))
 searchbar.bind("<FocusOut>", lambda event: dropdown.place_forget())
-searchbar_var.trace_add("write", update_search)
-search_button.bind("<Button-1>", lambda event: finish_search(searchbar_var.get()))
-dropdown.bind("<<ListboxSelect>>", on_dropdown_select)
-select_item_button.bind("<Button-2>", lambda event: finish_search(event.widget.curselection()[0]))
+searchbar_var.trace_add("write", lambda var1_, var2_, var3_: update_search(dropdown, searchbar_var))
+search_button.bind("<Button-1>", lambda event: finish_search(searchbar, searchbar_var.get(), 'Alex'))
+dropdown.bind("<<ListboxSelect>>", lambda  event: on_dropdown_select(dropdown))
+select_item_button.bind("<Button-2>", lambda event: finish_search(searchbar, event.widget.curselection()[0], 'Alex'))
 
 
 
