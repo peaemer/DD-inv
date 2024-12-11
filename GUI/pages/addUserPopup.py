@@ -75,11 +75,11 @@ def add_user_popup(parent):
     email_entry_add_user_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Rolle
-    roll_label_add_user_popup = tk.Label(
+    role_label_add_user_popup = tk.Label(
         input_frame_add_user_popup, text="Rolle", background="white",
         font=("Arial", size_add_user_popup)
     )
-    roll_label_add_user_popup.grid(row=2, column=0, padx=10, pady=20, sticky=tk.E)
+    role_label_add_user_popup.grid(row=2, column=0, padx=10, pady=20, sticky=tk.E)
 
     role_values = []
     for room in db.read_all_rollen():
