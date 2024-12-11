@@ -26,7 +26,7 @@ def add_item_popup(parent):
     add_popup.title("Neuer Eintrag")
     add_popup.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
     add_popup.grab_set()         # Blockiere Interaktionen mit dem Hauptfenster
-    add_popup.attributes('-topmost', True)  # Erzwinge den Fokus auf das Popup
+    add_popup.attributes('-topmost', 0)
     add_popup.configure(background="white")
 
     # Bildschirmbreite und -höhe ermitteln

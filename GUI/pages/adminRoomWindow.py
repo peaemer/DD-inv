@@ -49,9 +49,9 @@ class adminRoomWindow(tk.Frame):
         def search():                           # funktionalität hinzufügen
             print("I am Searching")
 
-        def add_item():
-            from .addItemPopup import add_item_popup
-            add_item_popup(self)
+        def add_room():
+            from .addRoomPopup import add_room_popup
+            add_room_popup(self)
 
         def on_entry_click(event):
             if room_search_entry.get() == 'Suche':
@@ -147,7 +147,7 @@ class adminRoomWindow(tk.Frame):
 
 
         self.add_btn = tk.PhotoImage(file="assets/HinzuSmall.png")
-        room_add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        room_add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_room)
         room_add_button.grid(padx=10, pady=5, row=0, column=2, sticky="w")
 
         self.searchBtn = tk.PhotoImage(file="assets/SearchButton.png")

@@ -9,7 +9,7 @@ def add_user_popup(parent):
     add_popup.title("User Hinzufügen")
     add_popup.transient(parent)
     add_popup.grab_set()
-    add_popup.attributes('-topmost', True)
+    add_popup.attributes('-topmost', 0)
     add_popup.configure(background="white")
 
     screen_width = parent.winfo_screenwidth()
@@ -31,7 +31,7 @@ def add_user_popup(parent):
 
     # Header
     header_frame_add_item_popup = tk.Frame(add_popup, background="#DF4807")
-    header_frame_add_item_popup.grid(row=0, column=0, sticky=tk.NSEW)
+    header_frame_add_item_popup.grid(row=0, column=0, sticky="new")
     header_frame_add_item_popup.grid_columnconfigure(0, weight=1)
 
     header_label_add_item_popup = tk.Label(
