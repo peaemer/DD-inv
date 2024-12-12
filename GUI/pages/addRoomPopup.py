@@ -7,6 +7,18 @@ from GUI.pages import roomDetailsWindow
 
 
 def add_room_popup(parent):
+    """
+    Fügt ein Popup-Fenster hinzu, das verwendet wird, um Daten für einen neuen Raum
+    einzugeben, einschließlich Raumbezeichnung und Ort. Das Fenster bietet zusätzlich
+    Optionen zur Bestätigung oder zum Abbrechen der Eingabe.
+
+    :param parent: Das übergeordnete Fenster, auf dem das Popup-Fenster dargestellt wird.
+    :type parent: tkinter.Tk oder tkinter.Frame
+
+    :return: Entweder wird das Popup geschlossen ohne Aktion, oder die Eingaben werden
+             verarbeitet und einem extern definierten Datenbanksystem hinzugefügt.
+    :rtype: None
+    """
     add_popup = tk.Toplevel(parent)
     add_popup.title("Raum Hinzufügen")
     add_popup.transient(parent)
@@ -78,6 +90,20 @@ def add_room_popup(parent):
 
     # Buttons (anpassung benötigt)
     def submit_entry():
+        """
+        Fügt ein Popup-Fenster hinzu, mit dem ein Benutzer Räume in einer Anwendung anlegen
+        oder bearbeiten kann. Diese Funktion überprüft die Eingaben des Benutzers und erstellt
+        einen neuen Benutzer in der Datenbank mit einem generierten Passwort, falls die
+        Eingaben korrekt sind. Zeigt bei Erfolg eine Meldung an und aktualisiert die
+        Daten in der Adminansicht.
+
+        :parameter parent: Referenz auf das Eltern-Widget.
+        :type parent: tkinter Widget
+
+        :raises None: Keine spezifischen Ausnahmen werden behandelt.
+
+        :return: Gibt keinen Wert zurück.
+        """
         pw = str(''.join(random.choices(string.ascii_letters, k=7)))
         if not room_entry_add_room_popup.get() or room_entry_add_room_popup.get() == "" or not role_combobox_add_user_popup.get() or role_combobox_add_user_popup.get() == "Rolle auswählen":
             error_label.configure(text="Please enter all required fields")
@@ -89,6 +115,17 @@ def add_room_popup(parent):
             add_popup.destroy()
 
     def exit_entry():
+        """
+        Öffnet ein Popup-Fenster, um einem Eltern-Widget einen neuen Raum hinzuzufügen.
+        Diese Funktion dient zur benutzerfreundlichen Eingabe und Überprüfung von Raumdaten
+        innerhalb der Anwendung.
+
+        :param parent: Das Eltern-Widget, auf dem das Popup erstellt wird. Wird verwendet,
+                       um sicherzustellen, dass das Popup korrekt in der GUI-Hierarchie
+                       platziert wird.
+        :type parent: Widget
+        :return: Gibt nichts zurück.
+        """
         add_popup.destroy()
 
     parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/Hinzu.png")

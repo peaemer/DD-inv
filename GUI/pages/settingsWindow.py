@@ -18,24 +18,39 @@ srhGrey = "#d9d9d9"
 srhOrange = "#DF4807"
 
 
-##############################
-# # H A U P T L A Y O U T # #
-##############################
+#########################
+# H A U P T L A Y O U T #
+#########################
 
 # Funktion erstellt Popupfenster "Einstellungen"
 def pop_up_settings(parent, controller):
     """
-    Creates a new settings window as a pop-up.
+    Erstellt ein neues Einstellungsfenster als Pop-up mit verschiedenen
+    Funktionen zur Anpassung und Anzeige von Benutzerdaten in einer GUI-Anwendung.
 
-    This function sets up a new pop-up window with specific configurations
-    such as size, position, icon, and grid layout. It also manages the
-    placement of header, sidebar, and dynamic content frames within the pop-up
-    window. The function prepares different frames for each category and
-    initializes the interface with a specific frame visible to the user.
+    Das Pop-up-Fenster bietet eine graphische Benutzeroberfläche, die folgende
+    Aspekte umfasst:
+    - Einstellungsoptionen, die in einem dynamisch anpassbaren Layout präsentiert
+      werden.
+    - Benutzerinformationen, einschließlich Profilbilder und Rollen in der Gruppe.
+    - Anzeige von Bildern, die entweder von URLs oder Base64-codierten Strings
+      geladen werden können.
+    - Anpassbare Seitenelemente und Farbschemata, um den Stil der Anwendung
+      konsistent zu halten.
 
-    :param parent: The parent window to which this pop-up is associated.
-    :type parent: tkinter.Tk
-    :return: None
+    Das Fenster wird zentriert auf dem Bildschirm angezeigt und kann in seinen
+    Abmessungen angepasst werden. Es beinhaltet Header-, Seitenleisten- und
+    Profilbereiche sowie weitere konfigurierbare Abschnitte.
+
+    :param parent: Das Hauptfenster, von welchem das Pop-up angezeigt wird.
+    :type parent: tk.Tk
+    :param controller: Ein übergeordnetes Steuerungsobjekt der Anwendung, das
+        eventuell benötigt wird, um auf globale Informationen und Methoden der
+        Anwendung zuzugreifen.
+    :type controller: object
+    :return: Gibt das konfigurierte Einstellungs-Pop-up Fenster als `tk.Toplevel`
+        Objekt zurück.
+    :rtype: tk.Toplevel
     """
     # erstellt ein neues Fenster
     popup = tk.Toplevel(parent)
@@ -113,14 +128,36 @@ def pop_up_settings(parent, controller):
     profile_btn_label.grid(row=0, column=0, pady=10, sticky="nw")
 
     def load_image_from_url(url):
-        """Lädt ein Bild von einer URL."""
+        """
+        Lädt ein Bild von einer angegebenen URL herunter und gibt das Bildobjekt zurück.
+
+        Das Bild wird von der angegebenen URL abgerufen, erforderliche Daten werden im
+        Speicher verarbeitet, und das Bild wird mithilfe von `Pillow` geöffnet und
+        zurückgegeben.
+
+        :param url: Die URL, von der das Bild heruntergeladen werden soll.
+        :type url: str
+        :return: Ein Bildobjekt, das die heruntergeladene Bilddatei repräsentiert.
+        :rtype: PIL.Image.Image
+        :raises requests.HTTPError: Wird ausgelöst, wenn die HTTP-Anfrage fehlschlägt, z.B. bei 404 oder 500.
+        """
         response = requests.get(url)
         response.raise_for_status()  # Überprüft, ob die Anfrage erfolgreich war
         img_data = BytesIO(response.content)  # Bilddaten in einen BytesIO-Stream laden
         return Image.open(img_data)
 
     def load_image_from_base64(base64_string):
-        """Lädt ein Bild aus einem Base64-String."""
+        """
+        Decodiert einen Base64-kodierten Bild-String und lädt das Bild-Objekt.
+
+        Diese Funktion nimmt einen Base64-kodierten Bild-String, dekodiert ihn und
+        erzeugt ein Bild-Objekt, das weiterverwendet werden kann.
+
+        :param base64_string: Der Base64-kodierte Bild-String.
+        :type base64_string: str
+        :return: Ein Bild-Objekt, das aus dem dekodierten Bild-String erstellt wurde.
+        :rtype: Image
+        """
         img_data = base64.b64decode(base64_string)
         img = Image.open(BytesIO(img_data))
         return img
@@ -186,6 +223,15 @@ def pop_up_settings(parent, controller):
 
     # PNG-Bild für Btn
     def load_button_images_profile():
+        """
+        Lädt und gibt das Bild einer Schaltfläche für die Abmeldung des Benutzers zurück.
+
+        Dieses Bild kann in einer GUI verwendet werden, um eine konsistente Darstellung
+        der Benutzeroberfläche zu gewährleisten.
+
+        :return: Das Bild der Schaltfläche als `tk.PhotoImage` Objekt.
+        :rtype: tk.PhotoImage
+        """
         btn_image_logout = tk.PhotoImage(file="assets/BenutzerAbmeldenSettings.png")
         return btn_image_logout
 
@@ -194,6 +240,15 @@ def pop_up_settings(parent, controller):
 
     # def zum Abmelden des Benutzers
     def log_out(controller):
+        """
+        Zeigt die Einstellungs-Popup-Funktionalität an und erlaubt es dem Benutzer, sich auszuloggen.
+
+        :param parent: Das Eltern-Widget, das als Basis für das Popup-Fenster dient.
+        :type parent: widget
+        :param controller: Der Controller, der für die Navigation und Zustandsverwaltung der Anwendung
+                           verantwortlich ist.
+        :type controller: Controller-Klasse
+        """
         from .logInWindow import logInWindow
         cache.user_group = None  # Benutzergruppe zurücksetzen
         controller.show_frame(logInWindow)
@@ -236,6 +291,20 @@ def pop_up_settings(parent, controller):
     button_bg_label.grid(row=6, column=0, pady=10, sticky="nw")
 
     def set_default_background():
+        """
+        Zeigt ein Pop-up-Fenster für die Einstellungen einer Anwendung an.
+
+        Diese Funktion steuert das Display eines Einstellungspop-ups innerhalb der Anwendung.
+        Sie konfiguriert visuelle Eigenschaften und verwaltet dynamische Elemente basierend
+        auf den übergebenen Argumenten.
+
+        :param parent: Hauptfenster oder Widget, das das Pop-up-Fenster enthält
+        :type parent: Widget
+        :param controller: Steuerungsobjekt zur Verwaltung des Pop-ups
+        :type controller: object
+        :return: Es wird kein Wert zurückgegeben.
+        :rtype: None
+        """
         parent.configure(bg="white")
         popup.configure(bg="white")
         if hasattr(parent, "bg_label"):
@@ -303,6 +372,18 @@ def pop_up_settings(parent, controller):
 
     # def fuer btn change app background
     def change_app_background(color):
+        """
+        Funktion, um den App-Hintergrundfarben zu ändern.
+
+        Diese Funktion nimmt eine Farbe als Eingabe und aktualisiert sowohl den
+        Hintergrund einer bestimmten Eltern-Komponente als auch den eines Popup-Fensters
+        mit der angegebenen Farbe. Sie wird verwendet, um das Erscheinungsbild der
+        Benutzeroberfläche dynamisch anzupassen.
+
+        :param color: Die neue Hintergrundfarbe als Zeichenkette.
+        :type color: str
+        :return: Diese Funktion hat keinen Rückgabewert.
+        """
         parent.configure(bg=color)
         popup.configure(bg=color)
 
@@ -320,6 +401,19 @@ def pop_up_settings(parent, controller):
 
     # PNG-Bilder für Buttons laden
     def load_button_images_style():
+        """
+        Lädt die Bilder für die Schaltflächen im Button-Stil.
+
+        Diese Funktion lädt und gibt zwei `tk.PhotoImage`-Objekte für die Darstellung von
+        Schaltflächenbildern zurück. Die Bilder werden aus angegebenen Dateien geladen und
+        können anschließend in der Benutzeroberfläche verwendet werden.
+
+        :raises FileNotFoundError: Wenn die angegebenen Bilddateien nicht gefunden werden.
+
+        :return: Ein Tupel von `tk.PhotoImage`-Objekten, das die Bilder für die
+                 Schaltflächen enthält.
+        :rtype: Tuple[tk.PhotoImage, tk.PhotoImage]
+        """
         btn_image_select = tk.PhotoImage(file="assets/BesseresAussehenWählen.png")
         btn_image_reset = tk.PhotoImage(file="assets/HintergrundZurücksetzen.png")
         return btn_image_select, btn_image_reset
@@ -329,6 +423,17 @@ def pop_up_settings(parent, controller):
 
     # Hintergrundbild-Auswahl
     def apply_selected_image_style():
+        """
+        Zeigt ein Popup-Fenster für die Einstellungen an und ermöglicht es den Benutzern, ein Hintergrundbild
+        auszuwählen. Diese Funktion öffnet ein Dateidialogfeld, um ein Bild auszuwählen, und wendet das ausgewählte
+        Bild als Hintergrund auf das übergebene Eltern-Widget an.
+
+        :param parent: Das übergeordnete Widget bzw. der Container, auf den das ausgewählte Bild angewendet werden soll.
+        :type parent: tk.Widget
+        :param controller: Der Controller, der für die Steuerung des Popup-Fensters verantwortlich ist.
+        :type controller: object
+        :return: Es wird kein Wert zurückgegeben.
+        """
         file_path = filedialog.askopenfilename(title="Wähle ein Bild aus...",
                                                filetypes=[("Bilddateien", "*.png;*.jpg;*.jpeg")])
 
@@ -347,6 +452,18 @@ def pop_up_settings(parent, controller):
 
     # Hintergrund setzen
     def set_default_background():
+        """
+        Konfiguriert die Pop-up-Einstellungen für eine spezifische Oberfläche.
+        Das Hauptziel der Funktion ist es, das Erscheinungsbild des Pop-ups gemäß
+        angegebener Parameter zu definieren.
+
+        :param parent: Die übergeordnete Oberfläche, auf der das Pop-up angewendet wird.
+        :type parent: Widget
+        :param controller: Kontrollinstanz, die die Logik des Pop-ups steuert.
+        :type controller: Object
+        :return: Keine Rückgabe.
+        :rtype: None
+        """
         parent.configure(bg="white")
         popup.configure(bg="white")
         if hasattr(parent, "bg_label"):
@@ -591,16 +708,17 @@ def pop_up_settings(parent, controller):
     # Funktion zum Anzeigen des Frames
     def show_frame_settings(category):
         """
-        Updates the visible frame in a user interface based on the provided category.
+        Öffnet das Einstellungs-Popup-Fenster und bindet es mit dem übergebenen
+        Elternelement und der Steuerkomponente. Diese Funktion dient zur
+        Konfigurationsaktualisierung, die in einer grafischen Benutzeroberfläche
+        integriert ist.
 
-        This function manages the display of frames by hiding the currently visible
-        frame and revealing the new frame associated with the given category. It
-        ensures that only one frame is visible at a time, corresponding to the user's
-        selection.
-
-        :param category: The category used to determine which frame to display. A
-                         corresponding frame must exist within the frames collection.
-        :return: None
+        :param parent: Das Elternelement des Einstellungs-Popups
+        :type parent: Objekt
+        :param controller: Steuereinheit zur Verwaltung des Einstellungszustands
+        :type controller: Objekt
+        :return: Gibt keinen Rückgabewert zurück
+        :rtype: None
         """
         print(f"Aktuell sichtbarer Frame vor Verstecken: {frames}")
         nonlocal current_frame  # Zugriff auf die äußere Variable
@@ -617,20 +735,17 @@ def pop_up_settings(parent, controller):
     # Funktion für Klick auf Kategorie
     def on_category_click_settings(label_settings, category_settings):
         """
-        Manages the label and category settings when a category is clicked.
+        Ruft bestimmte Einstellungen auf und hebt ausgewählte Kategorien visuell hervor,
+        indem Label- und Frame-Eigenschaften konfiguriert werden. Wird verwendet, um Benutzern ein interaktives
+        Navigationssystem innerhalb der Konfigurationsoberfläche zu bieten.
 
-        This function is responsible for updating the visual appearance of
-        category labels and displaying the associated frame when a category
-        is selected. It resets all other category labels to a default state
-        and highlights the selected category for user clarity.
+        :param label_settings: Das Label-Widget, das hervorgehoben werden soll.
+        :type label_settings: Tkinter.Label
+        :param category_settings: Die Kategorie oder der Frame, der mit dem angeklickten Label verbunden
+            ist und angezeigt werden soll.
+        :type category_settings: Tkinter.Frame
 
-        :param label_settings: The label widget associated with the selected
-                              category. It requires configuration to highlight
-                              the selected label.
-        :param category_settings: The settings or information related to the
-                                 selected category. This data is used to
-                                 determine which frame to display.
-        :return: None
+        :return: Gibt keinen Rückgabewert zurück.
         """
         # Setze alle Labels zurück
         for cat in category_labels_settings:

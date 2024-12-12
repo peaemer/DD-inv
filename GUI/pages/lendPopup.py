@@ -15,16 +15,19 @@ srhGrey = "#d9d9d9"
 
 def lend_popup(parent, data):
     """
-    Creates a popup window that facilitates the lending process by allowing the user
-    to input and confirm lending details such as item name, borrower, and lending date.
-    The window is modal, non-resizable, and is positioned to the center of the screen.
+    Erstellt ein modales Popup-Fenster zur Verwaltung von Ausleihvorgängen. Das Fenster
+    zeigt ein Formular zur Eingabe von Ausleihdetails, einschließlich Name des Objekts,
+    Name des Ausleihers und gegebenenfalls ein Ausleihdatum. Es bietet zwei
+    Interaktionsmöglichkeiten: Bestätigung, die die Eingaben verarbeitet und das Fenster
+    schließt, oder Abbruch, um die Aktion abzubrechen und das Fenster zu schließen.
 
-    :param parent: The parent window that the popup will be associated with, which helps
-                   in modal configuration and center positioning.
-    :param data: A dictionary that contains initial data for the popup, specifically the
-                 name of the item to be lent, which is pre-filled in the corresponding
-                 entry field.
-    :return: None
+    :param parent: Das übergeordnete Fenster, aus dem das Popup geöffnet wird
+      :type parent: tk.Tk oder tk.Toplevel
+    :param data: Ein Wörterbuch mit vorkonfigurierten Daten für die Ausleihe.
+      Es enthält mindestens den Schlüssel "name", der den Namen des ausgeliehenen
+      Objekts angibt.
+      :type data: dict
+    :return: Gibt keine Werte zurück.
     """
     # Neues Fenster (Popup)
     popup = tk.Toplevel()
@@ -58,6 +61,18 @@ def lend_popup(parent, data):
 
     # Funktion, um die Eingaben zu verarbeiten
     def confirm_lend():
+        """
+        Zeigt ein Ausleih-Popup-Fenster, das es ermöglicht, Daten über einen auszuleihenden
+        Artikel und den Entleiher einzugeben. Nach Bestätigung wird das Popup geschlossen
+        und die Daten der Konsole ausgegeben.
+
+        :param parent: Das übergeordnete Fenster, zu dem das Popup gehört.
+        :type parent: tkinter.Tk oder tkinter.Toplevel
+        :param data: Zusätzliche Daten, die beim Erstellen des Popups verwendet werden können.
+
+        :rtype: None
+        :return: Gibt nichts zurück.
+        """
         item = name_entry.get().strip()
         borrower = entry.get().strip()
         #lend_date = calEntry.get().strip()

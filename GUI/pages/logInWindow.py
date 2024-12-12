@@ -13,16 +13,16 @@ srhOrange = "#DF4807"
 
 class logInWindow(tk.Frame):
     """
-    Represents a login window frame for the application, designed to interface with
-    a `controller` to facilitate user authentication and navigation. This class
-    manages user input for authentication, updates cache with user details, and
-    controls the display transition based on authentication success. It includes
-    UI elements like rounded entry fields and buttons, constructed using the
-    Tkinter library.
+    Eine Klasse, die ein Login-Fenster für die Anwendung darstellt.
 
-    :ivar srh_head: Image for the header logo located at 'assets/srhHeader.png'.
+    Dieses Fenster dient als Benutzeroberfläche für den Login in die Anwendung. Es enthält
+    unter anderem Eingabefelder für die Eingabe des Benutzernamens und des Passworts, sowie
+    einen Button zur Authentifizierung. Die Klasse übernimmt die Darstellung und die
+    grundlegende Verarbeitung von Benutzerdaten zur Anmeldung.
+
+    :ivar srh_head: Enthält das Bild für den Header des Fensters.
     :type srh_head: tk.PhotoImage
-    :ivar log_out_btn: Image for the login button located at 'assets/Anmelden.png'.
+    :ivar log_out_btn: Enthält das Bild für den Button zur Anmeldung.
     :type log_out_btn: tk.PhotoImage
     """
     def __init__(self, parent, controller):
@@ -30,6 +30,26 @@ class logInWindow(tk.Frame):
         self.configure(background="white")
 
         def log_in():
+            """
+            Eine Klasse, die ein Login-Fenster als GUI-Komponente bereitstellt. Die Klasse
+            erweitert `tk.Frame` und bietet eine Funktionalität für die Benutzeranmeldung,
+            einschließlich der Überprüfung der Anmeldeinformationen und der Weiterleitung
+            zu einer Hauptseite bei erfolgreicher Authentifizierung. Die Benutzerdaten werden
+            im Cache gespeichert, um die Benutzerrolle und andere Aspekte festzulegen.
+
+            Attributes
+            ----------
+            parent : tk.Tk
+                Der übergeordnete Rahmen, in dem der Login-Rahmen eingebunden wird.
+            controller : tk.Tk
+                Der Controller, der zur Steuerung des Frames und des Seitenwechsels verwendet wird.
+
+            Methods
+            -------
+            log_in()
+                Führt die Authentifizierung der Benutzerdaten durch und leitet den Benutzer
+                bei erfolgreicher Anmeldung auf die Hauptseite weiter.
+            """
             password = password_entry.get().strip()
             user = username_entry.get().strip()
 
@@ -60,6 +80,17 @@ class logInWindow(tk.Frame):
 
 
         def on_enter(event):
+            """
+            Eine Klasse, die ein Anmeldefenster in einer GUI-Applikation darstellt. Sie erbt von
+            tk.Frame und bietet Funktionen zur Benutzerinteraktion und Anmeldung.
+
+            :param parent: Eltern-Widget, in dem sich diese Frame-Komponente befindet.
+                Erwartet ein tkinter Widget.
+            :param controller: Eine Controller-Instanz, die zur Navigation und Steuerung
+                anderer GUI-Komponenten verwendet wird. Sollte sicherstellen, dass sie über
+                die entsprechenden Methoden verfügt.
+
+            """
             log_in()
 
         self.grid_rowconfigure(0, weight=0)
@@ -102,7 +133,25 @@ class logInWindow(tk.Frame):
         form_frame.grid_columnconfigure(0, weight=1)
 
         def create_rounded_entry(canvas, parent, text_var, width=350, height=50):
-            """Hilfsfunktion, um ein Eingabefeld mit abgerundeten Ecken zu erstellen."""
+            """
+            Erstellt ein abgerundetes Eingabefeld innerhalb eines Canvas-Widgets. Die Funktion unterstützt
+            die Erstellung eines grafischen, abgerundeten Rahmens und platziert ein `tk.Entry`-Widget,
+            welches durch eine gegebene Textvariable gesteuert werden kann. Die Breite, Höhe und
+            Gestaltung des Rahmens können angepasst werden.
+
+            :param canvas: Das Canvas-Widget, innerhalb dessen das abgerundete Eingabefeld erstellt wird.
+                Typ: tkinter.Canvas
+            :param parent: Das übergeordnete Widget, in dem das Eingabefeld platziert wird.
+                Typ: tkinter.Widget
+            :param text_var: Die Textvariable, die den Inhalt des Eingabefeldes steuert.
+                Typ: tkinter.StringVar
+            :param width: Die Breite des abgerundeten Eingabefeldes. Standardwert ist 350.
+                Typ: int
+            :param height: Die Höhe des abgerundeten Eingabefeldes. Standardwert ist 50.
+                Typ: int
+            :return: Das erstellte Eingabefeld (tk.Entry).
+                Typ: tkinter.Entry
+            """
             radius = 20  # Radius für die Ecken
             canvas.create_oval(
                 0, 0, radius * 2, radius * 2, fill="#f0f0f0", outline="#f0f0f0"

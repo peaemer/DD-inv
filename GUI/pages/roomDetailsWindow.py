@@ -12,6 +12,17 @@ srhGrey = "#d9d9d9"
 
 
 def show_room_details(selected_room, tree, controller):
+    """
+    Zeigt die Details des ausgewählten Raums an. Die Methode liest die Daten aus
+    der ausgewählten Zeile eines Treeviews, speichert die ID des Raums in einem
+    Cache und aktualisiert die Daten des Detailframes. Anschließend wird der Frame
+    zum Anzeigen der Details angezeigt.
+
+    :param selected_room: Das ausgewählte Raumelement im Treeview.
+    :param tree: Der Treeview, aus dem die Daten abgerufen werden.
+    :param controller: Der Controller, der das Frame-Management übernimmt.
+    :return: Es wird kein Wert zurückgegeben.
+    """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_room, "values")
     print(f"Daten des ausgewählten Items: {data}")
@@ -24,16 +35,67 @@ def show_room_details(selected_room, tree, controller):
 
 
 class roomDetailsWindow(tk.Frame):
+    """
+    Die Klasse roomDetailsWindow dient zur Darstellung und Bearbeitung von Raumdetails in einer GUI.
+
+    Die Klasse ist eine Unterklasse von ``tk.Frame`` und wird zur Anzeige und Bearbeitung von Raumdaten
+    in einer GUI verwendet. Sie bietet Interaktionen zum Zurückkehren zu einer Admin-Seite, zum Anzeigen
+    eines Einstellungs-Popups sowie zum Aktualisieren oder Löschen von Raumeinträgen.
+
+    :ivar controller: Der Controller, der für die Steuerung der GUI-Seiten zuständig ist.
+    :type controller: tk.Tk
+    :ivar go_back_btn_details_window: Bild für den „Zurück“-Button.
+    :type go_back_btn_details_window: tk.PhotoImage
+    :ivar opt_btn_details_window: Bild für den „Optionen“-Button.
+    :type opt_btn_details_window: tk.PhotoImage
+    :ivar room_num_entry: Eingabefeld für die Raumnummer.
+    :type room_num_entry: tk.Entry
+    :ivar place_entry: Eingabefeld für den Ort.
+    :type place_entry: tk.Entry
+    :ivar edit_btn: Bild für den „Aktualisieren“-Button.
+    :type edit_btn: tk.PhotoImage
+    :ivar lend_btn: Bild für den „Ausleihen“-Button.
+    :type lend_btn: tk.PhotoImage
+    :ivar delete_btn: Bild für den „Löschen“-Button.
+    :type delete_btn: tk.PhotoImage
+    """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.configure(background="white")
 
         def go_back_details_window():
+            """
+            Eine Klasse, die ein Fenster darstellt, um Details von Räumen anzuzeigen. Erbt von
+            `tk.Frame` und dient als GUI-Komponente, die in einer tkinter-Anwendung eingebettet
+            werden kann. Es enthält Funktionalitäten, um zur vorherigen Fensteransicht zurückzukehren.
+
+            :Attributes:
+                Keine Attribute, die in der Klassenbeschreibung vorhanden sind.
+
+            :param parent: Das übergeordnete tk-Widget, in das dieser Frame eingebettet wird.
+            :type parent: tk.Widget
+            :param controller: Ein Objekt, das die Navigation und Verwaltung zwischen verschiedenen
+                tkinter-Frames steuert.
+            :type controller: object
+            """
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
 
         def show_settings_window_details_window():
+            """
+            Eine Klasse, die ein Fenster für Rauminformationen darstellt, das als Unterklasse
+            von tk.Frame implementiert wurde. Diese Klasse dient als grafisches Fenster,
+            das verschiedene Funktionen und Merkmale eines Rauminformationsfensters bereitstellt.
+
+            Attributes
+            ----------
+            parent : Tkinter Widget
+                Das übergeordnete Widget, auf das die aktuelle Instanz aufgesetzt wird.
+            controller : Objekt
+                Ein Steuerelement für die Verwaltung der Fenster- oder Anwendungslogik.
+
+            """
             print("Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
@@ -122,6 +184,20 @@ class roomDetailsWindow(tk.Frame):
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
+            """
+            Eine Klasse, die ein GUI-Frame-Fenster darstellt und Funktionen zur Darstellung
+            und Aktualisierung von Benutzerinformationen bietet. Die Klasse wird in einem
+            TKinter-Anwendungsrahmen verwendet und bietet Methoden zum Aktualisieren von
+            Benutzerdaten in einer Datenbank und zum Wechseln zwischen Fenstern.
+
+            Attributes:
+                name (tk.StringVar): Der Name des Benutzers, dessen Daten aktualisiert
+                    werden sollen.
+                email (tk.StringVar): Die zu aktualisierende E-Mail-Adresse des Benutzers.
+                role_combobox (ttk.Combobox): Die ComboBox, die die Rolle des Benutzers
+                    enthält und aktualisiert werden kann.
+
+            """
             #update
             db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
             from .adminUserWindow import adminUserWindow
@@ -129,6 +205,24 @@ class roomDetailsWindow(tk.Frame):
             controller.show_frame(adminUserWindow)
 
         def delete_entry():
+            """
+            Diese Klasse erstellt ein Fenster, das als Frame fungiert und zur Verwaltung von
+            Benutzerdetails in einer Anwendung dient. Die Instanz dieser Klasse kann Teil
+            eines größeren Tkinter-basierten GUI-Systems sein. Sie enthält Methoden, um
+            Einträge zu entfernen und die Anzeige zu aktualisieren.
+
+            :Attributes:
+                parent:
+                    Das Eltern-Widget, in welchem dieses Frame eingebettet wird.
+                controller:
+                    Der übergeordnete Controller, der die Navigation zwischen Frames
+                    innerhalb der Anwendung verwaltet.
+
+            :Methods:
+                delete_entry():
+                    Löscht Benutzereinträge aus der Datenbank und erneuert die entsprechende
+                    Anzeige im adminUserWindow-Frame.
+            """
             db.delete_benutzer(self.name.get())
             from .adminUserWindow import adminUserWindow
             adminUserWindow.update_treeview_with_data()
@@ -161,6 +255,15 @@ class roomDetailsWindow(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
 
     def update_data(self, data):
+        """
+        Aktualisiert die Daten in den Entry-Feldern mit den bereitgestellten Informationen.
+        Existierende Einträge in den Feldern werden gelöscht und durch die neuen Daten ersetzt.
+
+        :param data: Eine Liste, die die neuen Daten für die Entry-Felder enthält.
+                    Das erste Listenelement entspricht dem neuen Wert für `room_num_entry`.
+                    Das zweite Listenelement entspricht dem neuen Wert für `place_entry`.
+
+        """
         # Daten in die Entry-Felder einfügen
         self.room_num_entry.delete(0, tk.END)
         self.room_num_entry.insert(0, data[0])
