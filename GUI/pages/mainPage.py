@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 import Datenbank.sqlite3api as sqlapi
+from GUI.SearchBar.SearchBar import on_dropdown_select,start_search,update_search,finish_search
 import cache
 
 # Importieren der extra Schriftart
@@ -77,6 +78,8 @@ class mainPage(tk.Frame):
                         if entry not in search_entrys:
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
+            finish_search(cache.loaded_history, search_entry,dropdown,search_entry_var.get(),cache.user_name)
+            self.focus()
 
         def add_item():
             from .addItemPopup import add_item_popup
@@ -86,6 +89,9 @@ class mainPage(tk.Frame):
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+            start_search(cache.loaded_history, search_entry, dropdown, search_entry_var.get(), cache.user_name)
+            #dropdown.
+
 
         def on_key_press(event):
             typed_key = event.char  # The character of the typed key
@@ -94,6 +100,7 @@ class mainPage(tk.Frame):
             if search_entry.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+            dropdown.grid_forget()
 
         global tree
 
@@ -179,12 +186,13 @@ class mainPage(tk.Frame):
         print(show_size)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        search_frame = tk.Frame(middle_frame, bg="white")
+        search_frame = tk.Frame(middle_frame, bg="blue")
         search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         search_frame.grid_columnconfigure(0, weight=0)
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
+        search_frame.grid_columnconfigure(3, weight=0)
 
         # Btn Erstellen def mit Image und grid
         self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
@@ -203,8 +211,16 @@ class mainPage(tk.Frame):
                                   command=search)
         search_button.grid(padx=5, pady=5, row=0, column=0)
 
+        dropdown_var: tk.StringVar = tk.StringVar()
+        dropdown: tk.Listbox = tk.Listbox(search_frame, font=("Arial", 20), bg="white", listvariable=dropdown_var)
+        #dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
+
+        search_entry_var: tk.StringVar = tk.StringVar()
+        search_entry = tk.Entry(search_frame, font=("Arial", 20), bg='white', bd=0, fg='grey', textvariable=search_entry_var)
+        search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
+
         # Entry-Feld mit Platzhalter-Text
-        search_entry = tk.Entry(search_frame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
+        search_entry_var.trace_add("write", lambda var1, var2, var3: update_search(cache.loaded_history, dropdown, search_entry_var.get(), cache.user_name))
         search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -212,9 +228,7 @@ class mainPage(tk.Frame):
         search_entry.bind('<FocusOut>', on_focus_out)
         search_entry.bind('<Return>', search)
         search_entry.bind("<Key>", on_key_press)
-        search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
-
-
+        dropdown.bind("<<ListboxSelect>>", lambda  _: on_dropdown_select(search_entry, dropdown))
 
 
         # style der Tabelle

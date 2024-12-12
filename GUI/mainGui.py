@@ -70,7 +70,7 @@ class ddINV(tk.Tk):
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid
 	# Verändert die Seite beim Start
-		cache.user_name = 'Pierreß'
+		cache.user_name = 'Alex'
 		self.show_frame(mainPage)
 
 

@@ -71,6 +71,8 @@ class logInWindow(tk.Frame):
         header_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         self.srh_head = tk.PhotoImage(file="assets/srhHeader.png")
+        print(self.srh_head.name)
+        print(self.srh_head.get(10,10))
         srh_header = tk.Label(header_frame, image=self.srh_head, bd=0, bg=srhOrange)
         srh_header.grid(padx=10, pady=10, row=0, column=0, sticky=tk.W + tk.N + tk.E)
 
