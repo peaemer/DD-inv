@@ -1,7 +1,7 @@
 import tkinter as tk
+from tkinter import ttk
 
-import cache
-from GUI.pages import adminUserWindow
+from GUI.pages import adminUserWindow, roomDetailsWindow
 #https://chatgpt.com/share/6746f2eb-67ac-8003-95be-480c6f1bd897
 
 # Importiere Klassen direkt aus dem Modul pages
@@ -9,27 +9,28 @@ from pages import logInWindow,\
 				  mainPage,\
 				  userDetailsWindow,\
 				  detailsWindow,\
+				  roomDetailsWindow,\
 				  adminRoomWindow,\
 				  adminUserWindow,\
+				  adminRoleWindow,\
 			      _DPIAwareness
+import customtkinter as ctk
 
 
 # Hauptklasse für das Tkinter-Fenster
 class ddINV(tk.Tk):
 	"""
-	The ddINV class represents the main application window for an inventory tool.
+	Zusammenfassung der Klasse ddINV.
 
-	This class is responsible for initializing and configuring the main window
-	of the inventory tool application. It sets up the application window with
-	a specified title, size, and position on the screen. Additionally, it manages
-	the frames (or pages) within the window, allowing for navigation between
-	different sections of the application.
+	Die Klasse ddINV ist eine erweiterte Tkinter-Anwendung, die ein Hauptfenster zur Verwaltung eines
+	Inventarisierungstools bereitstellt. Sie verarbeitet das Layout, die Fensterkonfiguration und
+	die Navigation zwischen verschiedenen Seiten (Frames), die in das Hauptfenster geladen werden.
+	Sie dient als zentraler Einstiegspunkt für die Benutzeroberfläche des Tools.
 
-	:ivar frames: A dictionary that stores the different frames/pages within the
-	              application, keyed by frame class.
+	:ivar frames: Ein Dictionary, das die verschiedenen Frames (Seiten) der Anwendung speichert.
+	              Die Schlüssel sind die Frame-Klassen, und die Werte sind die Instanzen dieser Klassen.
 	:type frames: dict
 	"""
-	# Initialisierungsfunktion für das Hauptfenster
 	def __init__(self, *args, **kwargs):
 		# Initialisiere die Tkinter-Basis-Klasse
 		tk.Tk.__init__(self, *args, **kwargs)
@@ -44,6 +45,8 @@ class ddINV(tk.Tk):
 		self.geometry('%dx%d+0+0' % (width, height))
 		self.tk.call('tk', 'scaling', 1.2)  # Vergroessert / verkleinert den Inhalt innerhalb des Fensters
 		self.resizable(True, True)  # Ermögliche Größenanpassung des Fensters
+		self.minsize(1280, 720)
+		self.maxsize(1920,1080)
 		self.iconbitmap("assets/srhIcon.ico")  # Setze das Fenster-Icon
 
 		# Setze das Fenster in den Vordergrund
@@ -65,17 +68,24 @@ class ddINV(tk.Tk):
 		self.frames = {}
 
 		# Erstelle die Seiten (Frames) und speichere sie im Dictionary
-		for F in (logInWindow, mainPage,detailsWindow , userDetailsWindow, adminRoomWindow, adminUserWindow):
+		for F in (logInWindow, mainPage,detailsWindow , userDetailsWindow, adminRoomWindow,adminRoleWindow, adminUserWindow, roomDetailsWindow):
 			frame = F(container, self)
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid
 	# Verändert die Seite beim Start
-		cache.user_name = 'Alex'
-		self.show_frame(mainPage)
+		self.show_frame(logInWindow)
 
 
 	# Funktion, um ein Frame (Seite) anzuzeigen
 	def show_frame(self, cont):
+		"""
+		Zeigt einen bestimmten Frame an, hebt ihn in der Stapelreihenfolge hervor und ruft optional
+		die Methode `on_load` auf, falls sie im Frame definiert ist.
+
+		:param cont: Die Klasse des Frames, der angezeigt werden soll.
+		:type cont: Typ der Frame-Klasse
+		:return: Keine Rückgabe.
+		"""
 		print(f"show_frame wird für {cont.__name__} aufgerufen")  # Debug
 		frame = self.frames[cont]
 		if isinstance(frame, tk.Frame):

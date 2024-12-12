@@ -7,26 +7,28 @@ import cache
 
 def add_item_popup(parent):
     """
-    Creates a popup window for adding a new item. The popup window includes
-    fields for entering details such as the service tag, type, room, name,
-    and damage condition of an item. The window is configured to remain
-    on top and block interactions with the main application window until it
-    is closed. A submit button allows submission of the entered details,
-    and an exit button allows closing of the popup without submitting.
+    Erstellt ein Popup-Fenster, um ein neues Hardware-Element
+    in das Inventarsystem einzufügen. Dabei wird eine Benutzeroberfläche
+    erstellt, in der verschiedene Eingabefelder für die Eigenschaften
+    des Hardware-Elements (z. B. Service-Tag, Typ, Raum, Name, Zustand)
+    bereitgestellt werden.
 
-    :param parent: The parent window to which the popup belongs, providing
-        context for display and blocking interactions.
-    :type parent: tk.Tk or tk.Toplevel
+    Die Funktion dient der zentralisierten Erfassung neuer Daten
+    direkt durch die Benutzeroberfläche. Sie verarbeitet die Eingaben
+    und speichert diese gegebenenfalls in einer Datenbank ab. Zudem
+    wird ein Datenbank-Eintrag erstellt und die Hauptansicht entsprechend
+    aktualisiert.
 
-    :return: Returns the Toplevel widget that represents the popup window.
-    :rtype: tk.Toplevel
+    :param parent: Das Hauptfenster oder Widget, zu dem dieses Popup gehört.
+    :return: Rückgabe ist nicht definiert, da die Funktion keine expliziten
+             Werte zurückgibt.
     """
     # Toplevel-Fenster erstellen
     add_popup = tk.Toplevel(parent)
     add_popup.title("Neuer Eintrag")
     add_popup.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
     add_popup.grab_set()         # Blockiere Interaktionen mit dem Hauptfenster
-    add_popup.attributes('-topmost', True)  # Erzwinge den Fokus auf das Popup
+    add_popup.attributes('-topmost', 0)
     add_popup.configure(background="white")
 
     # Bildschirmbreite und -höhe ermitteln
@@ -127,16 +129,25 @@ def add_item_popup(parent):
     # Funktion zum Eintrag hinzufügen
     def submit_entry():
         """
-        Display a popup window to allow users to add a new hardware item to the
-        inventory system. The function creates a user interface for input fields
-        where users can specify details about the hardware item such as
-        service tag, type, room location, name, and damage status. Upon
-        submission, the inputs are saved to the database and the main page
-        treeview is updated to reflect the new entry.
+        Zeigt ein Popup-Fenster zum Hinzufügen eines neuen Geräts an und verarbeitet die Eingabe.
 
-        :param parent: The parent window or component to which the popup belongs.
-        :type parent: Widget
-        :return: None
+        Zusammenfassung:
+        Dieses Popup-Fenster ermöglicht es dem Benutzer, ein neues Gerät mit bestimmten Attributen
+        hinzuzufügen. Benutzer müssen die erforderlichen Felder ausfüllen, um sicherzustellen, dass
+        das Gerät erfolgreich zur Datenbank hinzugefügt wird. Falls ein erforderliches Feld fehlt,
+        wird eine Fehlermeldung angezeigt.
+
+        Funktionen:
+        - Ermöglicht die Eingabe von Attributen wie "service tag", "type", "room", "name" und "damage".
+        - Validiert die Benutzereingaben auf Pflichtfelder.
+        - Fügt das neue Gerät zur Datenbank hinzu, wenn alle Pflichtfelder ausgefüllt wurden.
+        - Aktualisiert die Benutzeroberfläche mit den neuesten Daten.
+        - Schließt das Popup, sobald der Eintrag erfolgreich verarbeitet wurde.
+
+        :parameter parent: Das Eltern-Widget, auf dem das Popup aufgerufen wird.
+        :typ parent: tkinter.Widget
+
+        :return: Nichts.
         """
         # add device
         # tag, typ,raum,name,damage
@@ -155,17 +166,18 @@ def add_item_popup(parent):
 
     def exit_entry():
         """
-        Displays a popup window to add an item.
+        Zeigt ein Fenster an, mit dem der Benutzer einen neuen Artikel hinzufügen
+        kann. Diese Funktion erstellt und zeigt ein Pop-up-Fenster, das genutzt
+        werden kann, um benutzerspezifische Eingaben entgegenzunehmen.
 
-        The function initializes and displays a popup window
-        that allows users to add a new item to a predefined list.
-        The popup will include necessary input fields and buttons
-        for user interaction.
-
-        :param parent: The parent widget that this popup will be
-                       attached to. It is usually a reference to
-                       a tkinter frame or window.
-        :type parent: tkinter.Tk or tkinter.Widget
+        :param parent: Das Eltern-Widget, zu dem dieses Pop-up-Fenster gehört
+                       (normalerweise ein Tkinter-Fenster oder -Dialog).
+                       Es wird verwendet, um das Pop-up-Fenster relativ dazu zu
+                       positionieren.
+        :type parent: tk.Widget
+        :return: Kehrt nach der Interaktion des Benutzers und dem Hinzufügen eines
+                 Artikels zurück, führt keine explizite Rückgabe von Werten durch.
+        :rtype: None
         """
         add_popup.destroy()
 

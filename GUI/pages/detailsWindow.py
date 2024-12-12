@@ -10,6 +10,16 @@ srhGrey = "#d9d9d9"
 
 
 def show_details(selectedItem, tree, controller):
+    """
+    Zeigt die Details eines ausgewählten Elements in einer Benutzeroberfläche an. Diese Funktion ruft die Daten
+    des ausgewählten Elements aus einer Baumstruktur ab, speichert die ID des Elements im Cache und zeigt die
+    Details-Seite mit den aktualisierten Informationen an.
+
+    :param selectedItem: Das aktuell ausgewählte Baum-Element.
+    :param tree: Die Baumstruktur, welche die zugehörigen Daten enthält.
+    :param controller: Der Controller, der für die Navigation und Verwaltung der Frames zuständig ist.
+    :return: Gibt keinen Wert zurück.
+    """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selectedItem, "values")
     print(f"Daten des ausgewählten Items: {data}")
@@ -22,16 +32,65 @@ def show_details(selectedItem, tree, controller):
 
 
 class detailsWindow(tk.Frame):
+    """
+    Repräsentiert ein Detailfenster innerhalb einer Tkinter-Applikation.
+
+    Das Detailfenster bietet Funktionen zur Anzeige von Details eines Objekts, Eingabefeldern
+    für verschiedene Eigenschaften und eine Baumansicht für datengestützte Tabellendarstellungen.
+    Es ermöglicht die Navigation zu anderen Ansichten und konfiguriert eine intuitive Benutzerschnittstelle.
+
+    :ivar controller: Der Controller der Anwendung, der für die Navigation zwischen Fenstern verwendet wird.
+    :ivar go_back_btn_details_window: Bildressource für den Zurück-Button.
+    :ivar opt_btn_details_window: Bildressource für den Optionen-Button.
+    :ivar service_tag_entry_details_window: Eingabefeld für den Service Tag.
+    :ivar type_entry_details_window: Eingabefeld für den Typ des Objekts.
+    :ivar room_entry_details_window: Eingabefeld für die Rauminformation.
+    :ivar name_entry_details_window: Eingabefeld für den Namen.
+    :ivar damaged_entry_details_window: Eingabefeld für Informationen über Schäden.
+    """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.configure(background="white")
 
         def go_back_details_window():
+            """
+            Repräsentiert ein Fenster mit detaillierter Ansicht innerhalb der GUI-Anwendung. Die Klasse erbt von
+            `tk.Frame` und stellt eine Benutzeroberfläche zur Verfügung, die in der Lage ist, verschiedene
+            Unterseiten oder Frames zu laden und anzuzeigen. Dieses spezielle Fenster dient beispielsweise zur
+            Anzeige von Details und ermöglicht die Navigation zurück zur Hauptseite der Anwendung.
+
+            :Attributes:
+              parent:
+                Ein Widget, das das Eltern-Element dieses Frames darstellt. Das Eltern-Element bestimmt die
+                hierarchische Struktur und Position des Frames innerhalb des GUI-Layouts.
+              controller:
+                Ein Controller-Objekt, das die Verwaltung der Frame-Navigation und des Anwendungszustands
+                übernimmt. Hiermit können neue Seiten angezeigt werden.
+            """
             from .mainPage import mainPage
             controller.show_frame(mainPage)
 
         def show_settings_window_details_window():
+            """
+            Eine Klasse, die ein Detailfenster innerhalb einer Tkinter-Anwendung repräsentiert. Diese
+            Klasse erbt von ``tk.Frame`` und bietet Methoden, um bestimmte Ereignisse oder
+            Aktionen auszuführen, wie das Öffnen eines Einstellungsfensters innerhalb des
+            Detailfensters.
+
+            Attributes
+            ----------
+            parent : Any
+                Das übergeordnete Widget oder Objekt, zu dem dieses Frame gehört.
+            controller : Any
+                Der Controller, der zur Verwaltung dieses Fensters verwendet wird.
+
+            Methods
+            -------
+            show_settings_window_details_window()
+                Öffnet das Einstellungs-Pop-Up-Fenster im Detailfenster.
+
+            """
             print("Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
@@ -185,6 +244,19 @@ class detailsWindow(tk.Frame):
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
+            """
+            Eine Klasse, die ein Fenster für Details erstellt und die Möglichkeit bietet, bestimmte
+            Einträge zu aktualisieren. Diese Klasse ist von `tk.Frame` abgeleitet und dient als UI-Komponente
+            innerhalb einer größeren Anwendung.
+
+            :Attributes:
+                type_entry_details_window (tk.Entry): Eingabefeld zur Erfassung des Gerätetyps.
+                room_entry_details_window (tk.Entry): Eingabefeld für den Speicherort des Geräts.
+                name_entry_details_window (tk.Entry): Eingabefeld für den Modellnamen des Geräts.
+                damaged_entry_details_window (tk.Entry): Eingabefeld zur Erfassung des Gerätezustands.
+                parent (tk.Widget): Eltern-Widget, zu dem diese Instanz gehört.
+                controller: Steuerungsinstanz, die u.a. Navigation zwischen Fenstern ermöglicht.
+            """
             #update
             type = self.type_entry_details_window.get() if self.type_entry_details_window.get() != "" else "None"
             room = self.room_entry_details_window.get() if self.room_entry_details_window.get() != "" else "None"
@@ -197,12 +269,46 @@ class detailsWindow(tk.Frame):
             print(db.update_hardware_by_ID(cache.selected_ID, neue_beschaedigung=damage, neue_Standort=room, neue_Modell=name, neue_Geraetetyp=type))
 
         def delete_entry():
+            """
+            Eine Klasse, die ein Detailfenster als Unterklasse von `tk.Frame` darstellt. Es
+            bietet die Möglichkeit, bestimmte Hardware-Datensätze aus einer Datenbank zu
+            löschen und die Anzeige in der Hauptseite zu aktualisieren.
+
+            Attribute
+            ---------
+            parent
+                Der übergeordnete Tkinter-Container für die Frame-Erstellung.
+            controller
+                Eine Instanz, die für die Navigation zwischen den Frames verantwortlich ist.
+
+            Methoden
+            -------
+            delete_entry
+                Löscht den aktuell ausgewählten Hardware-Eintrag aus der Datenbank und
+                aktualisiert die Anzeige in der Hauptseite.
+
+            """
             db.delete_hardware_by_id(cache.selected_ID)
             from .mainPage import mainPage
             mainPage.update_treeview_with_data()
             controller.show_frame(mainPage)
 
         def lend(data):
+            """
+            Eine Klasse, die die Details-Ansicht als Tkinter-Frame darstellt.
+
+            Diese Klasse ist für die Darstellung und Verwaltung einer spezifischen
+            Detailansicht innerhalb einer GUI-Anwendung verantwortlich. Sie erbt von
+            Tkinter's ``Frame`` und integriert zusätzliche Methoden zur Behandlung
+            spezifischer UI-Aktionen.
+
+            :param parent: Der übergeordnete Tkinter-Container, in den dieser Frame
+                           eingebunden wird.
+            :type parent: tk.Widget
+            :param controller: Ein Controller-Objekt, das die Steuerlogik enthält und
+                               den Zustand der Anwendung verwaltet.
+            :type controller: beliebiger Typ
+            """
             print("Übergebene Daten:", data)
             from .lendPopup import lend_popup
             lend_popup(self, data)
@@ -241,6 +347,20 @@ class detailsWindow(tk.Frame):
 
 
     def update_data(self, data):
+        """
+        Aktualisiert die Daten in den Eingabefeldern des Fensters mit den übergebenen
+        Daten aus der Liste. Vorhandene Eingaben in den Feldern werden gelöscht und
+        ersetzt.
+
+        :param data: Eine Liste mit Werten, die in die Eingabefelder eingefügt werden.
+                     Die Liste muss folgende Indizes enthalten:
+                     - Index 1: Wert für das Service-Tag-Eingabefeld
+                     - Index 2: Wert für das Typ-Eingabefeld
+                     - Index 3: Wert für das Raum-Eingabefeld
+                     - Index 4: Wert für das Namens-Eingabefeld
+                     - Index 5: Wert für das Beschädigungs-Eingabefeld
+        :return: Es wird kein Wert zurückgegeben.
+        """
         # Daten in die Entry-Felder einfügen
         self.service_tag_entry_details_window.delete(0, tk.END)
         self.service_tag_entry_details_window.insert(0, data[1])
