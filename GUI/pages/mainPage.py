@@ -1,7 +1,12 @@
 import tkinter as tk
+from shutil import which
+from string import whitespace
 from tkinter import ttk
 from tkinter import *
-from customtkinter import CTkComboBox
+
+from CTkListbox import CTkListbox
+from customtkinter import CTkEntry
+
 import Datenbank.sqlite3api as sqlapi
 from GUI.SearchBar.SearchBar import on_dropdown_select,start_search,update_search,finish_search
 import cache
@@ -187,7 +192,7 @@ class mainPage(tk.Frame):
         print(show_size)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        search_frame = tk.Frame(middle_frame, bg="blue")
+        search_frame = tk.Frame(middle_frame, bg='white')
         search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         search_frame.grid_columnconfigure(0, weight=0)
@@ -213,11 +218,11 @@ class mainPage(tk.Frame):
         search_button.grid(padx=5, pady=5, row=0, column=0)
 
         dropdown_var: tk.StringVar = tk.StringVar()
-        dropdown: tk.Listbox = tk.Listbox(search_frame, font=("Arial", 20), bg="white", listvariable=dropdown_var)
+        dropdown: CTkListbox = CTkListbox(search_frame, font=("Arial", 20), bg_color="white", border_color=srhGrey, corner_radius=10)
         #dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
         search_entry_var: tk.StringVar = tk.StringVar()
-        search_entry = tk.Entry(search_frame, font=("Arial", 20), bg='white', bd=0, fg='grey', textvariable=search_entry_var)
+        search_entry = tk.Entry(search_frame, font=("Arial", 20), bg=srhGrey, bd=0, fg='grey', textvariable=search_entry_var)
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
         # Entry-Feld mit Platzhalter-Text

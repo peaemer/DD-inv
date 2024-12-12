@@ -1,3 +1,5 @@
+from CTkListbox import CTkListbox
+
 import cache
 from Datenbank import sqlite3api as db
 from cache import loaded_history as lh
@@ -75,7 +77,7 @@ def __scale_history_weights(loaded_history:list[dict[str, str]], search_term:str
             entry['weight'] = str(weight)
     return term_existed
 
-def __update_dropdown(new_items:List[str], dropdown:tk.Listbox)->None:
+def __update_dropdown(new_items:List[str], dropdown:CTkListbox)->None:
     print(f"[SearchBar]:update dropdown")
 
     dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
@@ -85,32 +87,33 @@ def __update_dropdown(new_items:List[str], dropdown:tk.Listbox)->None:
         dropdown.insert(tk.END, item)
     #dropdown.tkraise()
 
-def on_dropdown_select(searchbar:tk.Entry, dropdown:tk.Listbox)->None:
+def on_dropdown_select(searchbar:tk.Entry, dropdown:CTkListbox)->None:
     """
         called when a dropdown entry is clicked
 
         :param tk.event searchbar: the searchbar
-        :param tk.Listbox dropdown: the dropdown where the suggested search terms are displayed
+        :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
     """
     global search_is_running
     if not search_is_running:
         return
-    all_selected_items:list[str] = [dropdown.get(i) for i in dropdown.curselection()]
-    print(f"""[SearchBar]:all selected items are "{all_selected_items}" """)
-    if len(all_selected_items) == 0:
-        return
-    selected_item:str = all_selected_items[0]
-    print(f"""[SearchBar]:first selected item:"{selected_item}" from dropdown""")
+    #print(dropdown.get(dropdown.curselection()))
+    #all_selected_items:list[str] = [dropdown.get(i) for i in dropdown.curselection()]
+    #print(f"""[SearchBar]:all selected items are "{all_selected_items}" """)
+    #if len(all_selected_items) == 0:
+    #    return
+    #selected_item:str = all_selected_items[0]
+    print(f"""[SearchBar]:selected item "{dropdown.get(dropdown.curselection())}" from dropdown""")
     searchbar.delete(0, tk.END)
-    searchbar.insert(0, selected_item)
+    searchbar.insert(0, dropdown.get(dropdown.curselection()))
     searchbar.focus()
 
-def update_search(loaded_history:list[dict[str, str]], dropdown:tk.Listbox, search_term:str, username:str)->None:
+def update_search(loaded_history:list[dict[str, str]], dropdown:CTkListbox, search_term:str, username:str)->None:
     """
         called when the user types an additional character into the search bar
 
         :param list[dict[str,str]] loaded_history: the history of the user's search terms
-        :param tk.Listbox dropdown: the dropdown where the suggested search terms are displayed
+        :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
         :param str search_term: the current search term
     """
     global search_is_running
@@ -132,7 +135,7 @@ def update_search(loaded_history:list[dict[str, str]], dropdown:tk.Listbox, sear
 
 
 
-def finish_search(loaded_history:list[dict[str,str]], searchbar:tk.Entry, dropdown:tk.Listbox, search_term:str, username:str)->None:
+def finish_search(loaded_history:list[dict[str,str]], searchbar:tk.Entry, dropdown:CTkListbox, search_term:str, username:str)->None:
     """
         Called once user stops typing into the search bar.
         Recalculates the weight and repeated_uses of each term.
@@ -141,7 +144,7 @@ def finish_search(loaded_history:list[dict[str,str]], searchbar:tk.Entry, dropdo
         Parameters:
         :param list[dict[str,str]] loaded_history: the history of the user's search terms
         :param tk.Entry searchbar: the search bar
-        :param tk.Listbox dropdown: the dropdown where the suggested search terms are displayed
+        :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
         :param str search_term: the current search term
         :param str username: the current user's username
     """
@@ -174,14 +177,14 @@ def finish_search(loaded_history:list[dict[str,str]], searchbar:tk.Entry, dropdo
     print(f"""[SearchBar]: reloaded loaded_history is now "{reloaded_history}" for user "{username}" """)
     search_is_running = False
 
-def start_search(loaded_history:List[Dict[str,str]], searchbar:tk.Entry, dropdown:tk.Listbox, search_term:str, username:str):
+def start_search(loaded_history:List[Dict[str,str]], searchbar:tk.Entry, dropdown:CTkListbox, search_term:str, username:str):
     """
         called when the user starts typing into the search bar
 
         Parameters:
         :param list[dict[str,str]] loaded_history: the history of the user's search terms
         :param tk.Entry searchbar: the search bar
-        :param tk.Listbox dropdown: the dropdown where the suggested search terms are displayed
+        :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
         :param str search_term: the current search term
         :param str username: the current user's username
     """
@@ -203,7 +206,7 @@ history:List[Dict[str,str]] = json.loads('[{}]')
 
 dropdown_items:List[str] = []
 dropdown_var_:tk.StringVar = tk.StringVar()
-dropdown_:tk.Listbox = tk.Listbox(root, width=int(100), selectmode=tk.SINGLE, font=("Arial",14), listvariable=dropdown_var_)
+dropdown_:CTkListbox = CTkListbox(root, width=int(100), selectmode=tk.SINGLE, font=("Arial",14), listvariable=dropdown_var_)
 dropdown_.place_forget()
 
 search_button_var_ = tk.StringVar()
@@ -228,7 +231,7 @@ select_item_button.bind("<Button-2>", lambda event: finish_search(history, searc
 """
 class searchBar(tk.Entry):
 
-    dropdown: tk.Listbox
+    dropdown: CTkListbox
     __dropdown_var:tk.StringVar
     __text_var:tk.StringVar
 
@@ -236,7 +239,7 @@ class searchBar(tk.Entry):
         self.__text_var = tk.StringVar()
         tk.Entry.__init__(self, parent, font=("Arial", 20), bg='white', bd=0, fg='grey', textvariable=self.__text_var)
         self.__dropdown_var = tk.StringVar()
-        self.dropdown = tk.Listbox(parent, font=("Arial", 20), bg="white", listvariable=self.__dropdown_var)
+        self.dropdown = CTkListbox(parent, font=("Arial", 20), bg="white", listvariable=self.__dropdown_var)
         self.dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
         self.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
