@@ -102,7 +102,7 @@ class adminUserWindow(tk.Frame):
             """
             if user_search_entry.get() == 'Suche':
                 user_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
-                user_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+                user_search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
 
         def on_focus_out(event):
             """
@@ -117,7 +117,7 @@ class adminUserWindow(tk.Frame):
             """
             if user_search_entry.get() == '':
                 user_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                user_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+                user_search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
 
         def on_key_press(event):
             """
@@ -291,8 +291,10 @@ class adminUserWindow(tk.Frame):
                                  command=search)
         search_button.grid(padx=10, pady=5, row=0, column=0)
 
+
         # Entry-Feld mit Platzhalter-Text
-        user_search_entry = tk.Entry(search_frame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
+        user_search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey, text_color="black", font=("Arial", 27),
+                                    corner_radius=20, border_width=0)
         user_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
