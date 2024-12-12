@@ -13,36 +13,56 @@ from ._SRHFont import load_font, SRHHeadline
 # Hauptseite (zweites Fenster)
 class adminUserWindow(tk.Frame):
     """
-    The adminWindow class provides a graphical interface for managing user information and
-    performing administrative tasks within a Tkinter application. It allows navigation between
-    different pages, settings access, searching functionalities, and the ability to add new items.
+    Erstellt eine Benutzerübersichtsoberfläche für Administratoren.
 
-    This class is constructed as a frame that can be integrated into a Tkinter application,
-    rendering multiple components such as buttons, labels, entry widgets with placeholders,
-    and a Treeview for displaying user data. It facilitates user interactions through a
-    Grid layout and integrates different pop-up windows for operations like settings and
-    adding items.
+    Das `adminUserWindow` ist eine grafische Benutzeroberfläche, die Administratoren eine Übersicht
+    über Benutzer bietet, zusammen mit Funktionen wie Suchen, Hinzufügen von Benutzern und
+    Navigieren zu anderen Ansichtsfenstern. Diese Klasse erweitert den `tk.Frame` und konfiguriert
+    ein umfassendes Layout, einschließlich eines Headers, Navigationsmenüs und eines mittleren
+    Bereichs für Benutzerinteraktionen.
 
-    :ivar srhHead: Stores the PhotoImage for the header logo.
+    :ivar srhHead: Speichert das Bild für das SRH-Logo, das im Header angezeigt wird.
     :type srhHead: tk.PhotoImage
-    :ivar log_out_btn: Stores the PhotoImage for the logout button.
+    :ivar log_out_btn: Speichert das Bild für den Logout-Button.
     :type log_out_btn: tk.PhotoImage
-    :ivar opt_btn: Stores the PhotoImage for the options button.
+    :ivar opt_btn: Speichert das Bild für den Einstellungs-Button.
     :type opt_btn: tk.PhotoImage
-    :ivar searchBtn: Stores the PhotoImage for the search button.
-    :type searchBtn: tk.PhotoImage
-    :ivar add_btn: Stores the PhotoImage for the add item button.
+    :ivar add_btn: Speichert das Bild für den "Nutzer hinzufügen"-Button.
     :type add_btn: tk.PhotoImage
+    :ivar searchBtn: Speichert das Bild für den Such-Button.
+    :type searchBtn: tk.PhotoImage
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
         def go_back_admin_window():
+            """
+            Eine Frame-Klasse, die ein Fenster für administrative Benutzer darstellt. Diese Klasse
+            erweitert die tkinter Frame-Klasse und integriert einen Controller zur Navigation
+            zwischen verschiedenen Anwendungsfenstern.
+
+            :Attributes:
+                parent (tk.Widget): Der übergeordnete Widget-Container, in dem dieser Frame erstellt wird.
+                controller (object): Der Controller, der für das Management der Fenster-Navigation
+                                     in der Anwendung verantwortlich ist.
+
+            :Methods:
+                go_back_admin_window():
+                    Navigiert zurück zum Hauptfenster der Anwendung für administrative Benutzer.
+            """
             from .mainPage import mainPage
             controller.show_frame(mainPage)
 
         def show_settings_window_admin_window():
+            """
+            Diese Klasse `adminUserWindow` ist eine Unterklasse von `tk.Frame` und dient als
+            Fensterkomponente für die Verwaltung von Benutzern im Adminbereich. Sie ermöglicht
+            die Anzeige bestimmter Fenster und deren Interaktionen.
+
+            :ivar parent: Der übergeordnete Container dieses Frames.
+            :ivar controller: Kontrollinstanz für die Verwaltung der Frames.
+            """
             print("show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
@@ -51,31 +71,121 @@ class adminUserWindow(tk.Frame):
             print("I am Searching")
 
         def add_user_item():
+            """
+            Diese Klasse repräsentiert das Hauptfenster zur Verwaltung von
+            Benutzerkonten innerhalb der Anwendung. Sie erbt von `tk.Frame`
+            und dient als Grundlage für die Erstellung der Benutzeroberfläche
+            zur Verwaltung der Benutzer.
+
+            Attribute
+            ----------
+            Keine spezifischen Attribute neben denen, die von `tk.Frame`
+            geerbt wurden.
+
+            Notes
+            -----
+            Die spezifischen Funktionen dieser Klasse, einschließlich der
+            Methoden und Verhalten, die auf diese Klasse angewandt werden,
+            müssen in den jeweiligen Methodendokumentationen definiert werden.
+            """
             from .addUserPopup import add_user_popup
             add_user_popup(self)
 
         def on_entry_click(event):
+            """
+            Diese Klasse repräsentiert ein Administrationsfenster für Benutzer in einer
+            GUI-Anwendung, die mithilfe des tkinter-Frameworks erstellt wurde. Sie
+            ermöglicht Funktionen wie die Suche nach Benutzern und die Verwaltung von
+            Benutzerkonten innerhalb der Benutzeroberfläche.
+
+            Die Klasse erbt von ``tk.Frame`` und wird in einem Eltern-Widget integriert.
+            """
             if user_search_entry.get() == 'Suche':
                 user_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 user_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
 
         def on_focus_out(event):
+            """
+            Eine GUI-Klasse, die ein Admin-Panel zur Verfügung stellt, um Benutzerdaten zu verwalten und nach Benutzern
+            zu suchen. Die Klasse erbt von `tk.Frame` und verwendet verschiedene UI-Komponenten, um Suchfunktionen und
+            Benutzerinteraktionen zu ermöglichen.
+
+            :param parent: Referenz auf das übergeordnete Widget
+            :type parent: tk.Widget
+            :param controller: Die Steuermechanik, die die Navigation zwischen Frames behandelt
+            :type controller: object
+            """
             if user_search_entry.get() == '':
                 user_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 user_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
 
         def on_key_press(event):
+            """
+            Eine Klasse, die ein Administrator-Benutzerfenster in einer tkinter-Umgebung definiert.
+
+            Diese Klasse liefert grundlegende Funktionalitäten für ein Administrator-Benutzerfenster,
+            indem sie die Eigenschaften und Ereignisse für ihre Darstellung und Bedienung implementiert.
+
+            Attributes
+            ----------
+            parent :
+                Das übergeordnete tkinter-Widget, zu dem dieses Frame hinzugefügt wird.
+            controller :
+                Die Steuerungskomponente, die verwendet wird, um diverse Fenster und Zustände
+                innerhalb der Anwendung zu steuern.
+
+            Methods
+            -------
+            Keine Methodenbeschreibung in der Klassen-Dokumentation.
+
+            """
             typed_key = event.char  # The character of the typed key
 
         def change_to_room():
+            """
+            adminUserWindow ist eine Unterklasse von tk.Frame und stellt
+            ein Frame zur Verfügung, das spezifisch für die Benutzeroberfläche
+            eines Admin-Benutzers entwickelt wurde. Diese Klasse ermöglicht
+            es dem Benutzer, die Ansicht zu einer Raum-Administrationsansicht
+            zu wechseln.
+
+            :param parent: Das übergeordnete Widget, zu dem dieses Frame gehört
+            :type parent: widget
+            :param controller: Referenz auf den Controller, der die Navigation zwischen
+                               den Frames verwaltet
+            :type controller: Controller-Objekt
+            """
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
 
         def change_to_roles():
+            """
+            Eine Klasse, die ein Benutzeroberflächenfenster für Admin-Benutzer implementiert,
+            das auf einer tkinter-Frame-Komponente basiert. Diese Klasse stellt eine Möglichkeit
+            dar, zwischen verschiedenen Ansichten innerhalb eines Controllers zu wechseln.
+
+            :ivar parent: Der übergeordnete Widget-Container.
+            :ivar controller: Eine Steuerung, die für das Management der verschiedenen Fenster
+                innerhalb der grafischen Benutzeroberfläche verantwortlich ist.
+            """
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
 
         def add_user():
+            """
+            Eine Unterklasse von `tk.Frame`, die ein Fenster für die Verwaltung von Admin-Benutzern
+            darstellt.
+
+            Diese Klasse enthält Funktionen zur Verwaltung von Benutzern, einschließlich der
+            Ergänzung eines neuen Benutzers. Die Klasse sollte in einem tkinter-Projekt verwendet
+            werden und erfordert einen `parent` und einen `controller`, die die Benutzeroberflächenelemente
+            organisieren und verwalten.
+
+            :param parent: Das übergeordnete tkinter-Objekt für dieses Fenster.
+            :type parent: tk.Tk oder tk.Frame
+            :param controller: Eine Referenz auf den Controller, der mehrere Fenster verwaltet.
+            :type controller: object
+            """
             from .addUserPopup import add_user_popup
             add_user_popup(self)
 
@@ -238,6 +348,20 @@ class adminUserWindow(tk.Frame):
         user_tree.tkraise()
 
         def insert_data(self):
+            """
+            Die Klasse `adminUserWindow` stellt eine grafische Benutzeroberfläche dar,
+            die auf tkinter basiert und es ermöglicht, Benutzer-Daten anzuzeigen und
+            zu verwalten. Innerhalb der Oberfläche werden Benutzerdaten im Treeview
+            dargestellt, wobei die Zeilen abwechselnd formatiert werden.
+
+            Diese Klasse erbt von `tk.Frame` und benötigt einen Eltern-Frame sowie
+            einen Controller zur Initialisierung.
+
+            :param parent: Das übergeordnete tkinter-Widget, das den Rahmen enthält.
+            :type parent: tk.Widget
+            :param controller: Der Controller, der die Logik und Anwendungsteuerung verwaltet.
+            :type controller: Any
+            """
             i = 0
             for entry in sqlapi.read_all_benutzer():
                 # Bestimme das Tag für die aktuelle Zeile
@@ -262,6 +386,20 @@ class adminUserWindow(tk.Frame):
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
+            """
+            Eine GUI-Komponente für die Verwaltung von Benutzerfenstern in
+            einer Tkinter-Anwendung. Diese Klasse erbt von ``tk.Frame`` und
+            dient als Grundaufbau für Benutzerinteraktionen, wie beispielsweise
+            die Auswahl von Benutzerdetails im Interface.
+
+            :param parent: Oberkomponente, in der der Rahmen eingeordnet wird.
+            :type parent: tk.Widget
+
+            :param controller: Controller-Objekt, das für die Navigation und
+                               Steuerung zwischen verschiedenen Fenstern
+                               verantwortlich ist.
+            :type controller: object
+            """
             try:
                 selected_user = user_tree.focus()
                 print(f"Ausgewählter User: {selected_user}")  # Debug
@@ -275,6 +413,14 @@ class adminUserWindow(tk.Frame):
         user_tree.bind("<Double-1>", on_item_selected)
 
     def update_treeview_with_data(self=None):
+        """
+        Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
+        löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
+        Datenbank ein. Jede Zeile erhält ein Tag, das zu einer alternierenden Darstellung von
+        geraden und ungeraden Zeilen verwendet werden kann.
+
+        :return: Gibt keinen Wert zurück.
+        """
         user_tree.delete(*user_tree.get_children())
         i = 0
         for entry in sqlapi.read_all_benutzer():

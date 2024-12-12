@@ -14,36 +14,50 @@ srhGrey = "#d9d9d9"
 # Hauptseite (zweites Fenster)
 class adminRoomWindow(tk.Frame):
     """
-    The adminWindow class provides a graphical interface for managing user information and
-    performing administrative tasks within a Tkinter application. It allows navigation between
-    different pages, settings access, searching functionalities, and the ability to add new items.
+    Beschreibt die Klasse und ihre Funktionalität.
 
-    This class is constructed as a frame that can be integrated into a Tkinter application,
-    rendering multiple components such as buttons, labels, entry widgets with placeholders,
-    and a Treeview for displaying user data. It facilitates user interactions through a
-    Grid layout and integrates different pop-up windows for operations like settings and
-    adding items.
+    Die Klasse `adminRoomWindow` repräsentiert das Fenster für die Raumverwaltung in einer
+    Tkinter basierten GUI-Anwendung. Sie stellt die visuelle und funktionale Basis für
+    das Verwalten von Räumen bereit, einschließlich Navigation, Suche, Hinzufügen neuer
+    Räume sowie die Integration eines Tabellenbaums mit Rauminformationen.
 
-    :ivar srhHead: Stores the PhotoImage for the header logo.
-    :type srhHead: tk.PhotoImage
-    :ivar log_out_btn: Stores the PhotoImage for the logout button.
-    :type log_out_btn: tk.PhotoImage
-    :ivar opt_btn: Stores the PhotoImage for the options button.
-    :type opt_btn: tk.PhotoImage
-    :ivar searchBtn: Stores the PhotoImage for the search button.
-    :type searchBtn: tk.PhotoImage
-    :ivar add_btn: Stores the PhotoImage for the add item button.
-    :type add_btn: tk.PhotoImage
+    :ivar srhHead: Enthält das SRH-Logo, das im Header-Bereich als Bild angezeigt wird.
+    :type srhHead: PhotoImage
+    :ivar log_out_btn: Bild für die Logout-Schaltfläche im Header-Bereich.
+    :type log_out_btn: PhotoImage
+    :ivar opt_btn: Bild für die Options-Schaltfläche im Header-Bereich.
+    :type opt_btn: PhotoImage
+    :ivar add_btn: Bild für die Schaltfläche zum Hinzufügen eines neuen Raums.
+    :type add_btn: PhotoImage
+    :ivar searchBtn: Bild für die Schaltfläche, um die Suche zu starten.
+    :type searchBtn: PhotoImage
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
         def go_back_admin_window():
+            """
+            Eine Klasse, die ein Fenster im Adminbereich darstellt. Sie erbt von
+            ``tk.Frame`` und dient als Container für Widgets und Funktionen des
+            Adminbereichs. Enthält Navigation zur Hauptseite.
+
+            :ivar parent: Das übergeordnete Widget, typischerweise der Haupt-Frame.
+            :ivar controller: Eine Instanz einer Steuerungsklasse, die die Navigation
+                zwischen verschiedenen Frames der Anwendung handhabt.
+            """
             from .mainPage import mainPage
             controller.show_frame(mainPage)
 
         def show_settings_window_admin_window():
+            """
+            Eine grafische Benutzeroberfläche für ein Admin-Raum-Fenster, die von
+            ``tk.Frame`` erbt und bestimmte Funktionen wie das Anzeigen eines
+            Einstellungsfensters bietet.
+
+            :ivar parent: Referenz zum übergeordneten Widget.
+            :ivar controller: Referenz zur Steuerlogik oder dem Hauptcontroller.
+            """
             print("show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
@@ -52,28 +66,98 @@ class adminRoomWindow(tk.Frame):
             print("I am Searching")
 
         def add_room():
+            """
+            Eine Klasse, die ein Administrationsfenster für Räume darstellt, welches auf
+            dem Tkinter-Frame basiert. Diese Klasse ermöglicht Funktionen wie das Hinzufügen
+            neuer Räume durch ein Pop-up-Fenster.
+
+            Attributes:
+                parent (tk.Widget): Das übergeordnete Widget.
+                controller: Ein Controller zur Steuerung der UI-Komponenten und Logik.
+
+            :param parent: Das übergeordnete Tkinter-Widget.
+            :type parent: tk.Widget
+            :param controller: Ein Objekt zur Steuerung der Fensterlogik.
+
+            Methods:
+                add_room():
+                    Öffnet ein Pop-up-Fenster für das Hinzufügen eines neuen Raums.
+            """
             from .addRoomPopup import add_room_popup
             add_room_popup(self)
 
         def on_entry_click(event):
+            """
+            Diese Klasse repräsentiert ein Administrationsfenster für Räume innerhalb einer
+            GUI-Anwendung. Sie erbt von der Klasse `tk.Frame` und dient zur Anzeige und
+            Bearbeitung von Rauminformationen. Es werden Funktionen bereitgestellt, um die
+            Benutzerinteraktion effizient zu unterstützen, wie z.B. das Bearbeiten von
+            Eingabefeldern.
+
+            Attributes
+            ----------
+            parent : object
+                Das übergeordnete Widget oder Fenster, in dem dieses Frame angezeigt wird.
+            controller : object
+                Steuerelement für das Frame, das die Navigation und Steuerelemente
+                zwischen verschiedenen Frames verwaltet.
+            """
             if room_search_entry.get() == 'Suche':
                 room_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 room_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
 
         def on_focus_out(event):
+            """
+            Diese Klasse repräsentiert ein Fenster in einer GUI-Anwendung, die die
+            Verwaltung von Räumen erlaubt. Sie erbt von ``tk.Frame`` und bietet eine
+            Möglichkeit zur Interaktion mit einem Hauptcontroller und einem Eltern-
+            widget.
+
+            Attribute:
+                parent: Das übergeordnete Widget, das als Container für diese Frame-
+                    Instanz dient.
+                controller: Ein Objekt, das für die Steuerung der Anwendung zuständig
+                    ist.
+
+            :param parent: Referenz zum übergeordneten Widget.
+            :param controller: Controller-Objekt zur Handhabung der Anwendungsschnittstelle.
+            """
             if room_search_entry.get() == '':
                 room_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 room_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
 
         def on_key_press(event):
+            """
+            Eine Klasse, die ein Admin-Raum-Fenster definiert, das von tk.Frame erbt.
+
+            Diese Klasse verwaltet das Interface eines Admin-Raums und ermöglicht
+            Benutzern die Interaktion über GUI-Elemente innerhalb eines Tkinter-Frames.
+            """
             typed_key = event.char  # The character of the typed key
 
 
         def change_to_user():
+            """
+            Eine Klasse, die ein Admin-Fenster für Räume darstellt. Diese Klasse ist eine Unterklasse
+            von `tk.Frame` und bietet die Benutzeroberfläche zur Verwaltung von Räumen.
+
+            :param parent: Das übergeordnete Widget des Frames.
+            :type parent: tk.Widget
+            :param controller: Der Controller, welcher die Navigation zwischen den Fenstern steuert.
+            :type controller: object
+            """
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
 
         def change_to_roles():
+            """
+            Eine Klasse, die ein Admin-Raum-Fenster für ein Tkinter-Anwendungs-Widget darstellt.
+
+            Diese Klasse erbt von der Tkinter Frame-Klasse und dient zur Darstellung
+            eines spezifischen Fensters in einer Anwendung. Sie integriert
+            Funktionalitäten für den Wechsel zwischen verschiedenen Fenstern innerhalb
+            der Anwendung.
+            """
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
 
@@ -235,6 +319,16 @@ class adminRoomWindow(tk.Frame):
         room_tree.tkraise()
 
         def insert_data(self):
+            """
+            Eine GUI-Komponente, die ein Fenster zur Anzeige von Räumen in einer Tabelle darstellt.
+            Diese Klasse erbt von `tk.Frame`. Sie ermöglicht die Anzeige und Formatierung einer
+            Liste von Räumen und deren Orten aus einer Datenquelle in einem Treeview-Widget.
+
+            :param parent: Das übergeordnete Widget, in das dieses Frame eingebettet wird.
+            :type parent: tk.Widget
+            :param controller: Ein Controller-Objekt, das zur Steuerung der Anwendung dient.
+            :type controller: object
+            """
             i = 0
             for entry in sqlapi.fetch_all_rooms():
                 # Bestimme das Tag für die aktuelle Zeile
@@ -256,6 +350,16 @@ class adminRoomWindow(tk.Frame):
 
         # Funktion für das Ereignis-Binding
         def on_room_selected(event):
+            """
+            Eine Klasse, die ein Admin-Fenster für die Raumverwaltung darstellt. Ermöglicht die Auswahl
+            von Räumen und den Übergang zu Detailansichten bei Auswahl eines Raumes. Die Verarbeitung
+            der Raum-Auswahl wird verwaltet, einschließlich Fehlerbehandlung bei Problemen.
+
+            :param parent: Das übergeordnete Widget, auf das dieses Frame aufgesetzt wird.
+            :type parent: tk.Widget
+            :param controller: Ein Instanzobjekt des Controllers, das zum Steuern verschiedener Fenster verwendet wird.
+            :type controller: Controller
+            """
             try:
                 selected_room = room_tree.focus()
                 print(f"Ausgewählter Raum: {selected_room}")  # Debug
@@ -269,6 +373,14 @@ class adminRoomWindow(tk.Frame):
         room_tree.bind("<Double-1>", on_room_selected)
 
     def update_treeview_with_data(self):
+        """
+        Aktualisiert ein TreeView-Widget mit den Daten aus der Datenbank. Holt alle verfügbaren
+        Raum-Daten aus der Datenquelle und fügt sie zeilenweise in das TreeView-Widget ein. Dabei
+        wird abwechselnd ein Tag für ungerade und gerade Zeilen gesetzt, um eine visuelle
+        Unterscheidung zu ermöglichen.
+
+        :raises: Keine Fehler werden explizit geworfen.
+        """
         room_tree.delete(*room_tree.get_children())
         i = 0
         for entry in sqlapi.fetch_all_rooms():

@@ -5,6 +5,16 @@ import string, random
 
 
 def add_user_popup(parent):
+    """
+    Erstellt ein Popup-Fenster, mit dem ein neuer Benutzer hinzugefügt werden kann. Das Fenster
+    ermöglicht die Eingabe von Benutzername, E-Mail und Rolle, sowie deren Validierung und
+    Speicherung in der Datenbank. Zudem ist es möglich, das Popup über die vorhandenen Schaltflächen
+    abzubrechen oder die Eingaben zu speichern.
+
+    :param parent: Das übergeordnete Tkinter-Fenster, an das das Popup angehängt wird.
+    :type parent: tk.Tk oder tk.Toplevel
+    :return: None
+    """
     add_popup = tk.Toplevel(parent)
     add_popup.title("User Hinzufügen")
     add_popup.transient(parent)
@@ -97,6 +107,20 @@ def add_user_popup(parent):
 
     # Buttons
     def submit_entry():
+        """
+        Erstellt den Benutzer-Popup-Dialog für die Hinzufügung eines neuen Benutzers.
+
+        Diese Funktion öffnet ein Popup-Fenster für die Benutzerinteraktion. Es erhält die Nutzereingaben für den Benutzernamen,
+        eine Rolle und eine optionale E-Mail-Adresse. Nach der Bestätigung der Eingabe wird der Benutzer in der Datenbank erstellt
+        und ein neues Passwort generiert. Wenn die Eingabefelder nicht korrekt ausgefüllt werden, wird eine
+        Fehlermeldung angezeigt.
+
+        :param parent: Der übergeordnete GUI-Komponent, der als Bezugspunkt für das Popup verwendet wird
+
+        :raises ValueError: Wenn eines der benötigten Felder nicht ausgefüllt ist, wird eine Fehlernachricht angezeigt
+
+        :return: Es wird kein Wert zurückgegeben
+        """
         pw = str(''.join(random.choices(string.ascii_letters, k=7)))
         if not username_entry_add_user_popup.get() or username_entry_add_user_popup.get() == "" or not role_combobox_add_user_popup.get() or role_combobox_add_user_popup.get() == "Rolle auswählen":
             error_label.configure(text="Please enter all required fields (Username)")
@@ -108,6 +132,13 @@ def add_user_popup(parent):
             add_popup.destroy()
 
     def exit_entry():
+        """
+        Die Funktion `add_user_popup` erzeugt ein Popup-Fenster zur Eingabe und Erstellung eines neuen Benutzers.
+        Es wird ein Eltern-Widget übergeben, an dem das Popup angebunden wird.
+
+        :param parent: Das übergeordnete Widget, an welches das Popup gebunden werden soll.
+        :type parent: Widget
+        """
         add_popup.destroy()
 
     parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/Hinzu.png")
