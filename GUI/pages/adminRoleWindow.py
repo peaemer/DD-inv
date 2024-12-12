@@ -8,6 +8,7 @@ import customtkinter as ctk  #pip install customtkinter
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
+srhBlue = "#00699a"
 from ._SRHFont import load_font, SRHHeadline
 
 # Hauptseite (zweites Fenster)
@@ -196,7 +197,7 @@ class adminRoleWindow(tk.Frame):
         self.grid_rowconfigure(2, weight=1)
 
         # Erstelle einen Header-Bereich
-        header_frame = tk.Frame(self, background="#DF4807")
+        header_frame = tk.Frame(self, background=srhBlue)
         header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
@@ -208,11 +209,11 @@ class adminRoleWindow(tk.Frame):
         self.srhHead = tk.PhotoImage(file="assets/srh.png")
 
         # Füge ein zentriertes Label hinzu
-        header_label = tk.Label(header_frame, image=self.srhHead, background="#DF4807", foreground="white")
+        header_label = tk.Label(header_frame, image=self.srhHead, background=srhBlue, foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background="#DF4807", text="Rollen-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label = tk.Label(header_frame, background=srhBlue, text="Rollen-Übersicht", font=(SRHHeadline, 30), foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
 
@@ -220,8 +221,8 @@ class adminRoleWindow(tk.Frame):
         self.log_out_btn = tk.PhotoImage(file="assets/ArrowLeft.png")
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0, relief=tk.FLAT, bg="#DF4807",
-                                 activebackground="#DF4807")
+        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0, relief=tk.FLAT, bg=srhBlue,
+                                 activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         # Konvertiere das Bild für Tkinter
@@ -233,8 +234,8 @@ class adminRoleWindow(tk.Frame):
                                    command=show_settings_window_admin_window,
                                    bd=0,
                                    relief=tk.FLAT,
-                                   bg="#DF4807",
-                                   activebackground="#DF4807")
+                                   bg=srhBlue,
+                                   activebackground=srhBlue)
         options_button.grid(row=0, column=2, sticky=tk.E, padx=20)
 
 
@@ -279,12 +280,12 @@ class adminRoleWindow(tk.Frame):
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
-        self.add_btn = tk.PhotoImage(file="assets/Hinzusmall.png")
+        self.add_btn = tk.PhotoImage(file="assets/Hinzusmall_blue.png")
         user_add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
                                     activebackground="white", command=add_user)
         user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
-        self.searchBtn = tk.PhotoImage(file="assets/SearchButton.png")
+        self.searchBtn = tk.PhotoImage(file="assets/search_button_blue.png")
         search_button = tk.Button(search_frame,
                                  image=self.searchBtn,
                                  bd=0,
