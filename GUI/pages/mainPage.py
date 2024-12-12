@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+from customtkinter import CTkComboBox
 import Datenbank.sqlite3api as sqlapi
 from GUI.SearchBar.SearchBar import on_dropdown_select,start_search,update_search,finish_search
 import cache

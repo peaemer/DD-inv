@@ -1,7 +1,3 @@
-#import math
-#from importlib.resources import read_text
-from idlelib import history
-
 import cache
 from Datenbank import sqlite3api as db
 from cache import loaded_history as lh
