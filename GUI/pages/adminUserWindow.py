@@ -83,6 +83,7 @@ class adminUserWindow(tk.Frame):
 
         # Konfiguriere das Grid-Layout für das adminUserWindow
         self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(2, weight=1)
 
         # Erstelle einen Header-Bereich
         header_frame = tk.Frame(self, background="#DF4807")

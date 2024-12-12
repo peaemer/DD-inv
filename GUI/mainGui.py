@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 from GUI.pages import adminUserWindow, roomDetailsWindow
 #https://chatgpt.com/share/6746f2eb-67ac-8003-95be-480c6f1bd897
@@ -12,6 +13,7 @@ from pages import logInWindow,\
 				  adminRoomWindow,\
 				  adminUserWindow,\
 			      _DPIAwareness
+import customtkinter as ctk
 
 
 # Hauptklasse für das Tkinter-Fenster

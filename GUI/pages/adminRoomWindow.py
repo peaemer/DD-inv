@@ -82,6 +82,7 @@ class adminRoomWindow(tk.Frame):
 
         # Konfiguriere das Grid-Layout für das adminRoomWindow
         self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(2, weight=1)
 
         # Erstelle einen Header-Bereich
         header_frame = tk.Frame(self, background="#DF4807")
@@ -216,6 +217,7 @@ class adminRoomWindow(tk.Frame):
             width=15,
             borderwidth=1
         )
+        room_scroll.grid(row=1, column=1, sticky="ns")
 
         room_scroll.grid(row=1, column=1, sticky="ns")
         room_tree.configure(yscrollcommand=room_scroll.set)
