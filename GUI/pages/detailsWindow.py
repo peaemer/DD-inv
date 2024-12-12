@@ -193,8 +193,7 @@ class detailsWindow(tk.Frame):
                 damage = "None"
             else:
                 damage = self.damaged_entry_details_window.get()
-            print(damage)
-            print(db.update_hardware_by_ID(cache.selected_ID, neue_beschaedigung=damage, neue_Standort=room, neue_Modell=name, neue_Geraetetyp=type))
+            db.update_hardware_by_ID(cache.selected_ID, neue_beschaedigung=damage, neue_Standort=room, neue_Modell=name, neue_Geraetetyp=type)
 
         def delete_entry():
             db.delete_hardware_by_id(cache.selected_ID)
@@ -207,19 +206,33 @@ class detailsWindow(tk.Frame):
             from .lendPopup import lend_popup
             lend_popup(self, data)
 
+        def returnItem(data):
+            print("Übergebene Daten:", data)
+            if not str(db.fetch_ausleih_historie_by_id(cache.selected_ID)).startswith(f"Fehler beim Abrufen des Eintrags:"):
+                db.delete_ausleih_historie(cache.selected_ID)
+
         self.edit_btn = tk.PhotoImage(file="assets/Aktualisieren.png")
         self.lend_btn = tk.PhotoImage(file="assets/Ausleihen.png")
+        self.rueck_btn = tk.PhotoImage(file="assets/Loeschen.png")
         self.delete_btn = tk.PhotoImage(file="assets/Loeschen.png")
 
         # Buttons in ein separates Frame
         button_frame_add_item_popup = tk.Frame(self, background="white")
         button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
-        lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
-                               bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                               command=lambda: lend({"name": self.name_entry_details_window.get()}))
-        lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
-
+        print(self.name_entry_details_window.get())
+        if db.fetch_ausleih_historie_by_id(cache.selected_ID) and not str(db.fetch_ausleih_historie_by_id(cache.selected_ID)).startswith(""):
+            print(1)
+            rueckgabe_button = tk.Button(button_frame_add_item_popup, image=self.rueck_btn,
+                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                                command=lambda: returnItem({"name": self.name_entry_details_window.get()}))
+            rueckgabe_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+        else:
+            print(2)
+            lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
+                                    bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                                    command=lambda: lend({"name": self.name_entry_details_window.get()}))
+            lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",

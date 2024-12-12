@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import *
+from .imageloader import loadImage
+
+
 import Datenbank.sqlite3api as sqlapi
 import cache
 import customtkinter as ctk
@@ -139,11 +141,10 @@ class mainPage(tk.Frame):
         log_out_button.grid(row=0, column=4, sticky=tk.E, padx=20)
 
         # Konvertiere das Bild für Tkinter
-        self.opt_btn = tk.PhotoImage(file="assets/option.png")
 
         # Füge einen Button mit dem Bild hinzu
         options_button = tk.Button(self.header_frame,
-                                   image=self.opt_btn,
+                                   image=loadImage(self, width=48, height=48),
                                    command=show_settings_window,
                                    bd=0,
                                    relief=tk.FLAT,
@@ -273,19 +274,19 @@ class mainPage(tk.Frame):
         tree.tag_configure("evenrow", background="white")
 
         # listbox for directories
-        tree.column("# 1", anchor=CENTER, width=60)
+        tree.column("# 1", anchor=tk.CENTER, width=60)
         tree.heading("# 1", text="ID")
-        tree.column("# 2", anchor=CENTER, width=175)
+        tree.column("# 2", anchor=tk.CENTER, width=175)
         tree.heading("# 2", text="Service Tag")
-        tree.column("# 3", anchor=CENTER, width=230)
+        tree.column("# 3", anchor=tk.CENTER, width=230)
         tree.heading("# 3", text="Typ")
-        tree.column("# 4", anchor=CENTER, width=120)
+        tree.column("# 4", anchor=tk.CENTER, width=120)
         tree.heading("# 4", text="Raum")
-        tree.column("# 5", anchor=CENTER, width=250)
+        tree.column("# 5", anchor=tk.CENTER, width=250)
         tree.heading("# 5", text="Name")
-        tree.column("# 6", anchor=CENTER, width=300)
+        tree.column("# 6", anchor=tk.CENTER, width=300)
         tree.heading("# 6", text="Beschädigung")
-        tree.column("# 7", anchor=CENTER, width=250)
+        tree.column("# 7", anchor=tk.CENTER, width=250)
         tree.heading("# 7", text="Ausgeliehen von")
         tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
         tree.tkraise()
@@ -341,10 +342,6 @@ class mainPage(tk.Frame):
                 elif selected_text in [room['Raum'] for room in sqlapi.fetch_all_rooms()]:
                     # Daten nach Raum filtern
                     filtered_data = []
-                    for hw in sqlapi.fetch_hardware():
-                        if hw.get("Raum") and hw.get("Raum").startswith(selected_text):
-                            filtered_data.append(hw)
-                    self.update_treeview_with_data(data=filtered_data)
                 else:
                     parent_name = side_tree.item(side_tree.parent(side_tree.selection()[0]),'text') if side_tree.selection() else None
                     filtered_data = []

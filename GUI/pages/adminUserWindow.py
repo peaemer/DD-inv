@@ -5,6 +5,8 @@ import Datenbank.sqlite3api as sqlapi
 import cache
 import customtkinter as ctk  #pip install customtkinter
 
+from .imageloader import loadImage
+
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
@@ -47,8 +49,14 @@ class adminUserWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
-        def search():                           # funktionalität hinzufügen
-            print("I am Searching")
+        def search(event=None):                           # funktionalität hinzufügen
+            search_entrys = []
+            for entry in sqlapi.read_all_benutzer():
+                for value in entry:
+                    if user_search_entry.get().lower() in str(entry[value]).lower():
+                        if entry not in search_entrys:
+                            search_entrys.append(entry)
+            self.update_treeview_with_data(data=search_entrys)
 
         def add_user_item():
             from .addUserPopup import add_user_popup
@@ -113,12 +121,9 @@ class adminUserWindow(tk.Frame):
                                  activebackground="#DF4807")
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
-        # Konvertiere das Bild für Tkinter
-        self.opt_btn = tk.PhotoImage(file="assets/option.png")
-
         # Füge einen Button mit dem Bild hinzu
         options_button = tk.Button(header_frame,
-                                   image=self.opt_btn,
+                                   image=loadImage(self, width=48, height=48),
                                    command=show_settings_window_admin_window,
                                    bd=0,
                                    relief=tk.FLAT,
@@ -187,7 +192,7 @@ class adminUserWindow(tk.Frame):
         # Events für Klick und Fokusverlust hinzufügen
         user_search_entry.bind('<FocusIn>', on_entry_click)
         user_search_entry.bind('<FocusOut>', on_focus_out)
-        user_search_entry.bind('<Return>', search)
+        user_search_entry.bind("<Return>", search)
         user_search_entry.bind("<Key>", on_key_press)
         user_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
@@ -273,10 +278,14 @@ class adminUserWindow(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)
 
-    def update_treeview_with_data(self=None):
+    def update_treeview_with_data(self, data=None):
         user_tree.delete(*user_tree.get_children())
         i = 0
-        for entry in sqlapi.read_all_benutzer():
+
+        if data is None:
+            data = sqlapi.fetch_hardware()
+
+        for entry in data:
             # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
 
