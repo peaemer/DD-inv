@@ -158,8 +158,8 @@ class adminRoomWindow(tk.Frame):
             Funktionalitäten für den Wechsel zwischen verschiedenen Fenstern innerhalb
             der Anwendung.
             """
-            from .adminRoomWindow import adminRoomWindow
-            controller.show_frame(adminRoomWindow)
+            from .adminRoleWindow import adminRoleWindow
+            controller.show_frame(adminRoleWindow)
 
 
         global tree

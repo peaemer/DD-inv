@@ -11,7 +11,7 @@ srhGrey = "#d9d9d9"
 from ._SRHFont import load_font, SRHHeadline
 
 # Hauptseite (zweites Fenster)
-class adminUserWindow(tk.Frame):
+class adminRoleWindow(tk.Frame):
     """
     Erstellt eine Benutzerübersichtsoberfläche für Administratoren.
 
@@ -158,18 +158,18 @@ class adminUserWindow(tk.Frame):
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
 
-        def change_to_roles():
+        def change_to_user():
             """
-            Eine Klasse, die ein Benutzeroberflächenfenster für Admin-Benutzer implementiert,
-            das auf einer tkinter-Frame-Komponente basiert. Diese Klasse stellt eine Möglichkeit
-            dar, zwischen verschiedenen Ansichten innerhalb eines Controllers zu wechseln.
+            Eine Klasse, die ein Admin-Fenster für Räume darstellt. Diese Klasse ist eine Unterklasse
+            von `tk.Frame` und bietet die Benutzeroberfläche zur Verwaltung von Räumen.
 
-            :ivar parent: Der übergeordnete Widget-Container.
-            :ivar controller: Eine Steuerung, die für das Management der verschiedenen Fenster
-                innerhalb der grafischen Benutzeroberfläche verantwortlich ist.
+            :param parent: Das übergeordnete Widget des Frames.
+            :type parent: tk.Widget
+            :param controller: Der Controller, welcher die Navigation zwischen den Fenstern steuert.
+            :type controller: object
             """
-            from .adminRoleWindow import adminRoleWindow
-            controller.show_frame(adminRoleWindow)
+            from .adminUserWindow import adminUserWindow
+            controller.show_frame(adminUserWindow)
 
         def add_user():
             """
@@ -212,7 +212,7 @@ class adminUserWindow(tk.Frame):
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background="#DF4807", text="Nutzer-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label = tk.Label(header_frame, background="#DF4807", text="Rollen-Übersicht", font=(SRHHeadline, 30), foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
 
@@ -250,13 +250,16 @@ class adminUserWindow(tk.Frame):
         navi.grid_columnconfigure(2, weight=1)
 
 
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",text_color="black", font=("Arial", 20), hover_color="darkgray")
+        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=0, command=change_to_user, corner_radius=20, fg_color="#C5C5C5",
+                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
+        room_nav = ctk.CTkButton(navi, text="Räume", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",
+                                 text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",text_color="black", command=change_to_roles, font=("Arial", 20), hover_color="darkgray")
+        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",
+                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
 
@@ -333,17 +336,31 @@ class adminUserWindow(tk.Frame):
         user_tree.tag_configure("oddrow", background="#f7f7f7")
         user_tree.tag_configure("evenrow", background="white")
 
-        ### listbox for directories
-        user_tree.column("# 1", anchor=CENTER, width=60)
-        user_tree.heading("# 1", text="ID", )
-        user_tree.column("# 2", anchor=CENTER, width=200)
-        user_tree.heading("# 2", text="Nutzername")
-        user_tree.column("# 3", anchor=CENTER, width=200)
-        user_tree.heading("# 3", text="Passwort")
-        user_tree.column("# 4", anchor=CENTER, width=300)
-        user_tree.heading("# 4", text="E-Mail")
-        user_tree.column("# 5", anchor=CENTER, width=100)
-        user_tree.heading("# 5", text="Rolle")
+        # Spaltennamen und Breiten als Liste
+        columns = [
+            ("ID", 60),
+            ("Rolle", 150),
+            ("Ansehen", 150),
+            ("Rolle Löschbar", 150),
+            ("Admin Feature", 150),
+            ("Löschen", 100),
+            ("Bearbeiten", 100),
+            ("Erstellen", 100),
+            ("Gruppe Löschen", 150),
+            ("Gruppe Erstellen", 150),
+            ("Gruppe Bearbeiten", 150),
+            ("Rollen Erstellen", 150),
+            ("Rollen Bearbeiten", 150),
+            ("Rollen Löschen", 150)
+        ]
+
+        # Treeview-Spalten dynamisch erstellen
+        for idx, (col_name, col_width) in enumerate(columns, start=0):
+            col_id = f"# {idx}"  # Spalten-ID
+            user_tree.column(col_id, anchor=CENTER, width=col_width)
+            user_tree.heading(col_id, text=col_name)
+
+        # Treeview positionieren
         user_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
         user_tree.tkraise()
 
