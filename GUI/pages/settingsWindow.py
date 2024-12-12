@@ -118,7 +118,7 @@ def pop_up_settings(parent, controller):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_profile = tk.Frame(popup, bg="white")
     frame_profile.grid(row=1, column=1, rowspan=2, sticky="nesw")
-    #frame_profile.grid_forget()
+    frame_profile.grid_forget()
 
     # Überschrift Dein Profil
     profile_btn_label = tk.Label(frame_profile,
@@ -490,7 +490,7 @@ def pop_up_settings(parent, controller):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_ueber = tk.Frame(popup, bg="white")
     frame_ueber.grid(row=1, column=1, rowspan=2, sticky="new")
-    frame_ueber.grid_forget()
+    #frame_ueber.grid_forget()
 
     # Ueberschrift erstellen Über das DD-Inv Tool
     ueber_label = tk.Label(frame_ueber,
@@ -506,65 +506,28 @@ def pop_up_settings(parent, controller):
                              bg="white")
     Credits_label.grid(row=1, column=0, pady=10, sticky="new")
 
-    # Jack Button
-    def open_Jack(url):
-        webbrowser.open(url)
+    # Liste mit den Namenm, URL, Bild fuer Credits
+    buttons_data_credits = [{"name": "Peaemer (Jack)", "url": "https://github.com/peaemer/", "image": ""},
+                            {"name": "Alex5X5 (Alex)", "url": "https://github.com/Alex5X5", "image": ""},
+                            {"name": "GitSchwan (Fabian)", "url": "https://github.com/GitSchwan", "image": ""},
+                            {"name": "Chauto (Anakin)", "url": "https://github.com/Chautoo", "image": ""},
+                            {"name": "FemRene (Rene)", "url": "https://github.com/FemRene", "image": ""},
+                            {"name": "Tam", "url": "", "image": ""}]
 
-    jack_image = tk.PhotoImage(file="")
-    btn_links_label = ttk.Label(frame_ueber, text="Peaemer (Jack)", cursor="hand2")
-    btn_links_label.grid(row=2, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=jack_image)
-    btn_links_label.bind("<Button-1>", lambda e: open_Jack("https://github.com/peaemer/"))
+    # Funktion zum oeffnen der URL
+    def open_url(url):
+        if url:
+            webbrowser.open(url)
 
-    # Alex Button
-    def open_Alex(url):
-        webbrowser.open(url)
-
-    alex_image = tk.PhotoImage(file="")
-    btn_links_label = ttk.Label(frame_ueber, text="Alex5X5 (Alex)", cursor="hand2")
-    btn_links_label.grid(row=3, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=alex_image)
-    btn_links_label.bind("<Button-1>", lambda e: open_Alex("https://github.com/Alex5X5"))
-
-    # Fabian Button
-    def open_Fabian(url):
-        webbrowser.open(url)
-
-    fabian_image = tk.PhotoImage(file="")
-    btn_links_label = ttk.Label(frame_ueber, text="GitSchwan (Fabian)", cursor="hand2")
-    btn_links_label.grid(row=4, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=fabian_image)
-    btn_links_label.bind("<Button-1>", lambda e: open_Fabian("https://github.com/GitSchwan"))
-
-    # Anakin Button
-    def open_Anakin(url):
-        webbrowser.open(url)
-
-    anakin_image = tk.PhotoImage(file="")
-    btn_links_label = ttk.Label(frame_ueber, text="Chauto (Anakin)", cursor="hand2")
-    btn_links_label.grid(row=5, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=anakin_image)
-    btn_links_label.bind("<Button-1>", lambda e: open_Anakin("https://github.com/Chautoo"))
-
-    # Rene Button
-    def open_Rene(url):
-        webbrowser.open(url)
-
-    rene_image = tk.PhotoImage(file="")
-    btn_links_label = ttk.Label(frame_ueber, text="FemRene (Rene)", cursor="hand2")
-    btn_links_label.grid(row=6, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=rene_image)
-    btn_links_label.bind("<Button-1>", lambda e: open_Rene("https://github.com/FemRene"))
-
-    # Tam Button
-    def open_Tam(url):
-        webbrowser.open(url)
-
-    tam_image = tk.PhotoImage(file="")
-    btn_links_label = ttk.Label(frame_ueber, text="Tam")
-    btn_links_label.grid(row=7, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=tam_image)
-    btn_links_label.bind("<Button-1>", lambda e: open_Tam(""))
+    # Erstellen der Buttons mit einer Schleife
+    for index, button in enumerate(buttons_data_credits, start=2):
+        image = tk.PhotoImage(file=button["image"])  # Bild laden
+        btn_label = ttk.Label(frame_ueber,
+                              text=button["name"],
+                              cursor="hand2")
+        btn_label.grid(row=index, column=0, pady=2, sticky="new")
+        btn_label.configure(width=30, anchor='center', image=image, compound="left", background="white")
+        btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
 
     # Unterueberschrift erstellen Anwendung erstellt mit folgenden Tools
     build_label = tk.Label(frame_ueber,
@@ -573,109 +536,79 @@ def pop_up_settings(parent, controller):
                            bg="white")
     build_label.grid(row=8, column=0, pady=10, sticky="new")
 
-    # SQL3 Button
-    def open_SQL3(url):
-        webbrowser.open(url)
+    # Liste mit den Namenm, URL, Bild fuer genutzte Tools
+    buttons_data_tools = [{"name": "SQL3", "url": "https://www.sqlite.org/", "image": "assets/SQL3Settings.png"},
+                            {"name": "Figma", "url": "https://www.figma.com/", "image": "assets/FigmaSettings.png"},
+                            {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/", "image": "assets/PyCharmSettings.png"},
+                            {"name": "Python", "url": "https://www.python.org/", "image": "assets/PythonSettings.png"},
+                            {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07", "image": "assets/WindowsXPSettings.png"}]
 
-    sql3_image = tk.PhotoImage(file="assets/SQL3Settings.png")
-    btn_links_label = ttk.Label(frame_ueber, text="SQLite", cursor="hand2")
-    btn_links_label.grid(row=9, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=sql3_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_SQL3("https://www.sqlite.org/"))
+    # Funktion zum oeffnen der URL
+    def open_url(url):
+        if url:
+            webbrowser.open(url)
 
-    # Figma Button
-    def open_Figma(url):
-        webbrowser.open(url)
-
-    figma_image = tk.PhotoImage(file="assets/FigmaSettings.png")
-    btn_links_label = ttk.Label(frame_ueber, text="Figma", cursor="hand2")
-    btn_links_label.grid(row=10, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=figma_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_Figma("https://www.figma.com/"))
-
-    # PyCharm Button
-    def open_PyCharm(url):
-        webbrowser.open(url)
-
-    py_charm_image = tk.PhotoImage(file="assets/PyCharmSettings.png")
-    btn_links_label = ttk.Label(frame_ueber, text="PyCharm", cursor="hand2")
-    btn_links_label.grid(row=11, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=py_charm_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_PyCharm("https://www.jetbrains.com/de-de/pycharm/"))
-
-    # Python Button
-    def open_Python(url):
-        webbrowser.open(url)
-
-    python_image = tk.PhotoImage(file="assets/PythonSettings.png")
-    btn_links_label = ttk.Label(frame_ueber, text="Python", cursor="hand2")
-    btn_links_label.grid(row=12, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=python_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_Python("https://www.python.org/"))
-
-    # WindowsXP Button
-    def open_WindowsXP(url):
-        webbrowser.open(url)
-
-    windows_xp_image = tk.PhotoImage(file="assets/WindowsXPSettings.png")
-    btn_links_label = ttk.Label(frame_ueber, text="WindowsXP", cursor="hand2")
-    btn_links_label.grid(row=13, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=windows_xp_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_WindowsXP("https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07"))
+    # Erstellen der Buttons mit einer Schleife
+    for index, button in enumerate(buttons_data_tools, start=10):
+        image = tk.PhotoImage(file=button["image"])  # Bild laden
+        btn_label = ttk.Label(frame_ueber,
+                              text=button["name"],
+                              cursor="hand2")
+        btn_label.grid(row=index, column=0, pady=2, sticky="new")
+        btn_label.configure(width=30, anchor='center', image=image, compound="left", background="white")
+        btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
 
     # Unterueberschrift Du möchtest das Projekt Unterstützen?
     build_label = tk.Label(frame_ueber,
                            text="Du möchtest das Projekt unterstützen?",
                            font=BTNFONT,
                            bg="white")
-    build_label.grid(row=14, column=0, pady=10, sticky="new")
+    build_label.grid(row=16, column=0, pady=10, sticky="new")
 
-    # Ko-Fi Button
-    def open_KoFi(url):
-        webbrowser.open(url)
+    # Liste mit den Namenm, URL, Bild fuer Projekt Unterstuetzen
+    buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": "assets/KoFiSettings.png"},
+                            {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de", "image": "assets/FeedbackSettings.png"}]
 
-    ko_fi_image = tk.PhotoImage(file="assets/KoFiSettings.png")
-    btn_links_label = ttk.Label(frame_ueber, text="Ko-Fi (Spende)", cursor="hand2")
-    btn_links_label.grid(row=15, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=ko_fi_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_KoFi("https://ko-fi.com/dd_inv"))
+    # Funktion zum oeffnen der URL
+    def open_url(url):
+        if url:
+            webbrowser.open(url)
 
-    # Feedback Button
-    def open_Feedback(url):
-        webbrowser.open(url)
-
-    feedback_image = tk.PhotoImage(file="assets/FeedbackSettings.png")
-    btn_links_label = ttk.Label(frame_ueber, text="Feedback (E-Mail)", cursor="hand2")
-    btn_links_label.grid(row=16, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=feedback_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_Feedback("mailto:Jack-Mike.Saering@srhk.de"))
+    # Erstellen der Buttons mit einer Schleife
+    for index, button in enumerate(buttons_data_support, start=17):
+        image = tk.PhotoImage(file=button["image"])  # Bild laden
+        btn_label = ttk.Label(frame_ueber,
+                              text=button["name"],
+                              cursor="hand2")
+        btn_label.grid(row=index, column=0, pady=2, sticky="new")
+        btn_label.configure(width=30, anchor='center', image=image, compound="left", background="white")
+        btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
 
     # Unterueberschrift Info
     build_label = tk.Label(frame_ueber,
                            text="Info",
                            font=BTNFONT,
                            bg="white")
-    build_label.grid(row=17, column=0, pady=10, sticky="new")
+    build_label.grid(row=19, column=0, pady=10, sticky="new")
 
-    # VersionBuild Button
-    def open_VersionBuild(url):
-        webbrowser.open(url)
+    # Liste mit den Namenm, URL, Bild fuer Info
+    buttons_data_info = [{"name": "VersionBuild   V.0.0.311 (Alpha)", "url": "https://github.com/peaemer/DD-inv/commit/3cf34836049538c57b3cac282a740703e0312ba7", "image": "assets/DD-Inv_Logo.png"},
+                         {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv", "image": "assets/GitHubSettings.png"}]
 
-    logo_image = tk.PhotoImage(file="assets/DD-Inv_Logo.png")
-    btn_links_label = ttk.Label(frame_ueber, text="VersionBuild   V. 0.0.311 (Alpha)", cursor="hand2")
-    btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/3cf34836049538c57b3cac282a740703e0312ba7"))
+    # Funktion zum oeffnen der URL
+    def open_url(url):
+        if url:
+            webbrowser.open(url)
 
-    # Github Button
-    def open_Github(url):
-        webbrowser.open(url)
-
-    git_hub_image = tk.PhotoImage(file="assets/GitHubSettings.png")
-    btn_links_label = ttk.Label(frame_ueber, text="Visit our Github", cursor="hand2")
-    btn_links_label.grid(row=19, column=0, pady=2, sticky="new")
-    btn_links_label.configure(width=30, anchor='center', image=git_hub_image, compound="left")
-    btn_links_label.bind("<Button-1>", lambda e: open_Github("https://github.com/peaemer/DD-inv"))
+    # Erstellen der Buttons mit einer Schleife
+    for index, button in enumerate(buttons_data_info, start=20):
+        image = tk.PhotoImage(file=button["image"])  # Bild laden
+        btn_label = ttk.Label(frame_ueber,
+                              text=button["name"],
+                              cursor="hand2")
+        btn_label.grid(row=index, column=0, pady=2, sticky="new")
+        btn_label.configure(width=30, anchor='center', image=image, compound="left", background="white")
+        btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
 
 
     ###############################
