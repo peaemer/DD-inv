@@ -20,47 +20,56 @@ srhGrey = "#d9d9d9"
 # Hauptseite (zweites Fenster)
 class mainPage(tk.Frame):
     """
-    The mainPage class provides the graphical user interface for the main
-    application page, utilizing the Tkinter framework. It handles user interactions,
-    layout management, and various functionalities such as searching, logging out,
-    and navigating to different windows within the application. This class is
-    responsible for rendering the main interface that users interact with after
-    logging in, including headers, buttons, and data views.
+    Die Klasse mainPage repräsentiert die Benutzeroberfläche der Hauptseite der Anwendung.
 
-    The class efficiently manages widgets like frames, buttons, and labels, and
-    implements key functionalities that enhance user experience, such as placeholders
-    in search entries, focus events, and grid layout configurations. It makes extensive
-    use of Tkinter's components and styles to deliver an aesthetically organized
-    interface. Additionally, this class interacts with different modules within the
-    application to transition between various windows and maintain usability and
-    navigation flow.
+    Die Hauptseite dient als zentrale Übersicht für die Inventur. Sie enthält mehrere
+    wichtige Funktionen wie die Möglichkeit, nach Elementen zu suchen, neue Elemente hinzuzufügen,
+    sich auszuloggen, und verschiedene Optionen und Einstellungen anzuzeigen. Die Benutzeroberfläche
+    besteht aus mehreren geordneten Abschnitten wie dem Header, einer Seitenleiste und einem
+    mittleren Bereich zur Anzeige der Inhalte. Dabei wird ein Grid-Layout verwendet, um die Widgets
+    entsprechend ihrer Funktionalität und Position anzuordnen.
 
-    :ivar header_frame: The header section that includes logos and option buttons.
+    :ivar header_frame: Frame-Widget, das den Header-Bereich der Hauptseite darstellt.
     :type header_frame: tk.Frame
-    :ivar greyFrame: A secondary frame used for additional layout and labels.
-    :type greyFrame: tk.Frame
-    :ivar headerLabel: A label for header display.
-    :type headerLabel: tk.Label
-    :ivar log_out_btn: Image for the logout button.
+    :ivar srh_head: Bildobjekt, das zur Anzeige eines Logos im Header verwendet wird.
+    :type srh_head: tk.PhotoImage
+    :ivar log_out_btn: Bildobjekt für den Log-Out-Button.
     :type log_out_btn: tk.PhotoImage
-    :ivar opt_btn: Image for the settings button.
+    :ivar opt_btn: Bildobjekt für den Button, um die Einstellungen zu öffnen.
     :type opt_btn: tk.PhotoImage
-    :ivar admin_btn: Image for the admin button.
+    :ivar admin_btn: Bildobjekt für den Button, um den Admin-Bereich zu öffnen.
     :type admin_btn: tk.PhotoImage
-    :ivar search_btn: Image for the search button.
-    :type search_btn: tk.PhotoImage
-    :ivar add_btn: Image for the add item button.
+    :ivar add_btn: Bildobjekt für den Button, um ein neues Element hinzuzufügen.
     :type add_btn: tk.PhotoImage
+    :ivar search_btn: Bildobjekt für den Such-Button.
+    :type search_btn: tk.PhotoImage
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
         def show_settings_window():
+            """
+            Repräsentiert die Hauptseite der Anwendung, die als Frame innerhalb einer
+            tkinter-Anwendung konzipiert ist. Diese Klasse dient als Hauptcontainer für
+            Inhalte und verwaltet die Navigation zu anderen Fenstern oder Frames.
+
+            :cvar parent: Der übergeordnete tkinter-Widget, in dem die Hauptseite angezeigt wird.
+            :cvar controller: Der Controller, der die Navigation zwischen den Seiten steuert.
+            """
             from .settingsWindow import pop_up_settings
-            pop_up_settings(self)
+            pop_up_settings(self, controller)
 
         def show_admin_window():
+            """
+            Diese Klasse repräsentiert die Hauptrahmenseite der Anwendung und erbt von
+            `tk.Frame`. Sie dient als Grundlage für die GUI-Komponente und ermöglicht
+            die Navigation zwischen verschiedenen Seiten oder Fenstern durch den
+            Controller.
+
+            Der Hauptfokus dieser Klasse ist die Integration der Administrations-
+            Fensteransicht durch die Methode `show_admin_window`.
+            """
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
 
@@ -68,11 +77,29 @@ class mainPage(tk.Frame):
         self.show_admin_window = show_admin_window
 
         def log_out():
+            """
+            Eine Klasse, die das Hauptseiten-Frame darstellt und verwendet wird, um
+            den Benutzer zwischen verschiedenen Ansichten zu navigieren. Diese Klasse
+            enthält die Hauptlogik für den Vorgang beim Ausloggen.
+
+            :ivar parent: Die Elternkomponente, auf der dieses Frame basiert.
+            :ivar controller: Der Controller, der die Navigation zwischen verschiedenen Frames verwaltet.
+            """
             from .logInWindow import logInWindow
             cache.user_group = None  # Benutzergruppe zurücksetzen
             controller.show_frame(logInWindow)
 
         def search(event=None):                           # funktionalität hinzufügen
+            """
+            Eine Klasse, die ein Hauptseiten-Frame darstellt, das in einer
+            Tkinter-GUI verwendet wird. Diese Klasse dient als Basis für
+            die Anzeige von Inhalten und Interaktionen der Anwendung.
+
+            :param parent: Das übergeordnete Widget, in das dieses Frame
+                           integriert wird.
+            :param controller: Der Hauptcontroller für die Steuerung der
+                               Ansicht in der Anwendung.
+            """
             search_entrys = []
             for entry in sqlapi.fetch_hardware():
                 for value in entry:
@@ -82,18 +109,83 @@ class mainPage(tk.Frame):
             self.update_treeview_with_data(data=search_entrys)
 
         def add_item():
+            """
+            Eine Klasse, die die Hauptseite einer Anwendung darstellt und eine entsprechende grafische Benutzeroberfläche
+            bereitstellt. Die Klasse erbt von `tk.Frame` und wird innerhalb eines tkinter-Anwendungsrahmens verwendet.
+
+            Die Klasse enthält eine Methode zur Initialisierung des Layouts und eine Hilfsmethode, um ein Popup-Fenster
+            zum Hinzufügen eines Eintrags anzuzeigen.
+
+            Attributes:
+                parent: Das übergeordnete tkinter-Widget, innerhalb dessen der Rahmen liegt.
+                controller: Eine Controller-Instanz, die die Navigation oder Steuerung zwischen
+                            verschiedenen Anwendungsseiten ermöglicht.
+
+            Methoden:
+                add_item:
+                    Ruft eine Funktion auf, um ein Dialog-Popup für das Hinzufügen eines Eintrags
+                    zu erstellen.
+
+            :param parent: Das Eltern-Widget für den tkinter-Rahmen.
+            :type parent: tk.Widget
+            :param controller: Der Controller für die Navigation und Steuerung.
+            :type controller: object
+            """
             from .addItemPopup import add_item_popup
             add_item_popup(self)
 
         def on_entry_click(event):
+            """
+            Eine Klasse, die die Hauptseite in einer Tkinter-basierten GUI-Anwendung repräsentiert. Sie erbt von
+            `tk.Frame` und implementiert Interaktionen wie das Entfernen eines Platzhalters in einem
+            Suchfeld, wenn dieses fokussiert wird.
+
+            :param parent: Das übergeordnete Widget, das als Container für dieses Frame dient.
+            :type parent: tk.Widget
+            :param controller: Der Controller, der die Navigation zwischen verschiedenen Seiten innerhalb der Anwendung verwaltet.
+            :type controller: Any
+
+            :method on_entry_click(event): Ereignis-Handler für das Klicken in das Suchfeld. Entfernt den Platzhaltertext und
+                                           setzt die Textfarbe auf schwarz, wenn der Platzhaltertext vorhanden ist.
+            :param event: Ein Tkinter-Ereignisobjekt, das das durch den Benutzer ausgelöste Ereignis beschreibt.
+            :type event: tk.Event
+
+            """
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
 
         def on_key_press(event):
+            """
+            Eine Klasse, die ein Frame-Objekt für die Hauptseite einer Tkinter-Anwendung darstellt.
+
+            Zusammenfassung:
+            Diese Klasse bietet eine grundlegende Struktur für die Hauptseite innerhalb
+            einer grafischen Benutzeroberfläche, die mit Tkinter erstellt wird. Ein
+            zentrales Ereignis-Handling für Tastatureingaben (z.B. on_key_press-Methode)
+            wird implementiert, um Benutzereingaben zu verarbeiten.
+
+            :parameter parent: Das übergeordnete Tkinter-Widget, dem dieses Frame hinzugefügt wird.
+            :parameter controller: Ein Controller-Objekt, das zur Steuerung der Anwendungslogik verwendet wird.
+            """
             typed_key = event.char  # The character of the typed key
 
         def on_focus_out(event):
+            """
+            Die Klasse `mainPage` stellt eine Benutzeroberfläche dar, die von der
+            Tkinter Frame-Klasse abgeleitet ist. Sie dient als Hauptseite einer GUI-Anwendung
+            und ermöglicht verschiedene Interaktionen.
+
+            Es wird ein Fokus-Event überwacht und bei einem Fokusverlust eine Überprüfung
+            des Suchfeldes durchgeführt, um gegebenenfalls Platzhaltertext und die passende
+            Textfarbe zu setzen.
+
+            :param parent: Das übergeordnete Tkinter-Widget, das den Rahmen enthält.
+            :type parent: tk.Widget
+            :param controller: Ein Kontrollobjekt für die Verwaltung der Navigation und
+                anderer Interaktionen zwischen Subkomponenten der GUI.
+            :type controller: Objekt
+            """
             if search_entry.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
@@ -139,6 +231,8 @@ class mainPage(tk.Frame):
                                    bg="#DF4807",
                                    activebackground="#DF4807")
         log_out_button.grid(row=0, column=4, sticky=tk.E, padx=20)
+
+
 
         # Konvertiere das Bild für Tkinter
 
@@ -193,6 +287,24 @@ class mainPage(tk.Frame):
 
         # Dbug Info Anzeige der Fenstergroesse
         def show_size(event):
+            """
+            Diese Klasse mainPage stellt ein GUI-Frame dar, das in einer tkinter-Anwendung
+            verwendet wird. Es dient als Rahmen für Widgets und enthält Methoden, um auf
+            Ereignisse zu reagieren, wie zum Beispiel Änderungen der Fenstergröße.
+
+            :param parent: Der übergeordnete Widget-Container, zu dem dieses Frame gehört.
+            :type parent: tk.Widget
+            :param controller: Ein Objekt, das als Controller für Navigation oder
+                               Steuerungslogik dient.
+            :type controller: Objekt
+
+            :method show_size: Eine Methode zur Handhabung von Ereignissen, bei denen die
+                               Größe des Fensters geändert wird. Sie gibt die neuen
+                               Breiten- und Höhenwerte des Ereignisses aus.
+            :param event: Das Ereignisobjekt, das von tkinter übergeben wird und
+                          Informationen über das Größenänderungsereignis enthält.
+            :type event: tk.Event
+            """
             print(f"Neue Größe - Breite: {event.x} Höhe: {event.y}")
         print(show_size)
 
@@ -293,6 +405,15 @@ class mainPage(tk.Frame):
 
         # Funktion zum eintragen von Daten in die Tabelle
         def insert_data(self):
+            """
+            Eine Klasse, die eine Hauptseite mit GUI-Elementen repräsentiert. Diese Klasse erbt von
+            `tk.Frame` und wird typischerweise in einer tkinter-Anwendung verwendet.
+
+            :Attributes:
+                parent (tk.Widget): Der übergeordnete Widget, in dem der Rahmen eingebettet wird.
+                controller (tk.Tk oder Subklasse): Der Hauptcontroller der tkinter-Anwendung,
+                    der für die Navigation und das Management der Frames verantwortlich ist.
+            """
             i = 0
             for entry in sqlapi.fetch_hardware():
                 # Bestimme das Tag für die aktuelle Zeile
@@ -322,6 +443,12 @@ class mainPage(tk.Frame):
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
+            """
+            Hauptseite eines GUI-Frameworks basierend auf tkinter.
+
+            Diese Klasse stellt die Hauptseite dar, die eine Benutzeroberfläche für die
+            Navigation und Anzeige spezifischer Detailinformationen bereitstellt.
+            """
             try:
                 selected_item = tree.focus()
                 if selected_item:
@@ -331,6 +458,42 @@ class mainPage(tk.Frame):
                 print(f"Fehler bei der Auswahl: {e}")
 
         def on_side_tree_select(event):
+            """
+            Hauptseite für die Anwendung. Diese Klasse erstellt die Hauptansicht für das
+            Programm und erlaubt Benutzern, durch die Auswahl eines Elements aus dem
+            Baum (side_tree) entsprechende Daten in der Hauptansicht (treeview) anzuzeigen.
+
+            :Attributes:
+                parent: Die Elterninstanz oder der übergeordnete Container, in dem diese
+                    Seite eingebettet ist.
+                controller: Der zentrale Steuerungsmechanismus, der zwischen den
+                    verschiedenen Seiten der Anwendung vermittelt.
+
+            :Methode:
+                on_side_tree_select(event):
+                    Wird ausgelöst, wenn ein Element im side_tree ausgewählt wird. Diese
+                    Methodik ermöglicht:
+                    - Das Anzeigen aller Daten, wenn "Alle Räume" ausgewählt wird.
+                    - Das Filtern und Anzeigen von Daten basierend auf dem Raum.
+                    - Weitere spezifische Filterlogiken, wenn das übergeordnete über den
+                      Elternknoten bestimmt wird.
+
+            :Rückgabewerte:
+                Keine der Methoden in dieser Klasse gibt Werte zurück.
+
+            :Parameter:
+                :param event: Das Ereignisobjekt, das durch die Auswahl eines Elements
+                    ausgelöst wird.
+
+            :Erhobene Ausnahmen:
+                Keine direkte Fehlerbehandlung wird in der aktuellen Funktionslogik
+                implementiert.
+
+            Einschränkungen:
+            Die Funktionalität setzt voraus, dass die Methode fetch_all_rooms() und
+            fetch_hardware() im Modul 'sqlapi' korrekt implementiert sind und die
+            erforderlichen Daten liefern.
+            """
             # Hole ausgewähltes Element aus dem side_tree
             selected_item = side_tree.selection()
             if selected_item:
@@ -357,6 +520,17 @@ class mainPage(tk.Frame):
 
     # Aktualisieren der Data in der Tabelle
     def update_treeview_with_data(self = None, data=None):
+        """
+        Aktualisiert die Treeview mit den bereitgestellten Daten oder den aus der SQL-API
+        abgerufenen Hardwaredaten. Vorhandene Einträge in der Treeview werden geleert und
+        ersetzt. Zeilen erhalten je nach ihrer Reihenfolge unterschiedliche Tags
+        für alternative Farbmarkierungen.
+
+        :param data: Die zu aktualisierenden Daten, standardmäßig None. Wenn keine Daten
+            bereitgestellt werden, werden diese aus der SQL-API abgerufen.
+        :type data: Optional[List[Dict[str, Any]]]
+        :return: Es wird nichts zurückgegeben.
+        """
         # Clear the current treeview contents
         global i
         i = 0
@@ -382,7 +556,34 @@ class mainPage(tk.Frame):
             )
 
     def on_load(self):
-        """Diese Methode wird aufgerufen, nachdem die Seite vollständig geladen ist."""
+        """
+        Überprüft beim Laden die Benutzergruppe des aktuellen Nutzers und entscheidet, ob
+        ein Admin-Button erstellt, angezeigt oder entfernt werden soll. Der Admin-Button wird
+        nur für Nutzer der Gruppe "Admin" sichtbar und ermöglicht den Zugriff auf zusätzliche
+        Administrationsfunktionen. Danach wird die Anzeige des Treeviews aktualisiert.
+
+        :param self: Das aktuelle Objekt, das Zugriff auf die Eigenschaften und Methoden
+            der Klasse hat.
+
+        Attribute
+        ---------
+        admin_button : tk.Button
+            Eine Referenz auf den Admin-Button, falls dieser erstellt wurde.
+
+        admin_btn : Bild
+            Das Bild, das im Admin-Button angezeigt wird.
+
+        header_frame : Frame
+            Der Frame, in dem der Admin-Button positioniert wird.
+
+        user_group : str
+            Die Benutzergruppe des aktuellen Nutzers, die aus dem `cache` geladen wird.
+
+        Returns
+        -------
+        None
+            Diese Methode gibt keinen Wert zurück.
+        """
 
         # Überprüfe die Benutzergruppe
         if cache.user_group == "Admin":

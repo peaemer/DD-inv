@@ -46,14 +46,8 @@ class adminRoomWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
-        def search(event=None):                           # funktionalität hinzufügen
-            search_entrys = []
-            for entry in sqlapi.fetch_all_rooms():
-                for value in entry:
-                    if room_search_entry.get().lower() in str(entry[value]).lower():
-                        if entry not in search_entrys:
-                            search_entrys.append(entry)
-            self.update_treeview_with_data(data=search_entrys)
+        def search():                           # funktionalität hinzufügen
+            print("I am Searching")
 
         def add_room():
             from .addRoomPopup import add_room_popup
@@ -251,14 +245,10 @@ class adminRoomWindow(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         room_tree.bind("<Double-1>", on_room_selected)
 
-    def update_treeview_with_data(self, data=None):
+    def update_treeview_with_data(self):
         room_tree.delete(*room_tree.get_children())
         i = 0
-
-        if data is None:
-            data = sqlapi.fetch_hardware()
-
-        for entry in data:
+        for entry in sqlapi.fetch_all_rooms():
             # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
 
