@@ -12,6 +12,7 @@ from pages import logInWindow,\
 				  roomDetailsWindow,\
 				  adminRoomWindow,\
 				  adminUserWindow,\
+				  adminRoleWindow,\
 			      _DPIAwareness
 import customtkinter as ctk
 
@@ -67,7 +68,7 @@ class ddINV(tk.Tk):
 		self.frames = {}
 
 		# Erstelle die Seiten (Frames) und speichere sie im Dictionary
-		for F in (logInWindow, mainPage,detailsWindow , userDetailsWindow, adminRoomWindow, adminUserWindow, roomDetailsWindow):
+		for F in (logInWindow, mainPage,detailsWindow , userDetailsWindow, adminRoomWindow,adminRoleWindow, adminUserWindow, roomDetailsWindow):
 			frame = F(container, self)
 			self.frames[F] = frame
 			frame.grid(row=0, column=0, sticky="nsew")  # Platziere die Frames im Grid

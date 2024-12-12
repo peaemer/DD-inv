@@ -11,6 +11,17 @@ from .userDetailsWindow import userDetailsWindow
 from .adminRoomWindow import adminRoomWindow
 from .roomDetailsWindow import roomDetailsWindow
 from .addRoomPopup import add_room_popup
+from .adminRoleWindow import adminRoleWindow
 
 
-__all__ = ["logInWindow", "mainPage", "add_item_popup", "settingsWindow", "detailsWindow", "adminUserWindow", "userDetailsWindow", "adminRoomWindow", "roomDetailsWindow"]
+__all__ = ["logInWindow",
+           "mainPage",
+           "add_item_popup",
+           "settingsWindow",
+           "detailsWindow",
+           "adminUserWindow",
+           "userDetailsWindow",
+           "adminRoomWindow",
+           "roomDetailsWindow",
+           "adminRoleWindow"
+           ]
