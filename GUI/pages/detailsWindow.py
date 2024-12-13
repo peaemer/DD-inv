@@ -44,7 +44,7 @@ class detailsWindow(tk.Frame):
     :ivar opt_btn_details_window: Bildressource für den Optionen-Button.
     :ivar service_tag_entry_details_window: Eingabefeld für den Service Tag.
     :ivar type_entry_details_window: Eingabefeld für den Typ des Objekts.
-    :ivar room_entry_details_window: Eingabefeld für die Rauminformation.
+    :ivar room_combobox_details_window: Eingabefeld für die Rauminformation.
     :ivar name_entry_details_window: Eingabefeld für den Namen.
     :ivar damaged_entry_details_window: Eingabefeld für Informationen über Schäden.
     """
@@ -89,7 +89,6 @@ class detailsWindow(tk.Frame):
             -------
             show_settings_window_details_window()
                 Öffnet das Einstellungs-Pop-Up-Fenster im Detailfenster.
-
             """
             print("Show settings window details window")
             from .settingsWindow import pop_up_settings
@@ -160,7 +159,7 @@ class detailsWindow(tk.Frame):
         tree_frame_details_window = tk.Frame(container_frame, background="red", width=200, height=400)
         tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
 
-        tree_details_window = ttk.Treeview(tree_frame_details_window, column=("c1", "c2", "c3"), show="headings", height=30)
+        tree_details_window = ttk.Treeview(tree_frame_details_window, column=("c1", "c2"), show="headings", height=30)
 
         scroll_details_window = tk.Scrollbar(
             tree_frame_details_window,
@@ -184,9 +183,7 @@ class detailsWindow(tk.Frame):
         tree_details_window.column("# 1", anchor=CENTER, width=180)
         tree_details_window.heading("# 1", text="Nutzername", )
         tree_details_window.column("# 2", anchor=CENTER, width=180)
-        tree_details_window.heading("# 2", text="ServiceTag/ID")
-        tree_details_window.column("# 3", anchor=CENTER, width=180)
-        tree_details_window.heading("# 3", text="Ausgeliehen am")
+        tree_details_window.heading("# 2", text="Ausgeliehen am")
         tree_details_window.grid(row=1, column=0)
         tree_details_window.tkraise()
 
@@ -215,14 +212,20 @@ class detailsWindow(tk.Frame):
                                                   background=srhGrey, relief=tk.SOLID)
         self.type_entry_details_window.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        # Raum
-        room_label_details_window = tk.Label(input_frame_details_window, text="Raum",
-                                          font=("Arial", size_details_window), background="white")
-        room_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.room_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                                  background=srhGrey, relief=tk.SOLID)
-        self.room_entry_details_window.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
+        # Raum (Dropdown-Menü)
+        room_label_details_window = tk.Label(input_frame_details_window, text="Raum", background="white",
+                                             font=("Arial", size_details_window))
+        room_label_details_window.grid(row=2, column=0, padx=0, pady=20, sticky=tk.W + tk.E)
+
+        # Combobox statt Entry
+        room_values = []
+        for room in db.fetch_all_rooms():
+            room_values.append(room['Raum'] + " - " + room['Ort'])
+        self.room_combobox_details_window = ttk.Combobox(input_frame_details_window, values=room_values,
+                                                    font=("Arial", size_details_window))
+        self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+        self.room_combobox_details_window.set("Raum auswählen")  # Platzhalter
 
         # Name
         name_label_details_window = tk.Label(input_frame_details_window, text="Name",
@@ -259,7 +262,7 @@ class detailsWindow(tk.Frame):
             """
             #update
             type = self.type_entry_details_window.get() if self.type_entry_details_window.get() != "" else "None"
-            room = self.room_entry_details_window.get() if self.room_entry_details_window.get() != "" else "None"
+            room = self.room_combobox_details_window.get() if self.room_combobox_details_window.get() != "" else "None"
             name = self.name_entry_details_window.get() if self.name_entry_details_window.get() != "" else "None"
             if not self.damaged_entry_details_window.get() or self.damaged_entry_details_window.get() == "":
                 damage = "None"
@@ -368,8 +371,7 @@ class detailsWindow(tk.Frame):
         self.type_entry_details_window.delete(0, tk.END)
         self.type_entry_details_window.insert(0, data[2])
 
-        self.room_entry_details_window.delete(0, tk.END)
-        self.room_entry_details_window.insert(0, data[3])
+        self.room_combobox_details_window.set(data[3])
 
         self.name_entry_details_window.delete(0, tk.END)
         self.name_entry_details_window.insert(0, data[4])

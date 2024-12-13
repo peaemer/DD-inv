@@ -401,44 +401,7 @@ class mainPage(tk.Frame):
         tree.heading("# 7", text="Ausgeliehen von")
         tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
         tree.tkraise()
-
-        # Funktion zum eintragen von Daten in die Tabelle
-        def insert_data(self):
-            """
-            Eine Klasse, die eine Hauptseite mit GUI-Elementen repräsentiert. Diese Klasse erbt von
-            `tk.Frame` und wird typischerweise in einer tkinter-Anwendung verwendet.
-
-            :Attributes:
-                parent (tk.Widget): Der übergeordnete Widget, in dem der Rahmen eingebettet wird.
-                controller (tk.Tk oder Subklasse): Der Hauptcontroller der tkinter-Anwendung,
-                    der für die Navigation und das Management der Frames verantwortlich ist.
-            """
-            i = 0
-            for entry in sqlapi.fetch_hardware():
-                # Bestimme das Tag für die aktuelle Zeile
-                tag = "evenrow" if i % 2 == 0 else "oddrow"
-                if entry['Beschaedigung'] == "None":
-                    damage = ""
-                else:
-                    damage = entry['Beschaedigung']
-                # Daten mit dem Tag in das Treeview einfügen
-                tree.insert(
-                    "",
-                    "end",
-                    text=f"{entry['Service_Tag']}",
-                    values=(
-                        i,
-                        entry['Service_Tag'],
-                        entry['Geraetetype'],
-                        entry['Raum'],
-                        entry['Modell'],
-                        damage,
-                        entry['Ausgeliehen_von']
-                    ),
-                    tags=(tag,)
-                )
-                i += 1
-        insert_data(self)
+        self.update_treeview_with_data()
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):

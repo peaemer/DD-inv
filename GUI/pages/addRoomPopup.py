@@ -49,7 +49,7 @@ def add_room_popup(parent):
     header_frame_add_room_popup.grid_columnconfigure(0, weight=1)
 
     header_label_add_room_popup = tk.Label(
-        header_frame_add_room_popup, background="#DF4807",
+        header_frame_add_room_popup, background="#00699a",
         text="Hinzufügen", foreground="white", font=("Arial", 40)
     )
     header_label_add_room_popup.grid(row=0, column=0, sticky=tk.NSEW)
@@ -128,7 +128,7 @@ def add_room_popup(parent):
         """
         add_popup.destroy()
 
-    parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/Hinzu.png")
+    parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/HinzuBig_blue.png")
     parent.exit_btn_add_item_popup = tk.PhotoImage(file="assets/AbbrechenButton.png")
 
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")
