@@ -12,7 +12,6 @@ LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
 
 
-
 def lend_popup(parent, data):
     """
     Erstellt ein modales Popup-Fenster zur Verwaltung von Ausleihvorgängen. Das Fenster
@@ -80,7 +79,6 @@ def lend_popup(parent, data):
         #lendupdate
         popup.destroy()  # Schließt das Popup nach Bestätigung
 
-
     # Grid-Layout konfigurieren
     popup.grid_rowconfigure(0, weight=0)  # Titelzeile
     popup.grid_rowconfigure(1, weight=0)  # Formularzeilen
@@ -89,21 +87,17 @@ def lend_popup(parent, data):
     popup.grid_rowconfigure(4, weight=1)  # Buttonzeile
     popup.grid_columnconfigure(1, weight=1)  # Spalte 1 flexibel
 
-
     # Titelbereich
     title_label = tk.Label(
         popup, text="Ausleihen", font=("Arial", 35), bg="#DF4807", fg="white"
     )
     title_label.grid(row=0, column=0, columnspan=2, ipady=10, sticky="new")
 
-
     item_var = tk.StringVar()
-    item_var.set("Itemplatzhalter") #funktion zum eifügen des Namens
+    item_var.set("Itemplatzhalter")  #funktion zum eifügen des Namens
 
     user_var = tk.StringVar()
-    user_var.set(cache.user_name) #funktion zum eifügen des Namens
-
-
+    user_var.set(cache.user_name)  #funktion zum eifügen des Namens
 
     # Formularbereich
 
@@ -115,7 +109,6 @@ def lend_popup(parent, data):
 
     borrower_label = tk.Label(popup, text="Ausleiher", font=LARGEFONT, bg="white", anchor="w")
     borrower_label.grid(row=2, column=0, padx=20, pady=10, sticky="w")
-
 
     if cache.user_group == "Admin":
         users = []

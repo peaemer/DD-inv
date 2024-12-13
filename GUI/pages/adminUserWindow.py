@@ -11,6 +11,7 @@ srhGrey = "#d9d9d9"
 srhBlue = "#00699a"
 from ._SRHFont import load_font, SRHHeadline
 
+
 # Hauptseite (zweites Fenster)
 class adminUserWindow(tk.Frame):
     """
@@ -33,6 +34,7 @@ class adminUserWindow(tk.Frame):
     :ivar searchBtn: Speichert das Bild für den Such-Button.
     :type searchBtn: tk.PhotoImage
     """
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
@@ -68,7 +70,7 @@ class adminUserWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
-        def search(event=None):                           # funktionalität hinzufügen
+        def search(event=None):  # funktionalität hinzufügen
             search_entrys = []
             for entry in sqlapi.read_all_benutzer():
                 for value in entry:
@@ -204,7 +206,7 @@ class adminUserWindow(tk.Frame):
 
         # Erstelle einen Header-Bereich
         header_frame = tk.Frame(self, background=srhBlue)
-        header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
+        header_frame.grid(row=0, column=0, columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
         header_frame.grid_columnconfigure(0, weight=1)  # Platz links
@@ -219,15 +221,17 @@ class adminUserWindow(tk.Frame):
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background=srhBlue, text="Nutzer-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label = tk.Label(header_frame, background=srhBlue, text="Nutzer-Übersicht", font=(SRHHeadline, 30),
+                                     foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
         self.log_out_btn = tk.PhotoImage(file="assets/ArrowLeft.png")
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0, relief=tk.FLAT, bg=srhBlue,
-                                 activebackground=srhBlue)
+        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0,
+                                   relief=tk.FLAT, bg=srhBlue,
+                                   activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         from ._avatarManager import loadImage
@@ -243,7 +247,6 @@ class adminUserWindow(tk.Frame):
                                    activebackground=srhBlue)
         options_button.grid(row=0, column=2, sticky=tk.E, padx=20)
 
-
         #########
         #NAV:BAR#
         #########
@@ -255,18 +258,18 @@ class adminUserWindow(tk.Frame):
         navi.grid_columnconfigure(1, weight=1)
         navi.grid_columnconfigure(2, weight=1)
 
-
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",text_color="black", font=("Arial", 20), hover_color="darkgray")
+        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=0, corner_radius=20, fg_color="#C5C5C5",
+                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
+        room_nav = ctk.CTkButton(navi, text="Räume", border_width=0, corner_radius=20, fg_color="#C5C5C5",
+                                 text_color="black", command=change_to_room, font=("Arial", 20), hover_color="darkgray")
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",text_color="black", command=change_to_roles, font=("Arial", 20), hover_color="darkgray")
+        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20, fg_color="#C5C5C5",
+                                 text_color="black", command=change_to_roles, font=("Arial", 20),
+                                 hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
-
-
-
 
         middle_frame = tk.Frame(self, background="white")
         middle_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
@@ -289,18 +292,17 @@ class adminUserWindow(tk.Frame):
 
         self.searchBtn = tk.PhotoImage(file="assets/search_button_blue.png")
         search_button = tk.Button(search_frame,
-                                 image=self.searchBtn,
-                                 bd=0,
-                                 relief=tk.FLAT,
-                                 bg="white",
-                                 activebackground="white",
-                                 command=search)
+                                  image=self.searchBtn,
+                                  bd=0,
+                                  relief=tk.FLAT,
+                                  bg="white",
+                                  activebackground="white",
+                                  command=search)
         search_button.grid(padx=10, pady=5, row=0, column=0)
-
 
         # Entry-Feld mit Platzhalter-Text
         user_search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey, text_color="black", font=("Arial", 27),
-                                    corner_radius=20, border_width=0)
+                                         corner_radius=20, border_width=0)
         user_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -384,7 +386,7 @@ class adminUserWindow(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)
 
-    def update_treeview_with_data(self = None, data=None):
+    def update_treeview_with_data(self=None, data=None):
         """
         Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
         löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
