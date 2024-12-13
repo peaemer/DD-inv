@@ -68,14 +68,14 @@ class adminRoleWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
-        def search():                           # funktionalität hinzufügen
+        def search(event=None):                           # funktionalität hinzufügen
             search_entrys = []
             for entry in sqlapi.read_all_rollen():
                 for value in entry:
                     if user_search_entry.get().lower() in str(entry[value]).lower():
                         if entry not in search_entrys:
                             search_entrys.append(entry)
-            update_treeview_with_data(data=search_entrys)
+            self.update_treeview_with_data(data=search_entrys)
 
         def add_role():
             """
@@ -320,7 +320,7 @@ class adminRoleWindow(tk.Frame):
         role_tree_frame.grid_columnconfigure(0, weight=1)  # Spalte für die Tabelle
         role_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
-        global user_tree
+        global role_tree
         role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13"), show="headings")
 
         role_scroll = tk.Scrollbar(
@@ -370,50 +370,7 @@ class adminRoleWindow(tk.Frame):
         # Treeview positionieren
         role_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
         role_tree.tkraise()
-
-        def update_treeview_with_data(data=None):
-            """
-            Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
-            löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
-            Datenbank ein. Jede Zeile erhält ein Tag, das zu einer alternierenden Darstellung von
-            geraden und ungeraden Zeilen verwendet werden kann.
-
-            :return: Gibt keinen Wert zurück.
-            """
-            role_tree.delete(*role_tree.get_children())
-            i = 0
-            if data is None:
-                data = sqlapi.read_all_rollen()
-
-            print(data)
-            for entry in data:
-                # Bestimme das Tag für die aktuelle Zeile
-                tag = "evenrow" if i % 2 == 0 else "oddrow"
-
-                # Daten mit dem Tag in das Treeview einfügen
-                role_tree.insert(
-                    "",
-                    "end",
-                    text=f"{entry['Rolle']}",
-                    values=(
-                        entry['Rolle'],
-                        "✓" if entry['ANSEHEN'] == 'True' else "✕",
-                        "✓" if entry['ROLLE_LOESCHBAR'] == 'True' else "✕",
-                        "✓" if entry['ADMIN_FEATURE'] == 'True' else "✕",
-                        "✓" if entry['LOESCHEN'] == 'True' else "✕",
-                        "✓" if entry['BEARBEITEN'] == 'True' else "✕",
-                        "✓" if entry['ERSTELLEN'] == 'True' else "✕",
-                        "✓" if entry['GRUPPEN_LOESCHEN'] == 'True' else "✕",
-                        "✓" if entry['GRUPPEN_ERSTELLEN'] == 'True' else "✕",
-                        "✓" if entry['GRUPPEN_BEARBEITEN'] == 'True' else "✕",
-                        "✓" if entry['ROLLEN_ERSTELLEN'] == 'True' else "✕",
-                        "✓" if entry['ROLLEN_BEARBEITEN'] == 'True' else "✕",
-                        "✓" if entry['ROLLEN_LOESCHEN'] == 'True' else "✕",
-                    ),
-                    tags=(tag,)
-                )
-                i += 1
-        update_treeview_with_data()
+        self.update_treeview_with_data()
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
@@ -436,9 +393,51 @@ class adminRoleWindow(tk.Frame):
                 print(f"Ausgewählter User: {selected_user}")  # Debug
                 if selected_user:
                     from .userDetailsWindow import userDetailsWindow, show_user_details
-                    show_user_details(selected_user, user_tree, controller)
+                    show_user_details(selected_user, role_tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
         role_tree.bind("<Double-1>", on_item_selected)
+
+    def update_treeview_with_data(self = None, data=None):
+        """
+        Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
+        löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
+        Datenbank ein. Jede Zeile erhält ein Tag, das zu einer alternierenden Darstellung von
+        geraden und ungeraden Zeilen verwendet werden kann.
+
+        :return: Gibt keinen Wert zurück.
+        """
+        role_tree.delete(*role_tree.get_children())
+        i = 0
+        if data is None:
+            data = sqlapi.read_all_rollen()
+
+        for entry in data:
+            # Bestimme das Tag für die aktuelle Zeile
+            tag = "evenrow" if i % 2 == 0 else "oddrow"
+
+            # Daten mit dem Tag in das Treeview einfügen
+            role_tree.insert(
+                "",
+                "end",
+                text=f"{entry['Rolle']}",
+                values=(
+                    entry['Rolle'],
+                    "✓" if entry['ANSEHEN'] == 'True' else "✕",
+                    "✓" if entry['ROLLE_LOESCHBAR'] == 'True' else "✕",
+                    "✓" if entry['ADMIN_FEATURE'] == 'True' else "✕",
+                    "✓" if entry['LOESCHEN'] == 'True' else "✕",
+                    "✓" if entry['BEARBEITEN'] == 'True' else "✕",
+                    "✓" if entry['ERSTELLEN'] == 'True' else "✕",
+                    "✓" if entry['GRUPPEN_LOESCHEN'] == 'True' else "✕",
+                    "✓" if entry['GRUPPEN_ERSTELLEN'] == 'True' else "✕",
+                    "✓" if entry['GRUPPEN_BEARBEITEN'] == 'True' else "✕",
+                    "✓" if entry['ROLLEN_ERSTELLEN'] == 'True' else "✕",
+                    "✓" if entry['ROLLEN_BEARBEITEN'] == 'True' else "✕",
+                    "✓" if entry['ROLLEN_LOESCHEN'] == 'True' else "✕",
+                ),
+                tags=(tag,)
+            )
+            i += 1

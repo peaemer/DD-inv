@@ -68,7 +68,7 @@ class adminUserWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
-        def search():                           # funktionalität hinzufügen
+        def search(event=None):                           # funktionalität hinzufügen
             search_entrys = []
             for entry in sqlapi.read_all_benutzer():
                 for value in entry:
@@ -109,7 +109,7 @@ class adminUserWindow(tk.Frame):
             """
             if user_search_entry.get() == 'Suche':
                 user_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
-                user_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+                user_search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
 
         def on_focus_out(event):
             """
@@ -124,7 +124,7 @@ class adminUserWindow(tk.Frame):
             """
             if user_search_entry.get() == '':
                 user_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                user_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+                user_search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
 
         def on_key_press(event):
             """
@@ -297,8 +297,10 @@ class adminUserWindow(tk.Frame):
                                  command=search)
         search_button.grid(padx=10, pady=5, row=0, column=0)
 
+
         # Entry-Feld mit Platzhalter-Text
-        user_search_entry = tk.Entry(search_frame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
+        user_search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey, text_color="black", font=("Arial", 27),
+                                    corner_radius=20, border_width=0)
         user_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -352,43 +354,7 @@ class adminUserWindow(tk.Frame):
         user_tree.heading("# 5", text="Rolle")
         user_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
         user_tree.tkraise()
-
-        def insert_data(self):
-            """
-            Die Klasse `adminUserWindow` stellt eine grafische Benutzeroberfläche dar,
-            die auf tkinter basiert und es ermöglicht, Benutzer-Daten anzuzeigen und
-            zu verwalten. Innerhalb der Oberfläche werden Benutzerdaten im Treeview
-            dargestellt, wobei die Zeilen abwechselnd formatiert werden.
-
-            Diese Klasse erbt von `tk.Frame` und benötigt einen Eltern-Frame sowie
-            einen Controller zur Initialisierung.
-
-            :param parent: Das übergeordnete tkinter-Widget, das den Rahmen enthält.
-            :type parent: tk.Widget
-            :param controller: Der Controller, der die Logik und Anwendungsteuerung verwaltet.
-            :type controller: Any
-            """
-            i = 0
-            for entry in sqlapi.read_all_benutzer():
-                # Bestimme das Tag für die aktuelle Zeile
-                tag = "evenrow" if i % 2 == 0 else "oddrow"
-
-                # Daten mit dem Tag in das Treeview einfügen
-                user_tree.insert(
-                    "",
-                    "end",
-                    text=f"{entry['Nutzername']}",
-                    values=(
-                        i,
-                        entry['Nutzername'],
-                        entry['Passwort'],
-                        entry['Email'],
-                        entry['Rolle'],
-                    ),
-                    tags=(tag,)
-                )
-                i += 1
-        insert_data(self)
+        self.update_treeview_with_data()
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
