@@ -319,7 +319,7 @@ class adminUserWindow(tk.Frame):
         user_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global user_tree
-        user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13"), show="headings")
+        user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5"), show="headings")
 
         user_scroll = tk.Scrollbar(
             user_tree_frame,
