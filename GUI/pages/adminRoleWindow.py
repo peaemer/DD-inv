@@ -77,7 +77,7 @@ class adminRoleWindow(tk.Frame):
                             search_entrys.append(entry)
             update_treeview_with_data(data=search_entrys)
 
-        def add_user_item():
+        def add_role():
             """
             Diese Klasse repräsentiert das Hauptfenster zur Verwaltung von
             Benutzerkonten innerhalb der Anwendung. Sie erbt von `tk.Frame`
@@ -178,7 +178,7 @@ class adminRoleWindow(tk.Frame):
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
 
-        def add_user():
+        def add_role():
             """
             Eine Unterklasse von `tk.Frame`, die ein Fenster für die Verwaltung von Admin-Benutzern
             darstellt.
@@ -288,7 +288,7 @@ class adminRoleWindow(tk.Frame):
 
         self.add_btn = tk.PhotoImage(file="assets/Hinzusmall_blue.png")
         user_add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
-                                    activebackground="white", command=add_user)
+                                    activebackground="white", command=add_role)
         user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         self.searchBtn = tk.PhotoImage(file="assets/search_button_blue.png")
@@ -312,21 +312,21 @@ class adminRoleWindow(tk.Frame):
         user_search_entry.bind("<Key>", on_key_press)
         user_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-        user_tree_frame = tk.Frame(middle_frame, background="white")
-        user_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
+        role_tree_frame = tk.Frame(middle_frame, background="white")
+        role_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         # Spaltenkonfiguration für das TreeFrame
-        user_tree_frame.grid_rowconfigure(1, weight=1)
-        user_tree_frame.grid_columnconfigure(0, weight=1)  # Spalte für die Tabelle
-        user_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
+        role_tree_frame.grid_rowconfigure(1, weight=1)
+        role_tree_frame.grid_columnconfigure(0, weight=1)  # Spalte für die Tabelle
+        role_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global user_tree
-        user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13"), show="headings")
+        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13"), show="headings")
 
-        user_scroll = tk.Scrollbar(
-            user_tree_frame,
+        role_scroll = tk.Scrollbar(
+            role_tree_frame,
             orient="vertical",
-            command=user_tree.yview,
+            command=role_tree.yview,
             bg="black",
             activebackground="darkblue",
             troughcolor="grey",
@@ -334,18 +334,18 @@ class adminRoleWindow(tk.Frame):
             width=15,
             borderwidth=1
         )
-        user_scroll.grid(row=1, column=1, sticky="ns")
+        role_scroll.grid(row=1, column=1, sticky="ns")
 
         # Treeview mit Scrollbar verbinden
-        user_tree.configure(yscrollcommand=user_scroll.set)
+        role_tree.configure(yscrollcommand=role_scroll.set)
 
         # Tags für alternierende Zeilenfarben konfigurieren
-        user_tree.tag_configure("oddrow", background="#f7f7f7")
-        user_tree.tag_configure("evenrow", background="white")
+        role_tree.tag_configure("oddrow", background="#f7f7f7")
+        role_tree.tag_configure("evenrow", background="white")
 
         # Spaltennamen und Breiten als Liste
         columns = [
-            ("ID", 60),
+            ("ID", 30),
             ("Rolle", 150),
             ("Ansehen", 150),
             ("Rolle Löschbar", 150),
@@ -364,12 +364,12 @@ class adminRoleWindow(tk.Frame):
         # Treeview-Spalten dynamisch erstellen
         for idx, (col_name, col_width) in enumerate(columns, start=0):
             col_id = f"# {idx}"  # Spalten-ID
-            user_tree.column(col_id, anchor=CENTER, width=col_width)
-            user_tree.heading(col_id, text=col_name)
+            role_tree.column(col_id, anchor=CENTER, width=col_width)
+            role_tree.heading(col_id, text=col_name)
 
         # Treeview positionieren
-        user_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
-        user_tree.tkraise()
+        role_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
+        role_tree.tkraise()
 
         def update_treeview_with_data(data=None):
             """
@@ -380,7 +380,7 @@ class adminRoleWindow(tk.Frame):
 
             :return: Gibt keinen Wert zurück.
             """
-            user_tree.delete(*user_tree.get_children())
+            role_tree.delete(*role_tree.get_children())
             i = 0
             if data is None:
                 data = sqlapi.read_all_rollen()
@@ -391,7 +391,7 @@ class adminRoleWindow(tk.Frame):
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
 
                 # Daten mit dem Tag in das Treeview einfügen
-                user_tree.insert(
+                role_tree.insert(
                     "",
                     "end",
                     text=f"{entry['Rolle']}",
@@ -413,7 +413,6 @@ class adminRoleWindow(tk.Frame):
                     tags=(tag,)
                 )
                 i += 1
-
         update_treeview_with_data()
 
         # Funktion für das Ereignis-Binding
@@ -433,7 +432,7 @@ class adminRoleWindow(tk.Frame):
             :type controller: object
             """
             try:
-                selected_user = user_tree.focus()
+                selected_user = role_tree.focus()
                 print(f"Ausgewählter User: {selected_user}")  # Debug
                 if selected_user:
                     from .userDetailsWindow import userDetailsWindow, show_user_details
@@ -442,4 +441,4 @@ class adminRoleWindow(tk.Frame):
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        user_tree.bind("<Double-1>", on_item_selected)
+        role_tree.bind("<Double-1>", on_item_selected)
