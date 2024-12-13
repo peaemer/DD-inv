@@ -68,7 +68,7 @@ class adminUserWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
-        def search():                           # funktionalität hinzufügen
+        def search(event=None):                           # funktionalität hinzufügen
             search_entrys = []
             for entry in sqlapi.read_all_benutzer():
                 for value in entry:
@@ -354,43 +354,7 @@ class adminUserWindow(tk.Frame):
         user_tree.heading("# 5", text="Rolle")
         user_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
         user_tree.tkraise()
-
-        def insert_data(self):
-            """
-            Die Klasse `adminUserWindow` stellt eine grafische Benutzeroberfläche dar,
-            die auf tkinter basiert und es ermöglicht, Benutzer-Daten anzuzeigen und
-            zu verwalten. Innerhalb der Oberfläche werden Benutzerdaten im Treeview
-            dargestellt, wobei die Zeilen abwechselnd formatiert werden.
-
-            Diese Klasse erbt von `tk.Frame` und benötigt einen Eltern-Frame sowie
-            einen Controller zur Initialisierung.
-
-            :param parent: Das übergeordnete tkinter-Widget, das den Rahmen enthält.
-            :type parent: tk.Widget
-            :param controller: Der Controller, der die Logik und Anwendungsteuerung verwaltet.
-            :type controller: Any
-            """
-            i = 0
-            for entry in sqlapi.read_all_benutzer():
-                # Bestimme das Tag für die aktuelle Zeile
-                tag = "evenrow" if i % 2 == 0 else "oddrow"
-
-                # Daten mit dem Tag in das Treeview einfügen
-                user_tree.insert(
-                    "",
-                    "end",
-                    text=f"{entry['Nutzername']}",
-                    values=(
-                        i,
-                        entry['Nutzername'],
-                        entry['Passwort'],
-                        entry['Email'],
-                        entry['Rolle'],
-                    ),
-                    tags=(tag,)
-                )
-                i += 1
-        insert_data(self)
+        self.update_treeview_with_data()
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
