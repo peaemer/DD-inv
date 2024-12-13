@@ -233,11 +233,12 @@ class mainPage(tk.Frame):
 
 
         # Konvertiere das Bild für Tkinter
-        self.opt_btn = tk.PhotoImage(file="assets/option.png")
+        from ._avatarManager import loadImage
+        self.avatar = loadImage(parent=parent)
 
         # Füge einen Button mit dem Bild hinzu
         options_button = tk.Button(self.header_frame,
-                                   image=self.opt_btn,
+                                   image=self.avatar,
                                    command=show_settings_window,
                                    bd=0,
                                    relief=tk.FLAT,

@@ -127,70 +127,10 @@ def pop_up_settings(parent, controller):
                                  bg="white")
     profile_btn_label.grid(row=0, column=0, pady=10, sticky="nw")
 
-    def load_image_from_url(url):
-        """
-        Lädt ein Bild von einer angegebenen URL herunter und gibt das Bildobjekt zurück.
-
-        Das Bild wird von der angegebenen URL abgerufen, erforderliche Daten werden im
-        Speicher verarbeitet, und das Bild wird mithilfe von `Pillow` geöffnet und
-        zurückgegeben.
-
-        :param url: Die URL, von der das Bild heruntergeladen werden soll.
-        :type url: str
-        :return: Ein Bildobjekt, das die heruntergeladene Bilddatei repräsentiert.
-        :rtype: PIL.Image.Image
-        :raises requests.HTTPError: Wird ausgelöst, wenn die HTTP-Anfrage fehlschlägt, z.B. bei 404 oder 500.
-        """
-        response = requests.get(url)
-        response.raise_for_status()  # Überprüft, ob die Anfrage erfolgreich war
-        img_data = BytesIO(response.content)  # Bilddaten in einen BytesIO-Stream laden
-        return Image.open(img_data)
-
-    def load_image_from_base64(base64_string):
-        """
-        Decodiert einen Base64-kodierten Bild-String und lädt das Bild-Objekt.
-
-        Diese Funktion nimmt einen Base64-kodierten Bild-String, dekodiert ihn und
-        erzeugt ein Bild-Objekt, das weiterverwendet werden kann.
-
-        :param base64_string: Der Base64-kodierte Bild-String.
-        :type base64_string: str
-        :return: Ein Bild-Objekt, das aus dem dekodierten Bild-String erstellt wurde.
-        :rtype: Image
-        """
-        img_data = base64.b64decode(base64_string)
-        img = Image.open(BytesIO(img_data))
-        return img
-
-    # Bild des Benutzers laden
-    if cache.user_avatar.startswith("http"):
-        # Bild von der URL laden und anzeigen
-        try:
-            img = load_image_from_url(cache.user_avatar)
-
-            # Bild skalieren (z. B. auf 128x128 Pixel)
-            img = img.resize((128, 128))
-
-            parent.img_tk = ImageTk.PhotoImage(img)
-            label = tk.Label(frame_profile, image=parent.img_tk)
-            label.grid()
-        except Exception as e:
-            label = tk.Label(frame_profile, text=f"Fehler beim Laden von URL: {e}")
-            label.grid()
-    else:
-        # Bild aus Base64-String laden und anzeigen
-        try:
-            img = load_image_from_base64(cache.user_avatar)
-
-            # Bild skalieren (z. B. auf 128x128 Pixel)
-            img = img.resize((128, 128))
-
-            parent.img_tk = ImageTk.PhotoImage(img)
-            label = tk.Label(frame_profile, image=parent.img_tk)
-            label.grid()
-        except Exception as e:
-            label = tk.Label(frame_profile, text=f"Fehler beim Laden von Base64: {e}")
-            label.grid()
+    from ._avatarManager import loadImage
+    parent.avatar = loadImage(parent=parent, width=128, height=128)
+    label = tk.Label(frame_profile, image=parent.avatar)
+    label.grid()
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,

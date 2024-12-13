@@ -95,7 +95,6 @@ class detailsWindow(tk.Frame):
             pop_up_settings(self)
 
         self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
-        self.opt_btn_details_window = tk.PhotoImage(file="assets/option.png")
 
         # Erstelle einen Header-Bereich
         header_frame_details_window = tk.Frame(self, height=10, background="#DF4807")
@@ -129,9 +128,12 @@ class detailsWindow(tk.Frame):
         )
         go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
+        from ._avatarManager import loadImage
+        self.avatar = loadImage(parent=parent)
+
         options_button_details_window = tk.Button(
             header_frame_details_window,
-            image=self.opt_btn_details_window,
+            image=self.avatar,
             command=show_settings_window_details_window,
             bd=0,
             relief=tk.FLAT,
