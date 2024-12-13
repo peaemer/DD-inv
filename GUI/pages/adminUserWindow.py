@@ -69,7 +69,13 @@ class adminUserWindow(tk.Frame):
             pop_up_settings(self)
 
         def search():                           # funktionalität hinzufügen
-            print("I am Searching")
+            search_entrys = []
+            for entry in sqlapi.read_all_benutzer():
+                for value in entry:
+                    if user_search_entry.get().lower() in str(entry[value]).lower():
+                        if entry not in search_entrys:
+                            search_entrys.append(entry)
+            self.update_treeview_with_data(data=search_entrys)
 
         def add_user_item():
             """
@@ -412,7 +418,7 @@ class adminUserWindow(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)
 
-    def update_treeview_with_data(self=None):
+    def update_treeview_with_data(self = None, data=None):
         """
         Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
         löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
@@ -423,7 +429,10 @@ class adminUserWindow(tk.Frame):
         """
         user_tree.delete(*user_tree.get_children())
         i = 0
-        for entry in sqlapi.read_all_benutzer():
+        if data is None:
+            data = sqlapi.read_all_benutzer()
+
+        for entry in data:
             # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
 
