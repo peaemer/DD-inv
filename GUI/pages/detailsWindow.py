@@ -44,7 +44,7 @@ class detailsWindow(tk.Frame):
     :ivar opt_btn_details_window: Bildressource für den Optionen-Button.
     :ivar service_tag_entry_details_window: Eingabefeld für den Service Tag.
     :ivar type_entry_details_window: Eingabefeld für den Typ des Objekts.
-    :ivar room_entry_details_window: Eingabefeld für die Rauminformation.
+    :ivar room_combobox_details_window: Eingabefeld für die Rauminformation.
     :ivar name_entry_details_window: Eingabefeld für den Namen.
     :ivar damaged_entry_details_window: Eingabefeld für Informationen über Schäden.
     """
@@ -95,7 +95,6 @@ class detailsWindow(tk.Frame):
             pop_up_settings(self)
 
         self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
-        self.opt_btn_details_window = tk.PhotoImage(file="assets/option.png")
 
         # Erstelle einen Header-Bereich
         header_frame_details_window = tk.Frame(self, height=10, background="#DF4807")
@@ -129,9 +128,12 @@ class detailsWindow(tk.Frame):
         )
         go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
+        from ._avatarManager import loadImage
+        self.avatar = loadImage(parent=parent)
+
         options_button_details_window = tk.Button(
             header_frame_details_window,
-            image=self.opt_btn_details_window,
+            image=self.avatar,
             command=show_settings_window_details_window,
             bd=0,
             relief=tk.FLAT,
@@ -262,7 +264,7 @@ class detailsWindow(tk.Frame):
             """
             #update
             type = self.type_entry_details_window.get() if self.type_entry_details_window.get() != "" else "None"
-            room = self.room_combobox_details_window.get() if self.room_entry_details_window.get() != "" else "None"
+            room = self.room_combobox_details_window.get() if self.room_combobox_details_window.get() != "" else "None"
             name = self.name_entry_details_window.get() if self.name_entry_details_window.get() != "" else "None"
             if not self.damaged_entry_details_window.get() or self.damaged_entry_details_window.get() == "":
                 damage = "None"

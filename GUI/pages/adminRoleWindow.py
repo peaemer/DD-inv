@@ -231,12 +231,12 @@ class adminRoleWindow(tk.Frame):
                                  activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
-        # Konvertiere das Bild für Tkinter
-        self.opt_btn = tk.PhotoImage(file="assets/option.png")
+        from ._avatarManager import loadImage
+        self.avatar = loadImage(parent=parent)
 
         # Füge einen Button mit dem Bild hinzu
         options_button = tk.Button(header_frame,
-                                   image=self.opt_btn,
+                                   image=self.avatar,
                                    command=show_settings_window_admin_window,
                                    bd=0,
                                    relief=tk.FLAT,
@@ -345,20 +345,20 @@ class adminRoleWindow(tk.Frame):
 
         # Spaltennamen und Breiten als Liste
         columns = [
-            ("ID", 30),
-            ("Rolle", 150),
-            ("Ansehen", 150),
+            ("ID", 20),
+            ("Rolle", 100),
+            ("Ansehen", 100),
             ("Rolle Löschbar", 150),
             ("Admin Feature", 150),
             ("Löschen", 100),
-            ("Bearbeiten", 100),
+            ("Bearbeiten", 110),
             ("Erstellen", 100),
-            ("Gruppe Löschen", 150),
-            ("Gruppe Erstellen", 150),
-            ("Gruppe Bearbeiten", 150),
-            ("Rollen Erstellen", 150),
-            ("Rollen Bearbeiten", 150),
-            ("Rollen Löschen", 150)
+            ("Gruppe Löschen", 160),
+            ("Gruppe Erstellen", 160),
+            ("Gruppe Bearbeiten", 160),
+            ("Rollen Erstellen", 160),
+            ("Rollen Bearbeiten", 160),
+            ("Rollen Löschen", 160)
         ]
 
         # Treeview-Spalten dynamisch erstellen
@@ -425,18 +425,18 @@ class adminRoleWindow(tk.Frame):
                 text=f"{entry['Rolle']}",
                 values=(
                     entry['Rolle'],
-                    "✓" if entry['ANSEHEN'] == 'True' else "✕",
-                    "✓" if entry['ROLLE_LOESCHBAR'] == 'True' else "✕",
-                    "✓" if entry['ADMIN_FEATURE'] == 'True' else "✕",
-                    "✓" if entry['LOESCHEN'] == 'True' else "✕",
-                    "✓" if entry['BEARBEITEN'] == 'True' else "✕",
-                    "✓" if entry['ERSTELLEN'] == 'True' else "✕",
-                    "✓" if entry['GRUPPEN_LOESCHEN'] == 'True' else "✕",
-                    "✓" if entry['GRUPPEN_ERSTELLEN'] == 'True' else "✕",
-                    "✓" if entry['GRUPPEN_BEARBEITEN'] == 'True' else "✕",
-                    "✓" if entry['ROLLEN_ERSTELLEN'] == 'True' else "✕",
-                    "✓" if entry['ROLLEN_BEARBEITEN'] == 'True' else "✕",
-                    "✓" if entry['ROLLEN_LOESCHEN'] == 'True' else "✕",
+                    "✔" if entry['ANSEHEN'] == 'True' else "❌",
+                    "✔" if entry['ROLLE_LOESCHBAR'] == 'True' else "❌",
+                    "✔" if entry['ADMIN_FEATURE'] == 'True' else "❌",
+                    "✔" if entry['LOESCHEN'] == 'True' else "❌",
+                    "✔" if entry['BEARBEITEN'] == 'True' else "❌",
+                    "✔" if entry['ERSTELLEN'] == 'True' else "❌",
+                    "✔" if entry['GRUPPEN_LOESCHEN'] == 'True' else "❌",
+                    "✔" if entry['GRUPPEN_ERSTELLEN'] == 'True' else "❌",
+                    "✔" if entry['GRUPPEN_BEARBEITEN'] == 'True' else "❌",
+                    "✔" if entry['ROLLEN_ERSTELLEN'] == 'True' else "❌",
+                    "✔" if entry['ROLLEN_BEARBEITEN'] == 'True' else "❌",
+                    "✔" if entry['ROLLEN_LOESCHEN'] == 'True' else "❌",
                 ),
                 tags=(tag,)
             )
