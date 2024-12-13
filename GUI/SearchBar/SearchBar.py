@@ -150,30 +150,28 @@ def finish_search(loaded_history:list[dict[str,str]], searchbar:tk.Entry, dropdo
     global search_is_running
     if not search_is_running:
         return
-    print(f"""[SearchBar]:finishing search for user {username} with searchbar text "{search_term}" """)
-    print(loaded_history.__class__)
-    sorted_history:list[dict[str, str]] = sorted(loaded_history,key=lambda x:x['weight'])
 
-    if not __scale_history_weights(sorted_history, search_term):
-        while len(sorted_history) >= 30:
-            sorted_history.pop()
-        print(f"""[SearchBar]:sorted history was before "{sorted_history}" """)
-        temp = {'weight':'100','repeated_uses':'1','text':search_term}
-        sorted_history.append(temp)
-        print(f"""[SearchBar]:adding: "{temp}" """)
-        print(f"""[SearchBar]:sorted history is now "{sorted_history}" """)
-    print(sorted_history)
-    print(f"""[SearchBar]: writing to database "{json.dumps(sorted_history)}" """)
-    db.update_benutzer(username, neue_suchverlauf=json.dumps(sorted_history))
-    print(loaded_history.__class__)
-    loaded_history.clear()
-    for entry in sorted_history:
-        loaded_history.append(entry)
+    print(f"""[SearchBar]:finishing search for user {username} with searchbar text "{search_term}" """)
+    if not search_term == "":
+        sorted_history:list[dict[str, str]] = sorted(loaded_history,key=lambda x:x['weight'])
+        if not __scale_history_weights(sorted_history, search_term):
+            while len(sorted_history) >= 30:
+                sorted_history.pop()
+            print(f"""[SearchBar]:sorted history was before "{sorted_history}" """)
+            temp = {'weight':'100','repeated_uses':'1','text':search_term}
+            sorted_history.append(temp)
+            print(f"""[SearchBar]:adding: "{temp}" """)
+            print(f"""[SearchBar]:sorted history is now "{sorted_history}" """)
+        print(f"""[SearchBar]: writing to database "{json.dumps(sorted_history)}" """)
+        db.update_benutzer(username, neue_suchverlauf=json.dumps(sorted_history))
+        loaded_history.clear()
+        for entry in sorted_history:
+            loaded_history.append(entry)
+        reloaded_history: str = db.read_benutzer_suchverlauf(username)
+        #temp_history = json.loads(reloaded_history if reloaded_history else '[]')
+        print(f"""[SearchBar]: reloaded loaded_history is now "{reloaded_history}" for user "{username}" """)
     searchbar.delete(0, tk.END)
     dropdown.grid_forget()
-    reloaded_history:str = db.read_benutzer_suchverlauf(username)
-    temp_history = json.loads(reloaded_history if reloaded_history else '[]')
-    print(f"""[SearchBar]: reloaded loaded_history is now "{reloaded_history}" for user "{username}" """)
     search_is_running = False
 
 def start_search(loaded_history:List[Dict[str,str]], searchbar:tk.Entry, dropdown:CTkListbox, search_term:str, username:str):
@@ -249,7 +247,7 @@ class searchBar(tk.Entry):
         """
         lh:list[dict[str,str]] = json.loads('[{}]')
         self.bind('<FocusIn>', start_search(lh, self, self.dropdown, self.__dropdown_var.get(), cache.user_name))
-        self.__text_var.trace_add("write", lambda var1, var2, var3: update_search(cache.loaded_history, self.dropdown, self.__text_var.get()))
+        self.__text_var.trace_add("write", lambda var1, var2, var3: update_search(cache.loaded_history, self.dropdown, self.__text_var.get(),cache.user_name))
         """"
         self.bind('<FocusOut>', on_focus_out)
         self.bind('<Return>', search)
@@ -264,4 +262,4 @@ class searchBar(tk.Entry):
         finish_search(cache.loaded_history, self, self.dropdown, self.__text_var.get(),cache.user_name)
 
     def update_search(self):
-        update_search(cache.loaded_history, self.dropdown, self.__text_var.get())
+        update_search(cache.loaded_history, self.dropdown, self.__text_var.get(),)

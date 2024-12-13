@@ -91,7 +91,7 @@ class mainPage(tk.Frame):
             cache.user_group = None  # Benutzergruppe zurücksetzen
             controller.show_frame(logInWindow)
 
-        def search(event=None):                           # funktionalität hinzufügen
+        def search():                           # funktionalität hinzufügen
             """
             Eine Klasse, die ein Hauptseiten-Frame darstellt, das in einer
             Tkinter-GUI verwendet wird. Diese Klasse dient als Basis für
@@ -157,7 +157,8 @@ class mainPage(tk.Frame):
             print("""[MainPage]:on_entry_click""")
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
-                search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+                search_entry.configure(bg_color='white')  # Setze Textfarbe auf schwarz
+            print(cache.loaded_history.__class__)
             sb.start_search(cache.loaded_history,search_entry,dropdown,search_entry_var.get(),cache.user_name)
 
         def on_key_press(var1:str, var2:str, var3:str):
@@ -196,7 +197,8 @@ class mainPage(tk.Frame):
 
             if search_entry_var.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+                search_entry.configure(fg_color='grey')  # Textfarbe auf grau ändern
+                search_entry.configure(bg_color='white')
 
 
         global tree
@@ -348,21 +350,19 @@ class mainPage(tk.Frame):
         #dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
         search_entry_var: tk.StringVar = tk.StringVar()
-        search_entry = tk.Entry(search_frame, font=("Arial", 20), bg=srhGrey, bd=0, fg='grey', textvariable=search_entry_var)
-        search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
+        #search_entry = tk.Entry(search_frame, font=("Arial", 20), bg=srhGrey, bd=0, fg='grey', textvariable=search_entry_var)
 
         # Entry-Feld mit Platzhalter-Text
         search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=20, border_width=0,textvariable=search_entry_var)
+        search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
         cache.loaded_history = json.loads(sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) else """[{}]""")
-        print(str(search_entry._textvariable)+" test")
         search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
-        # Events für Klick und Fokusverlust hinzufügen
+        # Events für Suchleiste und Fokusverlust hinzufügen
         search_entry.bind('<FocusIn>', lambda _: on_entry_click())
         search_entry.bind('<FocusOut>', lambda _: on_focus_out())
         search_entry.bind('<Return>', search)
-        search_entry.bind("<Key>", on_key_press)
-        search_entry.bind("<Button-1>", search)
+        #search_entry.bind("<Button-1>", search)
         search_entry_var.trace_add("write", on_key_press)
         dropdown.bind("<<ListboxSelect>>", lambda  _: sb.on_dropdown_select(search_entry, dropdown))
 
