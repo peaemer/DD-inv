@@ -623,11 +623,6 @@ def pop_up_settings(parent, controller):
                   "Über DD-Inv"]
 
     category_labels_settings = []
-    # Dynamische Frames erstellen
-    frame_profile = tk.Frame(popup, padx=10, pady=30, bg="white")
-    frame_system = tk.Frame(popup, padx=10, pady=30, bg="white")
-    frame_style = tk.Frame(popup, padx=10, pady=30, bg="white")
-    frame_ueber = tk.Frame(popup, padx=10, pady=30, bg="white")
 
     # Zuordnung der Frames zu den Kategorien
     frames = {"Profil": frame_profile,
@@ -640,19 +635,6 @@ def pop_up_settings(parent, controller):
 
     # Funktion zum Anzeigen des Frames
     def show_frame_settings(category):
-        """
-        Öffnet das Einstellungs-Popup-Fenster und bindet es mit dem übergebenen
-        Elternelement und der Steuerkomponente. Diese Funktion dient zur
-        Konfigurationsaktualisierung, die in einer grafischen Benutzeroberfläche
-        integriert ist.
-
-        :param parent: Das Elternelement des Einstellungs-Popups
-        :type parent: Objekt
-        :param controller: Steuereinheit zur Verwaltung des Einstellungszustands
-        :type controller: Objekt
-        :return: Gibt keinen Rückgabewert zurück
-        :rtype: None
-        """
         print(f"Aktuell sichtbarer Frame vor Verstecken: {frames}")
         nonlocal current_frame  # Zugriff auf die äußere Variable
         print(current_frame)
@@ -667,19 +649,6 @@ def pop_up_settings(parent, controller):
 
     # Funktion für Klick auf Kategorie
     def on_category_click_settings(label_settings, category_settings):
-        """
-        Ruft bestimmte Einstellungen auf und hebt ausgewählte Kategorien visuell hervor,
-        indem Label- und Frame-Eigenschaften konfiguriert werden. Wird verwendet, um Benutzern ein interaktives
-        Navigationssystem innerhalb der Konfigurationsoberfläche zu bieten.
-
-        :param label_settings: Das Label-Widget, das hervorgehoben werden soll.
-        :type label_settings: Tkinter.Label
-        :param category_settings: Die Kategorie oder der Frame, der mit dem angeklickten Label verbunden
-            ist und angezeigt werden soll.
-        :type category_settings: Tkinter.Frame
-
-        :return: Gibt keinen Rückgabewert zurück.
-        """
         # Setze alle Labels zurück
         for cat in category_labels_settings:
             cat.config(fg="white")
@@ -710,6 +679,3 @@ def pop_up_settings(parent, controller):
     # Alle Frames initial verstecken
     for frame in frames.values():
         frame.grid_remove()
-
-    # Debug Info
-    print("Einstellungen vollständig geladen")
