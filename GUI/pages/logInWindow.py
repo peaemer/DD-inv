@@ -11,6 +11,7 @@ LOGINFONT = ("Arial", 15)  # Angepasste Font-Größe für Eingabe
 srhGrey = "#d9d9d9"
 srhOrange = "#DF4807"
 
+
 class logInWindow(tk.Frame):
     """
     Eine Klasse, die ein Login-Fenster für die Anwendung darstellt.
@@ -25,6 +26,7 @@ class logInWindow(tk.Frame):
     :ivar log_out_btn: Enthält das Bild für den Button zur Anmeldung.
     :type log_out_btn: tk.PhotoImage
     """
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
@@ -78,7 +80,6 @@ class logInWindow(tk.Frame):
                 messagebox.showinfo(title="Fehler", message="Passwort oder Benutzername falsch")
                 password_entry.delete(0, 'end')
 
-
         def on_enter(event):
             """
             Eine Klasse, die ein Anmeldefenster in einer GUI-Applikation darstellt. Sie erbt von
@@ -124,7 +125,6 @@ class logInWindow(tk.Frame):
         # Konfiguriere die Spalten- und Zeilenverhältnisse so, dass sie sich dynamisch verteilen
         self.grid_columnconfigure(0, weight=1)  # Spalte 0 kann sich ausdehnen
         self.grid_rowconfigure(1, weight=0)  # Zeile 1 (wo das greyCanvas liegt) kann sich ausdehnen
-
 
         # Login-Formular mit abgerundeten Eingabefeldern
         form_frame = tk.Frame(self, bg="white")
@@ -241,7 +241,9 @@ class logInWindow(tk.Frame):
             webbrowser.open(url)
 
         logo_image = PhotoImage(file="assets/DD-Inv_Logo.png")
-        btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.0.364 (Alpha)", cursor="hand1", font=("Arial", 12))
+        btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.0.364 (Alpha)",
+                                    cursor="hand1", font=("Arial", 12))
         btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
         btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
-        btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/a1d82b49ad1b238ff2567aec851bcf03cb66af03"))
+        btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild(
+            "https://github.com/peaemer/DD-inv/commit/a1d82b49ad1b238ff2567aec851bcf03cb66af03"))
