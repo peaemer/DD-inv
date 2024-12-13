@@ -75,7 +75,7 @@ class adminRoleWindow(tk.Frame):
                     if user_search_entry.get().lower() in str(entry[value]).lower():
                         if entry not in search_entrys:
                             search_entrys.append(entry)
-            self.update_treeview_with_data(data=search_entrys)
+            update_treeview_with_data(data=search_entrys)
 
         def add_user_item():
             """
@@ -371,23 +371,22 @@ class adminRoleWindow(tk.Frame):
         user_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
         user_tree.tkraise()
 
-        def insert_data(self):
+        def update_treeview_with_data(data=None):
             """
-            Die Klasse `adminUserWindow` stellt eine grafische Benutzeroberfläche dar,
-            die auf tkinter basiert und es ermöglicht, Benutzer-Daten anzuzeigen und
-            zu verwalten. Innerhalb der Oberfläche werden Benutzerdaten im Treeview
-            dargestellt, wobei die Zeilen abwechselnd formatiert werden.
+            Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
+            löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
+            Datenbank ein. Jede Zeile erhält ein Tag, das zu einer alternierenden Darstellung von
+            geraden und ungeraden Zeilen verwendet werden kann.
 
-            Diese Klasse erbt von `tk.Frame` und benötigt einen Eltern-Frame sowie
-            einen Controller zur Initialisierung.
-
-            :param parent: Das übergeordnete tkinter-Widget, das den Rahmen enthält.
-            :type parent: tk.Widget
-            :param controller: Der Controller, der die Logik und Anwendungsteuerung verwaltet.
-            :type controller: Any
+            :return: Gibt keinen Wert zurück.
             """
+            user_tree.delete(*user_tree.get_children())
             i = 0
-            for entry in sqlapi.read_all_benutzer():
+            if data is None:
+                data = sqlapi.read_all_rollen()
+
+            print(data)
+            for entry in data:
                 # Bestimme das Tag für die aktuelle Zeile
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
 
@@ -395,18 +394,27 @@ class adminRoleWindow(tk.Frame):
                 user_tree.insert(
                     "",
                     "end",
-                    text=f"{entry['Nutzername']}",
+                    text=f"{entry['Rolle']}",
                     values=(
-                        i,
-                        entry['Nutzername'],
-                        entry['Passwort'],
-                        entry['Email'],
                         entry['Rolle'],
+                        "✓" if entry['ANSEHEN'] == 'True' else "✕",
+                        "✓" if entry['ROLLE_LOESCHBAR'] == 'True' else "✕",
+                        "✓" if entry['ADMIN_FEATURE'] == 'True' else "✕",
+                        "✓" if entry['LOESCHEN'] == 'True' else "✕",
+                        "✓" if entry['BEARBEITEN'] == 'True' else "✕",
+                        "✓" if entry['ERSTELLEN'] == 'True' else "✕",
+                        "✓" if entry['GRUPPEN_LOESCHEN'] == 'True' else "✕",
+                        "✓" if entry['GRUPPEN_ERSTELLEN'] == 'True' else "✕",
+                        "✓" if entry['GRUPPEN_BEARBEITEN'] == 'True' else "✕",
+                        "✓" if entry['ROLLEN_ERSTELLEN'] == 'True' else "✕",
+                        "✓" if entry['ROLLEN_BEARBEITEN'] == 'True' else "✕",
+                        "✓" if entry['ROLLEN_LOESCHEN'] == 'True' else "✕",
                     ),
                     tags=(tag,)
                 )
                 i += 1
-        insert_data(self)
+
+        update_treeview_with_data()
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
@@ -435,37 +443,3 @@ class adminRoleWindow(tk.Frame):
 
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)
-
-    def update_treeview_with_data(self = None, data=None):
-        """
-        Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
-        löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
-        Datenbank ein. Jede Zeile erhält ein Tag, das zu einer alternierenden Darstellung von
-        geraden und ungeraden Zeilen verwendet werden kann.
-
-        :return: Gibt keinen Wert zurück.
-        """
-        user_tree.delete(*user_tree.get_children())
-        i = 0
-        if data is None:
-            data = sqlapi.read_all_rollen()
-
-        for entry in data:
-            # Bestimme das Tag für die aktuelle Zeile
-            tag = "evenrow" if i % 2 == 0 else "oddrow"
-
-            # Daten mit dem Tag in das Treeview einfügen
-            user_tree.insert(
-                "",
-                "end",
-                text=f"{entry['Nutzername']}",
-                values=(
-                    i,
-                    entry['Nutzername'],
-                    entry['Passwort'],
-                    entry['Email'],
-                    entry['Rolle'],
-                ),
-                tags=(tag,)
-            )
-            i += 1
