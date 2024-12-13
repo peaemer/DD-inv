@@ -63,8 +63,14 @@ class adminRoomWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
-        def search():                           # funktionalität hinzufügen
-            print("I am Searching")
+        def search(event=None):                           # funktionalität hinzufügen
+            search_entrys = []
+            for entry in sqlapi.fetch_all_rooms():
+                for value in entry:
+                    if room_search_entry.get().lower() in str(entry[value]).lower():
+                        if entry not in search_entrys:
+                            search_entrys.append(entry)
+            self.update_treeview_with_data(data=search_entrys)
 
         def add_room():
             """
@@ -318,36 +324,7 @@ class adminRoomWindow(tk.Frame):
         room_tree.heading("# 2", text="Ort")
         room_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
         room_tree.tkraise()
-
-        def insert_data(self):
-            """
-            Eine GUI-Komponente, die ein Fenster zur Anzeige von Räumen in einer Tabelle darstellt.
-            Diese Klasse erbt von `tk.Frame`. Sie ermöglicht die Anzeige und Formatierung einer
-            Liste von Räumen und deren Orten aus einer Datenquelle in einem Treeview-Widget.
-
-            :param parent: Das übergeordnete Widget, in das dieses Frame eingebettet wird.
-            :type parent: tk.Widget
-            :param controller: Ein Controller-Objekt, das zur Steuerung der Anwendung dient.
-            :type controller: object
-            """
-            i = 0
-            for entry in sqlapi.fetch_all_rooms():
-                # Bestimme das Tag für die aktuelle Zeile
-                tag = "evenrow" if i % 2 == 0 else "oddrow"
-
-                # Daten mit dem Tag in das Treeview einfügen
-                room_tree.insert(
-                    "",
-                    "end",
-                    text=f"{str(entry['Raum'])}",
-                    values=(
-                        entry['Raum'],
-                        entry['Ort']
-                    ),
-                    tags=(tag,)
-                )
-                i += 1
-        insert_data(self)
+        self.update_treeview_with_data()
 
         # Funktion für das Ereignis-Binding
         def on_room_selected(event):
@@ -373,7 +350,7 @@ class adminRoomWindow(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         room_tree.bind("<Double-1>", on_room_selected)
 
-    def update_treeview_with_data(self):
+    def update_treeview_with_data(self = None, data=None):
         """
         Aktualisiert ein TreeView-Widget mit den Daten aus der Datenbank. Holt alle verfügbaren
         Raum-Daten aus der Datenquelle und fügt sie zeilenweise in das TreeView-Widget ein. Dabei
@@ -384,7 +361,10 @@ class adminRoomWindow(tk.Frame):
         """
         room_tree.delete(*room_tree.get_children())
         i = 0
-        for entry in sqlapi.fetch_all_rooms():
+        if data is None:
+            data = sqlapi.fetch_all_rooms()
+
+        for entry in data:
             # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
 
@@ -394,7 +374,6 @@ class adminRoomWindow(tk.Frame):
                 "end",
                 text=f"{entry['Raum']}",
                 values=(
-                    i,
                     entry['Raum'],
                     entry['Ort'],
                 ),
