@@ -345,20 +345,20 @@ class adminRoleWindow(tk.Frame):
 
         # Spaltennamen und Breiten als Liste
         columns = [
-            ("ID", 30),
-            ("Rolle", 150),
-            ("Ansehen", 150),
+            ("ID", 20),
+            ("Rolle", 100),
+            ("Ansehen", 100),
             ("Rolle Löschbar", 150),
             ("Admin Feature", 150),
             ("Löschen", 100),
-            ("Bearbeiten", 100),
+            ("Bearbeiten", 110),
             ("Erstellen", 100),
-            ("Gruppe Löschen", 150),
-            ("Gruppe Erstellen", 150),
-            ("Gruppe Bearbeiten", 150),
-            ("Rollen Erstellen", 150),
-            ("Rollen Bearbeiten", 150),
-            ("Rollen Löschen", 150)
+            ("Gruppe Löschen", 160),
+            ("Gruppe Erstellen", 160),
+            ("Gruppe Bearbeiten", 160),
+            ("Rollen Erstellen", 160),
+            ("Rollen Bearbeiten", 160),
+            ("Rollen Löschen", 160)
         ]
 
         # Treeview-Spalten dynamisch erstellen
