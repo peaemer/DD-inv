@@ -1,7 +1,12 @@
+import json
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+from CTkListbox import *
+import customtkinter as ctk
+from  GUI.SearchBar import SearchBar
 import Datenbank.sqlite3api as sqlapi
+import GUI.SearchBar.SearchBar as sb
 import cache
 
 # Importieren der extra Schriftart
@@ -104,6 +109,7 @@ class mainPage(tk.Frame):
                         if entry not in search_entrys:
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
+            sb.finish_search(cache.loaded_history,search_entry,dropdown,search_entry_var.get(),cache.user_name)
 
         def add_item():
             """
@@ -131,7 +137,7 @@ class mainPage(tk.Frame):
             from .addItemPopup import add_item_popup
             add_item_popup(self)
 
-        def on_entry_click(event):
+        def on_entry_click():
             """
             Eine Klasse, die die Hauptseite in einer Tkinter-basierten GUI-Anwendung repräsentiert. Sie erbt von
             `tk.Frame` und implementiert Interaktionen wie das Entfernen eines Platzhalters in einem
@@ -148,11 +154,13 @@ class mainPage(tk.Frame):
             :type event: tk.Event
 
             """
+            print("""[MainPage]:on_entry_click""")
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+            sb.start_search(cache.loaded_history,search_entry,dropdown,search_entry_var.get(),cache.user_name)
 
-        def on_key_press(event):
+        def on_key_press(var1:str, var2:str, var3:str):
             """
             Eine Klasse, die ein Frame-Objekt für die Hauptseite einer Tkinter-Anwendung darstellt.
 
@@ -165,9 +173,11 @@ class mainPage(tk.Frame):
             :parameter parent: Das übergeordnete Tkinter-Widget, dem dieses Frame hinzugefügt wird.
             :parameter controller: Ein Controller-Objekt, das zur Steuerung der Anwendungslogik verwendet wird.
             """
-            typed_key = event.char  # The character of the typed key
+            print(f"""[MainPage]: executing on_key_press with searchbar text "{search_entry_var.get()}" """)
+            #typed_key = event.char  # The character of the typed key
+            print(search_entry_var.get())
 
-        def on_focus_out(event):
+        def on_focus_out():
             """
             Die Klasse `mainPage` stellt eine Benutzeroberfläche dar, die von der
             Tkinter Frame-Klasse abgeleitet ist. Sie dient als Hauptseite einer GUI-Anwendung
@@ -183,9 +193,11 @@ class mainPage(tk.Frame):
                 anderer Interaktionen zwischen Subkomponenten der GUI.
             :type controller: Objekt
             """
-            if search_entry.get() == '':
+
+            if search_entry_var.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+
 
         global tree
 
@@ -340,16 +352,19 @@ class mainPage(tk.Frame):
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
         # Entry-Feld mit Platzhalter-Text
-        search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=20, border_width=0)
-        search_entry_var.trace_add("write", lambda var1, var2, var3: update_search(cache.loaded_history, dropdown, search_entry_var.get(), cache.user_name))
+        search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=20, border_width=0,textvariable=search_entry_var)
+        cache.loaded_history = json.loads(sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) else """[{}]""")
+        print(str(search_entry._textvariable)+" test")
         search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
-        search_entry.bind('<FocusIn>', on_entry_click)
-        search_entry.bind('<FocusOut>', on_focus_out)
+        search_entry.bind('<FocusIn>', lambda _: on_entry_click())
+        search_entry.bind('<FocusOut>', lambda _: on_focus_out())
         search_entry.bind('<Return>', search)
         search_entry.bind("<Key>", on_key_press)
-        dropdown.bind("<<ListboxSelect>>", lambda  _: on_dropdown_select(search_entry, dropdown))
+        search_entry.bind("<Button-1>", search)
+        search_entry_var.trace_add("write", on_key_press)
+        dropdown.bind("<<ListboxSelect>>", lambda  _: sb.on_dropdown_select(search_entry, dropdown))
 
 
         # style der Tabelle

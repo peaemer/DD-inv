@@ -2,7 +2,6 @@ from CTkListbox import CTkListbox
 
 import cache
 from Datenbank import sqlite3api as db
-from cache import loaded_history as lh
 import json
 from typing import List,Dict
 import tkinter as tk
@@ -248,6 +247,7 @@ class searchBar(tk.Entry):
         """
         # Events für Klick und Fokusverlust hinzufügen
         """
+        lh:list[dict[str,str]] = json.loads('[{}]')
         self.bind('<FocusIn>', start_search(lh, self, self.dropdown, self.__dropdown_var.get(), cache.user_name))
         self.__text_var.trace_add("write", lambda var1, var2, var3: update_search(cache.loaded_history, self.dropdown, self.__text_var.get()))
         """"
