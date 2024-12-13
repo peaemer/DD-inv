@@ -67,7 +67,7 @@ class logInWindow(tk.Frame):
                 benutzer_info = db.read_benutzer(user)
                 cache.user_group = benutzer_info.get('Rolle', '')  # Rolle des Benutzers speichern
                 cache.user_name = user  # Benutzernamen im Cache speichern
-                cache.loaded_history = db.read_benutzer_suchverlauf(cache.user_name) if db.read_benutzer_suchverlauf(cache.user_name) else json.loads("""[{"":""}]""")
+                cache.loaded_history = json.loads(db.read_benutzer_suchverlauf(cache.user_name)) if db.read_benutzer_suchverlauf(cache.user_name) else json.loads("""[{"":""}]""")
                 # cache.user_avatar = benutzer_info.get("Avatar", "")  Für Profilbilder in Datenbank
 
                 password_entry.delete(0, 'end')
