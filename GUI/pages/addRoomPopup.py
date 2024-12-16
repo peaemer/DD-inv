@@ -88,6 +88,9 @@ def add_room_popup(parent):
     )
     location_entry_add_room_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
+    error_label = tk.Label(input_frame_add_room_popup, text="", background="white", fg="darkred", font=("Arial", 14))
+    error_label.grid(row=5, column=0, columnspan=2, padx=0, pady=20, sticky=tk.E)
+
     # Buttons (anpassung benötigt)
     def submit_entry():
         """
@@ -104,12 +107,10 @@ def add_room_popup(parent):
 
         :return: Gibt keinen Wert zurück.
         """
-        pw = str(''.join(random.choices(string.ascii_letters, k=7)))
-        if not room_entry_add_room_popup.get() or room_entry_add_room_popup.get() == "" or not role_combobox_add_user_popup.get() or role_combobox_add_user_popup.get() == "Rolle auswählen":
+        if not room_entry_add_room_popup.get() or room_entry_add_room_popup.get() == "" or not location_entry_add_room_popup.get() or location_entry_add_room_popup.get() == "":
             error_label.configure(text="Please enter all required fields")
         else:
-            db.create_benutzer(room_entry_add_room_popup.get(), pw, location_entry_add_room_popup.get())
-            messagebox.showinfo(title="Added User", message="Nutzername: "+room_entry_add_room_popup.get()+"\nNew password: " + pw)
+            db.create_room(room_entry_add_room_popup.get(), location_entry_add_room_popup.get())
             from .adminRoomWindow import adminRoomWindow
             adminRoomWindow.update_treeview_with_data()
             add_popup.destroy()

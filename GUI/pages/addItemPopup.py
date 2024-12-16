@@ -99,7 +99,7 @@ def add_item_popup(parent):
     # Combobox statt Entry
     room_values = []
     for room in db.fetch_all_rooms():
-        room_values.append(room['Raum']+" - "+room['Ort'])
+        room_values.append(room['Raum'])
     room_combobox_add_item_popup = ttk.Combobox(input_frame_add_item_popup, values=room_values, font=("Arial", size_add_item_popup))
     room_combobox_add_item_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
     room_combobox_add_item_popup.set("Raum auswählen")  # Platzhalter
@@ -162,6 +162,7 @@ def add_item_popup(parent):
             db.create_hardware(tag,type,name,damage,None,room)
             from .mainPage import mainPage
             mainPage.update_treeview_with_data(data=None)
+            mainPage.update_sidetree_with_data()
             add_popup.destroy()
 
     def exit_entry():
