@@ -56,8 +56,8 @@ class logInWindow(tk.Frame):
             user = username_entry.get().strip()
 
             # Reset cache für Benutzerinformationen
-            cache.user_group = ""
-            cache.user_name = ""
+            cache.user_group = None
+            cache.user_name = None
 
             # Importiere Sicherheits- und Datenbankmodule
             import Security.UserSecurity as security
