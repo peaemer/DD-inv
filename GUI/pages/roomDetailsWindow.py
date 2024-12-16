@@ -201,10 +201,10 @@ class roomDetailsWindow(tk.Frame):
 
             """
             #update
-            db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
+            db.update_room(self.room_num_entry.get(), self.room_num_entry.get(), self.place_entry.get())
+            from .adminRoomWindow import adminRoomWindow
+            adminRoomWindow.update_treeview_with_data()
+            controller.show_frame(adminRoomWindow)
 
         def delete_entry():
             """
@@ -225,10 +225,10 @@ class roomDetailsWindow(tk.Frame):
                     Löscht Benutzereinträge aus der Datenbank und erneuert die entsprechende
                     Anzeige im adminUserWindow-Frame.
             """
-            db.delete_benutzer(self.name.get())
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
+            db.delete_room(self.room_num_entry.get())
+            from .adminRoomWindow import adminRoomWindow
+            adminRoomWindow.update_treeview_with_data()
+            controller.show_frame(adminRoomWindow)
 
         self.edit_btn = tk.PhotoImage(file="assets/AktualisierenBig_blue.png")
         self.lend_btn = tk.PhotoImage(file="assets/Ausleihen.png")
