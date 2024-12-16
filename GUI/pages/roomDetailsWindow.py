@@ -27,11 +27,11 @@ def show_room_details(selected_room, tree, controller):
     data = tree.item(selected_room, "values")
     print(f"Daten des ausgewählten Items: {data}")
     cache.selected_ID = data[0]
-
+    controller.show_frame(roomDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
     details = controller.frames[roomDetailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-    controller.show_frame(roomDetailsWindow)  # Zeige die Details-Seite
+
 
 
 class roomDetailsWindow(tk.Frame):
