@@ -84,7 +84,8 @@ class mainPage(tk.Frame):
             :ivar controller: Der Controller, der die Navigation zwischen verschiedenen Frames verwaltet.
             """
             from .logInWindow import logInWindow
-            cache.user_group = None  # Benutzergruppe zurücksetzen
+            cache.user_group = ""  # Benutzergruppe zurücksetzen
+            cache.user_name = ""
             controller.show_frame(logInWindow)
 
         def search(event=None):                           # funktionalität hinzufügen
@@ -554,9 +555,8 @@ class mainPage(tk.Frame):
 
         # Überprüfe die Benutzergruppe
         if cache.user_group == "Admin":
-
             # Überprüfe, ob der Admin-Button bereits existiert
-            if not hasattr(self, "adminButton"):
+            if not hasattr(self, "admin_button"):
                 # Erstelle den Admin-Button, wenn er noch nicht existiert
                 self.admin_button = tk.Button(
                     self.header_frame,
@@ -572,7 +572,7 @@ class mainPage(tk.Frame):
                 self.admin_button.grid(row=0, column=2, sticky=tk.E, padx=20)
         else:
             # Entferne den Admin-Button, falls er existiert
-            if hasattr(self, "adminButton"):
+            if hasattr(self, "admin_button"):
                 self.admin_button.grid_remove()
 
         self.update_treeview_with_data()
