@@ -5,7 +5,7 @@ from datetime import datetime
 #from tkcalendar import Calendar, DateEntry
 
 import cache
-import Datenbank.sqlite3api as db
+from includes.sec_data_info import sqlite3api as db
 
 LARGEFONT = ("Arial", 20)
 LOGINFONT = ("Arial", 40)
@@ -55,7 +55,7 @@ def lend_popup(parent, data):
 
     # Icon setzen (optional)
     try:
-        popup.iconbitmap("assets/srhIcon.ico")
+        popup.iconbitmap("includes/assets/srhIcon.ico")
     except Exception as e:
         print(f"Fehler beim Laden des Icons: {e}")
 

@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-import Datenbank.sqlite3api as db
+from includes.sec_data_info import sqlite3api as sqlapi
 import string, random
 
-from GUI.pages import roomDetailsWindow
+#from GUI.pages import roomDetailsWindow
 
 
 def add_room_popup(parent):

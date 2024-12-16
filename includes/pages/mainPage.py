@@ -1,17 +1,16 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-import Datenbank.sqlite3api as sqlapi
+from includes.sec_data_info import sqlite3api as sqlapi
 import cache
 import customtkinter as ctk
 
 # Importieren der extra Schriftart
-from ._SRHFont import load_font, SRHHeadline
+
 
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
-load_font(SRHHeadline)
 srhGrey = "#d9d9d9"
 
 
@@ -208,18 +207,18 @@ class mainPage(tk.Frame):
         self.header_frame.grid_columnconfigure(2, weight=1)  # Platz rechts
         self.header_frame.grid_rowconfigure(0, weight=1)
 
-        self.srh_head = tk.PhotoImage(file="assets/srh.png")
+        self.srh_head = tk.PhotoImage(file="includes/assets/srh.png")
 
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(self.header_frame, image=self.srh_head, background="#DF4807", foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(self.header_frame, background="#DF4807", text="Inventur-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label = tk.Label(self.header_frame, background="#DF4807", text="Inventur-Übersicht", font=('Arial', 30), foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
-        self.log_out_btn = tk.PhotoImage(file="assets/ausloggen.png")
+        self.log_out_btn = tk.PhotoImage(file="includes/assets/ausloggen.png")
 
         # Füge einen Button mit dem Bild hinzu
         log_out_button = tk.Button(self.header_frame,
@@ -248,7 +247,7 @@ class mainPage(tk.Frame):
         options_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         # Platzieren des Adminbuttons
-        self.admin_btn = tk.PhotoImage(file="assets/Key.png")
+        self.admin_btn = tk.PhotoImage(file="includes/assets/Key.png")
 
         # Erstellen des Grayframes für linke Seite
         grey_frame_side = tk.Frame(self, background=srhGrey)
@@ -309,13 +308,13 @@ class mainPage(tk.Frame):
         search_frame.grid_columnconfigure(2, weight=0)
 
         # Btn Erstellen def mit Image und grid
-        self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
+        self.add_btn = tk.PhotoImage(file="includes/assets/Erstellen.png")
         add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
                                activebackground="white", command=add_item)
         add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         # Search Btn def und neben dem Entry platzieren
-        self.search_btn = tk.PhotoImage(file="assets/SearchButton.png")
+        self.search_btn = tk.PhotoImage(file="includes/assets/SearchButton.png")
         search_button = tk.Button(search_frame,
                                   image=self.search_btn,
                                   bd=0,

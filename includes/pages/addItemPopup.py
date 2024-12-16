@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-import Datenbank.sqlite3api as db
+from includes.sec_data_info import sqlite3api as db
 import cache
 
 
@@ -159,7 +159,7 @@ def add_item_popup(parent):
         if type == "" or room == "Raum auswählen" or name == "":
             error_label.configure(text="Please enter all required fields (type, room, name)")
         else:
-            db.create_hardware(tag,type,name,damage,None,room)
+            print(db.create_hardware(tag,type,name,damage,None,room))
             from .mainPage import mainPage
             mainPage.update_treeview_with_data(data=None)
             mainPage.update_sidetree_with_data()
@@ -182,8 +182,8 @@ def add_item_popup(parent):
         """
         add_popup.destroy()
 
-    parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/ErstellenButton.png")
-    parent.exit_btn_add_item_popup = tk.PhotoImage(file="assets/AbbrechenButton.png")
+    parent.add_btn_add_item_popup = tk.PhotoImage(file="includes/assets/ErstellenButton.png")
+    parent.exit_btn_add_item_popup = tk.PhotoImage(file="includes/assets/AbbrechenButton.png")
 
     # Buttons in ein separates Frame
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")

@@ -1,9 +1,11 @@
 from hashlib import sha512
 import sys, os
 
+from . import sqlite3api as db
+
 sys.path.append(os.path.dirname(__file__) + r'\..')
 from typing import Final, List
-import Datenbank.sqlite3api as db
+
 
 # from Datenbank.sqlite3api import read_benutzer, update_benutzer
 

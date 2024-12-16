@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-import Datenbank.sqlite3api as sqlapi
+from includes.sec_data_info import sqlite3api as sqlapi
 import cache
 import customtkinter as ctk  #pip install customtkinter
 
@@ -9,10 +9,10 @@ LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
 srhBlue = "#00699a"
-from ._SRHFont import load_font, SRHHeadline
+
 
 # Hauptseite (zweites Fenster)
-class adminUserWindow(tk.Frame):
+class adminRoleWindow(tk.Frame):
     """
     Erstellt eine Benutzerübersichtsoberfläche für Administratoren.
 
@@ -70,14 +70,14 @@ class adminUserWindow(tk.Frame):
 
         def search(event=None):                           # funktionalität hinzufügen
             search_entrys = []
-            for entry in sqlapi.read_all_benutzer():
+            for entry in sqlapi.read_all_rollen():
                 for value in entry:
                     if user_search_entry.get().lower() in str(entry[value]).lower():
                         if entry not in search_entrys:
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
 
-        def add_user_item():
+        def add_role():
             """
             Diese Klasse repräsentiert das Hauptfenster zur Verwaltung von
             Benutzerkonten innerhalb der Anwendung. Sie erbt von `tk.Frame`
@@ -109,7 +109,7 @@ class adminUserWindow(tk.Frame):
             """
             if user_search_entry.get() == 'Suche':
                 user_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
-                user_search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
+                user_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
 
         def on_focus_out(event):
             """
@@ -124,7 +124,7 @@ class adminUserWindow(tk.Frame):
             """
             if user_search_entry.get() == '':
                 user_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                user_search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
+                user_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
 
         def on_key_press(event):
             """
@@ -165,20 +165,20 @@ class adminUserWindow(tk.Frame):
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
 
-        def change_to_roles():
+        def change_to_user():
             """
-            Eine Klasse, die ein Benutzeroberflächenfenster für Admin-Benutzer implementiert,
-            das auf einer tkinter-Frame-Komponente basiert. Diese Klasse stellt eine Möglichkeit
-            dar, zwischen verschiedenen Ansichten innerhalb eines Controllers zu wechseln.
+            Eine Klasse, die ein Admin-Fenster für Räume darstellt. Diese Klasse ist eine Unterklasse
+            von `tk.Frame` und bietet die Benutzeroberfläche zur Verwaltung von Räumen.
 
-            :ivar parent: Der übergeordnete Widget-Container.
-            :ivar controller: Eine Steuerung, die für das Management der verschiedenen Fenster
-                innerhalb der grafischen Benutzeroberfläche verantwortlich ist.
+            :param parent: Das übergeordnete Widget des Frames.
+            :type parent: tk.Widget
+            :param controller: Der Controller, welcher die Navigation zwischen den Fenstern steuert.
+            :type controller: object
             """
-            from .adminRoleWindow import adminRoleWindow
-            controller.show_frame(adminRoleWindow)
+            from .adminUserWindow import adminUserWindow
+            controller.show_frame(adminUserWindow)
 
-        def add_user():
+        def add_role():
             """
             Eine Unterklasse von `tk.Frame`, die ein Fenster für die Verwaltung von Admin-Benutzern
             darstellt.
@@ -212,18 +212,19 @@ class adminUserWindow(tk.Frame):
         header_frame.grid_columnconfigure(2, weight=1)  # Platz rechts
         header_frame.grid_rowconfigure(0, weight=1)
 
-        self.srhHead = tk.PhotoImage(file="assets/srh.png")
+        self.srhHead = tk.PhotoImage(file="includes/assets/srh.png")
 
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(header_frame, image=self.srhHead, background=srhBlue, foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background=srhBlue, text="Nutzer-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label = tk.Label(header_frame, background=srhBlue, text="Rollen-Übersicht", font=('Arial', 30), foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
+
         # Konvertiere das Bild für Tkinter
-        self.log_out_btn = tk.PhotoImage(file="assets/ArrowLeft.png")
+        self.log_out_btn = tk.PhotoImage(file="includes/assets/ArrowLeft.png")
 
         # Füge einen Button mit dem Bild hinzu
         log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0, relief=tk.FLAT, bg=srhBlue,
@@ -256,13 +257,16 @@ class adminUserWindow(tk.Frame):
         navi.grid_columnconfigure(2, weight=1)
 
 
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",text_color="black", font=("Arial", 20), hover_color="darkgray")
+        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=0, command=change_to_user, corner_radius=20, fg_color="#C5C5C5",
+                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
+        room_nav = ctk.CTkButton(navi, text="Räume", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",
+                                 text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",text_color="black", command=change_to_roles, font=("Arial", 20), hover_color="darkgray")
+        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",
+                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
 
@@ -282,12 +286,12 @@ class adminUserWindow(tk.Frame):
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
-        self.add_btn = tk.PhotoImage(file="assets/Hinzusmall_blue.png")
+        self.add_btn = tk.PhotoImage(file="includes/assets/Hinzusmall_blue.png")
         user_add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
-                                    activebackground="white", command=add_user)
+                                    activebackground="white", command=add_role)
         user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
-        self.searchBtn = tk.PhotoImage(file="assets/search_button_blue.png")
+        self.searchBtn = tk.PhotoImage(file="includes/assets/search_button_blue.png")
         search_button = tk.Button(search_frame,
                                  image=self.searchBtn,
                                  bd=0,
@@ -297,10 +301,8 @@ class adminUserWindow(tk.Frame):
                                  command=search)
         search_button.grid(padx=10, pady=5, row=0, column=0)
 
-
         # Entry-Feld mit Platzhalter-Text
-        user_search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey, text_color="black", font=("Arial", 27),
-                                    corner_radius=20, border_width=0)
+        user_search_entry = tk.Entry(search_frame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
         user_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -310,21 +312,21 @@ class adminUserWindow(tk.Frame):
         user_search_entry.bind("<Key>", on_key_press)
         user_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-        user_tree_frame = tk.Frame(middle_frame, background="white")
-        user_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
+        role_tree_frame = tk.Frame(middle_frame, background="white")
+        role_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         # Spaltenkonfiguration für das TreeFrame
-        user_tree_frame.grid_rowconfigure(1, weight=1)
-        user_tree_frame.grid_columnconfigure(0, weight=1)  # Spalte für die Tabelle
-        user_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
+        role_tree_frame.grid_rowconfigure(1, weight=1)
+        role_tree_frame.grid_columnconfigure(0, weight=1)  # Spalte für die Tabelle
+        role_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
-        global user_tree
-        user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5"), show="headings")
+        global role_tree
+        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13"), show="headings")
 
-        user_scroll = tk.Scrollbar(
-            user_tree_frame,
+        role_scroll = tk.Scrollbar(
+            role_tree_frame,
             orient="vertical",
-            command=user_tree.yview,
+            command=role_tree.yview,
             bg="black",
             activebackground="darkblue",
             troughcolor="grey",
@@ -332,28 +334,42 @@ class adminUserWindow(tk.Frame):
             width=15,
             borderwidth=1
         )
-        user_scroll.grid(row=1, column=1, sticky="ns")
+        role_scroll.grid(row=1, column=1, sticky="ns")
 
         # Treeview mit Scrollbar verbinden
-        user_tree.configure(yscrollcommand=user_scroll.set)
+        role_tree.configure(yscrollcommand=role_scroll.set)
 
         # Tags für alternierende Zeilenfarben konfigurieren
-        user_tree.tag_configure("oddrow", background="#f7f7f7")
-        user_tree.tag_configure("evenrow", background="white")
+        role_tree.tag_configure("oddrow", background="#f7f7f7")
+        role_tree.tag_configure("evenrow", background="white")
 
-        ### listbox for directories
-        user_tree.column("# 1", anchor=CENTER, width=60)
-        user_tree.heading("# 1", text="ID", )
-        user_tree.column("# 2", anchor=CENTER, width=200)
-        user_tree.heading("# 2", text="Nutzername")
-        user_tree.column("# 3", anchor=CENTER, width=200)
-        user_tree.heading("# 3", text="Passwort")
-        user_tree.column("# 4", anchor=CENTER, width=300)
-        user_tree.heading("# 4", text="E-Mail")
-        user_tree.column("# 5", anchor=CENTER, width=100)
-        user_tree.heading("# 5", text="Rolle")
-        user_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
-        user_tree.tkraise()
+        # Spaltennamen und Breiten als Liste
+        columns = [
+            ("ID", 20),
+            ("Rolle", 100),
+            ("Ansehen", 100),
+            ("Rolle Löschbar", 150),
+            ("Admin Feature", 150),
+            ("Löschen", 100),
+            ("Bearbeiten", 110),
+            ("Erstellen", 100),
+            ("Gruppe Löschen", 160),
+            ("Gruppe Erstellen", 160),
+            ("Gruppe Bearbeiten", 160),
+            ("Rollen Erstellen", 160),
+            ("Rollen Bearbeiten", 160),
+            ("Rollen Löschen", 160)
+        ]
+
+        # Treeview-Spalten dynamisch erstellen
+        for idx, (col_name, col_width) in enumerate(columns, start=0):
+            col_id = f"# {idx}"  # Spalten-ID
+            role_tree.column(col_id, anchor=CENTER, width=col_width)
+            role_tree.heading(col_id, text=col_name)
+
+        # Treeview positionieren
+        role_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
+        role_tree.tkraise()
         self.update_treeview_with_data()
 
         # Funktion für das Ereignis-Binding
@@ -373,16 +389,16 @@ class adminUserWindow(tk.Frame):
             :type controller: object
             """
             try:
-                selected_user = user_tree.focus()
+                selected_user = role_tree.focus()
                 print(f"Ausgewählter User: {selected_user}")  # Debug
                 if selected_user:
-                    from .userDetailsWindow import userDetailsWindow, show_user_details
-                    show_user_details(selected_user, user_tree, controller)
+                    from .rolesDetailsWindow import rolesDetailsWindow, show_roles_details
+                    show_roles_details(selected_user, role_tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        user_tree.bind("<Double-1>", on_item_selected)
+        role_tree.bind("<Double-1>", on_item_selected)
 
     def update_treeview_with_data(self = None, data=None):
         """
@@ -393,26 +409,34 @@ class adminUserWindow(tk.Frame):
 
         :return: Gibt keinen Wert zurück.
         """
-        user_tree.delete(*user_tree.get_children())
+        role_tree.delete(*role_tree.get_children())
         i = 0
         if data is None:
-            data = sqlapi.read_all_benutzer()
+            data = sqlapi.read_all_rollen()
 
         for entry in data:
             # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
 
             # Daten mit dem Tag in das Treeview einfügen
-            user_tree.insert(
+            role_tree.insert(
                 "",
                 "end",
-                text=f"{entry['Nutzername']}",
+                text=f"{entry['Rolle']}",
                 values=(
-                    i,
-                    entry['Nutzername'],
-                    entry['Passwort'],
-                    entry['Email'],
                     entry['Rolle'],
+                    "✔" if entry['ANSEHEN'] == 'True' else "❌",
+                    "✔" if entry['ROLLE_LOESCHBAR'] == 'True' else "❌",
+                    "✔" if entry['ADMIN_FEATURE'] == 'True' else "❌",
+                    "✔" if entry['LOESCHEN'] == 'True' else "❌",
+                    "✔" if entry['BEARBEITEN'] == 'True' else "❌",
+                    "✔" if entry['ERSTELLEN'] == 'True' else "❌",
+                    "✔" if entry['GRUPPEN_LOESCHEN'] == 'True' else "❌",
+                    "✔" if entry['GRUPPEN_ERSTELLEN'] == 'True' else "❌",
+                    "✔" if entry['GRUPPEN_BEARBEITEN'] == 'True' else "❌",
+                    "✔" if entry['ROLLEN_ERSTELLEN'] == 'True' else "❌",
+                    "✔" if entry['ROLLEN_BEARBEITEN'] == 'True' else "❌",
+                    "✔" if entry['ROLLEN_LOESCHEN'] == 'True' else "❌",
                 ),
                 tags=(tag,)
             )

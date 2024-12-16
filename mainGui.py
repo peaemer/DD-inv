@@ -1,6 +1,6 @@
 import tkinter as tk
 import threading
-from pages import logInWindow, mainPage, userDetailsWindow, detailsWindow, roomDetailsWindow, adminRoomWindow, \
+from includes.pages import logInWindow, mainPage, userDetailsWindow, detailsWindow, roomDetailsWindow, adminRoomWindow, \
     adminUserWindow, adminRoleWindow
 
 
@@ -15,7 +15,7 @@ class ddINV(tk.Tk):
         self.geometry(f'{self.winfo_screenwidth()}x{self.winfo_screenheight()}+0+0')
         self.minsize(1280, 720)
         self.maxsize(1920, 1080)
-        self.iconbitmap("assets/srhIcon.ico")
+        # self.iconbitmap("assets/srhIcon.ico")
 
         # Create a container for frames
         self.container = tk.Frame(self)

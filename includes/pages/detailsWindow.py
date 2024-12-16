@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-import Datenbank.sqlite3api as db
+from includes.sec_data_info import sqlite3api as db
 import cache
 
 LARGEFONT = ("Arial", 35)
@@ -97,7 +97,7 @@ class detailsWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
-        self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
+        self.go_back_btn_details_window = tk.PhotoImage(file="includes/assets/ArrowLeft.png")
 
         # Erstelle einen Header-Bereich
         header_frame_details_window = tk.Frame(self, height=10, background="#DF4807")
@@ -338,10 +338,10 @@ class detailsWindow(tk.Frame):
             """
             db.update_hardware_by_ID(cache.selected_ID, neue_Ausgeliehen_von=None)
 
-        self.edit_btn = tk.PhotoImage(file="assets/Aktualisieren.png")
-        self.lend_btn = tk.PhotoImage(file="assets/Ausleihen.png")
-        self.delete_btn = tk.PhotoImage(file="assets/Loeschen.png")
-        self.return_btn = tk.PhotoImage(file="assets/Zurueckgeben.png")
+        self.edit_btn = tk.PhotoImage(file="includes/assets/Aktualisieren.png")
+        self.lend_btn = tk.PhotoImage(file="includes/assets/Ausleihen.png")
+        self.delete_btn = tk.PhotoImage(file="includes/assets/Loeschen.png")
+        self.return_btn = tk.PhotoImage(file="includes/assets/Zurueckgeben.png")
 
         # Buttons in ein separates Frame
         global button_frame_add_item_popup, lend_button

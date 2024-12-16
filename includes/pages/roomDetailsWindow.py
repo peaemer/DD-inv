@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
-import Datenbank.sqlite3api as db
-import Security.UserSecurity as sec
+from includes.sec_data_info import sqlite3api as db
+#import Security.UserSecurity as sec
 import cache
 import random, string
 
@@ -100,7 +100,7 @@ class roomDetailsWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
-        self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
+        self.go_back_btn_details_window = tk.PhotoImage(file="includes/assets/ArrowLeft.png")
 
         # Erstelle einen Header-Bereich
         header_frame_details_window = tk.Frame(self, height=10, background="#00699a")
@@ -230,9 +230,9 @@ class roomDetailsWindow(tk.Frame):
             adminRoomWindow.update_treeview_with_data()
             controller.show_frame(adminRoomWindow)
 
-        self.edit_btn = tk.PhotoImage(file="assets/AktualisierenBig_blue.png")
-        self.lend_btn = tk.PhotoImage(file="assets/Ausleihen.png")
-        self.delete_btn = tk.PhotoImage(file="assets/Loeschen.png")
+        self.edit_btn = tk.PhotoImage(file="includes/assets/AktualisierenBig_blue.png")
+        self.lend_btn = tk.PhotoImage(file="includes/assets/Ausleihen.png")
+        self.delete_btn = tk.PhotoImage(file="includes/assets/Loeschen.png")
 
         # Buttons in ein separates Frame
         button_frame_add_item_popup = tk.Frame(self, background="white")

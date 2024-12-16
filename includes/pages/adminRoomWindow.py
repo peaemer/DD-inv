@@ -1,10 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-import Datenbank.sqlite3api as sqlapi
+import includes.sec_data_info.sqlite3api as sqlapi
 import cache
 import customtkinter as ctk
-from ._SRHFont import load_font, SRHHeadline
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -185,18 +184,18 @@ class adminRoomWindow(tk.Frame):
         header_frame.grid_columnconfigure(2, weight=1)  # Platz rechts
         header_frame.grid_rowconfigure(0, weight=1)
 
-        self.srhHead = tk.PhotoImage(file="assets/srh.png")
+        self.srhHead = tk.PhotoImage(file="includes/assets/srh.png")
 
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(header_frame, image=self.srhHead, background=srhBlue, foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background=srhBlue, text="Raum-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label = tk.Label(header_frame, background=srhBlue, text="Raum-Übersicht", font=('Arial', 30), foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
-        self.log_out_btn = tk.PhotoImage(file="assets/ArrowLeft.png")
+        self.log_out_btn = tk.PhotoImage(file="includes/assets/ArrowLeft.png")
 
         # Füge einen Button mit dem Bild hinzu
         log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0, relief=tk.FLAT, bg=srhBlue,
@@ -258,11 +257,11 @@ class adminRoomWindow(tk.Frame):
         search_frame.grid_columnconfigure(2, weight=0)
 
 
-        self.add_btn = tk.PhotoImage(file="assets/HinzuSmall_blue.png")
+        self.add_btn = tk.PhotoImage(file="includes/assets/HinzuSmall_blue.png")
         room_add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_room)
         room_add_button.grid(padx=10, pady=5, row=0, column=2, sticky="w")
 
-        self.searchBtn = tk.PhotoImage(file="assets/search_button_blue.png")
+        self.searchBtn = tk.PhotoImage(file="includes/assets/search_button_blue.png")
         search_button = tk.Button(search_frame,
                                  image=self.searchBtn,
                                  bd=0,

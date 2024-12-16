@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-import Datenbank.sqlite3api as db
+from includes.sec_data_info import sqlite3api as db
 import string, random
 
 
@@ -35,7 +35,7 @@ def add_user_popup(parent):
     add_popup.resizable(False, False)
 
     try:
-        add_popup.iconbitmap("assets/srhIcon.ico")
+        add_popup.iconbitmap("includes/assets/srhIcon.ico")
     except Exception as e:
         print(f"Fehler beim Laden des Icons: {e}")
 
@@ -141,8 +141,8 @@ def add_user_popup(parent):
         """
         add_popup.destroy()
 
-    parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/HinzuBig_blue.png")
-    parent.exit_btn_add_item_popup = tk.PhotoImage(file="assets/AbbrechenButton.png")
+    parent.add_btn_add_item_popup = tk.PhotoImage(file="includes/assets/HinzuBig_blue.png")
+    parent.exit_btn_add_item_popup = tk.PhotoImage(file="includes/assets/AbbrechenButton.png")
 
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")
     button_frame_add_item_popup.grid(row=2, column=0, pady=20, sticky=tk.NSEW)
