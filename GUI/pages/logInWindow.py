@@ -22,7 +22,7 @@ class logInWindow(tk.Frame):
     grundlegende Verarbeitung von Benutzerdaten zur Anmeldung.
 
     :ivar srh_head: Enthält das Bild für den Header des Fensters.
-    :type srh_head: tk.PhotoImage
+    :type srh_head:
     :ivar log_out_btn: Enthält das Bild für den Button zur Anmeldung.
     :type log_out_btn: tk.PhotoImage
     """
@@ -104,7 +104,8 @@ class logInWindow(tk.Frame):
         header_frame = tk.Frame(self, height=10, background=srhOrange)
         header_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
-        self.srh_head = tk.PhotoImage(file="assets/srhHeader.png")
+        import _avatarManager as am
+        self.srh_head = am.loadImage(self, cache.srh_header)
         srh_header = tk.Label(header_frame, image=self.srh_head, bd=0, bg=srhOrange)
         srh_header.grid(padx=10, pady=10, row=0, column=0, sticky=tk.W + tk.N + tk.E)
 

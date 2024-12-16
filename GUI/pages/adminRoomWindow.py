@@ -4,7 +4,6 @@ from tkinter import *
 import Datenbank.sqlite3api as sqlapi
 import cache
 import customtkinter as ctk
-from ._SRHFont import load_font, SRHHeadline
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -192,7 +191,7 @@ class adminRoomWindow(tk.Frame):
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background=srhBlue, text="Raum-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label = tk.Label(header_frame, background=srhBlue, text="Raum-Übersicht", font=("Arial", 30), foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter

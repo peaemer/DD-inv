@@ -6,12 +6,10 @@ import cache
 import customtkinter as ctk
 
 # Importieren der extra Schriftart
-from ._SRHFont import load_font, SRHHeadline
 
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
-load_font(SRHHeadline)
 srhGrey = "#d9d9d9"
 
 
@@ -215,7 +213,7 @@ class mainPage(tk.Frame):
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(self.header_frame, background="#DF4807", text="Inventur-Übersicht", font=(SRHHeadline, 30), foreground="white")
+        text_header_label = tk.Label(self.header_frame, background="#DF4807", text="Inventur-Übersicht", font=("Arial", 30), foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter

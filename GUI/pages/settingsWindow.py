@@ -69,7 +69,7 @@ def pop_up_settings(parent, controller):
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
     popup.resizable(True, True)  # Fenstergroeße anpassbar
-    popup.iconbitmap("assets/srhIcon.ico")  # Fenster-Icon
+    #popup.iconbitmap("assets/srhIcon.ico")  # Fenster-Icon
 
     # Grid-Layout für Popup konfigurieren (danymische groeße)
     popup.grid_rowconfigure(0, weight=0)  # Bereich fuer Kategorien

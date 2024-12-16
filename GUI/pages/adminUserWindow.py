@@ -9,7 +9,6 @@ LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
 srhBlue = "#00699a"
-from ._SRHFont import load_font, SRHHeadline
 
 
 # Hauptseite (zweites Fenster)
@@ -221,7 +220,7 @@ class adminUserWindow(tk.Frame):
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background=srhBlue, text="Nutzer-Übersicht", font=(SRHHeadline, 30),
+        text_header_label = tk.Label(header_frame, background=srhBlue, text="Nutzer-Übersicht", font=("Arial", 30),
                                      foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
