@@ -43,23 +43,15 @@ class ddINV(tk.Tk):
                 thread.daemon = True
                 thread.start()
                 threads.append(thread)
-            print("Anzahl Threads:", threads)
+            print("Erstellte Threads:", threads)
 
             for thread in threads:
                 thread.join()
         except Exception as e:
             print("\033[93m "+e.args[0])
 
-    def _initialize_frame(self, F):
-        frame = F(self.container, self)
-        self.frames[F] = frame
-        frame.grid(row=0, column=0, sticky="nsew")
-
-
 
     def show_frame(self, cont):
-        if cont not in self.frames:
-            self._initialize_frame(cont)
         if cont not in self.frames:
             frame = cont(self.container, self)
             self.frames[cont] = frame
