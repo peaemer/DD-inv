@@ -118,7 +118,6 @@ def pop_up_settings(parent, controller):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_profile = tk.Frame(popup, bg="white")
     frame_profile.grid(row=1, column=1, rowspan=2, sticky="nesw")
-    frame_profile.grid_forget()
 
     # Überschrift Dein Profil
     profile_btn_label = tk.Label(frame_profile,
@@ -214,7 +213,6 @@ def pop_up_settings(parent, controller):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_system = tk.Frame(popup, bg="white")
     frame_system.grid(row=1, column=1, rowspan=2, sticky="nesw")
-    frame_system.grid_remove()
 
     # Überschrift System erstellen
     radiobutton_label = tk.Label(frame_system,
@@ -270,7 +268,6 @@ def pop_up_settings(parent, controller):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_style = tk.Frame(popup, bg="white")
     frame_style.grid(row=1, column=1, rowspan=2, sticky="nesw")
-    frame_style.grid_forget()
 
     frame_style.columnconfigure(0, weight=1)
 
@@ -430,7 +427,6 @@ def pop_up_settings(parent, controller):
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_ueber = tk.Frame(popup, bg="white")
     frame_ueber.grid(row=1, column=1, rowspan=2, sticky="new")
-    #frame_ueber.grid_forget()
 
     # Ueberschrift erstellen Über das DD-Inv Tool
     ueber_label = tk.Label(frame_ueber,
@@ -532,7 +528,7 @@ def pop_up_settings(parent, controller):
     build_label.grid(row=19, column=0, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Info
-    buttons_data_info = [{"name": "VersionBuild   V.0.0.311 (Alpha)", "url": "https://github.com/peaemer/DD-inv/commit/3cf34836049538c57b3cac282a740703e0312ba7", "image": "assets/DD-Inv_Logo.png"},
+    buttons_data_info = [{"name": "VersionBuild   V.0.0.364 (Alpha)", "url": "https://github.com/peaemer/DD-inv/commit/a1d82b49ad1b238ff2567aec851bcf03cb66af03", "image": "assets/DD-Inv_Logo.png"},
                          {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv", "image": "assets/GitHubSettings.png"}]
 
     # Funktion zum oeffnen der URL
@@ -570,7 +566,7 @@ def pop_up_settings(parent, controller):
               "Style": frame_style,
               "Über DD-Inv": frame_ueber}
 
-    current_frame = frames["System"]  # Halte den aktuell sichtbaren Frame
+    current_frame = frames["Profil"]  # Halte den aktuell sichtbaren Frame
     current_frame.grid(row=1, column=1, rowspan=2, sticky="nw")
 
     # Funktion zum Anzeigen des Frames
@@ -616,6 +612,7 @@ def pop_up_settings(parent, controller):
                    on_category_click_settings(lbl, cat))
         category_labels_settings.append(label)
 
-    # Alle Frames initial verstecken
-    for frame in frames.values():
-        frame.grid_remove()
+    # Verstecke alle Frames außer dem initialen Profil-Frame
+    for key, frame in frames.items():
+        if key != "Profil":  # Verstecke nur die anderen Frames
+            frame.grid_remove()

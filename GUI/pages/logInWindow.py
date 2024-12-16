@@ -54,8 +54,8 @@ class logInWindow(tk.Frame):
             user = username_entry.get().strip()
 
             # Reset cache für Benutzerinformationen
-            cache.user_group = ""
-            cache.user_name = ""
+            cache.user_group = None
+            cache.user_name = None
 
             # Importiere Sicherheits- und Datenbankmodule
             import Security.UserSecurity as security
@@ -241,7 +241,7 @@ class logInWindow(tk.Frame):
             webbrowser.open(url)
 
         logo_image = PhotoImage(file="assets/DD-Inv_Logo.png")
-        btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.0.311 (Alpha)", cursor="hand1", font=("Arial", 12))
+        btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.0.364 (Alpha)", cursor="hand1", font=("Arial", 12))
         btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
         btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
-        btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/3cf34836049538c57b3cac282a740703e0312ba7"))
+        btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/a1d82b49ad1b238ff2567aec851bcf03cb66af03"))
