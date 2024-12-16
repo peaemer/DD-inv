@@ -68,8 +68,14 @@ class adminUserWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self)
 
-        def search():                           # funktionalität hinzufügen
-            print("I am Searching")
+        def search(event=None):                           # funktionalität hinzufügen
+            search_entrys = []
+            for entry in sqlapi.read_all_benutzer():
+                for value in entry:
+                    if user_search_entry.get().lower() in str(entry[value]).lower():
+                        if entry not in search_entrys:
+                            search_entrys.append(entry)
+            self.update_treeview_with_data(data=search_entrys)
 
         def add_user_item():
             """
@@ -224,12 +230,12 @@ class adminUserWindow(tk.Frame):
                                  activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
-        # Konvertiere das Bild für Tkinter
-        self.opt_btn = tk.PhotoImage(file="assets/option.png")
+        from ._avatarManager import loadImage
+        self.avatar = loadImage(parent=parent)
 
         # Füge einen Button mit dem Bild hinzu
         options_button = tk.Button(header_frame,
-                                   image=self.opt_btn,
+                                   image=self.avatar,
                                    command=show_settings_window_admin_window,
                                    bd=0,
                                    relief=tk.FLAT,
@@ -311,7 +317,7 @@ class adminUserWindow(tk.Frame):
         user_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global user_tree
-        user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13"), show="headings")
+        user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5"), show="headings")
 
         user_scroll = tk.Scrollbar(
             user_tree_frame,
@@ -346,43 +352,7 @@ class adminUserWindow(tk.Frame):
         user_tree.heading("# 5", text="Rolle")
         user_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
         user_tree.tkraise()
-
-        def insert_data(self):
-            """
-            Die Klasse `adminUserWindow` stellt eine grafische Benutzeroberfläche dar,
-            die auf tkinter basiert und es ermöglicht, Benutzer-Daten anzuzeigen und
-            zu verwalten. Innerhalb der Oberfläche werden Benutzerdaten im Treeview
-            dargestellt, wobei die Zeilen abwechselnd formatiert werden.
-
-            Diese Klasse erbt von `tk.Frame` und benötigt einen Eltern-Frame sowie
-            einen Controller zur Initialisierung.
-
-            :param parent: Das übergeordnete tkinter-Widget, das den Rahmen enthält.
-            :type parent: tk.Widget
-            :param controller: Der Controller, der die Logik und Anwendungsteuerung verwaltet.
-            :type controller: Any
-            """
-            i = 0
-            for entry in sqlapi.read_all_benutzer():
-                # Bestimme das Tag für die aktuelle Zeile
-                tag = "evenrow" if i % 2 == 0 else "oddrow"
-
-                # Daten mit dem Tag in das Treeview einfügen
-                user_tree.insert(
-                    "",
-                    "end",
-                    text=f"{entry['Nutzername']}",
-                    values=(
-                        i,
-                        entry['Nutzername'],
-                        entry['Passwort'],
-                        entry['Email'],
-                        entry['Rolle'],
-                    ),
-                    tags=(tag,)
-                )
-                i += 1
-        insert_data(self)
+        self.update_treeview_with_data()
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
@@ -412,7 +382,7 @@ class adminUserWindow(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)
 
-    def update_treeview_with_data(self=None):
+    def update_treeview_with_data(self = None, data=None):
         """
         Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
         löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
@@ -423,7 +393,10 @@ class adminUserWindow(tk.Frame):
         """
         user_tree.delete(*user_tree.get_children())
         i = 0
-        for entry in sqlapi.read_all_benutzer():
+        if data is None:
+            data = sqlapi.read_all_benutzer()
+
+        for entry in data:
             # Bestimme das Tag für die aktuelle Zeile
             tag = "evenrow" if i % 2 == 0 else "oddrow"
 

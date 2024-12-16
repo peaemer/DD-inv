@@ -101,10 +101,9 @@ class roomDetailsWindow(tk.Frame):
             pop_up_settings(self)
 
         self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
-        self.opt_btn_details_window = tk.PhotoImage(file="assets/option.png")
 
         # Erstelle einen Header-Bereich
-        header_frame_details_window = tk.Frame(self, height=10, background="#DF4807")
+        header_frame_details_window = tk.Frame(self, height=10, background="#00699a")
         header_frame_details_window.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E + tk.N)
 
         # Überschrift mittig zentrieren
@@ -117,7 +116,7 @@ class roomDetailsWindow(tk.Frame):
         header_label_details_window = tk.Label(
             header_frame_details_window,
             text="Raum Details",
-            background="#DF4807",
+            background="#00699a",
             foreground="white",
             font=("Arial", 60)
         )
@@ -130,19 +129,22 @@ class roomDetailsWindow(tk.Frame):
             command=go_back_details_window,
             bd=0,
             relief=tk.FLAT,
-            bg="#DF4807",
-            activebackground="#DF4807"
+            bg="#00699a",
+            activebackground="#00699a"
         )
         go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
+        from ._avatarManager import loadImage
+        self.avatar = loadImage(parent=parent)
+
         options_button_details_window = tk.Button(
             header_frame_details_window,
-            image=self.opt_btn_details_window,
+            image=self.avatar,
             command=show_settings_window_details_window,
             bd=0,
             relief=tk.FLAT,
-            bg="#DF4807",
-            activebackground="#DF4807"
+            bg="#00699a",
+            activebackground="#00699a"
         )
         options_button_details_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
@@ -228,7 +230,7 @@ class roomDetailsWindow(tk.Frame):
             adminUserWindow.update_treeview_with_data()
             controller.show_frame(adminUserWindow)
 
-        self.edit_btn = tk.PhotoImage(file="assets/Aktualisieren.png")
+        self.edit_btn = tk.PhotoImage(file="assets/AktualisierenBig_blue.png")
         self.lend_btn = tk.PhotoImage(file="assets/Ausleihen.png")
         self.delete_btn = tk.PhotoImage(file="assets/Loeschen.png")
 
