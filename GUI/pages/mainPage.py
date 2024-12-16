@@ -418,7 +418,7 @@ class mainPage(tk.Frame):
                     from .detailsWindow import detailsWindow, show_details
                     show_details(selected_item, tree, controller)
             except Exception as e:
-                print(f"Fehler bei der Auswahl: {e}")
+                print(f"Fehler bei der Auswahl:" '\033[93m' + e.args[0])
 
         def on_side_tree_select(event):
             """

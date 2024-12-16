@@ -74,7 +74,6 @@ class logInWindow(tk.Frame):
                 # Zeige die MainPage an
                 from .mainPage import mainPage
                 controller.show_frame(mainPage)
-                mainPage.on_load(parent)
 
             else:
                 # Zeige Fehlermeldung bei falschem Login
