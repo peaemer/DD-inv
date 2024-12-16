@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import *
 from CTkListbox import *
 import customtkinter as ctk
-from  GUI.SearchBar import SearchBar
+from GUI.SearchBar.SearchBar import *
 from .imageloader import loadImage
 
 
@@ -160,6 +160,7 @@ class mainPage(tk.Frame):
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
+            start_search(cache.loaded_history, search_entry, dropdown, search_entry_var.get(),cache.user_name)
 
         def on_key_press(var1:str, var2:str, var3:str):
             """
@@ -175,8 +176,14 @@ class mainPage(tk.Frame):
             :parameter controller: Ein Controller-Objekt, das zur Steuerung der Anwendungslogik verwendet wird.
             """
             print(f"""[MainPage]: executing on_key_press with searchbar text "{search_entry_var.get()}" """)
+            if search_entry_var.get() == '':
+                return
+            if not dropdown.get(0):
+                print('len test')
+                return
+            update_search(cache.loaded_history, dropdown, search_entry_var.get(), cache.user_name)
             #typed_key = event.char  # The character of the typed key
-            print(search_entry_var.get())
+            print(search_entry_var.get()+" bla")
 
         def on_focus_out():
             """
@@ -199,7 +206,8 @@ class mainPage(tk.Frame):
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.configure(fg_color='grey')  # Textfarbe auf grau ändern
                 search_entry.configure(bg_color='white')
-
+            sb.on_searchbar_lost_focus(search_entry, search_entry_var, dropdown)
+            #sb.force_stop_search(self, search_entry, dropdown)
 
         global tree
 
@@ -363,7 +371,6 @@ class mainPage(tk.Frame):
         search_entry.bind('<FocusIn>', lambda _: on_entry_click())
         search_entry.bind('<FocusOut>', lambda _: on_focus_out())
         search_entry.bind('<Return>', search)
-        #search_entry.bind("<Button-1>", search)
         search_entry_var.trace_add("write", on_key_press)
         dropdown.bind("<<ListboxSelect>>", lambda  _: sb.on_dropdown_select(search_entry, dropdown))
 

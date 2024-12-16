@@ -1,4 +1,5 @@
 from CTkListbox import CTkListbox
+import customtkinter as CTk
 
 import cache
 from Datenbank import sqlite3api as db
@@ -78,34 +79,15 @@ def __scale_history_weights(loaded_history:list[dict[str, str]], search_term:str
 
 def __update_dropdown(new_items:List[str], dropdown:CTkListbox)->None:
     print(f"[SearchBar]:update dropdown")
-
-    dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
     #dropdown.place(x=100,y=130)
-    dropdown.delete(0, tk.END)
+    if(dropdown):
+        if(dropdown.size() > 0):
+            dropdown.delete(0,dropdown.size()-1)
     for item in new_items:
         dropdown.insert(tk.END, item)
     #dropdown.tkraise()
-
-def on_dropdown_select(searchbar:tk.Entry, dropdown:CTkListbox)->None:
-    """
-        called when a dropdown entry is clicked
-
-        :param tk.event searchbar: the searchbar
-        :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
-    """
-    global search_is_running
-    if not search_is_running:
-        return
-    #print(dropdown.get(dropdown.curselection()))
-    #all_selected_items:list[str] = [dropdown.get(i) for i in dropdown.curselection()]
-    #print(f"""[SearchBar]:all selected items are "{all_selected_items}" """)
-    #if len(all_selected_items) == 0:
-    #    return
-    #selected_item:str = all_selected_items[0]
-    print(f"""[SearchBar]:selected item "{dropdown.get(dropdown.curselection())}" from dropdown""")
-    searchbar.delete(0, tk.END)
-    searchbar.insert(0, dropdown.get(dropdown.curselection()))
-    searchbar.focus()
+    if(dropdown):
+        dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
 def update_search(loaded_history:list[dict[str, str]], dropdown:CTkListbox, search_term:str, username:str)->None:
     """
@@ -124,7 +106,7 @@ def update_search(loaded_history:list[dict[str, str]], dropdown:CTkListbox, sear
     print(f"""[SearchBar]:sorted history is "{sorted_history}" """)
     new_options:List[str] = []
     i:int = 0
-    for entry in sorted_history:
+    for entry in loaded_history:
         if str(search_term) in entry['text']:
             new_options.append(entry['text'])
             i = i+1
@@ -134,7 +116,7 @@ def update_search(loaded_history:list[dict[str, str]], dropdown:CTkListbox, sear
 
 
 
-def finish_search(loaded_history:list[dict[str,str]], searchbar:tk.Entry, dropdown:CTkListbox, search_term:str, username:str)->None:
+def finish_search(loaded_history:list[dict[str,str]], searchbar:CTk.CTkEntry, dropdown:CTkListbox, search_term:str, username:str)->None:
     """
         Called once user stops typing into the search bar.
         Recalculates the weight and repeated_uses of each term.
@@ -198,6 +180,40 @@ def start_search(loaded_history:List[Dict[str,str]], searchbar:tk.Entry, dropdow
     searchbar.delete(0, tk.END)
     update_search(loaded_history, dropdown, search_term, username)
 
+
+def on_dropdown_select(searchbar:CTk.CTkEntry, dropdown:CTkListbox)->None:
+    """
+        called when a dropdown entry is clicked
+
+        :param tk.event searchbar: the searchbar
+        :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
+    """
+    global search_is_running
+    if not search_is_running:
+        return
+    #print(dropdown.get(dropdown.curselection()))
+    #all_selected_items:list[str] = [dropdown.get(i) for i in dropdown.curselection()]
+    #print(f"""[SearchBar]:all selected items are "{all_selected_items}" """)
+    #if len(all_selected_items) == 0:
+    #    return
+    #selected_item:str = all_selected_items[0]
+    print(f"""[SearchBar]:selected item "{dropdown.get(dropdown.curselection())}" from dropdown""")
+    dropdown.grid_forget()
+    #searchbar.delete(0, dropdown.size())
+    print(searchbar.__class__)
+    #searchbar.delete(0, tk.END)
+    searchbar.insert(0, dropdown.get(dropdown.curselection()))
+    #searchbar.focus()
+
+def on_searchbar_lost_focus(searchbar:CTk.CTkEntry,search_bar_variable:tk.StringVar, dropdown:CTkListbox)->None:
+    if dropdown.winfo_exists():
+        dropdown.grid_forget()
+    if search_bar_variable.get() == '':
+        searchbar.insert(0, 'Suche')  # Platzhalter zurücksetzen
+        searchbar.configure(fg_color='grey')  # Textfarbe auf grau ändern
+        searchbar.configure(bg_color='white')
+
+
 """
 history:List[Dict[str,str]] = json.loads('[{}]')
 
@@ -226,40 +242,3 @@ select_item_button.bind("<Button-2>", lambda event: finish_search(history, searc
 
 #root.mainloop()
 """
-class searchBar(tk.Entry):
-
-    dropdown: CTkListbox
-    __dropdown_var:tk.StringVar
-    __text_var:tk.StringVar
-
-    def __init__(self, parent):
-        self.__text_var = tk.StringVar()
-        tk.Entry.__init__(self, parent, font=("Arial", 20), bg='white', bd=0, fg='grey', textvariable=self.__text_var)
-        self.__dropdown_var = tk.StringVar()
-        self.dropdown = CTkListbox(parent, font=("Arial", 20), bg="white", listvariable=self.__dropdown_var)
-        self.dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
-        self.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
-
-        # Entry-Feld mit Platzhalter-Text
-        self.insert(0, 'Suche')  # Setze den Platzhalter-Text
-        """
-        # Events für Klick und Fokusverlust hinzufügen
-        """
-        lh:list[dict[str,str]] = json.loads('[{}]')
-        self.bind('<FocusIn>', start_search(lh, self, self.dropdown, self.__dropdown_var.get(), cache.user_name))
-        self.__text_var.trace_add("write", lambda var1, var2, var3: update_search(cache.loaded_history, self.dropdown, self.__text_var.get(),cache.user_name))
-        """"
-        self.bind('<FocusOut>', on_focus_out)
-        self.bind('<Return>', search)
-        self.bind("<Key>", on_key_press)
-        self.bind("<<ListboxSelect>>", lambda _: on_dropdown_select(dropdown))
-        """
-
-    def start_search(self):
-        start_search(cache.loaded_history, self,  self.dropdown, self.__text_var.get(), cache.user_name)
-
-    def finish_search(self):
-        finish_search(cache.loaded_history, self, self.dropdown, self.__text_var.get(),cache.user_name)
-
-    def update_search(self):
-        update_search(cache.loaded_history, self.dropdown, self.__text_var.get(),)
