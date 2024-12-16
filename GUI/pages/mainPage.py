@@ -264,18 +264,9 @@ class mainPage(tk.Frame):
         tree_style_side_tree.layout("Treeview_side", [('Treeview.treearea', {'sticky': 'nswe'})])
 
         # Treeview erstellen
+        global side_tree
         side_tree = ttk.Treeview(grey_frame_side, show="tree", style="Treeview_side")
-        side_tree.grid(row=2, column=0, sticky=tk.W + tk.N + tk.S)
-
-        side_tree.insert("", tk.END, text="Alle Räume")
-        for room in sqlapi.fetch_all_rooms():
-            cats = []
-            tree_parent = side_tree.insert("", tk.END, text=room['Raum'])
-            for hw in sqlapi.fetch_hardware():
-                if hw['Raum'] and hw['Raum'].startswith(room['Raum']):
-                    if not hw['Geraetetype'] in cats:
-                        cats.append(hw['Geraetetype'])
-                        side_tree.insert(tree_parent, tk.END, text=hw['Geraetetype'])
+        self.update_sidetree_with_data()
         side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
 
         # Erstellen des MiddleFrame
@@ -484,6 +475,20 @@ class mainPage(tk.Frame):
 
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<Double-1>", on_item_selected)
+
+    def update_sidetree_with_data(self = None, rooms = None):
+        side_tree.delete(*side_tree.get_children())
+        side_tree.insert("", tk.END, text="Alle Räume")
+        if rooms is None:
+            rooms = sqlapi.fetch_all_rooms()
+        for room in rooms:
+            cats = []
+            tree_parent = side_tree.insert("", tk.END, text=room['Raum'])
+            for hw in sqlapi.fetch_hardware():
+                if hw['Raum'] and hw['Raum'].startswith(room['Raum']):
+                    if not hw['Geraetetype'] in cats:
+                        cats.append(hw['Geraetetype'])
+                        side_tree.insert(tree_parent, tk.END, text=hw['Geraetetype'])
 
     # Aktualisieren der Data in der Tabelle
     def update_treeview_with_data(self = None, data=None):
