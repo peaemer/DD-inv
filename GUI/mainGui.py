@@ -36,9 +36,9 @@ class ddINV(tk.Tk):
 
             threads = []
             for F in (
-                    logInWindow, mainPage, detailsWindow, userDetailsWindow, adminRoomWindow, adminRoleWindow,
-                    adminUserWindow,
-                    roomDetailsWindow):
+                    logInWindow, mainPage, detailsWindow, userDetailsWindow,
+                    adminRoomWindow, adminRoleWindow,adminUserWindow,roomDetailsWindow):
+
                 thread = threading.Thread(target=load_frame, args=(F,))
                 thread.daemon = True
                 thread.start()
