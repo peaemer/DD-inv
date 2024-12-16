@@ -11,7 +11,7 @@ LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
 
 
-def show_roles_details(selected_room, tree, controller):
+def show_roles_details(selected_roles, tree, controller):
     """
     Zeigt die Details des ausgewählten Raums an. Die Methode liest die Daten aus
     der ausgewählten Zeile eines Treeviews, speichert die ID des Raums in einem
@@ -24,14 +24,14 @@ def show_roles_details(selected_room, tree, controller):
     :return: Es wird kein Wert zurückgegeben.
     """
     # Daten aus der ausgewählten Zeile
-    data = tree.item(selected_room, "values")
+    data = tree.item(selected_roles, "values")
     print(f"Daten des ausgewählten Items: {data}")
     cache.selected_ID = data[0]
-
+    controller.show_frame(rolesDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
     details = controller.frames[rolesDetailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-    controller.show_frame(rolesDetailsWindow)  # Zeige die Details-Seite
+
 
 
 class rolesDetailsWindow(tk.Frame):
@@ -44,10 +44,10 @@ class rolesDetailsWindow(tk.Frame):
 
     :ivar controller: Der Controller, der für die Steuerung der GUI-Seiten zuständig ist.
     :type controller: tk.Tk
-    :ivar go_back_btn_details_window: Bild für den „Zurück“-Button.
-    :type go_back_btn_details_window: tk.PhotoImage
-    :ivar opt_btn_details_window: Bild für den „Optionen“-Button.
-    :type opt_btn_details_window: tk.PhotoImage
+    :ivar go_back_btn_roles_window: Bild für den „Zurück“-Button.
+    :type go_back_btn_roles_window: tk.PhotoImage
+    :ivar opt_btn_roles_window: Bild für den „Optionen“-Button.
+    :type opt_btn_roles_window: tk.PhotoImage
     :ivar room_num_entry: Eingabefeld für die Raumnummer.
     :type room_num_entry: tk.Entry
     :ivar place_entry: Eingabefeld für den Ort.
@@ -64,7 +64,7 @@ class rolesDetailsWindow(tk.Frame):
         self.controller = controller
         self.configure(background="white")
 
-        def go_back_details_window():
+        def go_back_roles_window():
             """
             Eine Klasse, die ein Fenster darstellt, um Details von Räumen anzuzeigen. Erbt von
             `tk.Frame` und dient als GUI-Komponente, die in einer tkinter-Anwendung eingebettet
@@ -82,7 +82,7 @@ class rolesDetailsWindow(tk.Frame):
             from .adminRoleWindow import adminRoleWindow
             controller.show_frame(adminRoleWindow)
 
-        def show_settings_window_details_window():
+        def show_settings_window_roles_window():
             """
             Eine Klasse, die ein Fenster für Rauminformationen darstellt, das als Unterklasse
             von tk.Frame implementiert wurde. Diese Klasse dient als grafisches Fenster,
@@ -98,55 +98,55 @@ class rolesDetailsWindow(tk.Frame):
             """
             print("Show settings window details window")
             from .settingsWindow import pop_up_settings
-            pop_up_settings(self)
+            pop_up_settings(self, controller)
 
-        self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
+        self.go_back_btn_roles_window = tk.PhotoImage(file="assets/ArrowLeft.png")
 
         # Erstelle einen Header-Bereich
-        header_frame_details_window = tk.Frame(self, height=10, background="#00699a")
-        header_frame_details_window.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E + tk.N)
+        header_frame_roles_window = tk.Frame(self, height=10, background="#00699a")
+        header_frame_roles_window.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E + tk.N)
 
         # Überschrift mittig zentrieren
-        header_frame_details_window.grid_columnconfigure(0, weight=1)  # Platz links
-        header_frame_details_window.grid_columnconfigure(1, weight=3)  # Überschrift zentriert (größerer Gewichtungsfaktor)
-        header_frame_details_window.grid_columnconfigure(2, weight=1)  # Option-Button
+        header_frame_roles_window.grid_columnconfigure(0, weight=1)  # Platz links
+        header_frame_roles_window.grid_columnconfigure(1, weight=3)  # Überschrift zentriert (größerer Gewichtungsfaktor)
+        header_frame_roles_window.grid_columnconfigure(2, weight=1)  # Option-Button
 
 
         # Zentriere das Label in Spalte 1
-        header_label_details_window = tk.Label(
-            header_frame_details_window,
-            text="Raum Details",
+        header_label_roles_window = tk.Label(
+            header_frame_roles_window,
+            text="Rollen Details",
             background="#00699a",
             foreground="white",
             font=("Arial", 60)
         )
-        header_label_details_window.grid(row=0, column=1, pady=40, sticky=tk.W + tk.E)
+        header_label_roles_window.grid(row=0, column=1, pady=40, sticky=tk.W + tk.E)
 
         # Buttons in Spalten 2 und 3 platzieren
-        go_back_button_details_window = tk.Button(
-            header_frame_details_window,
-            image=self.go_back_btn_details_window,
-            command=go_back_details_window,
+        go_back_button_roles_window = tk.Button(
+            header_frame_roles_window,
+            image=self.go_back_btn_roles_window,
+            command=go_back_roles_window,
             bd=0,
             relief=tk.FLAT,
             bg="#00699a",
             activebackground="#00699a"
         )
-        go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
+        go_back_button_roles_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
         from ._avatarManager import loadImage
         self.avatar = loadImage(parent=parent)
 
-        options_button_details_window = tk.Button(
-            header_frame_details_window,
+        options_button_roles_window = tk.Button(
+            header_frame_roles_window,
             image=self.avatar,
-            command=show_settings_window_details_window,
+            command=show_settings_window_roles_window,
             bd=0,
             relief=tk.FLAT,
             bg="#00699a",
             activebackground="#00699a"
         )
-        options_button_details_window.grid(row=0, column=2, sticky=tk.E, padx=20)
+        options_button_roles_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
 
         # Container für Input- und Tree-Frame
@@ -156,7 +156,7 @@ class rolesDetailsWindow(tk.Frame):
         # Konfiguration der Container-Spalten
         container_frame.grid_columnconfigure(0, weight=1)
 
-        size_details_window = 30
+        size_roles_window = 30
 
         # Input-Frame
         input_frame_roles_window = tk.Frame(container_frame, background="white")
@@ -165,24 +165,122 @@ class rolesDetailsWindow(tk.Frame):
         input_frame_roles_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
         input_frame_roles_window.grid_columnconfigure(1, weight=1)
 
-        # Raum
-        room_num = tk.Label(input_frame_roles_window, text="Rechte Details",
-                            font=("Arial", size_details_window), background="white")
-        room_num.grid(column=0, row=0, sticky=tk.EW, padx=20, pady=10)
+        # Admin
+        admin = tk.Label(input_frame_roles_window, text="Admin",
+                        font=("Arial", size_roles_window), background="white")
+        admin.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.room_num_entry = tk.Entry(input_frame_roles_window, font=("Arial", size_details_window),
-                                       background=srhGrey, relief=tk.SOLID)
-        self.room_num_entry.grid(column=1, row=0, sticky=tk.EW, padx=20, pady=10)
+        self.admin = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.admin.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        # Ort
-        place_label_details_window = tk.Label(input_frame_roles_window, text="Ort",
-                                              font=("Arial", size_details_window), background="white")
-        place_label_details_window.grid(column=0, row=2, sticky=tk.EW, padx=20, pady=10)
+        # Ansehen
+        view_label_roles_window = tk.Label(input_frame_roles_window, text="Ansehen",
+                                                 font=("Arial", size_roles_window), background="white")
+        view_label_roles_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.place_entry = tk.Entry(input_frame_roles_window, font=("Arial", size_details_window),
-                                    background=srhGrey, relief=tk.SOLID)
-        self.place_entry.grid(column=1, row=2, sticky=tk.EW, padx=20, pady=10)
+        self.view = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.view.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
+        # Rolle Loeschbar
+        delete_rl_label_roles_window = tk.Label(input_frame_roles_window, text="Rolle Löschbar",
+                                              font=("Arial", size_roles_window), background="white")
+        delete_rl_label_roles_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.delete_rl = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.delete_rl.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Admin Feature
+        feature_label_roles_window = tk.Label(input_frame_roles_window, text="Admin Feature",
+                                             font=("Arial", size_roles_window), background="white")
+        feature_label_roles_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.feature = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.feature.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Loeschen
+        delete_label_roles_window = tk.Label(input_frame_roles_window, text="Löschen",
+                                             font=("Arial", size_roles_window), background="white")
+        delete_label_roles_window.grid(column=0, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.delete = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.delete.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Bearbeiten
+        edit_label_roles_window = tk.Label(input_frame_roles_window, text="Bearbeiten",
+                                             font=("Arial", size_roles_window), background="white")
+        edit_label_roles_window.grid(column=0, row=5, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.edit = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.edit.grid(column=1, row=5, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Erstellen
+        create_label_roles_window = tk.Label(input_frame_roles_window, text="Erstellen",
+                                             font=("Arial", size_roles_window), background="white")
+        create_label_roles_window.grid(column=0, row=6, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.create = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.create.grid(column=1, row=6, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Gruppe Loeschen
+        delete_g_label_roles_window = tk.Label(input_frame_roles_window, text="Gruppe Löschen" ,
+                                             font=("Arial", size_roles_window), background="white")
+        delete_g_label_roles_window.grid(column=0, row=7, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.delete_g = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.delete_g.grid(column=1, row=7, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Gruppe Erstellen
+        create_g_label_roles_window = tk.Label(input_frame_roles_window, text="Gruppe Erstellen",
+                                             font=("Arial", size_roles_window), background="white")
+        create_g_label_roles_window.grid(column=0, row=8, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.create_g = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.create_g.grid(column=1, row=8, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Gruppe Bearbeiten
+        edit_g_label_roles_window = tk.Label(input_frame_roles_window, text="Gruppe Bearbeiten",
+                                             font=("Arial", size_roles_window), background="white")
+        edit_g_label_roles_window.grid(column=0, row=9, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.edit_g = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.edit_g.grid(column=1, row=9, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Rollen Erstellen
+        create_r_label_roles_window = tk.Label(input_frame_roles_window, text="Rollen Erstellen",
+                                             font=("Arial", size_roles_window), background="white")
+        create_r_label_roles_window.grid(column=0, row=10, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.create_r = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.create_r.grid(column=1, row=10, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Rollen Bearbeiten
+        edit_r_label_roles_window = tk.Label(input_frame_roles_window, text="Rollen Bearbeiten",
+                                             font=("Arial", size_roles_window), background="white")
+        edit_r_label_roles_window.grid(column=0, row=11, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.edit_r = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.edit_r.grid(column=1, row=11, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        # Rollen Loeschen
+        delete_r_label_roles_window = tk.Label(input_frame_roles_window, text="Rolle",
+                                             font=("Arial", size_roles_window), background="white")
+        delete_r_label_roles_window.grid(column=0, row=12, sticky=tk.W + tk.E, padx=20, pady=10)
+
+        self.delete_r = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
+                             background=srhGrey, relief=tk.SOLID)
+        self.delete_r.grid(column=1, row=12, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
@@ -201,7 +299,6 @@ class rolesDetailsWindow(tk.Frame):
 
             """
             #update
-            db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
             from .adminUserWindow import adminUserWindow
             adminUserWindow.update_treeview_with_data()
             controller.show_frame(adminUserWindow)
@@ -267,8 +364,8 @@ class rolesDetailsWindow(tk.Frame):
 
         """
         # Daten in die Entry-Felder einfügen
-        self.room_num_entry.delete(0, tk.END)
-        self.room_num_entry.insert(0, data[0])
+        self.roles_num_entry.delete(0, tk.END)
+        self.roles_num_entry.insert(0, data[0])
 
         self.place_entry.delete(0, tk.END)
         self.place_entry.insert(0, data[1])

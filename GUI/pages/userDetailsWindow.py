@@ -87,7 +87,7 @@ class userDetailsWindow(tk.Frame):
             """
             print("Show settings window details window")
             from .settingsWindow import pop_up_settings
-            pop_up_settings(self)
+            pop_up_settings(self, controller)
 
 
         def reset_pass():
