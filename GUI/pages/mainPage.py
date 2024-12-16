@@ -111,7 +111,7 @@ class mainPage(tk.Frame):
                         if entry not in search_entrys:
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
-            sb.finish_search(cache.loaded_history,search_entry,dropdown,search_entry_var.get(),cache.user_name)
+            sb.finish_search(cache.loaded_history,search_entry,dropdown, self, search_entry_var.get(),cache.user_name)
 
         def add_item():
             """
@@ -178,12 +178,11 @@ class mainPage(tk.Frame):
             print(f"""[MainPage]: executing on_key_press with searchbar text "{search_entry_var.get()}" """)
             if search_entry_var.get() == '':
                 return
-            if not dropdown.get(0):
-                print('len test')
-                return
+            if dropdown.size()>0:
+                if not dropdown.get(0):
+                    print('len test')
+                    return
             update_search(cache.loaded_history, dropdown, search_entry_var.get(), cache.user_name)
-            #typed_key = event.char  # The character of the typed key
-            print(search_entry_var.get()+" bla")
 
         def on_focus_out():
             """
@@ -255,11 +254,10 @@ class mainPage(tk.Frame):
 
         # Konvertiere das Bild für Tkinter
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        #self.avatar = loadImage(parent=parent)
 
         # Füge einen Button mit dem Bild hinzu
         options_button = tk.Button(self.header_frame,
-                                   image=self.avatar,
                                    command=show_settings_window,
                                    bd=0,
                                    relief=tk.FLAT,
@@ -370,7 +368,7 @@ class mainPage(tk.Frame):
         # Events für Suchleiste und Fokusverlust hinzufügen
         search_entry.bind('<FocusIn>', lambda _: on_entry_click())
         search_entry.bind('<FocusOut>', lambda _: on_focus_out())
-        search_entry.bind('<Return>', search)
+        #search_entry.bind('<Return>', search)
         search_entry_var.trace_add("write", on_key_press)
         dropdown.bind("<<ListboxSelect>>", lambda  _: sb.on_dropdown_select(search_entry, dropdown))
 
