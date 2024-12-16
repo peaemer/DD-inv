@@ -404,13 +404,12 @@ class mainPage(tk.Frame):
             Diese Klasse stellt die Hauptseite dar, die eine Benutzeroberfläche für die
             Navigation und Anzeige spezifischer Detailinformationen bereitstellt.
             """
-            try:
-                selected_item = tree.focus()
-                if selected_item:
-                    from .detailsWindow import detailsWindow, show_details
-                    show_details(selected_item, tree, controller)
-            except Exception as e:
-                print(f"Fehler bei der Auswahl: {e}")
+
+            selected_item = tree.focus()
+            if selected_item:
+                from .detailsWindow import detailsWindow, show_details
+                show_details(selected_item, tree, controller)
+
 
         def on_side_tree_select(event):
             """

@@ -25,10 +25,13 @@ def show_details(selectedItem, tree, controller):
     print(f"Daten des ausgewählten Items: {data}")
     cache.selected_ID = data[0]
 
+
+    controller.show_frame(detailsWindow)  # Zeige die Details-Seite
+
     # Frame aktualisieren und anzeigen
     details = controller.frames[detailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-    controller.show_frame(detailsWindow)  # Zeige die Details-Seite
+
 
 
 class detailsWindow(tk.Frame):
