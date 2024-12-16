@@ -66,7 +66,7 @@ class adminRoleWindow(tk.Frame):
             """
             print("show settings window admin window")
             from .settingsWindow import pop_up_settings
-            pop_up_settings(self)
+            pop_up_settings(self, controller)
 
         def search(event=None):                           # funktionalität hinzufügen
             search_entrys = []
