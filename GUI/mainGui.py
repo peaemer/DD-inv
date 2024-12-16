@@ -56,7 +56,15 @@ class ddINV(tk.Tk):
             frame = cont(self.container, self)
             self.frames[cont] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-        self.frames[cont].tkraise()
+        else:
+            frame = self.frames[cont]
+
+        if isinstance(frame, tk.Frame):
+            frame.tkraise()
+
+            if hasattr(frame, 'on_load') and callable(frame.on_load):
+                print(f"on_load wird für {cont.__name__} aufgerufen")  # Debug
+                frame.on_load()
 
 
 if __name__ == "__main__":

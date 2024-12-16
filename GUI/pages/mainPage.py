@@ -522,7 +522,7 @@ class mainPage(tk.Frame):
                 tags=(tag,)
             )
 
-    def on_load(self=None):
+    def on_load(self):
         """
         Überprüft beim Laden die Benutzergruppe des aktuellen Nutzers und entscheidet, ob
         ein Admin-Button erstellt, angezeigt oder entfernt werden soll. Der Admin-Button wird
