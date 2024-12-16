@@ -1,11 +1,26 @@
 import base64
-from io import BytesIO
 
-import PIL.Image
 import requests
+import socket
+from io import BytesIO
 from PIL import Image, ImageTk
 
 import cache
+
+
+def check_internet_connection():
+    """
+    Überprüft, ob eine Internetverbindung besteht, indem versucht wird, eine Verbindung zu einem öffentlichen DNS-Server herzustellen.
+
+    :return: True, wenn eine Verbindung zum Internet besteht, andernfalls False.
+    :rtype: bool
+    """
+    try:
+        # Versuchen, eine Verbindung zu einem bekannten öffentlichen DNS-Server herzustellen (Google DNS).
+        socket.create_connection(("8.8.8.8", 53), timeout=5)
+        return True
+    except (socket.timeout, socket.error):
+        return False
 
 
 def load_image_from_url(url):
@@ -22,6 +37,9 @@ def load_image_from_url(url):
     :rtype: PIL.Image.Image
     :raises requests.HTTPError: Wird ausgelöst, wenn die HTTP-Anfrage fehlschlägt, z.B. bei 404 oder 500.
     """
+    if not check_internet_connection():
+        raise ConnectionError("Keine Internetverbindung verfügbar.")
+
     response = requests.get(url)
     response.raise_for_status()  # Überprüft, ob die Anfrage erfolgreich war
     img_data = BytesIO(response.content)  # Bilddaten in einen BytesIO-Stream laden
@@ -49,13 +67,18 @@ def loadImage(parent, image: str = None, width: int = 48, height: int = 48):
     if image is None:
         image = cache.user_avatar
     if image.startswith("http"):
-        img = load_image_from_url(image)
+        try:
+            img = load_image_from_url(image)
 
-        # Bild skalieren (z. B. auf 128x128 Pixel)
-        img = img.resize((width, height))
+            # Bild skalieren (z. B. auf 128x128 Pixel)
+            img = img.resize((width, height))
 
-        parent.img_tk = ImageTk.PhotoImage(img)
-        return parent.img_tk
+            parent.img_tk = ImageTk.PhotoImage(img)
+            return parent.img_tk
+        except (requests.HTTPError, ConnectionError) as e:
+            print(f"Fehler beim Laden des Bildes von der URL: {e}")
+            # Hier können Sie eine Standardaktion oder ein Ersatzbild ausführen
+            return None
     else:
         img = load_image_from_base64(image)
 
