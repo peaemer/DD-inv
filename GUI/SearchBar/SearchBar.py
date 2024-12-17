@@ -117,7 +117,7 @@ def __match_entries(loaded_history:List[dict[str, str]], search_term:str) -> Lis
     i:int = 0
     result:List[str] = []
     for entry in loaded_history:
-        if str(search_term) in entry['text']:
+        if search_term in entry['text']:
             result.append(entry['text'])
             print(f"""[SearchBar][update searchbar]:adding "{entry}" to new dropdown options""")
             i = i+1
@@ -156,7 +156,7 @@ def update_search(loaded_history:list[dict[str, str]], dropdown:CTkListbox, sear
             break
     print(f"""[SearchBar][update searchbar]:updating dropdown with options "{new_options}" """)
     #if len(new_options)>0:
-    __update_dropdown(__match_entries(loaded_history, search_term), dropdown)
+    __update_dropdown(__match_entries(loaded_history, search_term.lower()), dropdown)
 
 
 
@@ -180,12 +180,12 @@ def finish_search(loaded_history:list[dict[str,str]], searchbar:CTk.CTkEntry, dr
     print(f"""[SearchBar]:finishing search for user {username} with searchbar text "{search_term}" """)
     if not search_term == "":
         sorted_history:list[dict[str, str]] = sorted(loaded_history,key=lambda x:x['weight'])
-        if not __scale_history_weights(sorted_history, search_term):
+        if not __scale_history_weights(sorted_history, search_term.lower()):
             while len(sorted_history) >= 30:
                 sorted_history.pop()
             print(f"""[SearchBar]:sorted history was before "{sorted_history}" """)
             if all(history_entry.get("text") != search_term for history_entry in sorted_history):
-                new_entry = {'weight':'100','repeated_uses':'1','text':search_term}
+                new_entry = {'weight':'100','repeated_uses':'1','text':search_term.lower()}
                 sorted_history.append(new_entry)
                 print(f"""[SearchBar]:adding: "{new_entry}" to search history as it doesn't exist""")
             print(f"""[SearchBar]:sorted history is now "{sorted_history}" """)
@@ -252,16 +252,6 @@ def on_dropdown_select(loaded_history:list[dict[str,str]], searchbar:CTk.CTkEntr
         searchbar.insert(0, selected_button_text)
     except Exception as e:
         print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to add text to searchbar menu because of {e}""")
-    return
-    new_items:list[str] = []
-    for entry in loaded_history:
-        new_items.append(entry['text'])
-    try:
-        #parent.focus()
-        __update_dropdown(new_items, dropdown)
-    except Exception as e:
-        print('error!')
-    print(dropdown.__class__)
     print(f"[SearchBar][OnDropdownSelect]:finished on dropdown select")
 
 def on_searchbar_lost_focus(searchbar:CTk.CTkEntry,search_bar_variable:tk.StringVar, dropdown:CTkListbox)->None:
