@@ -310,21 +310,21 @@ class adminRoleWindow(tk.Frame):
         global role_tree
         role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13"), show="headings")
 
-        role_scroll = tk.Scrollbar(
+        # Scrollbar erstellen
+        role_tree_scroll = ctk.CTkScrollbar(
             role_tree_frame,
-            orient="vertical",
+            orientation="vertical",
             command=role_tree.yview,
-            bg="black",
-            activebackground="darkblue",
-            troughcolor="grey",
-            highlightcolor="black",
-            width=15,
-            borderwidth=1
+            fg_color="white",
+            width=20,                                                # <--- +++++side scrollbar visibility+++++ #
+            corner_radius=10,
+            button_color = srhGrey,
+            button_hover_color="#2980b9"
         )
-        role_scroll.grid(row=1, column=1, sticky="ns")
+        role_tree_scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
 
         # Treeview mit Scrollbar verbinden
-        role_tree.configure(yscrollcommand=role_scroll.set)
+        role_tree.configure(yscrollcommand=role_tree_scroll.set)
 
         # Tags für alternierende Zeilenfarben konfigurieren
         role_tree.tag_configure("oddrow", background="#f7f7f7")
@@ -429,4 +429,4 @@ class adminRoleWindow(tk.Frame):
                 tags=(tag,)
             )
             i += 1
-            print("DEBUG: Treeview updated") #Debug
+        print("DEBUG: adminRoleWindow treeview updated") #Debug
