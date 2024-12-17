@@ -405,7 +405,7 @@ class mainPage(tk.Frame):
 
             try:
                 selected_item = tree.focus()
-                print(f"Selected Item: {selected_item}")
+                print(f"DEBUG: Selected Item: {selected_item}")
                 if selected_item:
                     from .detailsWindow import detailsWindow, show_details
                     show_details(selected_item, tree, controller)
