@@ -251,6 +251,8 @@ class mainPage(tk.Frame):
         # Erstellen des Grayframes für linke Seite
         grey_frame_side = tk.Frame(self, background=srhGrey)
         grey_frame_side.grid(row=1, column=0, sticky="nsw")
+        grey_frame_side.grid_rowconfigure(0, weight=1)
+        grey_frame_side.grid_columnconfigure(0, weight=1)
 
         tree_style_side_tree = ttk.Style()
         tree_style_side_tree.theme_use("default")
@@ -265,8 +267,26 @@ class mainPage(tk.Frame):
         # Treeview erstellen
         global side_tree
         side_tree = ttk.Treeview(grey_frame_side, show="tree", style="Treeview_side")
+
+
+        # Scrollbar erstellen
+        side_tree_scroll = ctk.CTkScrollbar(
+            grey_frame_side,
+            orientation="vertical",
+            command=side_tree.yview,
+            fg_color="white",
+            width=0,                                                # <--- +++++side tree visibility+++++ #
+            corner_radius=10,
+            button_color = srhGrey,
+            button_hover_color="#2980b9"
+        )
+        side_tree_scroll.grid(row=0, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
+
+        # Treeview mit Scrollbar verbinden
+        side_tree.configure(yscrollcommand=side_tree_scroll.set)
+
         self.update_sidetree_with_data()
-        side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
+        side_tree.grid(row=0, column=0, sticky=tk.W + tk.N + tk.S)
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white")
@@ -378,7 +398,7 @@ class mainPage(tk.Frame):
         # listbox for directories
         tree.column("# 1", anchor=CENTER, width=60)
         tree.heading("# 1", text="ID")
-        tree.column("# 2", anchor=CENTER, width=175)
+        tree.column("# 2", anchor=CENTER, width=130)
         tree.heading("# 2", text="Service Tag")
         tree.column("# 3", anchor=CENTER, width=230)
         tree.heading("# 3", text="Typ")
@@ -388,7 +408,7 @@ class mainPage(tk.Frame):
         tree.heading("# 5", text="Name")
         tree.column("# 6", anchor=CENTER, width=300)
         tree.heading("# 6", text="Beschädigung")
-        tree.column("# 7", anchor=CENTER, width=250)
+        tree.column("# 7", anchor=CENTER, width=240)
         tree.heading("# 7", text="Ausgeliehen von")
         tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
         tree.tkraise()
