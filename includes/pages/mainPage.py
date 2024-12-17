@@ -3,15 +3,8 @@ from tkinter import ttk
 from tkinter import *
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
+from ._styles import *
 import customtkinter as ctk
-
-# Importieren der extra Schriftart
-
-
-
-LARGEFONT = ("Arial", 35)
-LOGINFONT = ("Arial", 40)
-srhGrey = "#d9d9d9"
 
 
 # Hauptseite (zweites Fenster)

@@ -4,12 +4,11 @@ import webbrowser
 from tkinter import *
 from tkinter import ttk, messagebox
 import cache
+from ._styles import *
 from includes.sec_data_info import sqlite3api as db
 
 LARGEFONT = ("Arial", 25)
 LOGINFONT = ("Arial", 15)  # Angepasste Font-Größe für Eingabe
-srhGrey = "#d9d9d9"
-srhOrange = "#DF4807"
 
 class logInWindow(tk.Frame):
     """
