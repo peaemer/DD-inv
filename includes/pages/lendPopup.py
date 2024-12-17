@@ -5,7 +5,7 @@ from datetime import datetime
 #from tkcalendar import Calendar, DateEntry
 
 import cache
-from _styles import *
+from ._styles import *
 from includes.sec_data_info import sqlite3api as db
 
 def lend_popup(parent, data):
