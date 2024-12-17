@@ -136,18 +136,18 @@ class roomDetailsWindow(tk.Frame):
         go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        self.room_details_window_avatar = loadImage(parent=parent)
 
-        options_button_details_window = tk.Button(
+        options_button_room_details_window = tk.Button(
             header_frame_details_window,
-            image=self.avatar,
+            image=self.room_details_window_avatar,
             command=show_settings_window_details_window,
             bd=0,
             relief=tk.FLAT,
             bg="#00699a",
             activebackground="#00699a"
         )
-        options_button_details_window.grid(row=0, column=2, sticky=tk.E, padx=20)
+        options_button_room_details_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
 
         # Container für Input- und Tree-Frame

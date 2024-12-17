@@ -222,17 +222,17 @@ class adminRoleWindow(tk.Frame):
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        self.admin_role_window_avatar = loadImage(parent=parent)
 
         # Füge einen Button mit dem Bild hinzu
-        options_button = tk.Button(header_frame,
-                                   image=self.avatar,
+        options_button_admin_role_window = tk.Button(header_frame,
+                                   image=self.admin_role_window_avatar,
                                    command=show_settings_window_admin_window,
                                    bd=0,
                                    relief=tk.FLAT,
                                    bg=srhBlue,
                                    activebackground=srhBlue)
-        options_button.grid(row=0, column=2, sticky=tk.E, padx=20)
+        options_button_admin_role_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
 
         #########

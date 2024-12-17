@@ -232,17 +232,17 @@ class mainPage(tk.Frame):
 
         # Konvertiere das Bild für Tkinter
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        self.main_page_avatar = loadImage(parent=parent)
 
         # Füge einen Button mit dem Bild hinzu
-        options_button = tk.Button(self.header_frame,
-                                   image=self.avatar,
+        main_page_options_button = tk.Button(self.header_frame,
+                                   image=self.main_page_avatar,
                                    command=show_settings_window,
                                    bd=0,
                                    relief=tk.FLAT,
                                    bg="#DF4807",
                                    activebackground="#DF4807")
-        options_button.grid(row=0, column=3, sticky=tk.E, padx=20)
+        main_page_options_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         # Platzieren des Adminbuttons
         from ._avatarManager import resource_path

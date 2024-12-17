@@ -138,11 +138,11 @@ class rolesDetailsWindow(tk.Frame):
         go_back_button_roles_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        self.roles_details_window_avatar = loadImage(parent=parent)
 
         options_button_roles_window = tk.Button(
             header_frame_roles_window,
-            image=self.avatar,
+            image=self.roles_details_window_avatar,
             command=show_settings_window_roles_window,
             bd=0,
             relief=tk.FLAT,
