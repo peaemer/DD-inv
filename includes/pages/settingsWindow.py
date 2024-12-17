@@ -131,8 +131,8 @@ def pop_up_settings(parent, controller):
 
     from ._avatarManager import loadImage
     parent.avatar = loadImage(parent=parent, width=128, height=128)
-    label = tk.Label(frame_profile, image=parent.avatar)
-    label.grid()
+    parent.settings_img_label = tk.Label(frame_profile, image=parent.avatar)
+    parent.settings_img_label.grid()
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
@@ -600,20 +600,20 @@ def pop_up_settings(parent, controller):
     # Kategorien in der Seitenleiste erstellen
     category_labels_settings = []  # Liste für die Label-Referenzen
     for idx, category in enumerate(categories):
-        label = tk.Label(side_settings,
+        settings_img_label = tk.Label(side_settings,
                          text=category,
                          bd=0,
                          relief=tk.FLAT,
                          font=SETTINGSFONT,
                          fg="white",
                          bg=srhOrange)
-        label.grid(padx=10, pady=8, row=idx + 1, column=0, sticky="w")
-        label.bind("<Button-1>",
+        settings_img_label.grid(padx=10, pady=8, row=idx + 1, column=0, sticky="w")
+        settings_img_label.bind("<Button-1>",
                    lambda event,
-                   lbl=label,
+                   lbl=settings_img_label,
                    cat=category:
                    on_category_click_settings(lbl, cat))
-        category_labels_settings.append(label)
+        category_labels_settings.append(settings_img_label)
 
     # Verstecke alle Frames außer dem initialen Profil-Frame
     for key, frame in frames.items():
