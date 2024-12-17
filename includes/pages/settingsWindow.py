@@ -18,6 +18,7 @@ srhOrange = "#DF4807"
 # H A U P T L A Y O U T #
 #########################
 
+
 # Funktion erstellt Popupfenster "Einstellungen"
 def pop_up_settings(parent, controller):
     """
