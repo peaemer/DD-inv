@@ -5,13 +5,8 @@ from datetime import datetime
 #from tkcalendar import Calendar, DateEntry
 
 import cache
+from _styles import *
 from includes.sec_data_info import sqlite3api as db
-
-LARGEFONT = ("Arial", 20)
-LOGINFONT = ("Arial", 40)
-srhGrey = "#d9d9d9"
-
-
 
 def lend_popup(parent, data):
     """
@@ -108,13 +103,13 @@ def lend_popup(parent, data):
 
     # Formularbereich
 
-    name_label = tk.Label(popup, text="Name", font=LARGEFONT, bg="white", anchor="w")
+    name_label = tk.Label(popup, text="Name", font=lend_font, bg="white", anchor="w")
     name_label.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
-    name_entry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT)
+    name_entry = ctk.CTkEntry(popup, font=lend_font, bg=srhGrey, relief=tk.FLAT)
     name_entry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
 
-    borrower_label = tk.Label(popup, text="Ausleiher", font=LARGEFONT, bg="white", anchor="w")
+    borrower_label = tk.Label(popup, text="Ausleiher", font=lend_font, bg="white", anchor="w")
     borrower_label.grid(row=2, column=0, padx=20, pady=10, sticky="w")
 
 
@@ -128,13 +123,13 @@ def lend_popup(parent, data):
     else:
         entry_var = tk.StringVar()
         entry_var.set(cache.user_name)
-        entry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT, textvariable=entry_var, state="disabled")
+        entry = tk.Entry(popup, font=lend_font, bg=srhGrey, relief=tk.FLAT, textvariable=entry_var, state="disabled")
         entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
 
-    label = tk.Label(popup, text="Ausleihdatum", font=LARGEFONT, bg="white", anchor="w")
+    label = tk.Label(popup, text="Ausleihdatum", font=lend_font, bg="white", anchor="w")
     label.grid(row=3, column=0, padx=20, pady=10, sticky="w")
 
-    time_entry = tk.Entry(popup, font=LARGEFONT, bg=srhGrey, relief=tk.FLAT)
+    time_entry = tk.Entry(popup, font=lend_font, bg=srhGrey, relief=tk.FLAT)
     time_entry.grid(row=3, column=1, padx=20, pady=10, sticky="ew")
 
     popup.grid_columnconfigure(1, weight=1)  # Spalte 1 flexibel
@@ -147,13 +142,13 @@ def lend_popup(parent, data):
     button_frame.grid(row=4, column=0, columnspan=2, pady=20)
 
     confirm_btn = tk.Button(
-        button_frame, text="Bestätigen", font=LARGEFONT, bg="#DF4807", fg="white",
+        button_frame, text="Bestätigen", font=lend_font, bg="#DF4807", fg="white",
         relief=tk.FLAT, command=confirm_lend
     )
     confirm_btn.grid(row=0, column=0, padx=10)
 
     cancel_btn = tk.Button(
-        button_frame, text="Abbrechen", font=LARGEFONT, bg=srhGrey, relief=tk.FLAT,
+        button_frame, text="Abbrechen", font=lend_font, bg=srhGrey, relief=tk.FLAT,
         command=popup.destroy
     )
     cancel_btn.grid(row=0, column=1, padx=10)
