@@ -100,7 +100,8 @@ class roomDetailsWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
-        self.go_back_btn_details_window = tk.PhotoImage(file="includes/assets/ArrowLeft.png")
+        from ._avatarManager import resource_path
+        self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Erstelle einen Header-Bereich
         header_frame_details_window = tk.Frame(self, height=10, background="#00699a")
@@ -230,9 +231,9 @@ class roomDetailsWindow(tk.Frame):
             adminRoomWindow.update_treeview_with_data()
             controller.show_frame(adminRoomWindow)
 
-        self.edit_btn = tk.PhotoImage(file="includes/assets/AktualisierenBig_blue.png")
-        self.lend_btn = tk.PhotoImage(file="includes/assets/Ausleihen.png")
-        self.delete_btn = tk.PhotoImage(file="includes/assets/Loeschen.png")
+        self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
+        self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))
+        self.delete_btn = tk.PhotoImage(file=resource_path("./includes/assets/Loeschen.png"))
 
         # Buttons in ein separates Frame
         button_frame_add_item_popup = tk.Frame(self, background="white")

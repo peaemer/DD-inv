@@ -102,8 +102,8 @@ class logInWindow(tk.Frame):
         # Header
         header_frame = tk.Frame(self, height=10, background=srhOrange)
         header_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
-
-        self.srh_head = tk.PhotoImage(file="includes/assets/srhHeader.png")
+        from ._avatarManager import resource_path
+        self.srh_head = tk.PhotoImage(file=resource_path("./includes/assets/srhHeader.png"))
         srh_header = tk.Label(header_frame, image=self.srh_head, bd=0, bg=srhOrange)
         srh_header.grid(padx=10, pady=10, row=0, column=0, sticky=tk.W + tk.N + tk.E)
 
@@ -217,7 +217,7 @@ class logInWindow(tk.Frame):
         password_entry.config(show="*")
 
         # Login-Button
-        self.log_out_btn = tk.PhotoImage(file="includes/assets/Anmelden.png")
+        self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/Anmelden.png"))
         login_button = tk.Button(
             form_frame,
             image=self.log_out_btn,
@@ -240,8 +240,8 @@ class logInWindow(tk.Frame):
         def open_VersionBuild(url):
             webbrowser.open(url)
 
-        logo_image = PhotoImage(file="includes/assets/DD-Inv_Logo.png")
-        btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.1.394 (Beta)", cursor="hand1", font=("Arial", 12))
+        logo_image = PhotoImage(file=resource_path("./includes/assets/DD-Inv_Logo.png"))
+        btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.1 BETA", cursor="hand1", font=("Arial", 12))
         btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
         btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
-        btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/commit/86b0a3c14ab5a750e16be805519979630d45d596"))
+        btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/releases/latest"))

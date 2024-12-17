@@ -77,27 +77,6 @@ class adminRoleWindow(tk.Frame):
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
 
-        def add_role():
-            """
-            Diese Klasse repräsentiert das Hauptfenster zur Verwaltung von
-            Benutzerkonten innerhalb der Anwendung. Sie erbt von `tk.Frame`
-            und dient als Grundlage für die Erstellung der Benutzeroberfläche
-            zur Verwaltung der Benutzer.
-
-            Attribute
-            ----------
-            Keine spezifischen Attribute neben denen, die von `tk.Frame`
-            geerbt wurden.
-
-            Notes
-            -----
-            Die spezifischen Funktionen dieser Klasse, einschließlich der
-            Methoden und Verhalten, die auf diese Klasse angewandt werden,
-            müssen in den jeweiligen Methodendokumentationen definiert werden.
-            """
-            from .addUserPopup import add_user_popup
-            add_user_popup(self)
-
         def on_entry_click(event):
             """
             Diese Klasse repräsentiert ein Administrationsfenster für Benutzer in einer
@@ -211,8 +190,8 @@ class adminRoleWindow(tk.Frame):
         header_frame.grid_columnconfigure(1, weight=2)  # Zentrale Spalte
         header_frame.grid_columnconfigure(2, weight=1)  # Platz rechts
         header_frame.grid_rowconfigure(0, weight=1)
-
-        self.srhHead = tk.PhotoImage(file="includes/assets/srh.png")
+        from ._avatarManager import resource_path
+        self.srhHead = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
 
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(header_frame, image=self.srhHead, background=srhBlue, foreground="white")
@@ -224,7 +203,8 @@ class adminRoleWindow(tk.Frame):
 
 
         # Konvertiere das Bild für Tkinter
-        self.log_out_btn = tk.PhotoImage(file="includes/assets/ArrowLeft.png")
+        from ._avatarManager import resource_path
+        self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
         log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0, relief=tk.FLAT, bg=srhBlue,
@@ -283,12 +263,12 @@ class adminRoleWindow(tk.Frame):
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
-        self.add_btn = tk.PhotoImage(file="includes/assets/Hinzusmall_blue.png")
+        self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
         user_add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
                                     activebackground="white", command=add_role)
         user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
-        self.searchBtn = tk.PhotoImage(file="includes/assets/search_button_blue.png")
+        self.searchBtn = tk.PhotoImage(file=resource_path("./includes/assets/search_button_blue.png"))
         search_button = tk.Button(search_frame,
                                  image=self.searchBtn,
                                  bd=0,
@@ -344,7 +324,7 @@ class adminRoleWindow(tk.Frame):
         columns = [
             ("ID", 20),
             ("Rolle", 100),
-            ("Ansehen", 100),
+            ("Ansehen", 90),
             ("Rolle Löschbar", 150),
             ("Admin Feature", 150),
             ("Löschen", 100),
@@ -352,7 +332,7 @@ class adminRoleWindow(tk.Frame):
             ("Erstellen", 100),
             ("Gruppe Löschen", 160),
             ("Gruppe Erstellen", 160),
-            ("Gruppe Bearbeiten", 160),
+            ("Gruppe Bearbeiten", 170),
             ("Rollen Erstellen", 160),
             ("Rollen Bearbeiten", 160),
             ("Rollen Löschen", 160)

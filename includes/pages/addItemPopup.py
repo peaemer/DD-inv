@@ -48,7 +48,8 @@ def add_item_popup(parent):
 
     # Icon setzen (optional)
     try:
-        add_popup.iconbitmap("assets/srhIcon.ico")
+        from ._avatarManager import resource_path
+        add_popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
     except Exception as e:
         print(f"Fehler beim Laden des Icons: {e}")
 
@@ -182,8 +183,9 @@ def add_item_popup(parent):
         """
         add_popup.destroy()
 
-    parent.add_btn_add_item_popup = tk.PhotoImage(file="includes/assets/ErstellenButton.png")
-    parent.exit_btn_add_item_popup = tk.PhotoImage(file="includes/assets/AbbrechenButton.png")
+    from ._avatarManager import resource_path
+    parent.add_btn_add_item_popup = tk.PhotoImage(file=resource_path("./includes/assets/ErstellenButton.png"))
+    parent.exit_btn_add_item_popup = tk.PhotoImage(file=resource_path("./includes/assets/AbbrechenButton.png"))
 
     # Buttons in ein separates Frame
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")

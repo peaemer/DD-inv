@@ -69,7 +69,8 @@ def pop_up_settings(parent, controller):
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
     popup.resizable(True, True)  # Fenstergroeße anpassbar
-    popup.iconbitmap("includes/assets/srhIcon.ico")  # Fenster-Icon
+    from ._avatarManager import resource_path
+    popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))  # Fenster-Icon
 
     # Grid-Layout für Popup konfigurieren (danymische groeße)
     popup.grid_rowconfigure(0, weight=0)  # Bereich fuer Kategorien
@@ -89,7 +90,8 @@ def pop_up_settings(parent, controller):
     header_frame_settings.grid_rowconfigure(1, weight=1)
 
     # Header-Logo laden und anzeigen
-    popup.optionsHead = tk.PhotoImage(file="includes/assets/Tool.png")
+    from ._avatarManager import resource_path
+    popup.optionsHead = tk.PhotoImage(file=resource_path("./includes/assets/Tool.png"))
     header_label = tk.Label(header_frame_settings,
                             image=popup.optionsHead,
                             foreground="white")
@@ -105,7 +107,8 @@ def pop_up_settings(parent, controller):
     side_settings.grid_columnconfigure(0, weight=1)
 
     # SRH Logo in der Seitenleiste
-    popup.srh_logo = tk.PhotoImage(file="includes/assets/srh.png")
+    from ._avatarManager import resource_path
+    popup.srh_logo = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
     srh_logo_label = tk.Label(side_settings, image=popup.srh_logo, bg=srhOrange)
     srh_logo_label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
@@ -171,7 +174,7 @@ def pop_up_settings(parent, controller):
         :return: Das Bild der Schaltfläche als `tk.PhotoImage` Objekt.
         :rtype: tk.PhotoImage
         """
-        btn_image_logout = tk.PhotoImage(file="includes/assets/BenutzerAbmeldenSettings.png")
+        btn_image_logout = tk.PhotoImage(file=resource_path("./includes/assets/BenutzerAbmeldenSettings.png"))
         return btn_image_logout
 
     # Laden des Bildes auf den Bts
@@ -288,11 +291,11 @@ def pop_up_settings(parent, controller):
     # Radiobuttons zur Auswahl von Farben (Themes)
     storage_variable = tk.StringVar(value="White")
 
-    parent.option_zero = tk.PhotoImage(file="includes/assets/DefaultBtnSettings.png")
-    parent.option_one = tk.PhotoImage(file="includes/assets/GreenBtnSettings.png")
-    parent.option_two = tk.PhotoImage(file="includes/assets/BlueBtnSettings.png")
-    parent.option_three = tk.PhotoImage(file="includes/assets/YellowBtnSettings.png")
-    parent.option_for = tk.PhotoImage(file="includes/assets/BlackBtnSettings.png")
+    parent.option_zero = tk.PhotoImage(file=resource_path("./includes/assets/DefaultBtnSettings.png"))
+    parent.option_one = tk.PhotoImage(file=resource_path("./includes/assets/GreenBtnSettings.png"))
+    parent.option_two = tk.PhotoImage(file=resource_path("./includes/assets/BlueBtnSettings.png"))
+    parent.option_three = tk.PhotoImage(file=resource_path("./includes/assets/YellowBtnSettings.png"))
+    parent.option_for = tk.PhotoImage(file=resource_path("./includes/assets/BlackBtnSettings.png"))
 
     radio_buttons = [("Standard", parent.option_zero, "White"),
                      ("Grün", parent.option_one, "dark Green"),
@@ -351,8 +354,8 @@ def pop_up_settings(parent, controller):
                  Schaltflächen enthält.
         :rtype: Tuple[tk.PhotoImage, tk.PhotoImage]
         """
-        btn_image_select = tk.PhotoImage(file="includes/assets/BesseresAussehenWählen.png")
-        btn_image_reset = tk.PhotoImage(file="includes/assets/HintergrundZurücksetzen.png")
+        btn_image_select = tk.PhotoImage(file=resource_path("./includes/assets/BesseresAussehenWählen.png"))
+        btn_image_reset = tk.PhotoImage(file=resource_path("./includes/assets/HintergrundZurücksetzen.png"))
         return btn_image_select, btn_image_reset
 
     # Laden der Bilder auf den Bts
@@ -473,11 +476,11 @@ def pop_up_settings(parent, controller):
     build_label.grid(row=8, column=0, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer genutzte Tools
-    buttons_data_tools = [{"name": "SQL3", "url": "https://www.sqlite.org/", "image": "includes/assets/SQL3Settings.png"},
-                            {"name": "Figma", "url": "https://www.figma.com/", "image": "includes/assets/FigmaSettings.png"},
-                            {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/", "image": "includes/assets/PyCharmSettings.png"},
-                            {"name": "Python", "url": "https://www.python.org/", "image": "includes/assets/PythonSettings.png"},
-                            {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07", "image": "includes/assets/WindowsXPSettings.png"}]
+    buttons_data_tools = [{"name": "SQL3", "url": "https://www.sqlite.org/", "image": resource_path("includes/assets/SQL3Settings.png")},
+                            {"name": "Figma", "url": "https://www.figma.com/", "image": resource_path("includes/assets/FigmaSettings.png")},
+                            {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/", "image": resource_path("includes/assets/PyCharmSettings.png")},
+                            {"name": "Python", "url": "https://www.python.org/", "image": resource_path("includes/assets/PythonSettings.png")},
+                            {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07", "image": resource_path("includes/assets/WindowsXPSettings.png")}]
 
     # Funktion zum oeffnen der URL
     def open_url(url):
@@ -502,8 +505,8 @@ def pop_up_settings(parent, controller):
     build_label.grid(row=16, column=0, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Projekt Unterstuetzen
-    buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": "includes/assets/KoFiSettings.png"},
-                            {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de", "image": "includes/assets/FeedbackSettings.png"}]
+    buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": resource_path("includes/assets/KoFiSettings.png")},
+                            {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de", "image": resource_path("includes/assets/FeedbackSettings.png")}]
 
     # Funktion zum oeffnen der URL
     def open_url(url):
@@ -528,8 +531,8 @@ def pop_up_settings(parent, controller):
     build_label.grid(row=19, column=0, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Info
-    buttons_data_info = [{"name": "VersionBuild   V.0.1.394 (Beta)", "url": "https://github.com/peaemer/DD-inv/commit/86b0a3c14ab5a750e16be805519979630d45d596", "image": "includes/assets/DD-Inv_Logo.png"},
-                         {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv", "image": "includes/assets/GitHubSettings.png"}]
+    buttons_data_info = [{"name": "VersionBuild   V. 0.1 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest", "image": resource_path("includes/assets/DD-Inv_Logo.png")},
+                         {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv", "image": resource_path("includes/assets/GitHubSettings.png")}]
 
     # Funktion zum oeffnen der URL
     def open_url(url):
