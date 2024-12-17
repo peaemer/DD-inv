@@ -27,7 +27,7 @@ def show_roles_details(selected_roles, tree, controller):
     """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_roles, "values")
-    print(f"Daten des ausgewählten Items: {data}")
+    print(f"DEBUG: Data of the selected item: {data}") # Debug
     cache.selected_ID = data[0]
     controller.show_frame(rolesDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
@@ -98,7 +98,7 @@ class rolesDetailsWindow(tk.Frame):
                 Ein Steuerelement für die Verwaltung der Fenster- oder Anwendungslogik.
 
             """
-            print("Show settings window details window")
+            print("DEBUG: Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -138,11 +138,11 @@ class rolesDetailsWindow(tk.Frame):
         go_back_button_roles_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        self.roles_details_window_avatar = loadImage(parent=parent)
 
         options_button_roles_window = tk.Button(
             header_frame_roles_window,
-            image=self.avatar,
+            image=self.roles_details_window_avatar,
             command=show_settings_window_roles_window,
             bd=0,
             relief=tk.FLAT,

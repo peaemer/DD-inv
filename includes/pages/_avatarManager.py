@@ -23,6 +23,7 @@ def check_internet_connection():
         return False
 
 
+
 def load_image_from_url(url):
     """
     Lädt ein Bild von einer angegebenen URL herunter und gibt das Bildobjekt zurück.
@@ -37,12 +38,14 @@ def load_image_from_url(url):
     :rtype: PIL.Image.Image
     :raises requests.HTTPError: Wird ausgelöst, wenn die HTTP-Anfrage fehlschlägt, z.B. bei 404 oder 500.
     """
+    print("DEBUG: load_image_from_url: ", url, "")
     if not check_internet_connection():
         raise ConnectionError("Keine Internetverbindung verfügbar.")
 
     response = requests.get(url)
     response.raise_for_status()  # Überprüft, ob die Anfrage erfolgreich war
     img_data = BytesIO(response.content)  # Bilddaten in einen BytesIO-Stream laden
+    print("DEBUG: img_data: ", img_data, "")
     return Image.open(img_data)
 
 
@@ -58,8 +61,10 @@ def load_image_from_base64(base64_string):
     :return: Ein Bild-Objekt, das aus dem dekodierten Bild-String erstellt wurde.
     :rtype: Image
     """
+    print("DEBUG: load_image_from_base64: ", base64_string, "")
     img_data = base64.b64decode(base64_string)
     img = Image.open(BytesIO(img_data))
+    print("DEBUG: img: ", img, "")
     return img
 
 

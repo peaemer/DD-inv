@@ -58,7 +58,7 @@ class adminRoomWindow(tk.Frame):
             :ivar parent: Referenz zum übergeordneten Widget.
             :ivar controller: Referenz zur Steuerlogik oder dem Hauptcontroller.
             """
-            print("show settings window admin window")
+            print("DEBUG: show settings window admin window") # Debug
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -203,17 +203,17 @@ class adminRoomWindow(tk.Frame):
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        self.admin_room_window_avatar = loadImage(parent=parent)
 
         # Füge einen Button mit dem Bild hinzu
-        options_button = tk.Button(header_frame,
-                                   image=self.avatar,
+        options_button_admin_room_window = tk.Button(header_frame,
+                                   image=self.admin_room_window_avatar,
                                    command=show_settings_window_admin_window,
                                    bd=0,
                                    relief=tk.FLAT,
                                    bg=srhBlue,
                                    activebackground=srhBlue)
-        options_button.grid(row=0, column=2, sticky=tk.E, padx=20)
+        options_button_admin_room_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
 
         #########
@@ -340,12 +340,12 @@ class adminRoomWindow(tk.Frame):
             """
             try:
                 selected_room = room_tree.focus()
-                print(f"Ausgewählter Raum: {selected_room}")  # Debug
+                print(f"DEBUG: Ausgewählter Raum: {selected_room}")  # Debug
                 if selected_room:
                     from .roomDetailsWindow import roomDetailsWindow, show_room_details
                     show_room_details(selected_room, room_tree, controller)
             except Exception as e:
-                print(f"Fehler bei der Auswahl: {e}")
+                print(f"DEBUG: Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
         room_tree.bind("<Double-1>", on_room_selected)

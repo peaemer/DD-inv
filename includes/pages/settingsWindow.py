@@ -18,7 +18,6 @@ srhOrange = "#DF4807"
 # H A U P T L A Y O U T #
 #########################
 
-
 # Funktion erstellt Popupfenster "Einstellungen"
 def pop_up_settings(parent, controller):
     """
@@ -139,6 +138,8 @@ def pop_up_settings(parent, controller):
     parent.avatar = loadImage(parent=parent, width=128, height=128)
     label = tk.Label(frame_within_picture, image=parent.avatar)
     label.grid(row=0)
+    parent.settings_img_label = tk.Label(frame_profile, image=parent.avatar)
+    parent.settings_img_label.grid()
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,

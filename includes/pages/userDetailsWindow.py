@@ -15,7 +15,7 @@ srhGrey = "#d9d9d9"
 def show_user_details(selected_user, tree, controller):
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_user, "values")
-    print(f"Daten des ausgewählten Items: {data}")
+    print(f"Data of the selected item: {data}")
     cache.selected_ID = data[0]
     controller.show_frame(userDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
@@ -146,18 +146,18 @@ class userDetailsWindow(tk.Frame):
         go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        self.user_details_window_avatar = loadImage(parent=parent)
 
-        options_button_details_window = tk.Button(
+        options_button_user_details_window = tk.Button(
             header_frame_details_window,
-            image=self.avatar,
+            image=self.user_details_window_avatar,
             command=show_settings_window_details_window,
             bd=0,
             relief=tk.FLAT,
             bg="#00699a",
             activebackground="#00699a"
         )
-        options_button_details_window.grid(row=0, column=2, sticky=tk.E, padx=20)
+        options_button_user_details_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
 
         # Container für Input- und Tree-Frame

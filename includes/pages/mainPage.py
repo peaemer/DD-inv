@@ -3,15 +3,8 @@ from tkinter import ttk
 from tkinter import *
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
+from ._styles import *
 import customtkinter as ctk
-
-# Importieren der extra Schriftart
-
-
-
-LARGEFONT = ("Arial", 35)
-LOGINFONT = ("Arial", 40)
-srhGrey = "#d9d9d9"
 
 
 # Hauptseite (zweites Fenster)
@@ -131,6 +124,7 @@ class mainPage(tk.Frame):
             """
             from .addItemPopup import add_item_popup
             add_item_popup(self)
+            print("DEBUG: add_item executed")  # Debug
 
         def on_entry_click(event):
             """
@@ -149,9 +143,11 @@ class mainPage(tk.Frame):
             :type event: tk.Event
 
             """
+            print("DEBUG: on_entry_click executed")
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
+                print("DEBUG: Cleared Entry for use")
 
         def on_key_press(event):
             """
@@ -184,9 +180,11 @@ class mainPage(tk.Frame):
                 anderer Interaktionen zwischen Subkomponenten der GUI.
             :type controller: Objekt
             """
+            print("DEBUG: on_focus_out executed")  # Debug
             if search_entry.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
+                print("DEBUG: Reset Entry")  # Debug
 
         global tree
 
@@ -234,17 +232,17 @@ class mainPage(tk.Frame):
 
         # Konvertiere das Bild für Tkinter
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        self.main_page_avatar = loadImage(parent=parent)
 
         # Füge einen Button mit dem Bild hinzu
-        options_button = tk.Button(self.header_frame,
-                                   image=self.avatar,
+        main_page_options_button = tk.Button(self.header_frame,
+                                   image=self.main_page_avatar,
                                    command=show_settings_window,
                                    bd=0,
                                    relief=tk.FLAT,
                                    bg="#DF4807",
                                    activebackground="#DF4807")
-        options_button.grid(row=0, column=3, sticky=tk.E, padx=20)
+        main_page_options_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         # Platzieren des Adminbuttons
         from ._avatarManager import resource_path
@@ -253,6 +251,8 @@ class mainPage(tk.Frame):
         # Erstellen des Grayframes für linke Seite
         grey_frame_side = tk.Frame(self, background=srhGrey)
         grey_frame_side.grid(row=1, column=0, sticky="nsw")
+        grey_frame_side.grid_rowconfigure(0, weight=1)
+        grey_frame_side.grid_columnconfigure(0, weight=1)
 
         tree_style_side_tree = ttk.Style()
         tree_style_side_tree.theme_use("default")
@@ -267,8 +267,26 @@ class mainPage(tk.Frame):
         # Treeview erstellen
         global side_tree
         side_tree = ttk.Treeview(grey_frame_side, show="tree", style="Treeview_side")
+
+
+        # Scrollbar erstellen
+        side_tree_scroll = ctk.CTkScrollbar(
+            grey_frame_side,
+            orientation="vertical",
+            command=side_tree.yview,
+            fg_color="white",
+            width=0,                                                # <--- +++++side tree visibility+++++ #
+            corner_radius=10,
+            button_color = srhGrey,
+            button_hover_color="#2980b9"
+        )
+        side_tree_scroll.grid(row=0, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
+
+        # Treeview mit Scrollbar verbinden
+        side_tree.configure(yscrollcommand=side_tree_scroll.set)
+
         self.update_sidetree_with_data()
-        side_tree.grid(row=3, column=0, sticky=tk.W + tk.N + tk.S)
+        side_tree.grid(row=0, column=0, sticky=tk.W + tk.N + tk.S)
 
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white")
@@ -297,8 +315,8 @@ class mainPage(tk.Frame):
                           Informationen über das Größenänderungsereignis enthält.
             :type event: tk.Event
             """
-            print(f"Neue Größe - Breite: {event.x} Höhe: {event.y}")
-        print(show_size)
+            print(f"New size - Width: {event.x} Height: {event.y}") #Debug
+        print("DEBUG:", show_size) # Debug
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
         search_frame = tk.Frame(middle_frame, bg="white")
@@ -380,7 +398,7 @@ class mainPage(tk.Frame):
         # listbox for directories
         tree.column("# 1", anchor=CENTER, width=60)
         tree.heading("# 1", text="ID")
-        tree.column("# 2", anchor=CENTER, width=175)
+        tree.column("# 2", anchor=CENTER, width=130)
         tree.heading("# 2", text="Service Tag")
         tree.column("# 3", anchor=CENTER, width=230)
         tree.heading("# 3", text="Typ")
@@ -390,7 +408,7 @@ class mainPage(tk.Frame):
         tree.heading("# 5", text="Name")
         tree.column("# 6", anchor=CENTER, width=300)
         tree.heading("# 6", text="Beschädigung")
-        tree.column("# 7", anchor=CENTER, width=250)
+        tree.column("# 7", anchor=CENTER, width=240)
         tree.heading("# 7", text="Ausgeliehen von")
         tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
         tree.tkraise()
@@ -405,10 +423,14 @@ class mainPage(tk.Frame):
             Navigation und Anzeige spezifischer Detailinformationen bereitstellt.
             """
 
-            selected_item = tree.focus()
-            if selected_item:
-                from .detailsWindow import detailsWindow, show_details
-                show_details(selected_item, tree, controller)
+            try:
+                selected_item = tree.focus()
+                print(f"DEBUG: Selected Item: {selected_item}")
+                if selected_item:
+                    from .detailsWindow import detailsWindow, show_details
+                    show_details(selected_item, tree, controller)
+            except Exception as e:
+                print(f"Error during selection: {e}") #Debug
 
 
         def on_side_tree_select(event):
@@ -452,7 +474,7 @@ class mainPage(tk.Frame):
             selected_item = side_tree.selection()
             if selected_item:
                 selected_text = side_tree.item(selected_item, 'text')
-                print(selected_text)
+                print("DEBUG: ", selected_text)
                 if selected_text == "Alle Räume":
                     # Alle Daten in der Haupttabelle anzeigen
                     self.update_treeview_with_data()
@@ -477,6 +499,7 @@ class mainPage(tk.Frame):
         tree.bind("<Double-1>", on_item_selected)
 
     def update_sidetree_with_data(self = None, rooms = None):
+        print("DEBUG: update_sidetree_with_data aufgerufen.") # Debug
         side_tree.delete(*side_tree.get_children())
         side_tree.insert("", tk.END, text="Alle Räume")
         if rooms is None:
@@ -577,6 +600,7 @@ class mainPage(tk.Frame):
         else:
             # Entferne den Admin-Button, falls er existiert
             if hasattr(self, "admin_button"):
+                print("DEBUG: Removed Admin window") #Debug
                 self.admin_button.grid_remove()
 
         self.update_treeview_with_data()

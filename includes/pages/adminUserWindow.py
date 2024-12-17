@@ -64,7 +64,7 @@ class adminUserWindow(tk.Frame):
             :ivar parent: Der übergeordnete Container dieses Frames.
             :ivar controller: Kontrollinstanz für die Verwaltung der Frames.
             """
-            print("show settings window admin window")
+            print("DEBUG: show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -232,17 +232,17 @@ class adminUserWindow(tk.Frame):
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
+        self.admin_user_window_avatar = loadImage(parent=parent)
 
         # Füge einen Button mit dem Bild hinzu
-        options_button = tk.Button(header_frame,
-                                   image=self.avatar,
+        options_button_admin_user_window = tk.Button(header_frame,
+                                   image=self.admin_user_window_avatar,
                                    command=show_settings_window_admin_window,
                                    bd=0,
                                    relief=tk.FLAT,
                                    bg=srhBlue,
                                    activebackground=srhBlue)
-        options_button.grid(row=0, column=2, sticky=tk.E, padx=20)
+        options_button_admin_user_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
 
         #########
@@ -375,12 +375,12 @@ class adminUserWindow(tk.Frame):
             """
             try:
                 selected_user = user_tree.focus()
-                print(f"Ausgewählter User: {selected_user}")  # Debug
+                print(f"DEBUG: Ausgewählter User: {selected_user}")  # Debug
                 if selected_user:
                     from .userDetailsWindow import userDetailsWindow, show_user_details
                     show_user_details(selected_user, user_tree, controller)
             except Exception as e:
-                print(f"Fehler bei der Auswahl: {e}")
+                print(f"DEBUG: Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)

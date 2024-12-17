@@ -42,7 +42,7 @@ def add_room_popup(parent):
         from ._avatarManager import resource_path
         add_popup.iconbitmap(resource_path("assets/srhIcon.ico"))
     except Exception as e:
-        print(f"Fehler beim Laden des Icons: {e}")
+        print(f"DEBUG: Fehler beim Laden des Icons: {e}")
 
     # Header
     header_frame_add_room_popup = tk.Frame(add_popup, background="#DF4807")
@@ -109,7 +109,7 @@ def add_room_popup(parent):
         :return: Gibt keinen Wert zurück.
         """
         if not room_entry_add_room_popup.get() or room_entry_add_room_popup.get() == "" or not location_entry_add_room_popup.get() or location_entry_add_room_popup.get() == "":
-            error_label.configure(text="Please enter all required fields")
+            error_label.configure(text="Bitte fülle alle Felder aus.")
         else:
             sqlapi.create_room(room_entry_add_room_popup.get(), location_entry_add_room_popup.get())
             from .adminRoomWindow import adminRoomWindow
@@ -131,8 +131,8 @@ def add_room_popup(parent):
         add_popup.destroy()
 
     from ._avatarManager import resource_path
-    parent.add_btn_add_item_popup = tk.PhotoImage(file=resource_path("assets/HinzuBig_blue.png"))
-    parent.exit_btn_add_item_popup = tk.PhotoImage(file=resource_path("assets/AbbrechenButton.png"))
+    parent.add_btn_add_item_popup = tk.PhotoImage(file=resource_path("includes/assets/HinzuBig_blue.png"))
+    parent.exit_btn_add_item_popup = tk.PhotoImage(file=resource_path("includes/assets/AbbrechenButton.png"))
 
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")
     button_frame_add_item_popup.grid(row=2, column=0, pady=20, sticky=tk.NSEW)

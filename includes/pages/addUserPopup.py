@@ -38,7 +38,7 @@ def add_user_popup(parent):
         from ._avatarManager import resource_path
         add_popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
     except Exception as e:
-        print(f"Fehler beim Laden des Icons: {e}")
+        print(f"DEBUG: Fehler beim Laden des Icons: {e}")
 
     # Header
     header_frame_add_item_popup = tk.Frame(add_popup, background="#DF4807")
@@ -124,7 +124,7 @@ def add_user_popup(parent):
         """
         pw = str(''.join(random.choices(string.ascii_letters, k=7)))
         if not username_entry_add_user_popup.get() or username_entry_add_user_popup.get() == "" or not role_combobox_add_user_popup.get() or role_combobox_add_user_popup.get() == "Rolle auswählen":
-            error_label.configure(text="Please enter all required fields (Username)")
+            error_label.configure(text="Bitte fülle alle Felder aus (Nutzername)")
         else:
             db.create_benutzer(username_entry_add_user_popup.get(), pw, email_entry_add_user_popup.get())
             messagebox.showinfo(title="Added User", message="Nutzername: "+username_entry_add_user_popup.get()+"\nNew password: " + pw)
