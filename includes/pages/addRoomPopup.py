@@ -109,7 +109,7 @@ def add_room_popup(parent):
         :return: Gibt keinen Wert zurück.
         """
         if not room_entry_add_room_popup.get() or room_entry_add_room_popup.get() == "" or not location_entry_add_room_popup.get() or location_entry_add_room_popup.get() == "":
-            error_label.configure(text="Please enter all required fields")
+            error_label.configure(text="Bitte fülle alle Felder aus.")
         else:
             sqlapi.create_room(room_entry_add_room_popup.get(), location_entry_add_room_popup.get())
             from .adminRoomWindow import adminRoomWindow
