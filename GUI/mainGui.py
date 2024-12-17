@@ -4,6 +4,8 @@ from pages import logInWindow, mainPage, userDetailsWindow, detailsWindow, roomD
     adminUserWindow, adminRoleWindow
 
 
+
+# Hauptklasse für das Tkinter-Fenster
 class ddINV(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -27,34 +29,22 @@ class ddINV(tk.Tk):
 
         # Load the login window first
         self.show_frame(logInWindow)
-        self.load_frames_in_background()
-
-    def load_frames_in_background(self):
-        def load_frame(F):
-            frame = F(self.container, self)
-            self.frames[F] = frame
-            self.after(0, lambda: frame.grid(row=0, column=0, sticky="nsew"), None)
-
-        threads = []
-        for F in (
-                logInWindow, mainPage, detailsWindow, userDetailsWindow, adminRoomWindow, adminRoleWindow,
-                adminUserWindow,
-                roomDetailsWindow):
-            thread = threading.Thread(target=load_frame, args=(F,))
-            thread.daemon = True
-            thread.start()
-            threads.append(thread)
-
-        for thread in threads:
-            thread.join()
 
     def show_frame(self, cont):
         if cont not in self.frames:
-            frame = cont(self.container, self)
-            self.frames[cont] = frame
-            frame.grid(row=0, column=0, sticky="nsew")
-        self.frames[cont].tkraise()
+            print(f"{cont.__name__} wird dynamisch erstellt.")  # Debug-Ausgabe
+            frame = cont(self.container, self)  # Frame erstellen
+            self.frames[cont] = frame  # Zu Frames hinzufügen
+            frame.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
 
+        frame = self.frames[cont]  # Existierenden Frame verwenden
+
+        if isinstance(frame, tk.Frame):
+            frame.tkraise()  # Frame sichtbar machen
+
+            if hasattr(frame, 'on_load') and callable(frame.on_load):
+                print(f"on_load wird für {cont.__name__} aufgerufen")  # Debug
+                frame.on_load()
 
 if __name__ == "__main__":
     app = ddINV()

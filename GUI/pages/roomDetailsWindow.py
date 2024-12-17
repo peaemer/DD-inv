@@ -27,11 +27,11 @@ def show_room_details(selected_room, tree, controller):
     data = tree.item(selected_room, "values")
     print(f"Daten des ausgewählten Items: {data}")
     cache.selected_ID = data[0]
-
+    controller.show_frame(roomDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
     details = controller.frames[roomDetailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-    controller.show_frame(roomDetailsWindow)  # Zeige die Details-Seite
+
 
 
 class roomDetailsWindow(tk.Frame):
@@ -98,7 +98,7 @@ class roomDetailsWindow(tk.Frame):
             """
             print("Show settings window details window")
             from .settingsWindow import pop_up_settings
-            pop_up_settings(self)
+            pop_up_settings(self, controller)
 
         self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
 
@@ -201,10 +201,10 @@ class roomDetailsWindow(tk.Frame):
 
             """
             #update
-            db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
+            db.update_room(self.room_num_entry.get(), self.room_num_entry.get(), self.place_entry.get())
+            from .adminRoomWindow import adminRoomWindow
+            adminRoomWindow.update_treeview_with_data()
+            controller.show_frame(adminRoomWindow)
 
         def delete_entry():
             """
@@ -225,10 +225,10 @@ class roomDetailsWindow(tk.Frame):
                     Löscht Benutzereinträge aus der Datenbank und erneuert die entsprechende
                     Anzeige im adminUserWindow-Frame.
             """
-            db.delete_benutzer(self.name.get())
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
+            db.delete_room(self.room_num_entry.get())
+            from .adminRoomWindow import adminRoomWindow
+            adminRoomWindow.update_treeview_with_data()
+            controller.show_frame(adminRoomWindow)
 
         self.edit_btn = tk.PhotoImage(file="assets/AktualisierenBig_blue.png")
         self.lend_btn = tk.PhotoImage(file="assets/Ausleihen.png")

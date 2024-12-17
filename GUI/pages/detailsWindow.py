@@ -25,10 +25,13 @@ def show_details(selectedItem, tree, controller):
     print(f"Daten des ausgewählten Items: {data}")
     cache.selected_ID = data[0]
 
+
+    controller.show_frame(detailsWindow)  # Zeige die Details-Seite
+
     # Frame aktualisieren und anzeigen
     details = controller.frames[detailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-    controller.show_frame(detailsWindow)  # Zeige die Details-Seite
+
 
 
 class detailsWindow(tk.Frame):
@@ -92,7 +95,7 @@ class detailsWindow(tk.Frame):
             """
             print("Show settings window details window")
             from .settingsWindow import pop_up_settings
-            pop_up_settings(self)
+            pop_up_settings(self, controller)
 
         self.go_back_btn_details_window = tk.PhotoImage(file="assets/ArrowLeft.png")
 
@@ -151,16 +154,13 @@ class detailsWindow(tk.Frame):
         container_frame.grid_columnconfigure(0, weight=1)  # Baumansicht
         container_frame.grid_columnconfigure(1, weight=1)  # Eingabefelder
 
-
-
         size_details_window = 30
-
-
 
         # Ändere die Position des TreeFrames
         tree_frame_details_window = tk.Frame(container_frame, background="red", width=200, height=400)
         tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
 
+        global tree_details_window
         tree_details_window = ttk.Treeview(tree_frame_details_window, column=("c1", "c2"), show="headings", height=30)
 
         scroll_details_window = tk.Scrollbar(
@@ -270,7 +270,10 @@ class detailsWindow(tk.Frame):
                 damage = "None"
             else:
                 damage = self.damaged_entry_details_window.get()
-            db.update_hardware_by_ID(cache.selected_ID, neue_beschaedigung=damage, neue_Standort=room, neue_Modell=name, neue_Geraetetyp=type)
+            print(damage)
+            print(db.update_hardware_by_ID(cache.selected_ID, neue_beschaedigung=damage, neue_Standort=room, neue_Modell=name, neue_Geraetetyp=type))
+            from .mainPage import mainPage
+            controller.show_frame(mainPage)
 
         def delete_entry():
             """
@@ -317,33 +320,39 @@ class detailsWindow(tk.Frame):
             from .lendPopup import lend_popup
             lend_popup(self, data)
 
-        def returnItem(data):
-            print("Übergebene Daten:", data)
-            if not str(db.fetch_ausleih_historie_by_id(cache.selected_ID)).startswith(f"Fehler beim Abrufen des Eintrags:"):
-                db.delete_ausleih_historie(cache.selected_ID)
+        def return_item(data):
+            """
+            Eine Klasse, die die Details-Ansicht als Tkinter-Frame darstellt.
+
+            Diese Klasse ist für die Darstellung und Verwaltung einer spezifischen
+            Detailansicht innerhalb einer GUI-Anwendung verantwortlich. Sie erbt von
+            Tkinter's ``Frame`` und integriert zusätzliche Methoden zur Behandlung
+            spezifischer UI-Aktionen.
+
+            :param parent: Der übergeordnete Tkinter-Container, in den dieser Frame
+                           eingebunden wird.
+            :type parent: tk.Widget
+            :param controller: Ein Controller-Objekt, das die Steuerlogik enthält und
+                               den Zustand der Anwendung verwaltet.
+            :type controller: beliebiger Typ
+            """
+            db.update_hardware_by_ID(cache.selected_ID, neue_Ausgeliehen_von=None)
 
         self.edit_btn = tk.PhotoImage(file="assets/Aktualisieren.png")
         self.lend_btn = tk.PhotoImage(file="assets/Ausleihen.png")
-        self.rueck_btn = tk.PhotoImage(file="assets/Loeschen.png")
         self.delete_btn = tk.PhotoImage(file="assets/Loeschen.png")
+        self.return_btn = tk.PhotoImage(file="assets/Zurueckgeben.png")
 
         # Buttons in ein separates Frame
+        global button_frame_add_item_popup, lend_button
         button_frame_add_item_popup = tk.Frame(self, background="white")
         button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
-        print(self.name_entry_details_window.get())
-        if db.fetch_ausleih_historie_by_id(cache.selected_ID) and not str(db.fetch_ausleih_historie_by_id(cache.selected_ID)).startswith(""):
-            print(1)
-            rueckgabe_button = tk.Button(button_frame_add_item_popup, image=self.rueck_btn,
+        self.lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
                                 bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                command=lambda: returnItem({"name": self.name_entry_details_window.get()}))
-            rueckgabe_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
-        else:
-            print(2)
-            lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
-                                    bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                    command=lambda: lend({"name": self.name_entry_details_window.get()}))
-            lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+                                command=lambda: lend({"name": self.name_entry_details_window.get()}))
+        self.lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+
 
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
@@ -379,6 +388,35 @@ class detailsWindow(tk.Frame):
                      - Index 5: Wert für das Beschädigungs-Eingabefeld
         :return: Es wird kein Wert zurückgegeben.
         """
+        global i
+        i = 0
+        tree_details_window.delete(*tree_details_window.get_children())
+        if db.fetch_ausleih_historie_by_id(cache.selected_ID):
+            for entry in db.fetch_ausleih_historie_by_id(cache.selected_ID):
+                i += 1
+                tag = "evenrow" if i % 2 == 0 else "oddrow"
+                tree_details_window.insert(
+                    "",
+                    "end",
+                    values=(entry['Ausgeliehen_am'], entry['Nutzername']),
+                    tags=(tag,)
+                )
+
+        if db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == "":
+            if hasattr(self, "lend_button"):
+                self.lend_button.pack_forget()
+            self.lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
+                                   bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                                   command=lambda: self.lend({"name": self.name_entry_details_window.get()}))
+            self.lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+        else:
+            if hasattr(self, "lend_button"):
+                self.lend_button.pack_forget()
+            self.lend_button = tk.Button(button_frame_add_item_popup, image=self.return_btn,
+                                    bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                                    command=lambda: self.return_item({"name": self.name_entry_details_window.get()}))
+            self.lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+
         # Daten in die Entry-Felder einfügen
         self.service_tag_entry_details_window.delete(0, tk.END)
         self.service_tag_entry_details_window.insert(0, data[1])

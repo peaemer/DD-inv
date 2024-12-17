@@ -68,7 +68,7 @@ class adminRoleWindow(tk.Frame):
             """
             print("show settings window admin window")
             from .settingsWindow import pop_up_settings
-            pop_up_settings(self)
+            pop_up_settings(self, controller)
 
         def search(event=None):  # funktionalität hinzufügen
             search_entrys = []
@@ -392,8 +392,8 @@ class adminRoleWindow(tk.Frame):
                 selected_user = role_tree.focus()
                 print(f"Ausgewählter User: {selected_user}")  # Debug
                 if selected_user:
-                    from .userDetailsWindow import userDetailsWindow, show_user_details
-                    show_user_details(selected_user, role_tree, controller)
+                    from .rolesDetailsWindow import rolesDetailsWindow, show_roles_details
+                    show_roles_details(selected_user, role_tree, controller)
             except Exception as e:
                 print(f"Fehler bei der Auswahl: {e}")
 
