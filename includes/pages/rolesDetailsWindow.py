@@ -5,6 +5,8 @@ from includes.sec_data_info import sqlite3api as sqlapi
 from includes.sec_data_info import UserSecurity as sec
 import cache
 import random, string
+import customtkinter as ctk
+
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -167,38 +169,34 @@ class rolesDetailsWindow(tk.Frame):
 
         # Admin
         admin = tk.Label(input_frame_roles_window, text="Admin",
-                        font=("Arial", size_roles_window), background="white")
+                         font=("Arial", size_roles_window), background="white")
         admin.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.admin = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.admin = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.admin.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Ansehen
         view_label_roles_window = tk.Label(input_frame_roles_window, text="Ansehen",
-                                                 font=("Arial", size_roles_window), background="white")
+                                           font=("Arial", size_roles_window), background="white")
         view_label_roles_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.view = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.view = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.view.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Rolle Loeschbar
         delete_rl_label_roles_window = tk.Label(input_frame_roles_window, text="Rolle Löschbar",
-                                              font=("Arial", size_roles_window), background="white")
+                                                font=("Arial", size_roles_window), background="white")
         delete_rl_label_roles_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.delete_rl = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.delete_rl = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.delete_rl.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Admin Feature
         feature_label_roles_window = tk.Label(input_frame_roles_window, text="Admin Feature",
-                                             font=("Arial", size_roles_window), background="white")
+                                              font=("Arial", size_roles_window), background="white")
         feature_label_roles_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.feature = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.feature = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.feature.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Loeschen
@@ -206,17 +204,15 @@ class rolesDetailsWindow(tk.Frame):
                                              font=("Arial", size_roles_window), background="white")
         delete_label_roles_window.grid(column=0, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.delete = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.delete = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.delete.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Bearbeiten
         edit_label_roles_window = tk.Label(input_frame_roles_window, text="Bearbeiten",
-                                             font=("Arial", size_roles_window), background="white")
+                                           font=("Arial", size_roles_window), background="white")
         edit_label_roles_window.grid(column=0, row=5, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.edit = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.edit = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.edit.grid(column=1, row=5, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Erstellen
@@ -224,26 +220,23 @@ class rolesDetailsWindow(tk.Frame):
                                              font=("Arial", size_roles_window), background="white")
         create_label_roles_window.grid(column=0, row=6, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.create = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.create = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.create.grid(column=1, row=6, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Gruppe Loeschen
         delete_g_label_roles_window = tk.Label(input_frame_roles_window, text="Gruppe Löschen" ,
-                                             font=("Arial", size_roles_window), background="white")
+                                               font=("Arial", size_roles_window), background="white")
         delete_g_label_roles_window.grid(column=0, row=7, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.delete_g = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.delete_g = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.delete_g.grid(column=1, row=7, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Gruppe Erstellen
         create_g_label_roles_window = tk.Label(input_frame_roles_window, text="Gruppe Erstellen",
-                                             font=("Arial", size_roles_window), background="white")
+                                               font=("Arial", size_roles_window), background="white")
         create_g_label_roles_window.grid(column=0, row=8, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.create_g = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.create_g = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.create_g.grid(column=1, row=8, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Gruppe Bearbeiten
@@ -251,17 +244,15 @@ class rolesDetailsWindow(tk.Frame):
                                              font=("Arial", size_roles_window), background="white")
         edit_g_label_roles_window.grid(column=0, row=9, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.edit_g = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.edit_g = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.edit_g.grid(column=1, row=9, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Rollen Erstellen
         create_r_label_roles_window = tk.Label(input_frame_roles_window, text="Rollen Erstellen",
-                                             font=("Arial", size_roles_window), background="white")
+                                               font=("Arial", size_roles_window), background="white")
         create_r_label_roles_window.grid(column=0, row=10, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.create_r = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.create_r = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.create_r.grid(column=1, row=10, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Rollen Bearbeiten
@@ -269,17 +260,15 @@ class rolesDetailsWindow(tk.Frame):
                                              font=("Arial", size_roles_window), background="white")
         edit_r_label_roles_window.grid(column=0, row=11, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.edit_r = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.edit_r = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.edit_r.grid(column=1, row=11, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Rollen Loeschen
         delete_r_label_roles_window = tk.Label(input_frame_roles_window, text="Rolle",
-                                             font=("Arial", size_roles_window), background="white")
+                                               font=("Arial", size_roles_window), background="white")
         delete_r_label_roles_window.grid(column=0, row=12, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.delete_r = tk.Entry(input_frame_roles_window, font=("Arial", size_roles_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.delete_r = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.delete_r.grid(column=1, row=12, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Funktion zum Eintrag hinzufügen
