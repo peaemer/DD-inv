@@ -275,7 +275,7 @@ class mainPage(tk.Frame):
             orientation="vertical",
             command=side_tree.yview,
             fg_color="white",
-            width=0,                                                # <--- +++++side tree visibility+++++ #
+            width=0,                                                # <--- +++++side scrollbar visibility+++++ #
             corner_radius=10,
             button_color = srhGrey,
             button_hover_color="#2980b9"
