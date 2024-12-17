@@ -98,7 +98,7 @@ class rolesDetailsWindow(tk.Frame):
                 Ein Steuerelement für die Verwaltung der Fenster- oder Anwendungslogik.
 
             """
-            print("Show settings window details window")
+            print("DEBUG: Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 

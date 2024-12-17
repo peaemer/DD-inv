@@ -375,7 +375,7 @@ class adminUserWindow(tk.Frame):
             """
             try:
                 selected_user = user_tree.focus()
-                print(f"Ausgewählter User: {selected_user}")  # Debug
+                print(f"DEBUG: Ausgewählter User: {selected_user}")  # Debug
                 if selected_user:
                     from .userDetailsWindow import userDetailsWindow, show_user_details
                     show_user_details(selected_user, user_tree, controller)
