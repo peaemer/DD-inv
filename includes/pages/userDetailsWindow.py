@@ -16,11 +16,11 @@ def show_user_details(selected_user, tree, controller):
     data = tree.item(selected_user, "values")
     print(f"Daten des ausgewählten Items: {data}")
     cache.selected_ID = data[0]
-
+    controller.show_frame(userDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
     details = controller.frames[userDetailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-    controller.show_frame(userDetailsWindow)  # Zeige die Details-Seite
+
 
 
 class userDetailsWindow(tk.Frame):
