@@ -64,7 +64,7 @@ class adminUserWindow(tk.Frame):
             :ivar parent: Der übergeordnete Container dieses Frames.
             :ivar controller: Kontrollinstanz für die Verwaltung der Frames.
             """
-            print("show settings window admin window")
+            print("DEBUG: show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -380,7 +380,7 @@ class adminUserWindow(tk.Frame):
                     from .userDetailsWindow import userDetailsWindow, show_user_details
                     show_user_details(selected_user, user_tree, controller)
             except Exception as e:
-                print(f"Fehler bei der Auswahl: {e}")
+                print(f"DEBUG: Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)

@@ -124,6 +124,7 @@ class mainPage(tk.Frame):
             """
             from .addItemPopup import add_item_popup
             add_item_popup(self)
+            print("DEBUG: add_item executed")  # Debug
 
         def on_entry_click(event):
             """
@@ -142,9 +143,11 @@ class mainPage(tk.Frame):
             :type event: tk.Event
 
             """
+            print("DEBUG: on_entry_click executed")
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
+                print("DEBUG: Cleared Entry for use")
 
         def on_key_press(event):
             """
@@ -177,9 +180,11 @@ class mainPage(tk.Frame):
                 anderer Interaktionen zwischen Subkomponenten der GUI.
             :type controller: Objekt
             """
+            print("DEBUG: on_focus_out executed")  # Debug
             if search_entry.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
+                print("DEBUG: Reset Entry")  # Debug
 
         global tree
 
@@ -290,8 +295,8 @@ class mainPage(tk.Frame):
                           Informationen über das Größenänderungsereignis enthält.
             :type event: tk.Event
             """
-            print(f"Neue Größe - Breite: {event.x} Höhe: {event.y}")
-        print(show_size)
+            print(f"New size - Width: {event.x} Height: {event.y}") #Debug
+        print("DEBUG:", show_size) # Debug
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
         search_frame = tk.Frame(middle_frame, bg="white")
@@ -398,10 +403,14 @@ class mainPage(tk.Frame):
             Navigation und Anzeige spezifischer Detailinformationen bereitstellt.
             """
 
-            selected_item = tree.focus()
-            if selected_item:
-                from .detailsWindow import detailsWindow, show_details
-                show_details(selected_item, tree, controller)
+            try:
+                selected_item = tree.focus()
+                print(f"Selected Item: {selected_item}")
+                if selected_item:
+                    from .detailsWindow import detailsWindow, show_details
+                    show_details(selected_item, tree, controller)
+            except Exception as e:
+                print(f"Error during selection: {e}") #Debug
 
 
         def on_side_tree_select(event):
@@ -445,7 +454,7 @@ class mainPage(tk.Frame):
             selected_item = side_tree.selection()
             if selected_item:
                 selected_text = side_tree.item(selected_item, 'text')
-                print(selected_text)
+                print("DEBUG: ", selected_text)
                 if selected_text == "Alle Räume":
                     # Alle Daten in der Haupttabelle anzeigen
                     self.update_treeview_with_data()
@@ -470,6 +479,7 @@ class mainPage(tk.Frame):
         tree.bind("<Double-1>", on_item_selected)
 
     def update_sidetree_with_data(self = None, rooms = None):
+        print("DEBUG: update_sidetree_with_data aufgerufen.") # Debug
         side_tree.delete(*side_tree.get_children())
         side_tree.insert("", tk.END, text="Alle Räume")
         if rooms is None:
@@ -570,6 +580,7 @@ class mainPage(tk.Frame):
         else:
             # Entferne den Admin-Button, falls er existiert
             if hasattr(self, "admin_button"):
+                print("DEBUG: Removed Admin window") #Debug
                 self.admin_button.grid_remove()
 
         self.update_treeview_with_data()

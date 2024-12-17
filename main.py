@@ -1,5 +1,7 @@
 import tkinter as tk
 import threading
+from tkinter import mainloop
+
 from includes.pages import logInWindow, mainPage, userDetailsWindow, detailsWindow, roomDetailsWindow, adminRoomWindow, \
     adminUserWindow, adminRoleWindow
 
@@ -24,6 +26,8 @@ class ddINV(tk.Tk):
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
+        print("DEBUG: MainFrame successfully created") # Debug
+
         self.frames = {}
 
         # Load the login window first
@@ -31,7 +35,7 @@ class ddINV(tk.Tk):
 
     def show_frame(self, cont):
         if cont not in self.frames:
-            print(f"{cont.__name__} wird dynamisch erstellt.")  # Debug-Ausgabe
+            print(f"DEBUG: {cont.__name__} is being dynamically created.") # Debug
             frame = cont(self.container, self)  # Frame erstellen
             self.frames[cont] = frame  # Zu Frames hinzufügen
             frame.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
@@ -42,7 +46,7 @@ class ddINV(tk.Tk):
             frame.tkraise()  # Frame sichtbar machen
 
             if hasattr(frame, 'on_load') and callable(frame.on_load):
-                print(f"on_load wird für {cont.__name__} aufgerufen")  # Debug
+                print(f"DEBUG: on_load is being called for {cont.__name__}")  # Debug
                 frame.on_load()
 
 if __name__ == "__main__":

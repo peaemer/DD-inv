@@ -58,7 +58,7 @@ def lend_popup(parent, data):
         from ._avatarManager import resource_path
         popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
     except Exception as e:
-        print(f"Fehler beim Laden des Icons: {e}")
+        print(f"DEBUG: Fehler beim Laden des Icons: {e}")
 
     # Funktion, um die Eingaben zu verarbeiten
     def confirm_lend():
@@ -77,7 +77,7 @@ def lend_popup(parent, data):
         item = name_entry.get().strip()
         borrower = entry.get().strip()
         #lend_date = calEntry.get().strip()
-        print(f"Item: {item}, Borrower: {borrower}, Date:")
+        print(f"DEBUG: Item: {item}, Borrower: {borrower}, Date:")
         #lendupdate
         popup.destroy()  # Schließt das Popup nach Bestätigung
 

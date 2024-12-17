@@ -64,7 +64,7 @@ class adminRoleWindow(tk.Frame):
             :ivar parent: Der übergeordnete Container dieses Frames.
             :ivar controller: Kontrollinstanz für die Verwaltung der Frames.
             """
-            print("show settings window admin window")
+            print("DEBUG: show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -86,9 +86,11 @@ class adminRoleWindow(tk.Frame):
 
             Die Klasse erbt von ``tk.Frame`` und wird in einem Eltern-Widget integriert.
             """
+            print("DEBUG: on_entry_click executed")
             if user_search_entry.get() == 'Suche':
                 user_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 user_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+                print("DEBUG: Cleared Entry for use")
 
         def on_focus_out(event):
             """
@@ -101,11 +103,15 @@ class adminRoleWindow(tk.Frame):
             :param controller: Die Steuermechanik, die die Navigation zwischen Frames behandelt
             :type controller: object
             """
+            print("DEBUG: on_focus_out executed")  # Debug
             if user_search_entry.get() == '':
                 user_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 user_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+                print("DEBUG: Reset Entry") #Debug
+
 
         def on_key_press(event):
+
             """
             Eine Klasse, die ein Administrator-Benutzerfenster in einer tkinter-Umgebung definiert.
 
@@ -126,6 +132,7 @@ class adminRoleWindow(tk.Frame):
 
             """
             typed_key = event.char  # The character of the typed key
+            print("DEBUG: Key pressed:" , typed_key)
 
         def change_to_room():
             """
@@ -143,6 +150,7 @@ class adminRoleWindow(tk.Frame):
             """
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
+            print("DEBUG: change_to_role executed")  # Debug
 
         def change_to_user():
             """
@@ -156,6 +164,7 @@ class adminRoleWindow(tk.Frame):
             """
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
+            print("DEBUG: change_to_user executed")  # Debug
 
         def add_role():
             """
@@ -174,6 +183,7 @@ class adminRoleWindow(tk.Frame):
             """
             from .addRolePopup import add_role_popup
             add_role_popup(self)
+            print("DEBUG: Add role executed") #Debug
 
         global tree
 
@@ -367,12 +377,13 @@ class adminRoleWindow(tk.Frame):
             """
             try:
                 selected_user = role_tree.focus()
-                print(f"Ausgewählter User: {selected_user}")  # Debug
+                print(f"Selected user: {selected_user}") # Debug
                 if selected_user:
                     from .rolesDetailsWindow import rolesDetailsWindow, show_roles_details
                     show_roles_details(selected_user, role_tree, controller)
             except Exception as e:
-                print(f"Fehler bei der Auswahl: {e}")
+
+                print(f"Error during selection: {e}") # Debug
 
         # Binde die Ereignisfunktion an die Treeview
         role_tree.bind("<Double-1>", on_item_selected)
@@ -418,3 +429,4 @@ class adminRoleWindow(tk.Frame):
                 tags=(tag,)
             )
             i += 1
+            print("DEBUG: Treeview updated") #Debug

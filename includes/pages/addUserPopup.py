@@ -38,7 +38,7 @@ def add_user_popup(parent):
         from ._avatarManager import resource_path
         add_popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
     except Exception as e:
-        print(f"Fehler beim Laden des Icons: {e}")
+        print(f"DEBUG: Fehler beim Laden des Icons: {e}")
 
     # Header
     header_frame_add_item_popup = tk.Frame(add_popup, background="#DF4807")

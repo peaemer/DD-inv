@@ -58,7 +58,7 @@ class adminRoomWindow(tk.Frame):
             :ivar parent: Referenz zum übergeordneten Widget.
             :ivar controller: Referenz zur Steuerlogik oder dem Hauptcontroller.
             """
-            print("show settings window admin window")
+            print("DEBUG: show settings window admin window") # Debug
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
