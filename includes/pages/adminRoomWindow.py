@@ -297,21 +297,21 @@ class adminRoomWindow(tk.Frame):
         global room_tree
         room_tree = ttk.Treeview(room_tree_frame, column=("c1", "c2"), show="headings")
 
-        room_scroll = tk.Scrollbar(
+        # Scrollbar erstellen
+        room_tree_scroll = ctk.CTkScrollbar(
             room_tree_frame,
-            orient="vertical",
+            orientation="vertical",
             command=room_tree.yview,
-            bg="black",
-            activebackground="darkblue",
-            troughcolor="grey",
-            highlightcolor="black",
-            width=15,
-            borderwidth=1
+            fg_color="white",
+            width=20,                                                # <--- +++++side scrollbar visibility+++++ #
+            corner_radius=10,
+            button_color = srhGrey,
+            button_hover_color="#2980b9"
         )
-        room_scroll.grid(row=1, column=1, sticky="ns")
+        room_tree_scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
 
-        room_scroll.grid(row=1, column=1, sticky="ns")
-        room_tree.configure(yscrollcommand=room_scroll.set)
+        # Treeview mit Scrollbar verbinden
+        room_tree.configure(yscrollcommand=room_tree_scroll.set)
 
         # Tags für alternierende Zeilenfarben konfigurieren
         room_tree.tag_configure("oddrow", background="#f7f7f7")

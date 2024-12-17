@@ -72,7 +72,7 @@ class adminRoleWindow(tk.Frame):
             search_entrys = []
             for entry in sqlapi.read_all_rollen():
                 for value in entry:
-                    if user_search_entry.get().lower() in str(entry[value]).lower():
+                    if role_search_entry.get().lower() in str(entry[value]).lower():
                         if entry not in search_entrys:
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
@@ -87,9 +87,9 @@ class adminRoleWindow(tk.Frame):
             Die Klasse erbt von ``tk.Frame`` und wird in einem Eltern-Widget integriert.
             """
             print("DEBUG: on_entry_click executed")
-            if user_search_entry.get() == 'Suche':
-                user_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
-                user_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+            if role_search_entry.get() == 'Suche':
+                role_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
+                role_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
                 print("DEBUG: Cleared Entry for use")
 
         def on_focus_out(event):
@@ -104,9 +104,9 @@ class adminRoleWindow(tk.Frame):
             :type controller: object
             """
             print("DEBUG: on_focus_out executed")  # Debug
-            if user_search_entry.get() == '':
-                user_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                user_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+            if role_search_entry.get() == '':
+                role_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
+                role_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
                 print("DEBUG: Reset Entry") #Debug
 
 
@@ -289,15 +289,16 @@ class adminRoleWindow(tk.Frame):
         search_button.grid(padx=10, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
-        user_search_entry = tk.Entry(search_frame, bg=srhGrey, font=("Arial", 20), bd=0, fg='grey')
-        user_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
+        role_search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey, text_color="black", font=("Arial", 27),
+                                         corner_radius=20, border_width=0)
+        role_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
-        user_search_entry.bind('<FocusIn>', on_entry_click)
-        user_search_entry.bind('<FocusOut>', on_focus_out)
-        user_search_entry.bind('<Return>', search)
-        user_search_entry.bind("<Key>", on_key_press)
-        user_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
+        role_search_entry.bind('<FocusIn>', on_entry_click)
+        role_search_entry.bind('<FocusOut>', on_focus_out)
+        role_search_entry.bind('<Return>', search)
+        role_search_entry.bind("<Key>", on_key_press)
+        role_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
         role_tree_frame = tk.Frame(middle_frame, background="white")
         role_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)

@@ -322,21 +322,21 @@ class adminUserWindow(tk.Frame):
         global user_tree
         user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5"), show="headings")
 
-        user_scroll = tk.Scrollbar(
+        # Scrollbar erstellen
+        user_tree_scroll = ctk.CTkScrollbar(
             user_tree_frame,
-            orient="vertical",
+            orientation="vertical",
             command=user_tree.yview,
-            bg="black",
-            activebackground="darkblue",
-            troughcolor="grey",
-            highlightcolor="black",
-            width=15,
-            borderwidth=1
+            fg_color="white",
+            width=20,                                                # <--- +++++side scrollbar visibility+++++ #
+            corner_radius=10,
+            button_color = srhGrey,
+            button_hover_color="#2980b9"
         )
-        user_scroll.grid(row=1, column=1, sticky="ns")
+        user_tree_scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
 
         # Treeview mit Scrollbar verbinden
-        user_tree.configure(yscrollcommand=user_scroll.set)
+        user_tree.configure(yscrollcommand=user_tree_scroll.set)
 
         # Tags für alternierende Zeilenfarben konfigurieren
         user_tree.tag_configure("oddrow", background="#f7f7f7")

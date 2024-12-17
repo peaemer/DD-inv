@@ -396,7 +396,7 @@ class mainPage(tk.Frame):
         tree.tag_configure("evenrow", background="white")
 
         # listbox for directories
-        tree.column("# 1", anchor=CENTER, width=60)
+        tree.column("# 1", anchor=CENTER, width=40)
         tree.heading("# 1", text="ID")
         tree.column("# 2", anchor=CENTER, width=130)
         tree.heading("# 2", text="Service Tag")
