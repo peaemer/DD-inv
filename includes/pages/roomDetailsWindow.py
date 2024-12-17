@@ -25,7 +25,7 @@ def show_room_details(selected_room, tree, controller):
     """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_room, "values")
-    print(f"DEBUG: Daten des ausgewählten Items: {data}")
+    print(f"DEBUG: Data of the selected item: {data}")
     cache.selected_ID = data[0]
     controller.show_frame(roomDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen

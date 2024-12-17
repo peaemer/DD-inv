@@ -22,7 +22,7 @@ def show_details(selectedItem, tree, controller):
     """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selectedItem, "values")
-    print(f"DEBUG: Daten des ausgewählten Items: {data}") #Debug
+    print(f"DEBUG: Data of the selected item: {data}")  # Debug
     cache.selected_ID = data[0]
 
 

@@ -27,7 +27,7 @@ def show_roles_details(selected_roles, tree, controller):
     """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_roles, "values")
-    print(f"DEBUG: Daten des ausgewählten Items: {data}") # Debug
+    print(f"DEBUG: Data of the selected item: {data}") # Debug
     cache.selected_ID = data[0]
     controller.show_frame(rolesDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
