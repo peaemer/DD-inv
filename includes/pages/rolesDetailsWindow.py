@@ -1,12 +1,11 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from tkinter import *
+
 from includes.sec_data_info import sqlite3api as sqlapi
-from includes.sec_data_info import UserSecurity as sec
 import cache
-import random, string
 import customtkinter as ctk
 
+from main import ddINV
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -61,7 +60,7 @@ class rolesDetailsWindow(tk.Frame):
     :ivar delete_btn: Bild für den „Löschen“-Button.
     :type delete_btn: tk.PhotoImage
     """
-    def __init__(self, parent, controller):
+    def __init__(self, parent, controller: ddINV):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.configure(background="white")
@@ -271,6 +270,31 @@ class rolesDetailsWindow(tk.Frame):
         self.delete_r = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
         self.delete_r.grid(column=2, row=12, sticky=tk.W + tk.E, padx=100, pady=5)
 
+        # User Loeschen
+        delete_u_label_roles_window = tk.Label(input_frame_roles_window, text="User Löschen",
+                                               font=("Arial", size_roles_window), background="white")
+        delete_u_label_roles_window.grid(column=1, row=13, sticky=tk.W + tk.E, padx=100, pady=5)
+
+        self.delete_u = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
+        self.delete_r.grid(column=2, row=13, sticky=tk.W + tk.E, padx=100, pady=5)
+
+        # User Bearbeiten
+        edit_u_label_roles_window = tk.Label(input_frame_roles_window, text="User Bearbeiten",
+                                               font=("Arial", size_roles_window), background="white")
+        edit_u_label_roles_window.grid(column=1, row=14, sticky=tk.W + tk.E, padx=100, pady=5)
+
+        self.edit_u = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
+        self.edit_u.grid(column=2, row=14, sticky=tk.W + tk.E, padx=100, pady=5)
+
+        # User Erstellen
+        create_u_label_roles_window = tk.Label(input_frame_roles_window, text="User Erstellen",
+                                               font=("Arial", size_roles_window), background="white")
+        create_u_label_roles_window.grid(column=1, row=15, sticky=tk.W + tk.E, padx=100, pady=5)
+
+        self.create_u = ctk.CTkCheckBox(input_frame_roles_window, text_color="white")
+        self.create_u.grid(column=2, row=15, sticky=tk.W + tk.E, padx=100, pady=5)
+
+
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
             """
@@ -287,10 +311,42 @@ class rolesDetailsWindow(tk.Frame):
                     enthält und aktualisiert werden kann.
 
             """
-            #update
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
+            view = "True" if self.view.get() == 1 else "False"
+            delete_rl = "True" if self.delete_rl.get() == 1 else "False"
+            feature = "True" if self.feature.get() == 1 else "False"
+            delete = "True" if self.delete.get() == 1 else "False"
+            edit = "True" if self.edit.get() == 1 else "False"
+            create = "True" if self.create.get() == 1 else "False"
+            delete_g = "True" if self.delete_g.get() == 1 else "False"
+            create_g = "True" if self.create_g.get() == 1 else "False"
+            edit_g = "True" if self.edit_g.get() == 1 else "False"
+            create_r = "True" if self.create_r.get() == 1 else "False"
+            edit_r = "True" if self.edit_r.get() == 1 else "False"
+            delete_r = "True" if self.delete_r.get() == 1 else "False"
+            delete_u = "True" if self.delete_u.get() == 1 else "False"
+            edit_u = "True" if self.edit_u.get() == 1 else "False"
+            create_u = "True" if self.create_u.get() == 1 else "False"
+            rechte = {
+                "ANSEHEN": view,
+                "ROLLE_LOESCHBAR": delete_rl,
+                "ADMIN_FEATURE": feature,
+                "ENTRY_LOESCHEN": delete,
+                "ENTRY_BEARBEITEN": edit,
+                "ENTRY_ERSTELLEN": create,
+                "GRUPPEN_LOESCHEN": delete_g,
+                "GRUPPEN_ERSTELLEN": create_g,
+                "GRUPPEN_BEARBEITEN": edit_g,
+                "ROLLEN_ERSTELLEN": create_r,
+                "ROLLEN_BEARBEITEN": edit_r,
+                "ROLLEN_LOESCHEN": delete_r,
+                "USER_LOESCHEN": delete_u,
+                "USER_BEARBEITEN": edit_u,
+                "USER_ERSTELLEN": create_u
+            }
+            print(sqlapi.update_role(self.role_name.cget("text"), **rechte))
+            from .adminRoleWindow import adminRoleWindow
+            adminRoleWindow.update_treeview_with_data()
+            controller.show_frame(adminRoleWindow)
 
         def delete_entry():
             """
@@ -311,10 +367,17 @@ class rolesDetailsWindow(tk.Frame):
                     Löscht Benutzereinträge aus der Datenbank und erneuert die entsprechende
                     Anzeige im adminUserWindow-Frame.
             """
-            sqlapi.delete_benutzer(self.name.get())
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
+            state = True
+            for user in sqlapi.read_all_benutzer():
+                if user['Rolle'] == self.role_name.cget("text"):
+                    state = False
+            if state:
+                sqlapi.delete_rolle(self.role_name.cget("text"))
+            else:
+                messagebox.showerror("Abgebrochen", "Es befinden sich noch Nutzer in den Gruppen")
+            from .adminRoleWindow import adminRoleWindow
+            adminRoleWindow.update_treeview_with_data()
+            controller.show_frame(adminRoleWindow)
 
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
         self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))
@@ -324,16 +387,17 @@ class rolesDetailsWindow(tk.Frame):
         button_frame_update_role = tk.Frame(self, background="white")
         button_frame_update_role.grid(row=2, column=0, pady=20)
 
+        global delete_button, edit_button
         delete_button = tk.Button(button_frame_update_role, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                  command= delete_entry)
-        delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+        # delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 
         edit_button = tk.Button(button_frame_update_role, image=self.edit_btn,
                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                command=refresh_entry)
-        edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
+        # edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
 
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
@@ -354,3 +418,17 @@ class rolesDetailsWindow(tk.Frame):
         """
         # Daten in die Entry-Felder einfügen
         self.role_name.configure(text=data[0])
+        self.view.select() if data[1] == "✔" else self.view.deselect()
+        self.delete_rl.select() if data[2] == "✔" else self.delete_rl.deselect()
+        delete_button.pack(side=tk.LEFT, padx=20) if data[2] == "✔" and cache.user_group_data['ROLLEN_LOESCHEN'] == "True" else delete_button.forget()
+        self.feature.select() if data[3] == "✔" else self.feature.deselect()
+        self.delete.select() if data[4] == "✔" else self.delete.deselect()
+        self.edit.select() if data[5] == "✔" else self.edit.deselect()
+        self.create.select() if data[6] == "✔" else self.create.deselect()
+        self.delete_g.select() if data[7] == "✔" else self.delete_g.deselect()
+        self.create_g.select() if data[8] == "✔" else self.create_g.deselect()
+        self.edit_g.select() if data[9] == "✔" else self.edit_g.deselect()
+        self.create_r.select() if data[10] == "✔" else self.create_r.deselect()
+        self.edit_r.select() if data[11] == "✔" else self.edit_r.deselect()
+        edit_button.pack(side=tk.LEFT, padx=20) if cache.user_group_data['ROLLEN_BEARBEITEN'] == "True" else edit_button.forget()
+        self.delete_r.select() if data[12] == "✔" else self.delete_r.deselect()

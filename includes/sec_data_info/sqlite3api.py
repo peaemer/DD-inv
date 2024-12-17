@@ -5,8 +5,9 @@ from .UserSecurity import *
 
 # Pfad zur Datenbankdatei
 path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
-__use__fallback_path:bool = True
-__fallback_path:str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
+__use__fallback_path: bool = True
+__fallback_path: str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
+
 
 def init_connection():
     """
@@ -75,6 +76,7 @@ def read_all_benutzer():
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Benutzer: {e.args[0]}")
 
+
 def read_benutzer(nutzername):
     """
     Ruft die Daten eines spezifischen Benutzers ab.
@@ -88,7 +90,8 @@ def read_benutzer(nutzername):
             return dict(row) if row else None
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen des Benutzers: {e.args[0]}")
-    
+
+
 def read_benutzer_suchverlauf(nutzername):
     """
        Ruft den Suchverlauf eines spezifischen Benutzers ab.
@@ -144,6 +147,7 @@ def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_roll
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren des Benutzers: {e.args[0]}"
 
+
 def delete_benutzer(nutzername):
     """
     Löscht einen Benutzer aus der Tabelle `Benutzer`.
@@ -184,6 +188,7 @@ def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen des Hardware-Eintrags: {e.args[0]}"
 
+
 def fetch_hardware():
     """
     Ruft alle Hardware-Einträge aus der Tabelle `Hardware` ab.
@@ -196,6 +201,7 @@ def fetch_hardware():
             return [dict(row) for row in rows]
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Hardware: {e.args[0]}")
+
 
 def fetch_hardware_by_id(ID):
     """
@@ -213,7 +219,9 @@ def fetch_hardware_by_id(ID):
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Hardware: {e.args[0]}")
 
-def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_Modell=None, neue_Geraetetyp=None,  neue_beschaedigung=None, neue_Standort=None):
+
+def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_Modell=None, neue_Geraetetyp=None,
+                          neue_beschaedigung=None, neue_Standort=None):
     """
     Aktualisiert bestimmte Felder einer Hardware basierend auf dem `Service_Tag`.
     :param ID: zum identifizieren des Datensatzes
@@ -227,7 +235,7 @@ def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_Modell=None, neue_
             update_fields = []
             parameters = []
 
-            if neue_Ausgeliehen_von:
+            if neue_Ausgeliehen_von != None:
                 update_fields.append("Ausgeliehen_von = ?")
                 parameters.append(neue_Ausgeliehen_von)
             if neue_beschaedigung:
@@ -253,6 +261,7 @@ def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_Modell=None, neue_
         return "Hardware erfolgreich aktualisiert."
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren der Hardware: {e.args[0]}"
+
 
 def delete_hardware_by_id(ID):
     """
@@ -285,11 +294,13 @@ def create_rolle(Rolle, **rechte):
             columns = ', '.join(rechte.keys())
             placeholders = ', '.join(['?'] * len(rechte))
             values = list(rechte.values())
-            cur.execute(f"INSERT INTO NutzerrollenRechte (Rolle, {columns}) VALUES (?, {placeholders})", [Rolle] + values)
+            cur.execute(f"INSERT INTO NutzerrollenRechte (Rolle, {columns}) VALUES (?, {placeholders})",
+                        [Rolle] + values)
             con.commit()
         return "Nutzerrolle wurde erfolgreich erstellt."
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen der Rolle: {e.args[0]}"
+
 
 def read_all_rollen():
     """
@@ -303,6 +314,7 @@ def read_all_rollen():
             return [dict(row) for row in rows]
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Rollen: {e.args[0]}")
+
 
 def delete_rolle(Rolle):
     """
@@ -318,11 +330,42 @@ def delete_rolle(Rolle):
         return f"Fehler beim Entfernen der Rolle: {e.args[0]}"
 
 
+def update_role(Rolle: str, **rechte):
+    """
+    Aktualisiert die Rechte für eine bestimmte Nutzerrolle in der Tabelle `NutzerrollenRechte`.
+    Die Rechte werden als benannte Argumente übergeben (z.B. Column1=value1, Column2=value2).
+
+    :param Rolle: Die Rolle, deren Rechte aktualisiert werden sollen.
+    :param rechte: Die zu aktualisierenden Rechte als benannte Argumente.
+    :return: Erfolgsmeldung oder Fehlerbeschreibung.
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+
+            # Dynamische Erstellung der SET-Klausel: Spaltennamen und Platzhalter
+            columns = ', '.join([f"{col} = ?" for col in rechte.keys()])
+
+            # Werte aus den benannten Argumenten (rechte)
+            values = list(rechte.values())
+
+            # SQL-Update-Abfrage
+            cur.execute(f"UPDATE NutzerrollenRechte SET {columns} WHERE Rolle = ?", values + [Rolle])
+
+            # Änderungen in der Datenbank übernehmen
+            con.commit()
+
+        return "Nutzerrolle wurde erfolgreich aktualisiert."
+
+    except sqlite3.Error as e:
+        return f"Fehler beim Aktualisieren der Rolle: {e.args[0]}"
+
+
 #######################################################
 # A U S L E I H - H I S T O R I E - E N D P U N K T E #
 #######################################################
 
-def create_ausleih_historie(Service_Tag, Nutzername, Ausgeliehen_am):
+def create_ausleih_historie(Hardware_ID, Nutzername, Ausgeliehen_am):
     """
     Erstellt einen neuen Eintrag in der Tabelle `Ausleih-Historie`.
     - `Service_Tag`: Fremdschlüssel zur Hardware-Tabelle.
@@ -334,15 +377,16 @@ def create_ausleih_historie(Service_Tag, Nutzername, Ausgeliehen_am):
             cur = con.cursor()
             cur.execute(
                 """
-                INSERT INTO Ausleih_Historie(Service_Tag, Nutzername, Ausgeliehen_am)
+                INSERT INTO Ausleih_Historie(Hardware_ID, Nutzername, Ausgeliehen_am)
                 VALUES (?, ?, ?)
                 """,
-                (Service_Tag, Nutzername, Ausgeliehen_am)
+                (Hardware_ID, Nutzername, Ausgeliehen_am)
             )
             con.commit()
             return "Eintrag in der Ausleih-Historie wurde erfolgreich erstellt."
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen des Eintrags: {e}"
+
 
 def fetch_ausleih_historie():
     """
@@ -358,6 +402,7 @@ def fetch_ausleih_historie():
             return [dict(row) for row in rows]
     except sqlite3.Error as e:
         return f"Fehler beim Abrufen der Historie: {e}"
+
 
 def fetch_ausleih_historie_by_id(ID):
     """
@@ -375,25 +420,27 @@ def fetch_ausleih_historie_by_id(ID):
     except sqlite3.Error as e:
         return f"Fehler beim Abrufen des Eintrags: {e}"
 
+
 def delete_ausleih_historie(ID):
-     """
+    """
      Löscht einen Eintrag aus der Tabelle `Ausleih-Historie` anhand der ID.
      :param ID:ID muss mit angegeben werden
      """
-     try:
-         with init_connection() as con:
-             cur = con.cursor()
-             cur.execute("DELETE FROM Ausleih_Historie WHERE ID = ?", (ID,))
-             con.commit()
-             return "Eintrag erfolgreich gelöscht."
-     except sqlite3.Error as e:
-         return f"Fehler beim Löschen des Eintrags: {e}"
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("DELETE FROM Ausleih_Historie WHERE ID = ?", (ID,))
+            con.commit()
+            return "Eintrag erfolgreich gelöscht."
+    except sqlite3.Error as e:
+        return f"Fehler beim Löschen des Eintrags: {e}"
+
 
 #########################################
 # R O O M _ I N F O - E N D P U N K T E #
 #########################################
 
-def create_room(Raum,Ort):
+def create_room(Raum, Ort):
     """
     Wird zum erstellen von neuen Räumen benutzt
     :param Raum (Raumname z.B. E220)
@@ -407,6 +454,8 @@ def create_room(Raum,Ort):
             return "Raum wurde erfolgreich erstellt."
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen des Raumes: {e}"
+
+
 def fetch_all_rooms():
     """
     Mit der Funktion rufen wir alle bis jetzt erstellten Räume in der Datenbank auf
@@ -421,6 +470,7 @@ def fetch_all_rooms():
             return [dict(row) for row in rows]
     except sqlite3.Error as e:
         return f"Fehler beim Abrufen der Räume: {e}"
+
 
 def search_room(Raum):
     """
@@ -437,6 +487,7 @@ def search_room(Raum):
             return dict(row) if row else None
     except sqlite3.Error as e:
         return f"Fehler beim Suchen des Raumes: {e}"
+
 
 def update_room(Raum, neu_Raum, neu_Ort):
     """
@@ -471,6 +522,7 @@ def update_room(Raum, neu_Raum, neu_Ort):
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren des Raumes: {e}"
 
+
 def delete_room(Raum):
     """
     Funktion zum entfernen von Räumen, bitte nur verwenden wenn nötig.
@@ -485,66 +537,59 @@ def delete_room(Raum):
     except sqlite3.Error as e:
         return f"Fehler beim Löschen des Raumes: {e}"
 
-    ###########################################################
-    # A V A T A R _ I N F O R M A T I O N - E N D P U N K T E #
-    ###########################################################
 
-    def create_avatar(Avatar_link):
-        """
-        Erstellt ein neues Avatar in der Datenbank.
-        ID Sollte automatisch erstellt werden,
-        der Nutzer muss seperat hinzugefügt werden.
+###########################################################
+# A V A T A R _ I N F O R M A T I O N - E N D P U N K T E #
+###########################################################
 
-        :param Link des Avatars.
-        """
-        try:
-            with init_connection() as con:
-                cur = con.cursor()
-                cur.execute("INSERT INTO Avatar_Informationen VALUES (?)", (Avatar_link,))
-                con.commit()
-                return "Avatar erfolgreich erstellt."
-        except sqlite3.Error as e:
-            return f"Fehler beim erstellen der Avatar: {e}"
+def upsert_avatar(Nutzername, Avatar_link):
+    """
+    Erstellt ein neues Avatar in der Datenbank.
+    Wenn bereits ein Avatar mit dem gleichen Nutzername existiert,
+    wird dieser gelöscht und durch den neuen Avatar ersetzt.
 
-    def update_avatar(ID, neue_Nutzername=None, neue_Avatar_link=None):
-        """
-        Damit können die Daten in Avatar_link geändert werden.
-        Wichtig ist das ID muss angegeben werden.
-        Nutzername wird als Foreignkey angesprochen
+    :param Nutzername: Der Name des Nutzers.
+    :param Avatar_link: Der Link zum Avatar des Nutzers.
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
 
-        :param ID: Unique identifier of the user whose avatar information is
-                   to be updated.
-        :type ID: int
-        :param neue_Nutzername: New username to update, if any.
-        :type neue_Nutzername: str, optional
-        :param neue_Avatar_link: New avatar link to update, if any.
-        :type neue_Avatar_link: str, optional
-        :return: Returns a success message if the room information is updated
-                 successfully, otherwise returns an error message if no update
-                 fields are provided or if a database error occurs.
-        :rtype: str
-        """
-        try:
-            with init_connection() as con:
-                cur = con.cursor()
-                update_fields = []
-                parameters = []
+            # Optional: Delete the old entry explicitly
+            cur.execute("DELETE FROM Avatar_information WHERE Nutzername = ?", (Nutzername,))
 
-            if neue_Nutzername:
-                update_fields.append("Nutzername = ?")
-                parameters.append(neue_Nutzername)
-            if neue_Avatar_link:
-                update_fields.append("Avatar_Link = ?")
-                parameters.append(neue_Avatar_link)
+            # Insert the new entry (this automatically replaces any existing entry)
+            cur.execute("INSERT INTO Avatar_information (Nutzername, Avatar_link) VALUES (?, ?)",
+                        (Nutzername, Avatar_link))
 
-            if not update_fields:
-                return "Keine Aktualisierungsdaten vorhanden."
-
-            sql_query = f"UPDATE Avatar_information SET {', '.join(update_fields)} WHERE ID = ?"
-            parameters.append(Raum)
-            cur.execute(sql_query, parameters)
             con.commit()
-            return "Raum erfolgreich aktualisiert."
+            return "Avatar erfolgreich erstellt."
+    except sqlite3.Error as e:
+        return f"Fehler beim erstellen des Avatars: {e}"
 
-        except sqlite3.Error as e:
-            return f"Fehler beim Aktualisieren des Raumes: {e}"
+
+def get_avatar_info(Nutzername):
+    """
+    Holt die Avatar-Informationen für eine gegebene Avatar_id aus der Tabelle `Avatar_Informationen`.
+
+    :param Avatar_id: Die ID des Avatars, dessen Informationen abgerufen werden sollen.
+    :return: Ein Dictionary mit den Avatar-Daten oder eine Fehlermeldung, falls keine Daten gefunden wurden.
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+
+            # SQL-Abfrage, um Avatar-Informationen zu erhalten
+            cur.execute("SELECT Nutzername, Avatar_link FROM Avatar_information WHERE Nutzername = ?", (Nutzername,))
+
+            # Einzeln abgerufene Zeile
+            row = cur.fetchone()
+
+            if row:
+                # Wenn die Zeile gefunden wurde, als Dictionary zurückgeben
+                return row[1]
+            else:
+                # Falls keine Zeile gefunden wird
+                return None
+    except sqlite3.Error as e:
+        return None

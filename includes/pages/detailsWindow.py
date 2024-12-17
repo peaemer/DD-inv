@@ -224,7 +224,7 @@ class detailsWindow(tk.Frame):
         # Combobox statt Entry
         room_values = []
         for room in db.fetch_all_rooms():
-            room_values.append(room['Raum'] + " - " + room['Ort'])
+            room_values.append(room['Raum'])
         self.room_combobox_details_window = ttk.Combobox(input_frame_details_window, values=room_values,
                                                     font=("Arial", size_details_window))
         self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
@@ -319,7 +319,7 @@ class detailsWindow(tk.Frame):
             """
             print("Übergebene Daten:", data)
             from .lendPopup import lend_popup
-            lend_popup(self, data)
+            lend_popup(self, data, controller)
 
         def return_item(data):
             """
@@ -337,7 +337,10 @@ class detailsWindow(tk.Frame):
                                den Zustand der Anwendung verwaltet.
             :type controller: beliebiger Typ
             """
-            db.update_hardware_by_ID(cache.selected_ID, neue_Ausgeliehen_von=None)
+            db.update_hardware_by_ID(cache.selected_ID, neue_Ausgeliehen_von=" ")
+            from .mainPage import mainPage
+            mainPage.update_treeview_with_data()
+            controller.show_frame(mainPage)
 
         from ._avatarManager import resource_path
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/Aktualisieren.png"))
@@ -346,14 +349,17 @@ class detailsWindow(tk.Frame):
         self.return_btn = tk.PhotoImage(file=resource_path("./includes/assets/Zurueckgeben.png"))
 
         # Buttons in ein separates Frame
-        global button_frame_add_item_popup, lend_button
+        global button_frame_add_item_popup, lend_button, ret_button
         button_frame_add_item_popup = tk.Frame(self, background="white")
         button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
-        self.lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
+        lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
                                 bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                 command=lambda: lend({"name": self.name_entry_details_window.get()}))
-        self.lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+
+        ret_button = tk.Button(button_frame_add_item_popup, image=self.return_btn,
+                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                                command=lambda: return_item({"name": self.name_entry_details_window.get()}))
 
 
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
@@ -393,31 +399,26 @@ class detailsWindow(tk.Frame):
         global i
         i = 0
         tree_details_window.delete(*tree_details_window.get_children())
-        if db.fetch_ausleih_historie_by_id(cache.selected_ID):
-            for entry in db.fetch_ausleih_historie_by_id(cache.selected_ID):
-                i += 1
-                tag = "evenrow" if i % 2 == 0 else "oddrow"
-                tree_details_window.insert(
-                    "",
-                    "end",
-                    values=(entry['Ausgeliehen_am'], entry['Nutzername']),
-                    tags=(tag,)
-                )
+        if db.fetch_ausleih_historie():
+            for entry in db.fetch_ausleih_historie():
+                if entry["Hardware_ID"] == cache.selected_ID:
+                    i += 1
+                    tag = "evenrow" if i % 2 == 0 else "oddrow"
+                    tree_details_window.insert(
+                        "",
+                        "end",
+                        values=(entry['Ausgeliehen_am'], entry['Nutzername']),
+                        tags=(tag,)
+                    )
 
-        if db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == "":
-            if hasattr(self, "lend_button"):
-                self.lend_button.pack_forget()
-            self.lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
-                                   bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                   command=lambda: self.lend({"name": self.name_entry_details_window.get()}))
-            self.lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+        if db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == "" or db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == " ":
+            lend_button.pack_forget()
+            ret_button.pack_forget()
+            lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
         else:
-            if hasattr(self, "lend_button"):
-                self.lend_button.pack_forget()
-            self.lend_button = tk.Button(button_frame_add_item_popup, image=self.return_btn,
-                                    bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                    command=lambda: self.return_item({"name": self.name_entry_details_window.get()}))
-            self.lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+            lend_button.pack_forget()
+            ret_button.pack_forget()
+            ret_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
         # Daten in die Entry-Felder einfügen
         self.service_tag_entry_details_window.delete(0, tk.END)

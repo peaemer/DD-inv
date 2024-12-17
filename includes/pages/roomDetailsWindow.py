@@ -226,7 +226,14 @@ class roomDetailsWindow(tk.Frame):
                     Löscht Benutzereinträge aus der Datenbank und erneuert die entsprechende
                     Anzeige im adminUserWindow-Frame.
             """
-            db.delete_room(self.room_num_entry.get())
+            state = True
+            for item in db.fetch_hardware():
+                if item['Raum'] == self.room_num_entry.get():
+                    state = False
+            if state:
+                db.delete_room(self.room_num_entry.get())
+            else:
+                messagebox.showerror("Abgebrochen", "Es befinden sich noch sachen in den Räumen")
             from .adminRoomWindow import adminRoomWindow
             adminRoomWindow.update_treeview_with_data()
             controller.show_frame(adminRoomWindow)

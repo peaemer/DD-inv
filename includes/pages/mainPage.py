@@ -581,7 +581,7 @@ class mainPage(tk.Frame):
         """
 
         # Überprüfe die Benutzergruppe
-        if cache.user_group == "Admin":
+        if cache.user_group_data['ADMIN_FEATURE']:
             # Überprüfe, ob der Admin-Button bereits existiert
             if not hasattr(self, "admin_button"):
                 # Erstelle den Admin-Button, wenn er noch nicht existiert

@@ -7,8 +7,9 @@ from datetime import datetime
 import cache
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
+from main import ddINV
 
-def lend_popup(parent, data):
+def lend_popup(parent, data, controller: ddINV):
     """
     Erstellt ein modales Popup-Fenster zur Verwaltung von Ausleihvorgängen. Das Fenster
     zeigt ein Formular zur Eingabe von Ausleihdetails, einschließlich Name des Objekts,
@@ -71,9 +72,14 @@ def lend_popup(parent, data):
         """
         item = name_entry.get().strip()
         borrower = entry.get().strip()
-        #lend_date = calEntry.get().strip()
+        lend_date = time_entry.get().strip()
         print(f"DEBUG: Item: {item}, Borrower: {borrower}, Date:")
-        #lendupdate
+        print(cache.selected_ID)
+        db.create_ausleih_historie(cache.selected_ID, borrower, lend_date)
+        db.update_hardware_by_ID(cache.selected_ID, neue_Ausgeliehen_von=borrower)
+        from .mainPage import mainPage
+        mainPage.update_treeview_with_data()
+        controller.show_frame(mainPage)
         popup.destroy()  # Schließt das Popup nach Bestätigung
 
 

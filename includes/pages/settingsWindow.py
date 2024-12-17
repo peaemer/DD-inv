@@ -197,10 +197,15 @@ def pop_up_settings(parent, controller):
     profile_image_url.grid(row=1, column=1, pady=40, sticky="ne")
 
     # Importieren der Funktion URL
-    from ._avatarManager import load_image_from_url
+    from ._avatarManager import loadImage
 
     # Laden des Bildes für Profile Btn
     parent.btn_image_set_profile_picture_settings = tk.PhotoImage(file="./includes/assets/SetProfileSettings.png")
+
+    def setAvatar():
+        parent.avatar_new = loadImage(parent=parent, image=profile_image_url.get(), width=128, height=128)
+        db.upsert_avatar(cache.user_name, profile_image_url.get())
+        parent.settings_img_label.configure(image=parent.avatar_new)
 
     # Button zum Aktualisieren des Profilbilds
     update_image_button = tk.Button(frame_profile,
@@ -209,7 +214,7 @@ def pop_up_settings(parent, controller):
                                     bg="white",
                                     borderwidth=0,
                                     cursor="hand2",
-                                    command=load_image_from_url)
+                                    command=lambda: setAvatar())
     update_image_button.grid(row=3, column=1, pady=10, sticky="ne")
 
     # def zum Abmelden des Benutzers

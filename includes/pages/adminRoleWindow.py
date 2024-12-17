@@ -309,7 +309,7 @@ class adminRoleWindow(tk.Frame):
         role_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global role_tree
-        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13"), show="headings")
+        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16"), show="headings")
 
         # Scrollbar erstellen
         role_tree_scroll = ctk.CTkScrollbar(
@@ -346,7 +346,10 @@ class adminRoleWindow(tk.Frame):
             ("Gruppe Bearbeiten", 170),
             ("Rollen Erstellen", 160),
             ("Rollen Bearbeiten", 160),
-            ("Rollen Löschen", 160)
+            ("Rollen Löschen", 160),
+            ("User Löschen", 160),
+            ("User Bearbeiten", 160),
+            ("User Erstellen", 160)
         ]
 
         # Treeview-Spalten dynamisch erstellen
@@ -417,15 +420,18 @@ class adminRoleWindow(tk.Frame):
                     "✔" if entry['ANSEHEN'] == 'True' else "❌",
                     "✔" if entry['ROLLE_LOESCHBAR'] == 'True' else "❌",
                     "✔" if entry['ADMIN_FEATURE'] == 'True' else "❌",
-                    "✔" if entry['LOESCHEN'] == 'True' else "❌",
-                    "✔" if entry['BEARBEITEN'] == 'True' else "❌",
-                    "✔" if entry['ERSTELLEN'] == 'True' else "❌",
+                    "✔" if entry['ENTRY_LOESCHEN'] == 'True' else "❌",
+                    "✔" if entry['ENTRY_BEARBEITEN'] == 'True' else "❌",
+                    "✔" if entry['ENTRY_ERSTELLEN'] == 'True' else "❌",
                     "✔" if entry['GRUPPEN_LOESCHEN'] == 'True' else "❌",
                     "✔" if entry['GRUPPEN_ERSTELLEN'] == 'True' else "❌",
                     "✔" if entry['GRUPPEN_BEARBEITEN'] == 'True' else "❌",
                     "✔" if entry['ROLLEN_ERSTELLEN'] == 'True' else "❌",
                     "✔" if entry['ROLLEN_BEARBEITEN'] == 'True' else "❌",
                     "✔" if entry['ROLLEN_LOESCHEN'] == 'True' else "❌",
+                    "✔" if entry['USER_LOESCHEN'] == 'True' else "❌",
+                    "✔" if entry['USER_BEARBEITEN'] == 'True' else "❌",
+                    "✔" if entry['USER_ERSTELLEN'] == 'True' else "❌",
                 ),
                 tags=(tag,)
             )
