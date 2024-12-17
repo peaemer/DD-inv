@@ -131,8 +131,8 @@ def add_room_popup(parent):
         add_popup.destroy()
 
     from ._avatarManager import resource_path
-    parent.add_btn_add_item_popup = tk.PhotoImage(file=resource_path("assets/HinzuBig_blue.png"))
-    parent.exit_btn_add_item_popup = tk.PhotoImage(file=resource_path("assets/AbbrechenButton.png"))
+    parent.add_btn_add_item_popup = tk.PhotoImage(file=resource_path("includes/assets/HinzuBig_blue.png"))
+    parent.exit_btn_add_item_popup = tk.PhotoImage(file=resource_path("includes/assets/AbbrechenButton.png"))
 
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")
     button_frame_add_item_popup.grid(row=2, column=0, pady=20, sticky=tk.NSEW)
