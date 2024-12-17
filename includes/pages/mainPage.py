@@ -206,8 +206,8 @@ class mainPage(tk.Frame):
         self.header_frame.grid_columnconfigure(1, weight=2)  # Zentrale Spalte
         self.header_frame.grid_columnconfigure(2, weight=1)  # Platz rechts
         self.header_frame.grid_rowconfigure(0, weight=1)
-
-        self.srh_head = tk.PhotoImage(file="includes/assets/srh.png")
+        from ._avatarManager import resource_path
+        self.srh_head = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
 
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(self.header_frame, image=self.srh_head, background="#DF4807", foreground="white")
@@ -218,7 +218,7 @@ class mainPage(tk.Frame):
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
-        self.log_out_btn = tk.PhotoImage(file="includes/assets/ausloggen.png")
+        self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ausloggen.png"))
 
         # Füge einen Button mit dem Bild hinzu
         log_out_button = tk.Button(self.header_frame,
@@ -247,7 +247,8 @@ class mainPage(tk.Frame):
         options_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         # Platzieren des Adminbuttons
-        self.admin_btn = tk.PhotoImage(file="includes/assets/Key.png")
+        from ._avatarManager import resource_path
+        self.admin_btn = tk.PhotoImage(file=resource_path("./includes/assets/Key.png"))
 
         # Erstellen des Grayframes für linke Seite
         grey_frame_side = tk.Frame(self, background=srhGrey)
@@ -308,13 +309,13 @@ class mainPage(tk.Frame):
         search_frame.grid_columnconfigure(2, weight=0)
 
         # Btn Erstellen def mit Image und grid
-        self.add_btn = tk.PhotoImage(file="includes/assets/Erstellen.png")
+        self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Erstellen.png"))
         add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
                                activebackground="white", command=add_item)
         add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         # Search Btn def und neben dem Entry platzieren
-        self.search_btn = tk.PhotoImage(file="includes/assets/SearchButton.png")
+        self.search_btn = tk.PhotoImage(file=resource_path("./includes/assets/SearchButton.png"))
         search_button = tk.Button(search_frame,
                                   image=self.search_btn,
                                   bd=0,

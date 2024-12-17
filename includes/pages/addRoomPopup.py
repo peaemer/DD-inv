@@ -39,7 +39,8 @@ def add_room_popup(parent):
     add_popup.resizable(False, False)
 
     try:
-        add_popup.iconbitmap("assets/srhIcon.ico")
+        from ._avatarManager import resource_path
+        add_popup.iconbitmap(resource_path("assets/srhIcon.ico"))
     except Exception as e:
         print(f"Fehler beim Laden des Icons: {e}")
 
@@ -110,7 +111,7 @@ def add_room_popup(parent):
         if not room_entry_add_room_popup.get() or room_entry_add_room_popup.get() == "" or not location_entry_add_room_popup.get() or location_entry_add_room_popup.get() == "":
             error_label.configure(text="Please enter all required fields")
         else:
-            db.create_room(room_entry_add_room_popup.get(), location_entry_add_room_popup.get())
+            sqlapi.create_room(room_entry_add_room_popup.get(), location_entry_add_room_popup.get())
             from .adminRoomWindow import adminRoomWindow
             adminRoomWindow.update_treeview_with_data()
             add_popup.destroy()
@@ -129,8 +130,9 @@ def add_room_popup(parent):
         """
         add_popup.destroy()
 
-    parent.add_btn_add_item_popup = tk.PhotoImage(file="assets/HinzuBig_blue.png")
-    parent.exit_btn_add_item_popup = tk.PhotoImage(file="assets/AbbrechenButton.png")
+    from ._avatarManager import resource_path
+    parent.add_btn_add_item_popup = tk.PhotoImage(file=resource_path("assets/HinzuBig_blue.png"))
+    parent.exit_btn_add_item_popup = tk.PhotoImage(file=resource_path("assets/AbbrechenButton.png"))
 
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")
     button_frame_add_item_popup.grid(row=2, column=0, pady=20, sticky=tk.NSEW)

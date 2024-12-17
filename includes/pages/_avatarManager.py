@@ -1,10 +1,10 @@
 import base64
-
+import os
+import sys
 import requests
 import socket
 from io import BytesIO
 from PIL import Image, ImageTk
-
 import cache
 
 
@@ -93,3 +93,13 @@ def loadImage(parent, image: str = None, width: int = 48, height: int = 48):
 
         parent.img_tk = ImageTk.PhotoImage(img)
         return parent.img_tk
+
+def resource_path(relative_path):
+    """ Get the absolute path to resource files (supports PyInstaller and development). """
+    try:
+        # PyInstaller places files in a temporary folder (_MEIPASS)
+        base_path = sys._MEIPASS
+    except AttributeError:
+        # Development mode
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)

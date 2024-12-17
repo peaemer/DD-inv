@@ -15,7 +15,8 @@ class ddINV(tk.Tk):
         self.geometry(f'{self.winfo_screenwidth()}x{self.winfo_screenheight()}+0+0')
         self.minsize(1280, 720)
         self.maxsize(1920, 1080)
-        # self.iconbitmap("assets/srhIcon.ico")
+        from includes.pages._avatarManager import resource_path
+        self.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
 
         # Create a container for frames
         self.container = tk.Frame(self)

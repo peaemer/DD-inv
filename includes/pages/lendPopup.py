@@ -55,7 +55,8 @@ def lend_popup(parent, data):
 
     # Icon setzen (optional)
     try:
-        popup.iconbitmap("includes/assets/srhIcon.ico")
+        from ._avatarManager import resource_path
+        popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
     except Exception as e:
         print(f"Fehler beim Laden des Icons: {e}")
 
