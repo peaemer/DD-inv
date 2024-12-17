@@ -342,7 +342,7 @@ class mainPage(tk.Frame):
         # style der Tabelle
         tree_style = ttk.Style()
         tree_style.theme_use("default") #alt, classic,xpnative,winnative, default
-        tree_style.configure("Treeview.Heading",rowheight=50, font=("Arial", 20))
+        tree_style.configure("Treeview.Heading",rowheight=50, font=("Arial", 16))
         tree_style.configure("Treeview", rowheight=40, font=("Arial", 14))
 
         # Frame für die Tabelle und Scrollbar
@@ -355,7 +355,7 @@ class mainPage(tk.Frame):
         tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         # Treeview erstellen
-        tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings")
+        tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"),style="Treeview", show="headings")
 
         # Scrollbar erstellen
         scroll = ctk.CTkScrollbar(

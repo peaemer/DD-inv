@@ -77,27 +77,6 @@ class adminRoleWindow(tk.Frame):
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
 
-        def add_role():
-            """
-            Diese Klasse repräsentiert das Hauptfenster zur Verwaltung von
-            Benutzerkonten innerhalb der Anwendung. Sie erbt von `tk.Frame`
-            und dient als Grundlage für die Erstellung der Benutzeroberfläche
-            zur Verwaltung der Benutzer.
-
-            Attribute
-            ----------
-            Keine spezifischen Attribute neben denen, die von `tk.Frame`
-            geerbt wurden.
-
-            Notes
-            -----
-            Die spezifischen Funktionen dieser Klasse, einschließlich der
-            Methoden und Verhalten, die auf diese Klasse angewandt werden,
-            müssen in den jeweiligen Methodendokumentationen definiert werden.
-            """
-            from .addUserPopup import add_user_popup
-            add_user_popup(self)
-
         def on_entry_click(event):
             """
             Diese Klasse repräsentiert ein Administrationsfenster für Benutzer in einer
@@ -348,7 +327,7 @@ class adminRoleWindow(tk.Frame):
         columns = [
             ("ID", 20),
             ("Rolle", 100),
-            ("Ansehen", 100),
+            ("Ansehen", 90),
             ("Rolle Löschbar", 150),
             ("Admin Feature", 150),
             ("Löschen", 100),
@@ -356,7 +335,7 @@ class adminRoleWindow(tk.Frame):
             ("Erstellen", 100),
             ("Gruppe Löschen", 160),
             ("Gruppe Erstellen", 160),
-            ("Gruppe Bearbeiten", 160),
+            ("Gruppe Bearbeiten", 170),
             ("Rollen Erstellen", 160),
             ("Rollen Bearbeiten", 160),
             ("Rollen Löschen", 160)
