@@ -158,7 +158,7 @@ def add_item_popup(parent):
         name = name_entry_add_item_popup.get() if name_entry_add_item_popup.get() else ""
         damage = damaged_button_add_item_popup.get() if damaged_button_add_item_popup.get() else ""
         if type == "" or room == "Raum auswählen" or name == "":
-            error_label.configure(text="Please enter all required fields (type, room, name)")
+            error_label.configure(text="Bitte fülle alle Felder aus (Typ, Raum, Name)")
         else:
             print(db.create_hardware(tag,type,name,damage,None,room))
             from .mainPage import mainPage
