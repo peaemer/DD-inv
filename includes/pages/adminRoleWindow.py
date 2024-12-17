@@ -193,8 +193,8 @@ class adminRoleWindow(tk.Frame):
             :param controller: Eine Referenz auf den Controller, der mehrere Fenster verwaltet.
             :type controller: object
             """
-            from .addUserPopup import add_user_popup
-            add_user_popup(self)
+            from .addRolePopup import add_role_popup
+            add_role_popup(self)
 
         global tree
 
@@ -268,9 +268,6 @@ class adminRoleWindow(tk.Frame):
         role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",
                                  text_color="black", font=("Arial", 20), hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
-
-
-
 
         middle_frame = tk.Frame(self, background="white")
         middle_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")

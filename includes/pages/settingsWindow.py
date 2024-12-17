@@ -528,7 +528,7 @@ def pop_up_settings(parent, controller):
     build_label.grid(row=19, column=0, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Info
-    buttons_data_info = [{"name": "VersionBuild   V.0.0.364 (Alpha)", "url": "https://github.com/peaemer/DD-inv/commit/a1d82b49ad1b238ff2567aec851bcf03cb66af03", "image": "includes/assets/DD-Inv_Logo.png"},
+    buttons_data_info = [{"name": "VersionBuild   V.0.1.394 (Beta)", "url": "https://github.com/peaemer/DD-inv/commit/86b0a3c14ab5a750e16be805519979630d45d596", "image": "includes/assets/DD-Inv_Logo.png"},
                          {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv", "image": "includes/assets/GitHubSettings.png"}]
 
     # Funktion zum oeffnen der URL
