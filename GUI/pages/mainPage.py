@@ -105,6 +105,7 @@ class mainPage(tk.Frame):
             :param controller: Der Hauptcontroller für die Steuerung der
                                Ansicht in der Anwendung.
             """
+            print(f"[MainPageEvent]:search")
             search_entrys = []
             for entry in sqlapi.fetch_hardware():
                 for value in entry:
@@ -158,11 +159,12 @@ class mainPage(tk.Frame):
             :type event: tk.Event
 
             """
-            print("""[MainPage]:on_entry_click""")
+            print(f"[MainPageEvent]:on_entry_click")
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
             start_search(cache.loaded_history, search_entry, dropdown, search_entry_var.get(),cache.user_name)
+            dropdown_overlay_frame.tkraise(tree_frame)
 
         def on_key_press(var1:str, var2:str, var3:str):
             """
@@ -177,13 +179,14 @@ class mainPage(tk.Frame):
             :parameter parent: Das übergeordnete Tkinter-Widget, dem dieses Frame hinzugefügt wird.
             :parameter controller: Ein Controller-Objekt, das zur Steuerung der Anwendungslogik verwendet wird.
             """
-            print(f"""[MainPage]: executing on_key_press with searchbar text "{search_entry_var.get()}" """)
-            if search_entry_var.get() == '':
+            print(f"[MainPageEvent]:on_key_press")
+            if search_entry_var.get() == '' or search_entry_var.get() == 'Suche':
                 return
-            if dropdown.size()>0:
-                if not dropdown.get(0):
-                    print('len test')
-                    return
+            print(f"""[MainPage]: executing on_key_press with searchbar text "{search_entry_var.get()}" """)
+            #if dropdown.size()>0:
+            #    if not dropdown.get(0):
+            #        print('len test')
+            #        return
             update_search(cache.loaded_history, dropdown, search_entry_var.get(), cache.user_name)
 
         def on_focus_out():
@@ -202,13 +205,13 @@ class mainPage(tk.Frame):
                 anderer Interaktionen zwischen Subkomponenten der GUI.
             :type controller: Objekt
             """
-
+            print(f"[MainPageEvent]:on_focus_out")
             if search_entry_var.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.configure(fg_color=srhGrey)  # Textfarbe auf grau ändern
                 search_entry.configure(bg_color='white')
             sb.on_searchbar_lost_focus(search_entry, search_entry_var, dropdown)
-            #sb.force_stop_search(self, search_entry, dropdown)
+            tree_frame.tkraise(dropdown_overlay_frame)
 
         global tree
 
@@ -320,9 +323,8 @@ class mainPage(tk.Frame):
             print(f"Neue Größe - Breite: {event.x} Höhe: {event.y}")
         print(show_size)
 
-
-
-        dropdown_overlay_frame:tk.Frame = tk.Frame(middle_frame, background="")
+        dropdown_overlay_frame:tk.Frame = tk.Frame(middle_frame, background="white")
+        #dropdown_overlay_frame.configure(background='blue')
         search_frame = tk.Frame(middle_frame, bg="white")
 
         #erstelle den hinufügen-button im auf dem search frame
@@ -332,14 +334,17 @@ class mainPage(tk.Frame):
         search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
 
         #erstellen des dr
-        dropdown: CTkListbox = CTkListbox(search_frame, font=("Arial", 20), bg_color="white", border_color=srhGrey, corner_radius=10)
+        dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame, font=("Arial", 20), bg_color="white", border_color=srhGrey, corner_radius=10)
         search_entry_var: tk.StringVar = tk.StringVar()
-        search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=20, border_width=0,textvariable=search_entry_var)
+        search_entry = ctk.CTkEntry(search_frame, text_color="black", font=("Arial", 27), corner_radius=20, border_width=0,textvariable=search_entry_var)
+
+        dropdown_overlay_frame.columnconfigure(0, weight=1)
+        dropdown_overlay_frame.rowconfigure(0, weight=1)
 
         #setze die grid layouts für den frame ser suchleiste und den frame des such-dropdowns
-        dropdown_overlay_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
-        dropdown_overlay_frame.grid_rowconfigure(1, weight=1)
-        dropdown_overlay_frame.grid_columnconfigure(0, weight=1)
+        dropdown_overlay_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.W +tk.E)
+        dropdown_overlay_frame.grid_rowconfigure(1, weight=2)
+        dropdown_overlay_frame.grid_columnconfigure(0, weight=0)
         dropdown_overlay_frame.grid_columnconfigure(1, weight=0)
 
         search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
@@ -352,16 +357,12 @@ class mainPage(tk.Frame):
         add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-
-
-
-        # Events für Suchleiste und Fokusverlust hinzufügen
+        # Events für Suchleiste und das such-dropdown
         search_entry.bind('<FocusIn>', lambda _: on_entry_click())
         search_entry_var.trace_add("write", on_key_press)
-        search_entry.bind('<FocusOut>', lambda _: on_focus_out())
-        dropdown.bind("<<ListboxSelect>>", lambda  _: sb.on_dropdown_select(search_entry, dropdown))
+        #search_entry.bind('<FocusOut>', lambda _: on_focus_out())
+        dropdown.bind("<<ListboxSelect>>", lambda  var: sb.on_dropdown_select(cache.loaded_history, search_entry, dropdown, dropdown_overlay_frame, cache.user_name))
 
-        # Entry-Feld mit Platzhalter-Text
         cache.loaded_history = json.loads(sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) else """[{}]""")
         search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
