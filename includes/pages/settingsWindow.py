@@ -136,8 +136,6 @@ def pop_up_settings(parent, controller):
     # Profilbild zum Laden importieren
     from ._avatarManager import loadImage
     parent.avatar = loadImage(parent=parent, width=128, height=128)
-    label = tk.Label(frame_within_picture, image=parent.avatar)
-    label.grid(row=0)
     parent.settings_img_label = tk.Label(frame_profile, image=parent.avatar)
     parent.settings_img_label.grid()
 
