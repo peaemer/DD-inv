@@ -113,6 +113,7 @@ class mainPage(tk.Frame):
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
             sb.finish_search(cache.loaded_history,search_entry,dropdown, self, search_entry_var.get(),cache.user_name)
+            tree_frame.tkraise(dropdown_overlay_frame)
 
         def add_item():
             """
@@ -204,7 +205,7 @@ class mainPage(tk.Frame):
 
             if search_entry_var.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                search_entry.configure(fg_color='grey')  # Textfarbe auf grau ändern
+                search_entry.configure(fg_color=srhGrey)  # Textfarbe auf grau ändern
                 search_entry.configure(bg_color='white')
             sb.on_searchbar_lost_focus(search_entry, search_entry_var, dropdown)
             #sb.force_stop_search(self, search_entry, dropdown)
@@ -319,51 +320,50 @@ class mainPage(tk.Frame):
             print(f"Neue Größe - Breite: {event.x} Höhe: {event.y}")
         print(show_size)
 
-        # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        search_frame = tk.Frame(middle_frame, bg="white")
-        search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
+
+        dropdown_overlay_frame:tk.Frame = tk.Frame(middle_frame, background="")
+        search_frame = tk.Frame(middle_frame, bg="white")
+
+        #erstelle den hinufügen-button im auf dem search frame
+        self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
+        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",activebackground="white", command=add_item)
+        self.search_btn = tk.PhotoImage(file="assets/SearchButton.png")
+        search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
+
+        #erstellen des dr
+        dropdown: CTkListbox = CTkListbox(search_frame, font=("Arial", 20), bg_color="white", border_color=srhGrey, corner_radius=10)
+        search_entry_var: tk.StringVar = tk.StringVar()
+        search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=20, border_width=0,textvariable=search_entry_var)
+
+        #setze die grid layouts für den frame ser suchleiste und den frame des such-dropdowns
+        dropdown_overlay_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
+        dropdown_overlay_frame.grid_rowconfigure(1, weight=1)
+        dropdown_overlay_frame.grid_columnconfigure(0, weight=1)
+        dropdown_overlay_frame.grid_columnconfigure(1, weight=0)
+
+        search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
         search_frame.grid_columnconfigure(0, weight=0)
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
-        # Btn Erstellen def mit Image und grid
-        self.add_btn = tk.PhotoImage(file="assets/Erstellen.png")
-        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
-                               activebackground="white", command=add_item)
-        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
-
-        # Search Btn def und neben dem Entry platzieren
-        self.search_btn = tk.PhotoImage(file="assets/SearchButton.png")
-        search_button = tk.Button(search_frame,
-                                  image=self.search_btn,
-                                  bd=0,
-                                  relief=tk.FLAT,
-                                  bg="white",
-                                  activebackground="white",
-                                  command=search)
+        #setze die grid layaouts der buttons und der suchleiste im search-frame
         search_button.grid(padx=5, pady=5, row=0, column=0)
-
-        dropdown_var: tk.StringVar = tk.StringVar()
-        dropdown: CTkListbox = CTkListbox(search_frame, font=("Arial", 20), bg_color="white", border_color=srhGrey, corner_radius=10)
-        #dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
-
-        search_entry_var: tk.StringVar = tk.StringVar()
-        #search_entry = tk.Entry(search_frame, font=("Arial", 20), bg=srhGrey, bd=0, fg='grey', textvariable=search_entry_var)
-
-        # Entry-Feld mit Platzhalter-Text
-        search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=20, border_width=0,textvariable=search_entry_var)
+        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
-        cache.loaded_history = json.loads(sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) else """[{}]""")
-        search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
+
+
+
 
         # Events für Suchleiste und Fokusverlust hinzufügen
         search_entry.bind('<FocusIn>', lambda _: on_entry_click())
-        search_entry.bind('<FocusOut>', lambda _: on_focus_out())
-        #search_entry.bind('<Return>', search)
         search_entry_var.trace_add("write", on_key_press)
+        search_entry.bind('<FocusOut>', lambda _: on_focus_out())
         dropdown.bind("<<ListboxSelect>>", lambda  _: sb.on_dropdown_select(search_entry, dropdown))
 
+        # Entry-Feld mit Platzhalter-Text
+        cache.loaded_history = json.loads(sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) else """[{}]""")
+        search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # style der Tabelle
         tree_style = ttk.Style()
@@ -379,6 +379,7 @@ class mainPage(tk.Frame):
         tree_frame.grid_rowconfigure(1, weight=1)
         tree_frame.grid_columnconfigure(0, weight=1)  # Spalte für die Tabelle
         tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
+
 
         # Treeview erstellen
         tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"), show="headings")

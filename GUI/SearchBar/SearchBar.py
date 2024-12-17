@@ -77,7 +77,6 @@ def __scale_history_weights(loaded_history:list[dict[str, str]], search_term:str
 def __update_dropdown(new_items:List[str], dropdown:CTkListbox)->None:
     print(f"[SearchBar]:update dropdown")
     dropdown.grid(column=1, row=1, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
-    #dropdown.place(x=100,y=130)
     if dropdown:
         if dropdown.size() > 0:
             print(f"""[SearchBar][update dropdown]:removing items from dropdown""")
