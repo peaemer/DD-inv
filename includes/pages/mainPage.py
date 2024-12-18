@@ -344,7 +344,7 @@ class mainPage(tk.Frame):
         search_button.grid(padx=5, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
-        search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=20, border_width=0)
+        search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=corner, border_width=0)
         search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
