@@ -33,7 +33,7 @@ def add_role_popup(parent):
     center_y = int(screen_height / 2 - window_height / 2)
 
     add_popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
-    add_popup.resizable(False, False)
+    add_popup.resizable(True, True)
 
     try:
         add_popup.iconbitmap("includes/assets/srhIcon.ico")
@@ -60,135 +60,138 @@ def add_role_popup(parent):
     size_add_role_popup = 14
 
     # Admin
-    admin = tk.Label(input_frame_add_role_popup, text="Rolle",
-                     font=("Arial", size_add_role_popup), background="white")
-    admin.grid(row=0, column=1, padx=10, pady=20, sticky=tk.E)
+    admin = tk.Label(input_frame_add_role_popup,
+                     text="Rollenname",
+                     font=("Arial", size_add_role_popup),
+                     background="white")
+    admin.grid(row=0, column=0, pady=10, sticky="new")
 
-    parent.role_name_entry = tk.Entry(
-        input_frame_add_role_popup, background="#d9d9d9",
-        font=("Arial", size_add_role_popup), bd=0
-    )
-    parent.role_name_entry.grid(row=0, column=2, padx=20, pady=20, sticky=tk.W + tk.E)
+    parent.role_name_entry = ctk.CTkEntry(input_frame_add_role_popup,
+                                          fg_color="#d9d9d9",
+                                          text_color="black",
+                                          border_width=0)
+    parent.role_name_entry.grid(row=0, column=1, columnspan=2, pady=10, sticky="new")
 
     # Ansehen
-    view_label_roles_window = tk.Label(input_frame_add_role_popup, text="Ansehen",
+    view_label_roles_window = tk.Label(input_frame_add_role_popup,
+                                       text="Ansehen",
                                        font=("Arial", size_add_role_popup), background="white")
-    view_label_roles_window.grid(column=0, row=2, sticky=tk.W + tk.E, pady=10)
+    view_label_roles_window.grid(column=0, row=1, sticky=tk.W + tk.E, pady=10)
 
     parent.view = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.view.grid(column=1, row=2, sticky=tk.W + tk.E, pady=10)
+    parent.view.grid(column=1, row=1, sticky=tk.W + tk.E, pady=10)
 
     # Rolle Loeschbar
     delete_rl_label_roles_window = tk.Label(input_frame_add_role_popup, text="Rolle Löschbar",
                                             font=("Arial", size_add_role_popup), background="white")
-    delete_rl_label_roles_window.grid(column=0, row=3, sticky=tk.W + tk.E, pady=10)
+    delete_rl_label_roles_window.grid(column=0, row=2, sticky=tk.W + tk.E, pady=10)
 
     parent.delete_rl = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.delete_rl.grid(column=1, row=3, sticky=tk.W + tk.E, pady=10)
+    parent.delete_rl.grid(column=1, row=2, sticky=tk.W + tk.E, pady=10)
 
     # Admin Feature
     feature_label_roles_window = tk.Label(input_frame_add_role_popup, text="Admin Feature",
                                           font=("Arial", size_add_role_popup), background="white")
-    feature_label_roles_window.grid(column=0, row=4, sticky=tk.W + tk.E, pady=10)
+    feature_label_roles_window.grid(column=0, row=3, sticky=tk.W + tk.E, pady=10)
 
     parent.feature = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.feature.grid(column=1, row=4, sticky=tk.W + tk.E, pady=10)
+    parent.feature.grid(column=1, row=3, sticky=tk.W + tk.E, pady=10)
 
     # Loeschen
     delete_label_roles_window = tk.Label(input_frame_add_role_popup, text="Löschen",
                                          font=("Arial", size_add_role_popup), background="white")
-    delete_label_roles_window.grid(column=0, row=5, sticky=tk.W + tk.E, pady=10)
+    delete_label_roles_window.grid(column=0, row=4, sticky=tk.W + tk.E, pady=10)
 
     parent.delete = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.delete.grid(column=1, row=5, sticky=tk.W + tk.E, pady=10)
+    parent.delete.grid(column=1, row=4, sticky=tk.W + tk.E, pady=10)
 
     # Bearbeiten
     edit_label_roles_window = tk.Label(input_frame_add_role_popup, text="Bearbeiten",
                                        font=("Arial", size_add_role_popup), background="white")
-    edit_label_roles_window.grid(column=0, row=6, sticky=tk.W + tk.E, pady=10)
+    edit_label_roles_window.grid(column=0, row=5, sticky=tk.W + tk.E, pady=10)
 
     parent.edit = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.edit.grid(column=1, row=6, sticky=tk.W + tk.E, pady=10)
+    parent.edit.grid(column=1, row=5, sticky=tk.W + tk.E, pady=10)
 
     # Erstellen
     create_label_roles_window = tk.Label(input_frame_add_role_popup, text="Erstellen",
                                          font=("Arial", size_add_role_popup), background="white")
-    create_label_roles_window.grid(column=2, row=1, sticky=tk.W + tk.E, pady=10)
+    create_label_roles_window.grid(column=0, row=6, sticky=tk.W + tk.E, pady=10)
 
     parent.create = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.create.grid(column=3, row=1, sticky=tk.W + tk.E, pady=10)
+    parent.create.grid(column=1, row=6, sticky=tk.W + tk.E, pady=10)
 
     # Gruppe Loeschen
     delete_g_label_roles_window = tk.Label(input_frame_add_role_popup, text="Gruppe Löschen",
                                            font=("Arial", size_add_role_popup), background="white")
-    delete_g_label_roles_window.grid(column=2, row=2, sticky=tk.W + tk.E, pady=10)
+    delete_g_label_roles_window.grid(column=0, row=7, sticky=tk.W + tk.E, pady=10)
 
     parent.delete_g = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.delete_g.grid(column=3, row=2, sticky=tk.W + tk.E, pady=10)
+    parent.delete_g.grid(column=1, row=7, sticky=tk.W + tk.E, pady=10)
 
     # Gruppe Erstellen
     create_g_label_roles_window = tk.Label(input_frame_add_role_popup, text="Gruppe Erstellen",
                                            font=("Arial", size_add_role_popup), background="white")
-    create_g_label_roles_window.grid(column=2, row=3, sticky=tk.W + tk.E, pady=10)
+    create_g_label_roles_window.grid(column=2, row=1, sticky=tk.W + tk.E, pady=10)
 
     parent.create_g = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.create_g.grid(column=3, row=3, sticky=tk.W + tk.E, pady=10)
+    parent.create_g.grid(column=3, row=1, sticky=tk.W + tk.E)
 
     # Gruppe Bearbeiten
     edit_g_label_roles_window = tk.Label(input_frame_add_role_popup, text="Gruppe Bearbeiten",
                                          font=("Arial", size_add_role_popup), background="white")
-    edit_g_label_roles_window.grid(column=2, row=4, sticky=tk.W + tk.E, pady=10)
+    edit_g_label_roles_window.grid(column=2, row=2, sticky=tk.W + tk.E)
 
     parent.edit_g = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.edit_g.grid(column=3, row=4, sticky=tk.W + tk.E, pady=10)
+    parent.edit_g.grid(column=3, row=2, sticky=tk.W + tk.E)
 
     # Rollen Erstellen
     create_r_label_roles_window = tk.Label(input_frame_add_role_popup, text="Rollen Erstellen",
                                            font=("Arial", size_add_role_popup), background="white")
-    create_r_label_roles_window.grid(column=2, row=5, sticky=tk.W + tk.E, padx=20, pady=10)
+    create_r_label_roles_window.grid(column=2, row=3, sticky=tk.W + tk.E)
 
     parent.create_r = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.create_r.grid(column=3, row=5, sticky=tk.W + tk.E, padx=20, pady=10)
+    parent.create_r.grid(column=3, row=3, sticky=tk.W + tk.E)
 
     # Rollen Bearbeiten
     edit_r_label_roles_window = tk.Label(input_frame_add_role_popup, text="Rollen Bearbeiten",
                                          font=("Arial", size_add_role_popup), background="white")
-    edit_r_label_roles_window.grid(column=2, row=6, sticky=tk.W + tk.E, padx=20, pady=10)
+    edit_r_label_roles_window.grid(column=2, row=4, sticky=tk.W + tk.E)
 
     parent.edit_r = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.edit_r.grid(column=3, row=6, sticky=tk.W + tk.E, padx=20, pady=10)
+    parent.edit_r.grid(column=3, row=4, sticky=tk.W + tk.E)
 
     # Rollen Loeschen
     delete_r_label_roles_window = tk.Label(input_frame_add_role_popup, text="Rolle Löschen",
                                            font=("Arial", size_add_role_popup), background="white")
-    delete_r_label_roles_window.grid(column=2, row=7, sticky=tk.W + tk.E, padx=20, pady=10)
+    delete_r_label_roles_window.grid(column=2, row=5, sticky=tk.W + tk.E)
 
     parent.delete_r = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.delete_r.grid(column=3, row=7, sticky=tk.W + tk.E, padx=20, pady=10)
+    parent.delete_r.grid(column=3, row=5, sticky=tk.W + tk.E)
 
-    #
+    # Benutzer Loeschen
     delete_u_label_roles_window = tk.Label(input_frame_add_role_popup, text="User Löschen",
                                            font=("Arial", size_add_role_popup), background="white")
-    delete_u_label_roles_window.grid(column=2, row=8, sticky=tk.W + tk.E, padx=20, pady=10)
+    delete_u_label_roles_window.grid(column=2, row=6, sticky=tk.W + tk.E)
 
     parent.delete_u = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.delete_u.grid(column=3, row=8, sticky=tk.W + tk.E, padx=20, pady=10)
+    parent.delete_u.grid(column=3, row=6, sticky=tk.W + tk.E)
 
-    #
+    # Benutzer Bearbeiten
     edit_u_label_roles_window = tk.Label(input_frame_add_role_popup, text="User Bearbeiten",
                                            font=("Arial", size_add_role_popup), background="white")
-    edit_u_label_roles_window.grid(column=2, row=9, sticky=tk.W + tk.E, padx=20, pady=10)
+    edit_u_label_roles_window.grid(column=2, row=7, sticky=tk.W + tk.E)
 
     parent.edit_u = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.edit_u.grid(column=3, row=9, sticky=tk.W + tk.E, padx=20, pady=10)
+    parent.edit_u.grid(column=3, row=7, sticky=tk.W + tk.E)
 
-    #
+    # Benuzter Erstellen
     create_u_label_roles_window = tk.Label(input_frame_add_role_popup, text="User Erstellen",
                                            font=("Arial", size_add_role_popup), background="white")
-    create_u_label_roles_window.grid(column=2, row=10, sticky=tk.W + tk.E, padx=20, pady=10)
+    create_u_label_roles_window.grid(column=2, row=8, sticky=tk.W + tk.E)
 
     parent.create_u = ctk.CTkCheckBox(input_frame_add_role_popup, text_color="white")
-    parent.create_u.grid(column=3, row=10, sticky=tk.W + tk.E, padx=20, pady=10)
+    parent.create_u.grid(column=3, row=8, sticky=tk.W + tk.E)
 
     # Buttons
     def submit_entry():

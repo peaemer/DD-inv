@@ -2,6 +2,8 @@ import tkinter as tk
 import webbrowser
 from tkinter import ttk
 from tkinter import filedialog
+from urllib.request import URLopener
+
 import customtkinter as ctk
 from requests.utils import parse_dict_header
 
@@ -53,7 +55,7 @@ def pop_up_settings(parent, controller):
     # erstellt ein neues Fenster
     popup = tk.Toplevel(parent)
     popup.title("Einstellungen")
-    popup.geometry("650x550")  # groeße des Fensters
+    popup.geometry("850x550")  # groeße des Fensters
     popup.configure(background="white")  # Hintergrundfarbe
     popup.transient(parent)  # Setzt Hauptfenster in Hintergrund
     popup.grab_set()  # Fokus auf Popup
@@ -62,7 +64,7 @@ def pop_up_settings(parent, controller):
     # Bildschirmbreite und hoehe ermitteln (fenster mittig auf Bildschirm setzten)
     screen_width = parent.winfo_screenwidth()
     screen_height = parent.winfo_screenheight()
-    window_width, window_height = 650, 550
+    window_width, window_height = 850, 550
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
@@ -490,11 +492,11 @@ def pop_up_settings(parent, controller):
     Credits_label.grid(row=1, column=0, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Credits
-    buttons_data_credits = [{"name": "Peaemer (Jack)", "url": "https://github.com/peaemer/", "image": ""},
-                            {"name": "Alex5X5 (Alex)", "url": "https://github.com/Alex5X5", "image": ""},
-                            {"name": "GitSchwan (Fabian)", "url": "https://github.com/GitSchwan", "image": ""},
-                            {"name": "Chauto (Anakin)", "url": "https://github.com/Chautoo", "image": ""},
-                            {"name": "FemRene (Rene)", "url": "https://github.com/FemRene", "image": ""},
+    buttons_data_credits = [{"name": "Peaemer (Jack)", "url": "https://github.com/peaemer/", "image": "https://avatars.githubusercontent.com/u/148626202?v=4"},
+                            {"name": "Alex5X5 (Alex)", "url": "https://github.com/Alex5X5", "image": "https://avatars.githubusercontent.com/u/75848461?v=4"},
+                            {"name": "GitSchwan (Fabian)", "url": "https://github.com/GitSchwan", "image": "https://avatars.githubusercontent.com/u/173039634?v=4"},
+                            {"name": "Chauto (Anakin)", "url": "https://github.com/Chautoo", "image": "https://avatars.githubusercontent.com/u/89986856?v=4"},
+                            {"name": "FemRene (Rene)", "url": "https://github.com/FemRene", "image": "https://avatars.githubusercontent.com/u/110292225?v=4"},
                             {"name": "Tam", "url": "", "image": ""}]
 
     def open_url(url):
@@ -510,7 +512,7 @@ def pop_up_settings(parent, controller):
     for index, button in enumerate(buttons_data_credits, start=2):
         try:
             if button["image"]:
-                button_image = tk.PhotoImage(file=button["image"])
+                button_image = loadImage(parent, button["image"], resource_path("includes/assets/GitHubSettings.png"), 48, 48)
             else:
                 # Optional: Ein Standardbild verwenden, wenn kein Bild angegeben ist
                 button_image = tk.PhotoImage(file=resource_path("includes/assets/GitHubSettings.png"))
@@ -568,7 +570,7 @@ def pop_up_settings(parent, controller):
                            text="Unterstütze Uns",
                            font=BTNFONT,
                            bg="white")
-    build_label.grid(row=8, column=0, pady=10, sticky="new")
+    build_label.grid(row=1, column=2, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Projekt Unterstuetzen
     buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": resource_path("includes/assets/KoFiSettings.png")},
@@ -583,7 +585,7 @@ def pop_up_settings(parent, controller):
     parent.images_support = []
 
     # Erstellen der Buttons mit einer Schleife
-    for index, button in enumerate(buttons_data_support, start=10):
+    for index, button in enumerate(buttons_data_support, start=2):
         try:
             button_image = tk.PhotoImage(file=button["image"])
             parent.images_support.append(button_image)  # Das Bild in der Liste speichern
@@ -593,7 +595,7 @@ def pop_up_settings(parent, controller):
                                   image=button_image,
                                   compound="left",
                                   background="white")
-            btn_label.grid(row=index, column=0, pady=2, padx=15, sticky="new")
+            btn_label.grid(row=index, column=2, pady=2, padx=15, sticky="new")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
             print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
@@ -603,7 +605,7 @@ def pop_up_settings(parent, controller):
                            text="Info",
                            font=BTNFONT,
                            bg="white")
-    build_label.grid(row=8, column=1, pady=10, sticky="new")
+    build_label.grid(row=5, column=2, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Info
     buttons_data_info = [{"name": "VersionBuild   V. 0.1 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest", "image": resource_path("includes/assets/DD-Inv_Logo.png")},
@@ -618,7 +620,7 @@ def pop_up_settings(parent, controller):
     parent.images_info = []
 
     # Erstellen der Buttons mit einer Schleife
-    for index, button in enumerate(buttons_data_info, start=10):
+    for index, button in enumerate(buttons_data_info, start=6):
         try:
             button_image = tk.PhotoImage(file=button["image"])
             parent.images_support.append(button_image)  # Das Bild in der Liste speichern
@@ -628,7 +630,7 @@ def pop_up_settings(parent, controller):
                                   image=button_image,
                                   compound="left",
                                   background="white")
-            btn_label.grid(row=index, column=1, pady=2, padx=40, sticky="new")
+            btn_label.grid(row=index, column=2, pady=2, padx=40, sticky="new")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
             print(f"Fehler beim Laden des Bildes {button['image']}: {e}")

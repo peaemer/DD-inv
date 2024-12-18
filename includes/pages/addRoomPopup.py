@@ -1,7 +1,9 @@
 import tkinter as tk
+import customtkinter as ctk
 from tkinter import ttk, messagebox
 from includes.sec_data_info import sqlite3api as sqlapi
 import string, random
+from ._styles import *
 
 #from GUI.pages import roomDetailsWindow
 
@@ -70,10 +72,11 @@ def add_room_popup(parent):
     )
     room_label_add_room_popup.grid(row=0, column=0, padx=10, pady=20, sticky=tk.E)
 
-    room_entry_add_room_popup = tk.Entry(
-        input_frame_add_room_popup, background="#d9d9d9",
-        font=("Arial", size_add_room_popup), bd=0
-    )
+    room_entry_add_room_popup = ctk.CTkEntry(input_frame_add_room_popup,
+                                             fg_color="#d9d9d9",
+                                             text_color="black",
+                                             border_width=border,
+                                             corner_radius=corner)
     room_entry_add_room_popup.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     #Ort
@@ -83,10 +86,11 @@ def add_room_popup(parent):
     )
     location_add_room_popup.grid(row=1, column=0, padx=10, pady=20, sticky=tk.E)
 
-    location_entry_add_room_popup = tk.Entry(
-        input_frame_add_room_popup, background="#d9d9d9",
-        font=("Arial", size_add_room_popup), bd=0
-    )
+    location_entry_add_room_popup = ctk.CTkEntry(input_frame_add_room_popup,
+                                             fg_color="#d9d9d9",
+                                             text_color="black",
+                                             border_width=border,
+                                             corner_radius=corner)
     location_entry_add_room_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     error_label = tk.Label(input_frame_add_room_popup, text="", background="white", fg="darkred", font=("Arial", 14))
