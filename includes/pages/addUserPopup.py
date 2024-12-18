@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+import customtkinter as ctk
 from includes.sec_data_info import sqlite3api as db
 import string, random
-
+from ._styles import *
 
 def add_user_popup(parent):
     """
@@ -66,23 +67,24 @@ def add_user_popup(parent):
     )
     username_label_add_user_popup.grid(row=0, column=0, padx=10, pady=20, sticky=tk.E)
 
-    username_entry_add_user_popup = tk.Entry(
-        input_frame_add_user_popup, background="#d9d9d9",
-        font=("Arial", size_add_user_popup), bd=0
-    )
+    username_entry_add_user_popup = ctk.CTkEntry(input_frame_add_user_popup,
+                                             fg_color="#d9d9d9",
+                                             text_color="black",
+                                             border_width=border,
+                                             corner_radius=corner)
     username_entry_add_user_popup.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Email
-    email_add_user_popup = tk.Label(
-        input_frame_add_user_popup, text="E-Mail", background="white",
-        font=("Arial", size_add_user_popup)
-    )
+    email_add_user_popup = tk.Label(input_frame_add_user_popup,
+                                    text="E-Mail", background="white",
+                                    font=("Arial", size_add_user_popup))
     email_add_user_popup.grid(row=1, column=0, padx=10, pady=20, sticky=tk.E)
 
-    email_entry_add_user_popup = tk.Entry(
-        input_frame_add_user_popup, background="#d9d9d9",
-        font=("Arial", size_add_user_popup), bd=0
-    )
+    email_entry_add_user_popup = ctk.CTkEntry(input_frame_add_user_popup,
+                                             fg_color="#d9d9d9",
+                                             text_color="black",
+                                             border_width=border,
+                                             corner_radius=corner)
     email_entry_add_user_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Rolle
@@ -95,10 +97,10 @@ def add_user_popup(parent):
     role_values = []
     for room in db.read_all_rollen():
         role_values.append(room['Rolle'])
-    role_combobox_add_user_popup = ttk.Combobox(
+    role_combobox_add_user_popup = ctk.CTkComboBox(
         input_frame_add_user_popup, values=role_values,
-        font=("Arial", size_add_user_popup)
-    )
+        font=("Arial", size_add_user_popup), corner_radius=corner,fg_color=srhGrey,border_width=border)
+
     role_combobox_add_user_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
     role_combobox_add_user_popup.set("Rolle auswählen")
 
