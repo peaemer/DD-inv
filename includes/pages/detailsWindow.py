@@ -259,6 +259,7 @@ class detailsWindow(tk.Frame):
             print(damage)
             print(db.update_hardware_by_ID(cache.selected_ID, neue_beschaedigung=damage, neue_Standort=room, neue_Modell=name, neue_Geraetetyp=type))
             from .mainPage import mainPage
+            mainPage.update_sidetree_with_data()
             controller.show_frame(mainPage)
 
         def delete_entry():
@@ -284,6 +285,7 @@ class detailsWindow(tk.Frame):
             db.delete_hardware_by_id(cache.selected_ID)
             from .mainPage import mainPage
             mainPage.update_treeview_with_data()
+            mainPage.update_sidetree_with_data()
             controller.show_frame(mainPage)
 
         def lend(data):

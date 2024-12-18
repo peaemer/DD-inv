@@ -112,7 +112,7 @@ def lend_popup(parent, data, controller: ddINV):
     name_label = tk.Label(popup, text="Name", font=lend_font, bg="white", anchor="w")
     name_label.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
-    name_entry = ctk.CTkEntry(popup, font=lend_font, bg=srhGrey, relief=tk.FLAT)
+    name_entry = tk.Entry(popup, font=lend_font, bg=srhGrey, relief=tk.FLAT)
     name_entry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
 
     borrower_label = tk.Label(popup, text="Ausleiher", font=lend_font, bg="white", anchor="w")
