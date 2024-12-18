@@ -2,9 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 from includes.sec_data_info import sqlite3api as sqlapi
+from includes.pages import _searchBar as sb
 import cache
 from ._styles import *
 import customtkinter as ctk
+import json
+from CTkListbox import *
 
 
 # Hauptseite (zweites Fenster)
@@ -98,6 +101,8 @@ class mainPage(tk.Frame):
                         if entry not in search_entrys:
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
+            sb.finish_search(cache.loaded_history, search_entry, dropdown, self, search_entry_var.get(),cache.user_name)
+            tree_frame.tkraise(dropdown_overlay_frame)
 
         def add_item():
             """
@@ -126,7 +131,7 @@ class mainPage(tk.Frame):
             add_item_popup(self)
             print("DEBUG: add_item executed")  # Debug
 
-        def on_entry_click(event):
+        def on_entry_click():
             """
             Eine Klasse, die die Hauptseite in einer Tkinter-basierten GUI-Anwendung repräsentiert. Sie erbt von
             `tk.Frame` und implementiert Interaktionen wie das Entfernen eines Platzhalters in einem
@@ -143,13 +148,14 @@ class mainPage(tk.Frame):
             :type event: tk.Event
 
             """
-            print("DEBUG: on_entry_click executed")
+            print("DEBUG: [MainPageEvent]: on_entry_click executed")
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
-                print("DEBUG: Cleared Entry for use")
+            sb.start_search(cache.loaded_history, search_entry, dropdown, search_entry_var.get(), cache.user_name)
+            dropdown_overlay_frame.tkraise(tree_frame)
 
-        def on_key_press(event):
+        def on_key_press(var1:str, var2:str, var3:str):
             """
             Eine Klasse, die ein Frame-Objekt für die Hauptseite einer Tkinter-Anwendung darstellt.
 
@@ -162,9 +168,17 @@ class mainPage(tk.Frame):
             :parameter parent: Das übergeordnete Tkinter-Widget, dem dieses Frame hinzugefügt wird.
             :parameter controller: Ein Controller-Objekt, das zur Steuerung der Anwendungslogik verwendet wird.
             """
-            typed_key = event.char  # The character of the typed key
+            print(f"DEBUG: [MainPageEvent]:on_key_press")
+            if search_entry_var.get() == '' or search_entry_var.get() == 'Suche':
+                return
+            print(f"""DEBUG: [MainPage]: executing on_key_press with searchbar text "{search_entry_var.get()}" """)
+            #if dropdown.size()>0:
+            #    if not dropdown.get(0):
+            #        print('len test')
+            #        return
+            sb.update_search(cache.loaded_history, dropdown, search_entry_var.get(), cache.user_name)
 
-        def on_focus_out(event):
+        def on_focus_out():
             """
             Die Klasse `mainPage` stellt eine Benutzeroberfläche dar, die von der
             Tkinter Frame-Klasse abgeleitet ist. Sie dient als Hauptseite einer GUI-Anwendung
@@ -180,11 +194,13 @@ class mainPage(tk.Frame):
                 anderer Interaktionen zwischen Subkomponenten der GUI.
             :type controller: Objekt
             """
-            print("DEBUG: on_focus_out executed")  # Debug
-            if search_entry.get() == '':
+            print(f"DEBUG: [MainPageEvent]:on_focus_out")
+            if search_entry_var.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
-                print("DEBUG: Reset Entry")  # Debug
+                search_entry.configure(fg_color=srhGrey)  # Textfarbe auf grau ändern
+                search_entry.configure(bg_color='white')
+            sb.on_searchbar_lost_focus(search_entry, search_entry_var, dropdown)
+            tree_frame.tkraise(dropdown_overlay_frame)
 
         global tree
 
@@ -295,6 +311,8 @@ class mainPage(tk.Frame):
         middle_frame.columnconfigure(0, weight=1)
         middle_frame.rowconfigure(1, weight=1)
 
+
+
         # Dbug Info Anzeige der Fenstergroesse
         def show_size(event):
             """
@@ -318,44 +336,45 @@ class mainPage(tk.Frame):
             print(f"New size - Width: {event.x} Height: {event.y}") #Debug
         print("DEBUG:", show_size) # Debug
 
-        # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        search_frame = tk.Frame(middle_frame, bg="white")
-        search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
+        dropdown_overlay_frame: tk.Frame = tk.Frame(middle_frame, background="white")
+        search_frame: tk.Frame= tk.Frame(middle_frame, bg="white")
 
+        #erstelle den hinufügen-button im auf dem search frame
+        self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Erstellen.png"))
+        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        self.search_btn = tk.PhotoImage(file=resource_path("./includes/assets/SearchButton.png"))
+        search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
+
+        #erstelle den hinufügen-button im auf dem search frame
+        dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame, font=("Arial", 20), bg_color="white",border_color=srhGrey, corner_radius=10, scrollbar_fg_color="white", scrollbar_button_color='white', scrollbar_button_hover_color='white')
+        search_entry_var: tk.StringVar = tk.StringVar()
+        search_entry = ctk.CTkEntry(search_frame, text_color="black", font=("Arial", 27), corner_radius=20, border_width=0, textvariable=search_entry_var)
+
+        #setze die grid layouts für den frame ser suchleiste und den frame des such-dropdowns
+        dropdown_overlay_frame.grid(row=1, column=0, padx=(77, 166), pady=0, sticky=tk.N + tk.W + tk.E)
+        dropdown_overlay_frame.grid_rowconfigure(0, weight=1)
+        dropdown_overlay_frame.grid_columnconfigure(0, weight=1)
+
+        search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
         search_frame.grid_columnconfigure(0, weight=0)
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
-        # Btn Erstellen def mit Image und grid
-        self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Erstellen.png"))
-        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
-                               activebackground="white", command=add_item)
-        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
-
-        # Search Btn def und neben dem Entry platzieren
-        self.search_btn = tk.PhotoImage(file=resource_path("./includes/assets/SearchButton.png"))
-        search_button = tk.Button(search_frame,
-                                  image=self.search_btn,
-                                  bd=0,
-                                  relief=tk.FLAT,
-                                  bg="white",
-                                  activebackground="white",
-                                  command=search)
+        # setze die grid layaouts der buttons und der suchleiste im search-frame
         search_button.grid(padx=5, pady=5, row=0, column=0)
-
-        # Entry-Feld mit Platzhalter-Text
-        search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey,text_color="black", font=("Arial", 27), corner_radius=corner, border_width=border)
-        search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
+        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
+        search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
+        dropdown.grid(padx=0, pady=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Events für Klick und Fokusverlust hinzufügen
-        search_entry.bind('<FocusIn>', on_entry_click)
-        search_entry.bind('<FocusOut>', on_focus_out)
-        search_entry.bind('<Return>', search)
-        search_entry.bind("<Key>", on_key_press)
-        search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
+        search_entry.bind('<FocusIn>', lambda _: on_entry_click())
+        search_entry_var.trace_add("write", on_key_press)
+        search_entry.bind('<FocusOut>', lambda _: on_focus_out())
+        dropdown.bind("<<ListboxSelect>>", lambda var: sb.on_dropdown_select(search_entry, dropdown, cache.user_name))
 
-
-
+        cache.loaded_history = json.loads(
+            sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) else """[{}]""")
+        search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # style der Tabelle
         tree_style = ttk.Style()

@@ -157,7 +157,7 @@ def update_search(loaded_history:list[dict[str, str]], dropdown:CTkListbox, sear
 
 
 
-def finish_search(loaded_history:list[dict[str,str]], searchbar:CTk.CTkEntry, dropdown:CTkListbox, root:CTk.CTkFrame, search_term:str, username:str)->None:
+def finish_search(loaded_history:list[dict[str,str]], searchbar:CTk.CTkEntry, dropdown:CTkListbox, root:tk.Frame, search_term:str, username:str)->None:
     """
         Called once user stops typing into the search bar.
         Recalculates the weight and repeated_uses of each term.
@@ -167,6 +167,7 @@ def finish_search(loaded_history:list[dict[str,str]], searchbar:CTk.CTkEntry, dr
         :param list[dict[str,str]] loaded_history: the history of the user's search terms
         :param tk.Entry searchbar: the search bar
         :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
+        :param tk.Frame root: the root of th searchbar
         :param str search_term: the current search term
         :param str username: the current user's username
     """
