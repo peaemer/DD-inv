@@ -5,6 +5,8 @@ import requests
 import socket
 from io import BytesIO
 from PIL import Image, ImageTk
+from PIL._tkinter_finder import tk
+
 import cache
 
 
@@ -24,7 +26,7 @@ def check_internet_connection():
 
 
 
-def load_image_from_url(url):
+def load_image_from_url(url, default=None):
     """
     Lädt ein Bild von einer angegebenen URL herunter und gibt das Bildobjekt zurück.
 
@@ -43,7 +45,7 @@ def load_image_from_url(url):
         img_data = base64.b64decode(cache.user_default_avatar)
         img = Image.open(BytesIO(img_data))
         print("DEBUG: img: ", img, "")
-        return img
+        return Image.open(default) if default else img
 
     response = requests.get(url)
     response.raise_for_status()  # Überprüft, ob die Anfrage erfolgreich war
@@ -71,12 +73,12 @@ def load_image_from_base64(base64_string):
     return img
 
 
-def loadImage(parent, image: str = None, width: int = 48, height: int = 48):
+def loadImage(parent, image: str = None, defult_image = None, width: int = 48, height: int = 48):
     if image is None:
         image = cache.user_avatar
     if image.startswith("http"):
         try:
-            img = load_image_from_url(image)
+            img = load_image_from_url(image, defult_image)
 
             # Bild skalieren (z. B. auf 128x128 Pixel)
             img = img.resize((width, height))
