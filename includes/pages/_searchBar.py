@@ -6,7 +6,7 @@ import json
 from typing import List,Dict, Final
 import tkinter as tk
 
-DEBUG_MODE:Final[bool] = True
+DEBUG_MODE:Final[bool] = False
 MAX_REPEATED_USES:Final[int] = 10
 
 search_is_running = False
@@ -76,28 +76,28 @@ def __update_dropdown(new_items:List[str], dropdown:CTkListbox)->None:
     try:
         dropdown.grid(padx=5, pady=5, row=0, column=0, sticky=tk.W + tk.E)
     except Exception as e:
-            print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to set grid of dropdown menu because of {e}""")
-    print(f"""[SearchBar][__update_dropdown]:successfully set grid of dropdown""")
+            if DEBUG_MODE:print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to set grid of dropdown menu because of {e}""")
+    if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:successfully set grid of dropdown""")
     if dropdown:
         while dropdown.size() > 0:
             dropdown.delete(0, 0)
-            print(f"""[SearchBar][__update_dropdown]:removed all items from dropdown""")
-        print(f"""[SearchBar][__update_dropdown]:adding new items to dropdown""")
+            if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:removed all items from dropdown""")
+        if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:adding new items to dropdown""")
         if not new_items:
-            print(f"""[SearchBar][__update_dropdown]:new items are null""")
-            print(f"""[SearchBar][__update_dropdown]:aborting dropdown update""")
+            if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:new items are null""")
+            if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:aborting dropdown update""")
             return
         try:
             for item in new_items:
                 dropdown.insert(dropdown.size(), item)
         except Exception as e:
-            print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to add item to dropdown menu because of {e}""")
+            if DEBUG_MODE:print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to add item to dropdown menu because of {e}""")
             return
     else:
-        print(f"""[SearchBar][__update_dropdown]:dropdown was null""")
-        print(f"""[SearchBar][__update_dropdown]:aborting dropdown update""")
+        if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:dropdown was null""")
+        if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:aborting dropdown update""")
         return
-    print(f"""[SearchBar][__update_dropdown]:finished dropdown update""")
+    if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:finished dropdown update""")
 
 def __match_entries(loaded_history:List[dict[str, str]], search_term:str) -> List[str]:
     i:int = 0
@@ -105,7 +105,7 @@ def __match_entries(loaded_history:List[dict[str, str]], search_term:str) -> Lis
     for entry in loaded_history:
         if search_term in entry['text']:
             result.append(entry['text'])
-            print(f"""[SearchBar][update searchbar]:adding "{entry}" to new dropdown options""")
+            if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:adding "{entry}" to new dropdown options""")
             i = i+1
             if i>=3:
                 break
@@ -124,23 +124,23 @@ def update_search(loaded_history:list[dict[str, str]], dropdown:CTkListbox, sear
     if not search_is_running:
         return
     if cancel_key_press_updates >0:
-        print(f"""[SearchBar][update searchbar]:canceling 1 out of {cancel_key_press_updates} to be canceled """)
+        if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:canceling 1 out of {cancel_key_press_updates} to be canceled """)
         cancel_key_press_updates -= 1
         return
-    print(f"""[SearchBar][update searchbar]:running update search for user "{username}" with searchbar text "{search_term}" and loaded history "{loaded_history}" """)
+    if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:running update search for user "{username}" with searchbar text "{search_term}" and loaded history "{loaded_history}" """)
 
     sorted_history:list[dict[str, str]] = sorted(loaded_history,key=lambda x:x['weight'])
-    print(f"""[SearchBar][update searchbar]:sorted history is "{sorted_history}" """)
+    if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:sorted history is "{sorted_history}" """)
     new_options:List[str] = []
     i:int = 0
     for entry in sorted_history:
         if str(search_term) in entry['text']:
             new_options.append(entry['text'])
-            print(f"""[SearchBar][update searchbar]:adding "{entry}" to new dropdown options""")
+            if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:adding "{entry}" to new dropdown options""")
             i = i+1
         if i>=6:
             break
-    print(f"""[SearchBar][update_search]:chose "{__match_entries(loaded_history, search_term.lower())}" as new options for dropdown""")
+    if DEBUG_MODE:print(f"""[SearchBar][update_search]:chose "{__match_entries(loaded_history, search_term.lower())}" as new options for dropdown""")
     __update_dropdown(__match_entries(sorted_history, search_term.lower()), dropdown)
 
 
