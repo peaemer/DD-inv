@@ -206,7 +206,7 @@ class detailsWindow(tk.Frame):
         # CTkComboBox statt ttk.Combobox
         room_values = []
         for room in db.fetch_all_rooms():
-            room_values.append(room['Raum'] + " - " + room['Ort'])
+            room_values.append(room['Raum'])
 
         self.room_combobox_details_window = ctk.CTkComboBox(input_frame_details_window, values=room_values,
                                                             font=("Arial", size_details_window),
