@@ -325,14 +325,31 @@ class adminRoleWindow(tk.Frame):
         # Treeview mit Scrollbar verbinden
         role_tree.configure(yscrollcommand=role_tree_scroll.set)
 
+        # Scrollbar erstellen
+        h_role_tree_scroll = ctk.CTkScrollbar(
+            role_tree_frame,
+            orientation="horizontal",
+            command=role_tree.xview,
+            fg_color="white",
+            width=20,                                                # <--- +++++side scrollbar visibility+++++ #
+            corner_radius=scroll_corner,
+            button_color = srhGrey,
+            button_hover_color="#2980b9"
+        )
+        h_role_tree_scroll.grid(row=2, column=0, sticky=tk.W + tk.E)  # Scrollbar genau neben der Tabelle
+
+
+        # Treeview mit Scrollbar verbinden
+        role_tree.configure(xscrollcommand=h_role_tree_scroll.set)
+
         # Tags für alternierende Zeilenfarben konfigurieren
         role_tree.tag_configure("oddrow", background="#f7f7f7")
         role_tree.tag_configure("evenrow", background="white")
 
         # Spaltennamen und Breiten als Liste
         columns = [
-            ("ID", 20),
-            ("Rolle", 100),
+            ("ID", 30),
+            ("Rolle", 110),
             ("Rolle Löschbar", 150),
             ("Admin Feature", 150),
             ("Ansehen", 90),
@@ -341,12 +358,12 @@ class adminRoleWindow(tk.Frame):
             ("Erstellen", 100),
             ("Gruppe Löschen", 160),
             ("Gruppe Erstellen", 160),
-            ("Gruppe Bearbeiten", 170),
-            ("Rollen Erstellen", 160),
-            ("Rollen Bearbeiten", 160),
+            ("Gruppe Bearbeiten", 190),
+            ("Rollen Erstellen", 170),
+            ("Rollen Bearbeiten", 170),
             ("Rollen Löschen", 160),
             ("User Löschen", 160),
-            ("User Bearbeiten", 160),
+            ("User Bearbeiten", 190),
             ("User Erstellen", 160)
         ]
 
