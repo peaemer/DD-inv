@@ -335,9 +335,9 @@ class adminRoleWindow(tk.Frame):
         columns = [
             ("ID", 20),
             ("Rolle", 100),
-            ("Ansehen", 90),
             ("Rolle Löschbar", 150),
             ("Admin Feature", 150),
+            ("Ansehen", 90),
             ("Löschen", 100),
             ("Bearbeiten", 110),
             ("Erstellen", 100),
@@ -417,9 +417,9 @@ class adminRoleWindow(tk.Frame):
                 text=f"{entry['Rolle']}",
                 values=(
                     entry['Rolle'],
-                    "✔" if entry['ANSEHEN'] == 'True' else "❌",
                     "✔" if entry['ROLLE_LOESCHBAR'] == 'True' else "❌",
                     "✔" if entry['ADMIN_FEATURE'] == 'True' else "❌",
+                    "✔" if entry['ENTRY_ANSEHEN'] == 'True' else "❌",
                     "✔" if entry['ENTRY_LOESCHEN'] == 'True' else "❌",
                     "✔" if entry['ENTRY_BEARBEITEN'] == 'True' else "❌",
                     "✔" if entry['ENTRY_ERSTELLEN'] == 'True' else "❌",

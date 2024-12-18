@@ -17,7 +17,7 @@ def check_internet_connection():
     """
     try:
         # Versuchen, eine Verbindung zu einem bekannten öffentlichen DNS-Server herzustellen (Google DNS).
-        socket.create_connection(("8.8.8.8", 53), timeout=5)
+        socket.create_connection(("8.8.8.8", 53), timeout=1)
         return True
     except (socket.timeout, socket.error):
         return False
@@ -40,7 +40,10 @@ def load_image_from_url(url):
     """
     print("DEBUG: load_image_from_url: ", url, "")
     if not check_internet_connection():
-        raise ConnectionError("Keine Internetverbindung verfügbar.")
+        img_data = base64.b64decode(cache.user_default_avatar)
+        img = Image.open(BytesIO(img_data))
+        print("DEBUG: img: ", img, "")
+        return img
 
     response = requests.get(url)
     response.raise_for_status()  # Überprüft, ob die Anfrage erfolgreich war

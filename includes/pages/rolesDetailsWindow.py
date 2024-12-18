@@ -327,9 +327,9 @@ class rolesDetailsWindow(tk.Frame):
             edit_u = "True" if self.edit_u.get() == 1 else "False"
             create_u = "True" if self.create_u.get() == 1 else "False"
             rechte = {
-                "ANSEHEN": view,
                 "ROLLE_LOESCHBAR": delete_rl,
                 "ADMIN_FEATURE": feature,
+                "ENTRY_ANSEHEN": view,
                 "ENTRY_LOESCHEN": delete,
                 "ENTRY_BEARBEITEN": edit,
                 "ENTRY_ERSTELLEN": create,
