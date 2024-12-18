@@ -7,7 +7,8 @@ import cache
 from ._styles import *
 import customtkinter as ctk
 import json
-from CTkListbox import *
+from CTkListbox import * #muss über 'pip install CTkListbox' installiert werden
+
 
 
 # Hauptseite (zweites Fenster)
