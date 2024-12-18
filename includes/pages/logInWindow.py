@@ -147,6 +147,7 @@ class logInWindow(tk.Frame):
                                     corner_radius=corner,
                                     fg_color=srhGrey,
                                     border_width=border,
+                                    text_color="black",
                                     justify="center")
         username_entry.grid(column=3, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
@@ -159,6 +160,7 @@ class logInWindow(tk.Frame):
                                     corner_radius=corner,
                                     fg_color=srhGrey,
                                     border_width=border,
+                                    text_color="black",
                                     show="*",
                                     justify="center")
         password_entry.grid(column=3, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
