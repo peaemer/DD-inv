@@ -2,26 +2,26 @@ import base64
 import os
 import sys
 import requests
-import socket
 from io import BytesIO
 from PIL import Image, ImageTk
-from PIL._tkinter_finder import tk
 
 import cache
 
 
 def check_internet_connection():
     """
-    Überprüft, ob eine Internetverbindung besteht, indem versucht wird, eine Verbindung zu einem öffentlichen DNS-Server herzustellen.
+    Checks if there is an internet connection by attempting to make a request to a reliable URL.
 
-    :return: True, wenn eine Verbindung zum Internet besteht, andernfalls False.
+    :return: True if there is an internet connection, otherwise False.
     :rtype: bool
     """
     try:
-        # Versuchen, eine Verbindung zu einem bekannten öffentlichen DNS-Server herzustellen (Google DNS).
-        socket.create_connection(("8.8.8.8", 53), timeout=1)
-        return True
-    except (socket.timeout, socket.error):
+        # Try making a simple GET request to a known reliable URL (e.g., Google's homepage).
+        response = requests.get("http://www.google.com", timeout=3)
+        cache.internet = True
+        return response.status_code == 200
+    except requests.RequestException:
+        cache.internet = False
         return False
 
 
@@ -41,7 +41,7 @@ def load_image_from_url(url, default=None):
     :raises requests.HTTPError: Wird ausgelöst, wenn die HTTP-Anfrage fehlschlägt, z.B. bei 404 oder 500.
     """
     print("DEBUG: load_image_from_url: ", url, "")
-    if not check_internet_connection():
+    if not cache.internet:
         img_data = base64.b64decode(cache.user_default_avatar)
         img = Image.open(BytesIO(img_data))
         print("DEBUG: img: ", img, "")
@@ -75,7 +75,7 @@ def load_image_from_base64(base64_string):
 
 def loadImage(parent, image: str = None, defult_image = None, width: int = 48, height: int = 48):
     if image is None:
-        image = cache.user_avatar
+        image = cache.user_default_avatar
     if image.startswith("http"):
         try:
             img = load_image_from_url(image, defult_image)
@@ -88,7 +88,7 @@ def loadImage(parent, image: str = None, defult_image = None, width: int = 48, h
         except (requests.HTTPError, ConnectionError) as e:
             print(f"Fehler beim Laden des Bildes von der URL: {e}")
             # Hier können Sie eine Standardaktion oder ein Ersatzbild ausführen
-            img = load_image_from_base64(cache.user_avatar)
+            img = load_image_from_base64(cache.user_default_avatar)
 
             # Bild skalieren (z. B. auf 128x128 Pixel)
             img = img.resize((width, height))

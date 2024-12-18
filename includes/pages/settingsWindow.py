@@ -138,8 +138,7 @@ def pop_up_settings(parent, controller):
     frame_within_picture.grid(row=0, column=0, rowspan=1, sticky="nw")
 
     # Profilbild zum Laden importieren
-    from ._avatarManager import loadImage
-    parent.avatar = loadImage(parent=parent, width=128, height=128)
+    parent.avatar = cache.user_avatarx128
     parent.settings_img_label = tk.Label(frame_profile, image=parent.avatar)
     parent.settings_img_label.grid()
 
@@ -207,9 +206,14 @@ def pop_up_settings(parent, controller):
     parent.btn_image_set_profile_picture_settings = tk.PhotoImage(file="./includes/assets/SetProfileSettings.png")
 
     def setAvatar():
-        parent.avatar_new = loadImage(parent=parent, image=profile_image_url.get(), width=128, height=128)
+        cache.user_avatarx128 = loadImage(parent=parent, image=profile_image_url.get(), width=128, height=128)
+        parent.avatar_new = cache.user_avatarx128
+        cache.user_avatar = loadImage(parent=parent, image=profile_image_url.get(), width=48, height=48)
+        parent.avatar = cache.user_avatar
         db.upsert_avatar(cache.user_name, profile_image_url.get())
         parent.settings_img_label.configure(image=parent.avatar_new)
+        from .mainPage import mainPage
+        mainPage.update_profile_picture()
 
     # Button zum Aktualisieren des Profilbilds
     update_image_button = tk.Button(frame_profile,
