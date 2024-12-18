@@ -333,19 +333,15 @@ class mainPage(tk.Frame):
         self.search_btn = tk.PhotoImage(file="assets/SearchButton.png")
         search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
 
-        #erstellen des dr
-        dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame, font=("Arial", 20), bg_color="white", border_color=srhGrey, corner_radius=10)
+        #erstellen der suchleiste und des such-dropdowns
+        dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame, font=("Arial", 20), bg_color="white", border_color=srhGrey, corner_radius=10,scrollbar_fg_color="white",scrollbar_button_color='white',scrollbar_button_hover_color='white')
         search_entry_var: tk.StringVar = tk.StringVar()
         search_entry = ctk.CTkEntry(search_frame, text_color="black", font=("Arial", 27), corner_radius=20, border_width=0,textvariable=search_entry_var)
 
-        dropdown_overlay_frame.columnconfigure(0, weight=1)
-        dropdown_overlay_frame.rowconfigure(0, weight=1)
-
         #setze die grid layouts für den frame ser suchleiste und den frame des such-dropdowns
-        dropdown_overlay_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.W +tk.E)
-        dropdown_overlay_frame.grid_rowconfigure(1, weight=2)
-        dropdown_overlay_frame.grid_columnconfigure(0, weight=0)
-        dropdown_overlay_frame.grid_columnconfigure(1, weight=0)
+        dropdown_overlay_frame.grid(row=1, column=0, padx=(77,166), pady=0, sticky=tk.N + tk.W + tk.E)
+        dropdown_overlay_frame.grid_rowconfigure(0, weight=1)
+        dropdown_overlay_frame.grid_columnconfigure(0, weight=1)
 
         search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
         search_frame.grid_columnconfigure(0, weight=0)
@@ -356,12 +352,13 @@ class mainPage(tk.Frame):
         search_button.grid(padx=5, pady=5, row=0, column=0)
         add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
+        dropdown.grid(padx=0, pady=5, row=0, column=0, sticky=tk.W + tk.E +tk.N)
 
         # Events für Suchleiste und das such-dropdown
         search_entry.bind('<FocusIn>', lambda _: on_entry_click())
         search_entry_var.trace_add("write", on_key_press)
-        #search_entry.bind('<FocusOut>', lambda _: on_focus_out())
-        dropdown.bind("<<ListboxSelect>>", lambda  var: sb.on_dropdown_select(cache.loaded_history, search_entry, dropdown, dropdown_overlay_frame, cache.user_name))
+        search_entry.bind('<FocusOut>', lambda _: on_focus_out())
+        dropdown.bind("<<ListboxSelect>>", lambda  var: sb.on_dropdown_select(search_entry, dropdown, cache.user_name))
 
         cache.loaded_history = json.loads(sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) else """[{}]""")
         search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
