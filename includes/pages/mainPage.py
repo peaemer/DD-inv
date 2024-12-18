@@ -200,7 +200,7 @@ class mainPage(tk.Frame):
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.configure(fg_color=srhGrey)  # Textfarbe auf grau ändern
                 search_entry.configure(bg_color='white')
-            sb.on_searchbar_lost_focus(search_entry, search_entry_var, dropdown)
+            dropdown.grid_forget()
             tree_frame.tkraise(dropdown_overlay_frame)
 
         global tree
@@ -371,6 +371,7 @@ class mainPage(tk.Frame):
         search_entry.bind('<FocusIn>', lambda _: on_entry_click())
         search_entry_var.trace_add("write", on_key_press)
         search_entry.bind('<FocusOut>', lambda _: on_focus_out())
+        search_entry.bind('<Return>', sb.finish_search(cache.loaded_history,search_entry,dropdown,self,search_entry_var.get(),cache.user_name))
         dropdown.bind("<<ListboxSelect>>", lambda var: sb.on_dropdown_select(search_entry, dropdown, cache.user_name))
 
         cache.loaded_history = json.loads(
