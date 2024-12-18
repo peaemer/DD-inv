@@ -5,10 +5,10 @@ from tkinter import *
 from tkinter import ttk, messagebox
 import cache
 from ._styles import *
+import customtkinter as ctk
 from includes.sec_data_info import sqlite3api as db
 
-LARGEFONT = ("Arial", 25)
-LOGINFONT = ("Arial", 15)  # Angepasste Font-Größe für Eingabe
+
 
 class logInWindow(tk.Frame):
     """
@@ -128,93 +128,37 @@ class logInWindow(tk.Frame):
 
         # Login-Formular mit abgerundeten Eingabefeldern
         form_frame = tk.Frame(self, bg="white")
-        form_frame.grid(row=2, column=0, sticky="nesw", pady=60)
+        form_frame.grid(row=2, column=0, sticky="nsew", pady=60)
 
         form_frame.grid_columnconfigure(0, weight=1)
-
-        def create_rounded_entry(canvas, parent, text_var, width=350, height=50):
-            """
-            Erstellt ein abgerundetes Eingabefeld innerhalb eines Canvas-Widgets. Die Funktion unterstützt
-            die Erstellung eines grafischen, abgerundeten Rahmens und platziert ein `tk.Entry`-Widget,
-            welches durch eine gegebene Textvariable gesteuert werden kann. Die Breite, Höhe und
-            Gestaltung des Rahmens können angepasst werden.
-
-            :param canvas: Das Canvas-Widget, innerhalb dessen das abgerundete Eingabefeld erstellt wird.
-                Typ: tkinter.Canvas
-            :param parent: Das übergeordnete Widget, in dem das Eingabefeld platziert wird.
-                Typ: tkinter.Widget
-            :param text_var: Die Textvariable, die den Inhalt des Eingabefeldes steuert.
-                Typ: tkinter.StringVar
-            :param width: Die Breite des abgerundeten Eingabefeldes. Standardwert ist 350.
-                Typ: int
-            :param height: Die Höhe des abgerundeten Eingabefeldes. Standardwert ist 50.
-                Typ: int
-            :return: Das erstellte Eingabefeld (tk.Entry).
-                Typ: tkinter.Entry
-            """
-            radius = 20  # Radius für die Ecken
-            canvas.create_oval(
-                0, 0, radius * 2, radius * 2, fill="#f0f0f0", outline="#f0f0f0"
-            )
-            canvas.create_oval(
-                width - radius * 2,
-                0,
-                width,
-                radius * 2,
-                fill="#f0f0f0",
-                outline="#f0f0f0",
-            )
-            canvas.create_oval(
-                0,
-                height - radius * 2,
-                radius * 2,
-                height,
-                fill="#f0f0f0",
-                outline="#f0f0f0",
-            )
-            canvas.create_oval(
-                width - radius * 2,
-                height - radius * 2,
-                width,
-                height,
-                fill="#f0f0f0",
-                outline="#f0f0f0",
-            )
-            canvas.create_rectangle(
-                radius, 0, width - radius, height, fill="#f0f0f0", outline="#f0f0f0"
-            )
-            canvas.create_rectangle(
-                0, radius, width, height - radius, fill="#f0f0f0", outline="#f0f0f0"
-            )
-            entry = tk.Entry(
-                parent,
-                textvariable=text_var,
-                font=LOGINFONT,
-                bg="#f0f0f0",
-                relief=tk.FLAT,
-                justify="center",
-            )
-            canvas.create_window(width // 2, height // 2, window=entry, width=width - 10)
-            return entry
+        form_frame.grid_columnconfigure(1, weight=1)
+        form_frame.grid_columnconfigure(2, weight=1)
+        form_frame.grid_columnconfigure(3, weight=1)
+        form_frame.grid_columnconfigure(4, weight=1)
+        form_frame.grid_columnconfigure(5, weight=1)
+        form_frame.grid_columnconfigure(6, weight=1)
 
         # Username
         tk.Label(
             form_frame, text="Benutzername", font=LARGEFONT, bg="white"
-        ).grid(column=0, row=0, pady=10)
-        username_canvas = tk.Canvas(form_frame, width=350, height=50, bg="white", highlightthickness=0)
-        username_canvas.grid(column=0, row=1, pady=10)
-        username_var = tk.StringVar()
-        username_entry = create_rounded_entry(username_canvas, form_frame, username_var)
+        ).grid(column=3, row=0, pady=10)
+
+        username_entry = ctk.CTkEntry(form_frame,font=LOGINFONT,
+                                    corner_radius=corner,
+                                    fg_color=srhGrey,
+                                    border_width=border)
+        username_entry.grid(column=3, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Passwort
         tk.Label(
             form_frame, text="Passwort", font=LARGEFONT, bg="white"
-        ).grid(column=0, row=2, pady=10)
-        password_canvas = tk.Canvas(form_frame, width=350, height=50, bg="white", highlightthickness=0)
-        password_canvas.grid(column=0, row=3, pady=10)
-        password_var = tk.StringVar()
-        password_entry = create_rounded_entry(password_canvas, form_frame, password_var)
-        password_entry.config(show="*")
+        ).grid(column=3, row=2, pady=10)
+
+        password_entry = ctk.CTkEntry(form_frame,font=LOGINFONT,
+                                    corner_radius=corner,
+                                    fg_color=srhGrey,
+                                    border_width=border)
+        password_entry.grid(column=3, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Login-Button
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/Anmelden.png"))
@@ -227,7 +171,8 @@ class logInWindow(tk.Frame):
             relief=tk.FLAT,
             activebackground="white",
         )
-        login_button.grid(column=0, row=4, pady=20, sticky="ew")
+
+        login_button.grid(column=3, row=4, pady=20, sticky="ew")
 
         # Bind die Enter-Taste
         username_entry.bind("<Return>", on_enter)
