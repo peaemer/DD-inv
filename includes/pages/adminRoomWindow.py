@@ -3,12 +3,8 @@ from tkinter import ttk
 from tkinter import *
 import includes.sec_data_info.sqlite3api as sqlapi
 import cache
+from ._styles import *
 import customtkinter as ctk
-
-LARGEFONT = ("Arial", 35)
-LOGINFONT = ("Arial", 40)
-srhGrey = "#d9d9d9"
-srhBlue = "#00699a"
 
 
 # Hauptseite (zweites Fenster)
@@ -198,7 +194,7 @@ class adminRoomWindow(tk.Frame):
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0, relief=tk.FLAT, bg=srhBlue,
+        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=border, relief=tk.FLAT, bg=srhBlue,
                                  activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
@@ -227,15 +223,15 @@ class adminRoomWindow(tk.Frame):
         navi.grid_columnconfigure(1, weight=1)
         navi.grid_columnconfigure(2, weight=1)
 
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=0, command=change_to_user, corner_radius=20, fg_color="#C5C5C5",
+        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, command=change_to_user, corner_radius=corner, fg_color="#C5C5C5",
                                  text_color="black", font=("Arial", 20), hover_color="darkgray")
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=0, corner_radius=20, fg_color="#C5C5C5",
+        room_nav = ctk.CTkButton(navi, text="Räume", border_width=border, corner_radius=corner, fg_color="#C5C5C5",
                                  text_color="black", font=("Arial", 20), hover_color="darkgray")
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20, fg_color="#C5C5C5",
+        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner, fg_color="#C5C5C5",
                                  text_color="black", command=change_to_roles, font=("Arial", 20),
                                  hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
@@ -258,13 +254,13 @@ class adminRoomWindow(tk.Frame):
 
 
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/HinzuSmall_blue.png"))
-        room_add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_room)
+        room_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white", activebackground="white", command=add_room)
         room_add_button.grid(padx=10, pady=5, row=0, column=2, sticky="w")
 
         self.searchBtn = tk.PhotoImage(file=resource_path("./includes/assets/search_button_blue.png"))
         search_button = tk.Button(search_frame,
                                  image=self.searchBtn,
-                                 bd=0,
+                                 bd=border,
                                  relief=tk.FLAT,
                                  bg="white",
                                  activebackground="white",
@@ -273,7 +269,7 @@ class adminRoomWindow(tk.Frame):
 
         # Entry-Feld mit Platzhalter-Text
         room_search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey, text_color="black", font=("Arial", 27),
-                                    corner_radius=20, border_width=0)
+                                    corner_radius=corner, border_width=border)
         room_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -304,10 +300,11 @@ class adminRoomWindow(tk.Frame):
             command=room_tree.yview,
             fg_color="white",
             width=20,                                                # <--- +++++side scrollbar visibility+++++ #
-            corner_radius=10,
+            corner_radius=scroll_corner,
             button_color = srhGrey,
             button_hover_color="#2980b9"
         )
+
         room_tree_scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
 
         # Treeview mit Scrollbar verbinden
