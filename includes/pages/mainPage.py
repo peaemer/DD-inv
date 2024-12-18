@@ -1,4 +1,5 @@
 import tkinter as tk
+from shutil import which
 from tkinter import ttk
 from tkinter import *
 from includes.sec_data_info import sqlite3api as sqlapi
@@ -349,7 +350,7 @@ class mainPage(tk.Frame):
         #erstelle den hinufügen-button im auf dem search frame
         dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame, font=("Arial", 20), bg_color="white",border_color=srhGrey, corner_radius=10, scrollbar_fg_color="white", scrollbar_button_color='white', scrollbar_button_hover_color='white')
         search_entry_var: tk.StringVar = tk.StringVar()
-        search_entry = ctk.CTkEntry(search_frame, text_color="black", font=("Arial", 27), corner_radius=20, border_width=0, textvariable=search_entry_var)
+        search_entry = ctk.CTkEntry(search_frame, text_color="black", fg_color=srhGrey, bg_color="white", font=("Arial", 27), corner_radius=20, border_width=0, textvariable=search_entry_var)
 
         #setze die grid layouts für den frame ser suchleiste und den frame des such-dropdowns
         dropdown_overlay_frame.grid(row=1, column=0, padx=(77, 166), pady=0, sticky=tk.N + tk.W + tk.E)
