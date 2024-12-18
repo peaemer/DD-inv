@@ -3,10 +3,8 @@ from tkinter import ttk
 from tkinter import *
 from includes.sec_data_info import sqlite3api as db
 import cache
-
-LARGEFONT = ("Arial", 35)
-LOGINFONT = ("Arial", 40)
-srhGrey = "#d9d9d9"
+from ._styles import *
+import customtkinter as ctk
 
 
 def show_details(selectedItem, tree, controller):
@@ -24,7 +22,6 @@ def show_details(selectedItem, tree, controller):
     data = tree.item(selectedItem, "values")
     print(f"DEBUG: Data of the selected item: {data}")  # Debug
     cache.selected_ID = data[0]
-
 
     controller.show_frame(detailsWindow)  # Zeige die Details-Seite
 
@@ -132,21 +129,6 @@ class detailsWindow(tk.Frame):
         )
         go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
-        from ._avatarManager import loadImage
-        self.avatar = loadImage(parent=parent)
-
-        options_button_details_window = tk.Button(
-            header_frame_details_window,
-            image=self.avatar,
-            command=show_settings_window_details_window,
-            bd=0,
-            relief=tk.FLAT,
-            bg="#DF4807",
-            activebackground="#DF4807"
-        )
-        options_button_details_window.grid(row=0, column=2, sticky=tk.E, padx=20)
-
-
         # Container für Input- und Tree-Frame
         container_frame = tk.Frame(self, background="white")
         container_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
@@ -199,53 +181,56 @@ class detailsWindow(tk.Frame):
 
         # Service Tag
         service_tag_label_details_window = tk.Label(input_frame_details_window, text="Service Tag",
-                                                font=("Arial", size_details_window), background="white")
+                                                    font=("Arial", size_details_window), background="white")
         service_tag_label_details_window.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.service_tag_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                                         background=srhGrey, relief=tk.SOLID)
+        self.service_tag_entry_details_window = ctk.CTkEntry(input_frame_details_window,
+                                                             font=("Arial", size_details_window),
+                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
         self.service_tag_entry_details_window.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Typ
         type_label_details_window = tk.Label(input_frame_details_window, text="Typ",
-                                          font=("Arial", size_details_window), background="white")
+                                             font=("Arial", size_details_window), background="white")
         type_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.type_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                                  background=srhGrey, relief=tk.SOLID)
+        self.type_entry_details_window = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
+                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
         self.type_entry_details_window.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
-
 
         # Raum (Dropdown-Menü)
         room_label_details_window = tk.Label(input_frame_details_window, text="Raum", background="white",
                                              font=("Arial", size_details_window))
         room_label_details_window.grid(row=2, column=0, padx=0, pady=20, sticky=tk.W + tk.E)
 
-        # Combobox statt Entry
+        # CTkComboBox statt ttk.Combobox
         room_values = []
         for room in db.fetch_all_rooms():
-            room_values.append(room['Raum'])
-        self.room_combobox_details_window = ttk.Combobox(input_frame_details_window, values=room_values,
-                                                    font=("Arial", size_details_window))
+            room_values.append(room['Raum'] + " - " + room['Ort'])
+
+        self.room_combobox_details_window = ctk.CTkComboBox(input_frame_details_window, values=room_values,
+                                                            font=("Arial", size_details_window),
+                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
         self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
         self.room_combobox_details_window.set("Raum auswählen")  # Platzhalter
 
         # Name
         name_label_details_window = tk.Label(input_frame_details_window, text="Name",
-                                          font=("Arial", size_details_window), background="white")
+                                             font=("Arial", size_details_window), background="white")
         name_label_details_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.name_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                                  background=srhGrey, relief=tk.SOLID)
+        self.name_entry_details_window = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
+                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
         self.name_entry_details_window.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Beschädigung
         damaged_label_details_window = tk.Label(input_frame_details_window, text="Beschädigung",
-                                             font=("Arial", size_details_window), background="white")
+                                                font=("Arial", size_details_window), background="white")
         damaged_label_details_window.grid(column=0, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.damaged_entry_details_window = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                                     background=srhGrey, relief=tk.SOLID)
+        self.damaged_entry_details_window = ctk.CTkEntry(input_frame_details_window,
+                                                         font=("Arial", size_details_window),
+                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
         self.damaged_entry_details_window.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Funktion zum Eintrag hinzufügen

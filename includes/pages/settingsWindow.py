@@ -3,6 +3,8 @@ import webbrowser
 from tkinter import ttk
 from tkinter import filedialog
 import customtkinter as ctk
+from requests.utils import parse_dict_header
+
 from includes.sec_data_info import sqlite3api as db
 import cache
 
@@ -51,7 +53,7 @@ def pop_up_settings(parent, controller):
     # erstellt ein neues Fenster
     popup = tk.Toplevel(parent)
     popup.title("Einstellungen")
-    popup.geometry("750x550")  # groeße des Fensters
+    popup.geometry("650x550")  # groeße des Fensters
     popup.configure(background="white")  # Hintergrundfarbe
     popup.transient(parent)  # Setzt Hauptfenster in Hintergrund
     popup.grab_set()  # Fokus auf Popup
@@ -60,7 +62,7 @@ def pop_up_settings(parent, controller):
     # Bildschirmbreite und hoehe ermitteln (fenster mittig auf Bildschirm setzten)
     screen_width = parent.winfo_screenwidth()
     screen_height = parent.winfo_screenheight()
-    window_width, window_height = 750, 550
+    window_width, window_height = 650, 550
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
@@ -102,7 +104,7 @@ def pop_up_settings(parent, controller):
     # Standard-Header-Icon
     popup.optionsHead = default_icon
     header_label = tk.Label(header_frame_settings, image=popup.optionsHead, foreground="white")
-    header_label.grid(row=1, column=0, padx=420, pady=10, sticky="nesw")
+    header_label.grid(row=1, column=0, padx=370, pady=10, sticky="nesw")
     # Seitenleiste
     side_settings = tk.Frame(popup, width=200, bg=srhOrange)
     side_settings.grid(row=0, column=0, rowspan=2, sticky="nesw")
@@ -120,7 +122,7 @@ def pop_up_settings(parent, controller):
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_profile = tk.Frame(popup, bg="white")
-    frame_profile.grid(row=1, column=1, rowspan=2, columnspan=2, sticky="nesw")
+    frame_profile.grid(row=1, column=1, rowspan=2, columnspan=1, sticky="nesw")
 
     # Überschrift Dein Profil
     profile_btn_label = tk.Label(frame_profile,
@@ -131,7 +133,7 @@ def pop_up_settings(parent, controller):
 
     # Frame für das Profilbild
     frame_within_picture = tk.Frame(frame_profile, padx=5, bg="white", highlightcolor="blue")
-    frame_within_picture.grid(row=1, column=0, rowspan=1, sticky="nw")
+    frame_within_picture.grid(row=0, column=0, rowspan=1, sticky="nw")
 
     # Profilbild zum Laden importieren
     from ._avatarManager import loadImage
@@ -261,7 +263,7 @@ def pop_up_settings(parent, controller):
 
     # Überschrift Auflösung ändern
     button_bg_label = tk.Label(frame_system,
-                               text="Auflösung ändern",
+                               text="Auflösung anpassen",
                                font=BTNFONT,
                                bg="white")
     button_bg_label.grid(row=1, column=0, pady=10, sticky="nw")
@@ -275,23 +277,24 @@ def pop_up_settings(parent, controller):
             info_label.config(text="Bitte gültige Zahlen eingeben.")
 
     # Eingabefelder für Breite und Höhe
-    breite_label = tk.Label(frame_system, text="Breite:", background="white", font=BTNFONT)
+    breite_label = tk.Label(frame_system, text="Breite", background="white", font=BTNFONT)
     breite_label.grid(row=2, column=0)
-    breite_entry = ctk.CTkEntry(frame_system, corner_radius=20, fg_color=srhGrey, border_width=0)
+    breite_entry = ctk.CTkEntry(frame_system, corner_radius=20, fg_color=srhGrey, text_color="black", border_width=0)
     breite_entry.grid(row=3)
 
-    hoehe_label = tk.Label(frame_system, text="Höhe:", background="white", font=BTNFONT)
+    hoehe_label = tk.Label(frame_system, text="Höhe", background="white", font=BTNFONT)
     hoehe_label.grid(row=4, column=0)
-    hoehe_entry = ctk.CTkEntry(frame_system, corner_radius=20, fg_color=srhGrey, border_width=0)
+    hoehe_entry = ctk.CTkEntry(frame_system, corner_radius=20, fg_color=srhGrey,  text_color="black", border_width=0)
     hoehe_entry.grid(row=5)
 
     # Button zur Bestätigung
-    aendern_button = tk.Button(frame_system, text="Auflösung ändern", command=fenster_groesse_aendern)
-    aendern_button.grid(row=6)
+    parent.set_res_btn = tk.PhotoImage(file=resource_path("./includes/assets/SetResSettings.png"))
+    aendern_button = tk.Button(frame_system, image=parent.set_res_btn, borderwidth=0, command=lambda: fenster_groesse_aendern(parent))
+    aendern_button.grid(row=6, pady=10)
 
-    # Info-Label für Rückmeldungen
-    info_label = tk.Label(frame_system, text="")
-    info_label.grid(row=7)
+    # Label für Fehlermeldungen
+    info_label = tk.Label(frame_system, text="", background="white")
+    info_label.grid(row=7, pady=10)
 
     ################################
     # # L A Y O U T : S T Y L E # #
@@ -315,7 +318,7 @@ def pop_up_settings(parent, controller):
                                  text="Setze einen vordefinierten Style",
                                  font=BTNFONT,
                                  bg="white")
-    radiobutton_label.grid(row=1, column=0, pady=1, sticky="nw")
+    radiobutton_label.grid(row=1, column=0, pady=1, columnspan=2, sticky="nw")
 
     # Radiobuttons zur Auswahl von Farben (Themes)
     storage_variable = tk.StringVar(value="White")
@@ -326,18 +329,20 @@ def pop_up_settings(parent, controller):
     parent.option_three = tk.PhotoImage(file=resource_path("./includes/assets/YellowBtnSettings.png"))
     parent.option_for = tk.PhotoImage(file=resource_path("./includes/assets/BlackBtnSettings.png"))
 
-    radio_buttons = [("Standard", parent.option_zero, "White"),
-                     ("Grün", parent.option_one, "dark Green"),
-                     ("Blau", parent.option_two, "light Blue"),
-                     ("Gelb", parent.option_three, "Yellow"),
-                     ("Schwarz", parent.option_for, "Black")]
+    radio_buttons_left = [("Standard", parent.option_zero, "White"),
+                          ("Grün", parent.option_one, "dark Green"),
+                          ("Blau", parent.option_two, "light Blue")]
+
+    radio_buttons_right = [("Gelb", parent.option_three, "Yellow"),
+                           ("Schwarz", parent.option_for, "Black")]
+
 
     # Überschrift für Backgroundbutton-Kategorie
     button_bg_label = tk.Label(frame_style,
                                text="Wähle aus einem Eigenem Bild",
                                font=BTNFONT,
                                bg="white")
-    button_bg_label.grid(row=7, column=0, pady=1, sticky="nw")
+    button_bg_label.grid(row=7, column=0, pady=10, columnspan=2, sticky="nw")
 
     # def fuer btn change app background
     def change_app_background(color):
@@ -356,7 +361,7 @@ def pop_up_settings(parent, controller):
         parent.configure(bg=color)
         popup.configure(bg=color)
 
-    for idx, (text, image, value) in enumerate(radio_buttons):
+    for idx, (text, image, value) in enumerate(radio_buttons_left):
         ttk.Radiobutton(frame_style,
                         image=image,
                         text=text,
@@ -367,6 +372,18 @@ def pop_up_settings(parent, controller):
                                                                                        column=0,
                                                                                        pady=5,
                                                                                        sticky="w")
+
+    for idx, (text, image, value) in enumerate(radio_buttons_right):
+        ttk.Radiobutton(frame_style,
+                        image=image,
+                        text=text,
+                        variable=storage_variable,
+                        value=value,
+                        style="Custom.TRadiobutton",
+                        command=lambda color=value: change_app_background(color)).grid(row=idx + 2,
+                                                                                       column=1,
+                                                                                       pady=5,
+                                                                                       sticky="e")
 
     # PNG-Bilder für Buttons laden
     def load_button_images_style():
@@ -417,7 +434,7 @@ def pop_up_settings(parent, controller):
                                    style="Custom.TButton",
                                    image=parent.btn_image_select,
                                    command=apply_selected_image_style)
-    btn_chose_picture.grid(row=len(radio_buttons) + 3, column=0, pady=10, sticky="w")
+    btn_chose_picture.grid(row=len(radio_buttons_right) + 7, column=0, pady=10, sticky="w")
 
     # Hintergrund setzen
     def set_default_background():
@@ -443,7 +460,7 @@ def pop_up_settings(parent, controller):
                             style="Custom.TButton",
                             image=parent.btn_image_reset,
                             command=set_default_background)
-    btn_set_bg.grid(row=len(radio_buttons) + 4, column=0, pady=10, sticky="w")
+    btn_set_bg.grid(row=len(radio_buttons_right) + 8, column=0, pady=10, sticky="w")
 
     # Style anpassen
     style = ttk.Style()

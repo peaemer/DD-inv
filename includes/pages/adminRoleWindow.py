@@ -3,13 +3,8 @@ from tkinter import ttk
 from tkinter import *
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
+from ._styles import *
 import customtkinter as ctk  #pip install customtkinter
-
-LARGEFONT = ("Arial", 35)
-LOGINFONT = ("Arial", 40)
-srhGrey = "#d9d9d9"
-srhBlue = "#00699a"
-
 
 # Hauptseite (zweites Fenster)
 class adminRoleWindow(tk.Frame):
@@ -217,7 +212,7 @@ class adminRoleWindow(tk.Frame):
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=0, relief=tk.FLAT, bg=srhBlue,
+        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=border, relief=tk.FLAT, bg=srhBlue,
                                  activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
@@ -228,7 +223,7 @@ class adminRoleWindow(tk.Frame):
         options_button_admin_role_window = tk.Button(header_frame,
                                    image=self.admin_role_window_avatar,
                                    command=show_settings_window_admin_window,
-                                   bd=0,
+                                   bd=border,
                                    relief=tk.FLAT,
                                    bg=srhBlue,
                                    activebackground=srhBlue)
@@ -247,17 +242,20 @@ class adminRoleWindow(tk.Frame):
         navi.grid_columnconfigure(2, weight=1)
 
 
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=0, command=change_to_user, corner_radius=20, fg_color="#C5C5C5",
+        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, command=change_to_user, corner_radius=corner, fg_color="#C5C5C5",
                                  text_color="black", font=("Arial", 20), hover_color="darkgray")
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",
+        room_nav = ctk.CTkButton(navi, text="Räume", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",
                                  text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=0, corner_radius=20 ,fg_color="#C5C5C5",
+        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",
                                  text_color="black", font=("Arial", 20), hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
+
+
+
 
         middle_frame = tk.Frame(self, background="white")
         middle_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
@@ -274,14 +272,14 @@ class adminRoleWindow(tk.Frame):
         search_frame.grid_columnconfigure(2, weight=0)
 
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
-        user_add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",
+        user_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white",
                                     activebackground="white", command=add_role)
         user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         self.searchBtn = tk.PhotoImage(file=resource_path("./includes/assets/search_button_blue.png"))
         search_button = tk.Button(search_frame,
                                  image=self.searchBtn,
-                                 bd=0,
+                                 bd=border,
                                  relief=tk.FLAT,
                                  bg="white",
                                  activebackground="white",
@@ -290,7 +288,7 @@ class adminRoleWindow(tk.Frame):
 
         # Entry-Feld mit Platzhalter-Text
         role_search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey, text_color="black", font=("Arial", 27),
-                                         corner_radius=20, border_width=0)
+                                         corner_radius=corner, border_width=border)
         role_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -318,7 +316,7 @@ class adminRoleWindow(tk.Frame):
             command=role_tree.yview,
             fg_color="white",
             width=20,                                                # <--- +++++side scrollbar visibility+++++ #
-            corner_radius=10,
+            corner_radius=scroll_corner,
             button_color = srhGrey,
             button_hover_color="#2980b9"
         )
