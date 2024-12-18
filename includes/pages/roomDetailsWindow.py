@@ -205,6 +205,8 @@ class roomDetailsWindow(tk.Frame):
             db.update_room(self.room_num_entry.get(), self.room_num_entry.get(), self.place_entry.get())
             from .adminRoomWindow import adminRoomWindow
             adminRoomWindow.update_treeview_with_data()
+            from .mainPage import mainPage
+            mainPage.update_sidetree_with_data()
             controller.show_frame(adminRoomWindow)
 
         def delete_entry():
@@ -236,6 +238,8 @@ class roomDetailsWindow(tk.Frame):
                 messagebox.showerror("Abgebrochen", "Es befinden sich noch sachen in den Räumen")
             from .adminRoomWindow import adminRoomWindow
             adminRoomWindow.update_treeview_with_data()
+            from .mainPage import mainPage
+            mainPage.update_sidetree_with_data()
             controller.show_frame(adminRoomWindow)
 
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))

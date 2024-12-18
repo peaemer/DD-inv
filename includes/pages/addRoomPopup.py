@@ -114,6 +114,8 @@ def add_room_popup(parent):
             sqlapi.create_room(room_entry_add_room_popup.get(), location_entry_add_room_popup.get())
             from .adminRoomWindow import adminRoomWindow
             adminRoomWindow.update_treeview_with_data()
+            from .mainPage import mainPage
+            mainPage.update_sidetree_with_data()
             add_popup.destroy()
 
     def exit_entry():

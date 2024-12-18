@@ -178,12 +178,12 @@ class userDetailsWindow(tk.Frame):
         tree_frame_details_window = tk.Frame(container_frame, background="red", width=200, height=400)
         tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
 
-        tree_details_window = ttk.Treeview(tree_frame_details_window, column=("c1", "c2", "c3"), show="headings", height=30)
+        self.tree_details_window = ttk.Treeview(tree_frame_details_window, column=("c1", "c2", "c3"), show="headings", height=30)
 
         scroll_details_window = tk.Scrollbar(
             tree_frame_details_window,
             orient="vertical",
-            command=tree_details_window.yview,
+            command=self.tree_details_window.yview,
             bg="black",
             activebackground="darkblue",
             troughcolor="grey",
@@ -192,21 +192,21 @@ class userDetailsWindow(tk.Frame):
             borderwidth=1
         )
         scroll_details_window.grid(row=1, column=1, sticky="ns")
-        tree_details_window.configure(yscrollcommand=scroll_details_window.set)
+        self.tree_details_window.configure(yscrollcommand=scroll_details_window.set)
 
         # Tags für alternierende Zeilenfarben konfigurieren
-        tree_details_window.tag_configure("oddrow", background="#f7f7f7")
-        tree_details_window.tag_configure("evenrow", background="white")
+        self.tree_details_window.tag_configure("oddrow", background="#f7f7f7")
+        self.tree_details_window.tag_configure("evenrow", background="white")
 
         ### listbox for directories
-        tree_details_window.column("# 1", anchor=CENTER, width=180)
-        tree_details_window.heading("# 1", text="Name", )
-        tree_details_window.column("# 2", anchor=CENTER, width=200)
-        tree_details_window.heading("# 2", text="ServiceTag/ID")
-        tree_details_window.column("# 3", anchor=CENTER, width=220)
-        tree_details_window.heading("# 3", text="Ausgeliehen am")
-        tree_details_window.grid(row=1, column=0)
-        tree_details_window.tkraise()
+        self.tree_details_window.column("# 1", anchor=CENTER, width=180)
+        self.tree_details_window.heading("# 1", text="Name", )
+        self.tree_details_window.column("# 2", anchor=CENTER, width=200)
+        self.tree_details_window.heading("# 2", text="ServiceTag/ID")
+        self.tree_details_window.column("# 3", anchor=CENTER, width=220)
+        self.tree_details_window.heading("# 3", text="Ausgeliehen am")
+        self.tree_details_window.grid(row=1, column=0)
+        self.tree_details_window.tkraise()
 
         # Input-Frame
         input_frame_details_window = tk.Frame(container_frame, background="white")
@@ -344,6 +344,21 @@ class userDetailsWindow(tk.Frame):
         # Daten in die Entry-Felder einfügen
         self.name.delete(0, tk.END)
         self.name.insert(0, data[1])
+
+        self.tree_details_window.delete(*self.tree_details_window.get_children())
+        i = 0
+        for entry in db.fetch_ausleih_historie():
+            if entry['Nutzername'] == data[1]:
+                hw = db.fetch_hardware_by_id(entry['Hardware_ID'])
+                if hw:
+                    i += 1
+                    tag = "evenrow" if i % 2 == 0 else "oddrow"
+                    self.tree_details_window.insert(
+                        "",
+                        "end",
+                        values=(hw['Modell'], hw['Service_Tag'], entry['Ausgeliehen_am']),
+                        tags=(tag,)
+                    )
 
         self.email.delete(0, tk.END)
         self.email.insert(0, data[3])
