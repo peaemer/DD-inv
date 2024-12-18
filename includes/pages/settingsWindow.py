@@ -497,110 +497,141 @@ def pop_up_settings(parent, controller):
                             {"name": "FemRene (Rene)", "url": "https://github.com/FemRene", "image": ""},
                             {"name": "Tam", "url": "", "image": ""}]
 
-    # Funktion zum oeffnen der URL
     def open_url(url):
         if url:
-            webbrowser.open(url)
+            webbrowser.open_new_tab(url)
+        else:
+            print("Fehler beim Laden der URL")
 
-    # Erstellen der Buttons mit einer Schleife
+    # Eine Liste, um alle Bilder zu speichern, damit sie im Speicher bleiben
+    parent.images_credits = []
+
+    # Erstellen der Buttons mit einer Schleife für die Credits
     for index, button in enumerate(buttons_data_credits, start=2):
-        image = tk.PhotoImage(file=button["image"])  # Bild laden
-        btn_label = ttk.Label(frame_ueber,
-                              text=button["name"],
-                              cursor="hand2")
-        btn_label.grid(row=index, column=0, pady=2, sticky="new")
-        btn_label.configure(width=30, anchor='center', image=image, compound="left", background="white")
-        btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
+        try:
+            if button["image"]:
+                button_image = tk.PhotoImage(file=button["image"])
+            else:
+                # Optional: Ein Standardbild verwenden, wenn kein Bild angegeben ist
+                button_image = tk.PhotoImage(file=resource_path("includes/assets/GitHubSettings.png"))
+            parent.images_credits.append(button_image)  # Das Bild in der Liste speichern
+            btn_label = ttk.Label(frame_ueber,
+                                  text=button["name"],
+                                  cursor="hand2",
+                                  image=button_image,
+                                  compound="left",
+                                  background="white")
+            btn_label.grid(row=index, column=0, pady=2, padx=15, sticky="new")
+            btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
+        except Exception as e:
+            print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
 
-    # Unterueberschrift erstellen Anwendung erstellt mit folgenden Tools
+    # Unterueberschrift Tools
     build_label = tk.Label(frame_ueber,
-                           text="Anwendung erstellt mit folgenden Tools",
+                           text="Tools",
+                           font=BTNFONT,
+                           bg="white")
+    build_label.grid(row=1, column=1, pady=10, sticky="new")
+
+    # Liste mit den Namenm, URL, Bild fuer genutzte Tools
+    buttons_data_tools = [{"name": "SQL3", "url": "https://www.sqlite.org/", "image": resource_path("includes/assets/SQL3Settings.png")},
+                          {"name": "Figma", "url": "https://www.figma.com/", "image": resource_path("includes/assets/FigmaSettings.png")},
+                          {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/", "image": resource_path("includes/assets/PyCharmSettings.png")},
+                          {"name": "Python", "url": "https://www.python.org/", "image": resource_path("includes/assets/PythonSettings.png")},
+                          {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07", "image": resource_path("includes/assets/WindowsXPSettings.png")}]
+
+    def open_url(url):
+        if url:
+            webbrowser.open_new_tab(url)
+        else:
+            print("Fehler beim Laden der URL")
+
+    parent.images_tools = []
+
+    for index, button in enumerate(buttons_data_tools, start=2):
+        try:
+            button_image = tk.PhotoImage(file=button["image"])
+            parent.images_tools.append(button_image)  # Das Bild in der Liste speichern
+            btn_label = ttk.Label(frame_ueber,
+                                  text=button["name"],
+                                  cursor="hand2",
+                                  image=button_image,
+                                  compound="left",
+                                  background="white")
+            btn_label.grid(row=index, column=1, pady=2, padx=40, sticky="new")
+            btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
+        except Exception as e:
+            print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
+
+    # Unterueberschrift Unterstzütze Uns
+    build_label = tk.Label(frame_ueber,
+                           text="Unterstütze Uns",
                            font=BTNFONT,
                            bg="white")
     build_label.grid(row=8, column=0, pady=10, sticky="new")
 
-    # Liste mit den Namenm, URL, Bild fuer genutzte Tools
-    buttons_data_tools = [
-        {"name": "SQL3", "url": "https://www.sqlite.org/", "image": resource_path("includes/assets/SQL3Settings.png")},
-        {"name": "Figma", "url": "https://www.figma.com/", "image": resource_path("includes/assets/FigmaSettings.png")},
-        {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/",
-         "image": resource_path("includes/assets/PyCharmSettings.png")},
-        {"name": "Python", "url": "https://www.python.org/",
-         "image": resource_path("includes/assets/PythonSettings.png")},
-        {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07",
-         "image": resource_path("includes/assets/WindowsXPSettings.png")}]
-
-    # Funktion zum oeffnen der URL
-    def open_url(url):
-        if url:
-            webbrowser.open(url)
-
-    # Erstellen der Buttons mit einer Schleife
-    for index, button in enumerate(buttons_data_tools, start=10):
-        image = tk.PhotoImage(file=button["image"])  # Bild laden
-        btn_label = ttk.Label(frame_ueber,
-                              text=button["name"],
-                              cursor="hand2")
-        btn_label.grid(row=index, column=0, pady=2, sticky="new")
-        btn_label.configure(width=30, anchor='center', image=image, compound="left", background="white")
-        btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
-
-    # Unterueberschrift Du möchtest das Projekt Unterstützen?
-    build_label = tk.Label(frame_ueber,
-                           text="Du möchtest das Projekt unterstützen?",
-                           font=BTNFONT,
-                           bg="white")
-    build_label.grid(row=16, column=0, pady=10, sticky="new")
-
     # Liste mit den Namenm, URL, Bild fuer Projekt Unterstuetzen
-    buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv",
-                             "image": resource_path("includes/assets/KoFiSettings.png")},
-                            {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de",
-                             "image": resource_path("includes/assets/FeedbackSettings.png")}]
+    buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": resource_path("includes/assets/KoFiSettings.png")},
+                            {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de", "image": resource_path("includes/assets/FeedbackSettings.png")}]
 
-    # Funktion zum oeffnen der URL
     def open_url(url):
         if url:
-            webbrowser.open(url)
+            webbrowser.open_new_tab(url)
+        else:
+            print("Fehler beim Laden der URL")
+
+    parent.images_support = []
 
     # Erstellen der Buttons mit einer Schleife
-    for index, button in enumerate(buttons_data_support, start=17):
-        image = tk.PhotoImage(file=button["image"])  # Bild laden
-        btn_label = ttk.Label(frame_ueber,
-                              text=button["name"],
-                              cursor="hand2")
-        btn_label.grid(row=index, column=0, pady=2, sticky="new")
-        btn_label.configure(width=30, anchor='center', image=image, compound="left", background="white")
-        btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
+    for index, button in enumerate(buttons_data_support, start=10):
+        try:
+            button_image = tk.PhotoImage(file=button["image"])
+            parent.images_support.append(button_image)  # Das Bild in der Liste speichern
+            btn_label = ttk.Label(frame_ueber,
+                                  text=button["name"],
+                                  cursor="hand2",
+                                  image=button_image,
+                                  compound="left",
+                                  background="white")
+            btn_label.grid(row=index, column=0, pady=2, padx=15, sticky="new")
+            btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
+        except Exception as e:
+            print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
 
     # Unterueberschrift Info
     build_label = tk.Label(frame_ueber,
                            text="Info",
                            font=BTNFONT,
                            bg="white")
-    build_label.grid(row=19, column=0, pady=10, sticky="new")
+    build_label.grid(row=8, column=1, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Info
-    buttons_data_info = [
-        {"name": "VersionBuild   V. 0.1 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest",
-         "image": resource_path("includes/assets/DD-Inv_Logo.png")},
-        {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv",
-         "image": resource_path("includes/assets/GitHubSettings.png")}]
+    buttons_data_info = [{"name": "VersionBuild   V. 0.1 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest", "image": resource_path("includes/assets/DD-Inv_Logo.png")},
+                         {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv", "image": resource_path("includes/assets/GitHubSettings.png")}]
 
-    # Funktion zum oeffnen der URL
     def open_url(url):
         if url:
-            webbrowser.open(url)
+            webbrowser.open_new_tab(url)
+        else:
+            print("Fehler beim Laden der URL")
+
+    parent.images_info = []
 
     # Erstellen der Buttons mit einer Schleife
-    for index, button in enumerate(buttons_data_info, start=20):
-        image = tk.PhotoImage(file=button["image"])  # Bild laden
-        btn_label = ttk.Label(frame_ueber,
-                              text=button["name"],
-                              cursor="hand2")
-        btn_label.grid(row=index, column=0, pady=2, sticky="new")
-        btn_label.configure(width=30, anchor='center', image=image, compound="left", background="white")
-        btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
+    for index, button in enumerate(buttons_data_info, start=10):
+        try:
+            button_image = tk.PhotoImage(file=button["image"])
+            parent.images_support.append(button_image)  # Das Bild in der Liste speichern
+            btn_label = ttk.Label(frame_ueber,
+                                  text=button["name"],
+                                  cursor="hand2",
+                                  image=button_image,
+                                  compound="left",
+                                  background="white")
+            btn_label.grid(row=index, column=1, pady=2, padx=40, sticky="new")
+            btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
+        except Exception as e:
+            print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
 
     ###############################
     # # F R A M E : S W I T C H # #
