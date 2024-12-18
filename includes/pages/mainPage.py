@@ -374,7 +374,7 @@ class mainPage(tk.Frame):
         dropdown.bind("<<ListboxSelect>>", lambda var: sb.on_dropdown_select(search_entry, dropdown, cache.user_name))
 
         cache.loaded_history = json.loads(
-            sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) else """[{}]""")
+            sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) == "" else """[{}]""")
         search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # style der Tabelle
