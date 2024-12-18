@@ -146,7 +146,8 @@ class logInWindow(tk.Frame):
         username_entry = ctk.CTkEntry(form_frame,font=LOGINFONT,
                                     corner_radius=corner,
                                     fg_color=srhGrey,
-                                    border_width=border)
+                                    border_width=border,
+                                    justify="center")
         username_entry.grid(column=3, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Passwort
@@ -157,7 +158,9 @@ class logInWindow(tk.Frame):
         password_entry = ctk.CTkEntry(form_frame,font=LOGINFONT,
                                     corner_radius=corner,
                                     fg_color=srhGrey,
-                                    border_width=border)
+                                    border_width=border,
+                                    show="*",
+                                    justify="center")
         password_entry.grid(column=3, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Login-Button
