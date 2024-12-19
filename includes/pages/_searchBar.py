@@ -64,6 +64,20 @@ def __scale_history_weights(loaded_history:list[dict[str, str]], search_term:str
             entry['weight'] = str(weight)
     return term_existed
 
+
+def __match_entries(loaded_history:List[dict[str, str]], search_term:str) -> List[dict[str,str]]:
+    i:int = 0
+    result:List[dict[str,str]] = []
+    for entry in loaded_history:
+        if search_term in entry['text']:
+            result.append(entry)
+            if DEBUG_MODE:print(f"""[SearchBar][__match_entries]:adding "{entry}" to new dropdown options""")
+            i = i+1
+            if i>=3:
+                break
+    return result
+
+
 def __update_dropdown(loaded_history:list[dict[str,str]], dropdown:CTkListbox)->None:
 
     global cancel_dropdown_updates
@@ -78,8 +92,9 @@ def __update_dropdown(loaded_history:list[dict[str,str]], dropdown:CTkListbox)->
     except Exception as e:
             if DEBUG_MODE:print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to set grid of dropdown menu because of {e}""")
     if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:successfully set grid of dropdown""")
-    new_items_ = sorted(loaded_history,key=lambda x:x['weight'])
-    #new_items_.reverse()
+    new_items_ = loaded_history
+    new_items_ = sorted(new_items_,key=lambda x: float(x['weight']),reverse=True)
+    print(loaded_history)
     print(new_items_)
     if dropdown:
         while dropdown.size() > 0:
@@ -91,9 +106,13 @@ def __update_dropdown(loaded_history:list[dict[str,str]], dropdown:CTkListbox)->
             if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:aborting dropdown update""")
             return
         try:
+            i:int = 0
             for item in new_items_:
                 dropdown.insert(dropdown.size(), item['text'])
                 if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:added "{item['text']}" to dropdown menu""")
+                i = i+1
+                if i>=3:
+                    break
         except Exception as e:
             if DEBUG_MODE:print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to add item to dropdown menu because of {e}""")
             return
@@ -102,18 +121,6 @@ def __update_dropdown(loaded_history:list[dict[str,str]], dropdown:CTkListbox)->
         if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:aborting dropdown update""")
         return
     if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:finished dropdown update""")
-
-def __match_entries(loaded_history:List[dict[str, str]], search_term:str) -> List[dict[str,str]]:
-    i:int = 0
-    result:List[dict[str,str]] = []
-    for entry in loaded_history:
-        if search_term in entry['text']:
-            result.append(entry)
-            if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:adding "{entry}" to new dropdown options""")
-            i = i+1
-            if i>=3:
-                break
-    return result
 
 def update_search(loaded_history:list[dict[str, str]], searchbar:ctk.CTkTextbox, dropdown:CTkListbox, root:tk.Frame, search_term:str, username:str)->None:
     """
@@ -137,16 +144,7 @@ def update_search(loaded_history:list[dict[str, str]], searchbar:ctk.CTkTextbox,
     if search_term.endswith('\n'):
         finish_search(loaded_history, searchbar, dropdown, root, search_term, username)
         return
-    if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:loaded history "{loaded_history}" """)
-    new_options:List[dict[str,str]] = []
-    i:int = 0
-    for entry in loaded_history:
-        if str(search_term) in entry['text']:
-            new_options.append(entry)
-            if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:adding "{entry}" to new dropdown options""")
-            i = i+1
-        if i>=6:
-            break
+    #if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:loaded history "{loaded_history}" """)
     if DEBUG_MODE:print(f"""[SearchBar][update_search]:chose "{__match_entries(loaded_history, search_term.lower())}" as new options for dropdown""")
     __update_dropdown(__match_entries(loaded_history, search_term.lower()),dropdown)
 
