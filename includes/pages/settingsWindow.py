@@ -516,7 +516,7 @@ def pop_up_settings(parent, controller):
     for index, button in enumerate(buttons_data_credits, start=2):
         try:
             if button["image"]:
-                button_image = loadImage(parent, button["image"], resource_path("includes/assets/GitHubSettings.png"), 48, 48)
+                button_image = loadImage(parent=parent, image=button["image"], defult_image=resource_path("includes/assets/GitHubSettings.png"), width=48, height=48)
             else:
                 # Optional: Ein Standardbild verwenden, wenn kein Bild angegeben ist
                 button_image = tk.PhotoImage(file=resource_path("includes/assets/GitHubSettings.png"))
