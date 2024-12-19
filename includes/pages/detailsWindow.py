@@ -178,6 +178,7 @@ class detailsWindow(tk.Frame):
 
         input_frame_details_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
         input_frame_details_window.grid_columnconfigure(1, weight=1)
+        input_frame_details_window.grid_columnconfigure(2, weight=1)
 
         # Service Tag
         service_tag_label_details_window = tk.Label(input_frame_details_window, text="Service Tag",

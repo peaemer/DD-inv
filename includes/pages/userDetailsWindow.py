@@ -199,6 +199,7 @@ class userDetailsWindow(tk.Frame):
 
         input_frame_details_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
         input_frame_details_window.grid_columnconfigure(1, weight=1)
+        input_frame_details_window.grid_columnconfigure(2, weight=1)
 
         #Nutzername
         name = tk.Label(input_frame_details_window, text="Nutzername",
