@@ -1,5 +1,6 @@
 from .ctk_listbox import CTkListbox #muss über 'pip install CTkListbox' installiert werden
 import customtkinter as ctk
+from re import sub
 
 from ..sec_data_info import sqlite3api as db
 import json
@@ -8,12 +9,15 @@ import tkinter as tk
 
 DEBUG_MODE:Final[bool] = True
 MAX_REPEATED_USES:Final[int] = 10
+fallback_username:Final[str] = 'Alex'
 
 search_is_running = False
-fallback_username = 'Alex'
-
 cancel_dropdown_updates:int = 0
 cancel_key_press_updates:int = 0
+
+old_suggested_search_term:str = ''
+user_typed_term:str = ''
+user_typed_term_length:int = 0
 
 def __limit_scl(factor1:float, factor2:float, limit:float)->float: return limit if factor1*factor2 > limit else factor1 * factor2
 def __limit_div(dividend:float, divisor:float, limit:float)->float: return limit if dividend / divisor < limit else dividend / divisor
@@ -71,7 +75,7 @@ def __match_entries(loaded_history:List[dict[str, str]], search_term:str) -> Lis
     for entry in loaded_history:
         if search_term in entry['text']:
             result.append(entry)
-            if DEBUG_MODE:print(f"""[SearchBar][__match_entries]:adding "{entry}" to new dropdown options""")
+            if DEBUG_MODE:print(f"""[SearchBar][__match_entries]:"{entry}" contains "{search_term} """)
             i = i+1
             if i>=3:
                 break
@@ -122,6 +126,16 @@ def __update_dropdown(loaded_history:list[dict[str,str]], dropdown:CTkListbox)->
         return
     if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:finished dropdown update""")
 
+def __set_autocomplete_text(searchbar:ctk.CTkTextbox, search_term:str, new_suggested_term:str)->None:
+    global old_suggested_search_term, user_typed_term, user_typed_term_length
+    column = int(searchbar.index("insert").split(".")[1])
+    searchbar.delete(searchbar.index('insert'),'end')
+    print(column)
+    print(new_suggested_term.split(searchbar.get(1.0,'end-1c')),0)
+    searchbar.insert('end', new_suggested_term.split(searchbar.get(1.0,'end-1c'))[1] ,'hint')
+    searchbar.mark_set("insert", f'1.{column}')
+
+
 def update_search(loaded_history:list[dict[str, str]], searchbar:ctk.CTkTextbox, dropdown:CTkListbox, root:tk.Frame, search_term:str, username:str)->None:
     """
         called when the searchbar text changed like the user typing an additional character into the search bar .
@@ -147,6 +161,7 @@ def update_search(loaded_history:list[dict[str, str]], searchbar:ctk.CTkTextbox,
     #if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:loaded history "{loaded_history}" """)
     if DEBUG_MODE:print(f"""[SearchBar][update_search]:chose "{__match_entries(loaded_history, search_term.lower())}" as new options for dropdown""")
     __update_dropdown(__match_entries(loaded_history, search_term.lower()),dropdown)
+    __set_autocomplete_text(searchbar,search_term,dropdown.get(0) if dropdown.size()>0 else '')
 
 
 
@@ -192,7 +207,7 @@ def finish_search(loaded_history:list[dict[str,str]], searchbar:ctk.CTkTextbox, 
     root.focus()
     search_is_running = False
 
-def start_search(loaded_history:List[Dict[str,str]], searchbar:ctk.CTkTextbox, dropdown:CTkListbox, root:tk.Frame, search_term:str, username:str):
+def start_search(loaded_history:List[Dict[str,str]], searchbar:ctk.CTkTextbox, dropdown:CTkListbox, root:tk.Frame, search_term:str, username:str)->None:
 
     """
         called when the user starts typing into the search bar

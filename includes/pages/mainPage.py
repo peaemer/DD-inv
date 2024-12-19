@@ -350,6 +350,7 @@ class mainPage(tk.Frame):
         search_entry_var: tk.StringVar = tk.StringVar()
         search_entry_oval:CTkEntry = CTkEntry(search_frame, text_color="black", fg_color=srhGrey, bg_color="white", font=("Arial", 26), corner_radius=20, border_width=0, height=25)
         search_entry = CTkTextbox(search_frame, text_color="black", fg_color=srhGrey, bg_color="white", font=("Arial", 25), corner_radius=0, border_width=0, height=0,border_spacing=0,)
+        search_entry.tag_config('hint',foreground='blue',background='#35baf2')
 
         #setze die grid layouts für den frame ser suchleiste und den frame des such-dropdowns
         dropdown_overlay_frame.grid(row=1, column=0, padx=(77, 166), pady=0, sticky=tk.N + tk.W + tk.E)
