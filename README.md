@@ -11,20 +11,23 @@
 
 Das Projekt befindet sich derzeit in der Entwicklung und wird kontinuierlich erweitert. 
 
-## Funktionen (Geplant und Implementiert)
+## Funktionen (Implementiert)
 
-- **Inventarverwaltung**: Hinzufügen, Bearbeiten und Löschen von Einträgen im Inventar.
-- **Such- und Filterfunktionen**: Intelligente Suche und Filteroptionen für Inventargegenstände.
+- **Inventarverwaltung**: Hinzufügen, Bearbeiten und Löschen von Einträgen im Inventar. Dazu können Details zum jeweiligen Eintrag eingesehen werden, wie Ausgeliehen von..., oder Beschädigungen u.a.
+- **Such- und Filterfunktionen**: Intelligente Suche und Filteroptionen für Inventargegenstände. Darüberhinaus eine Suchhistorie und Speicherrung der bishärigen Suchen.
+- **Login Funktion**: Jeder Nutzer soll seine eigenen Login mit Profil besitzen
 - **Benutzerverwaltung**: Unterstützung für mehrere Benutzerrollen mit entsprechenden Berechtigungen.
-- **Datenexport**: Export von Inventardaten in CSV- und andere Formate.
-- **Statistiken**: Anzeige von Statistiken und Berichten zum Inventar.
+- **Admin Funktionen**: Erstellen von Nutzern und Rollen sowie das ändern ihrer Rechte und das einsehen der Details für Nutzer, Räume und Rollen.
+- **Datenexport**: Export von Inventardaten in CSV- und andere Formate möglich.
+- **Statistiken**: Anzeige von Statistiken und Berichten zum Inventar. Zum Beispiel einer Ausleihistorie der jeweiligen Benutezr.
+- **Design**: Setzen eines Profilbildes für jeweilgen Benutzer.
 
 ## Voraussetzungen
 
-- **Python 3.9+**
+- **Python 3.10+**
 - **SQLite 3** (Standardmäßig integriert, andere Datenbanken werden optional unterstützt)
-- **Pip** zur Verwaltung von Abhängigkeiten
-- **tkinter** zum erstellen der GUI
+- **Pip** zur Verwaltung von Abhängigkeiten, wie PIL, CTK, etc.
+- **tkinter / customtkinter / Figma** zum erstellen der GUI
 
 ## Installation und Ausführung
 
@@ -32,17 +35,16 @@ Das Projekt befindet sich derzeit in der Entwicklung und wird kontinuierlich erw
    ```bash
    git clone https://github.com/peaemer/DD-inv.git
    cd DD-inv
-## Geplante Features
-
--> **Admin Funktionen** z.B. erstellen von Nutzern, Daten und Rollen
+## Geplante Features, welche noch Implementiert werden
 
 -> **Portable version** Datenbank soll ohne installation überall auf Standard geräten nutzbar sein
-
--> **Login Funktion** Jeder Nutzer soll seine eigenen Login mit Profil besitzen
+-> **Design** Anapssen des Hintergrundes der App sowie der Farbe
+-> **Datenbank** Einbinden der Datenbank in die App
+-> **Suchfeld** Autocomplete beim Eingeben von Wörtern in der Suchleiste
 
 ## Projektstatus
 
-Das projekt wird **aktiv** entwickelt. Es können Bugs auftreteten und einige Features sind noch nicht vollständig implementiert
+Das projekt wird **aktiv** entwickelt. Es können Bugs auftreteten und einige Features sind noch nicht vollständig implementiert. Die Akutelle Version des Inventarisierungstools ist aktuell eine **BETA**!
 
 ## Dokumentationen
 
@@ -50,10 +52,11 @@ Das projekt wird **aktiv** entwickelt. Es können Bugs auftreteten und einige Fe
 - [Datenbank Dokumentation](https://docs.google.com/document/d/1JMGLcfbs8KzxF_zfKBePersd-7iInHD2hQcOE3sAdLk/edit?tab=t.0#heading=h.nhkrx8i5d2i6)
 - [Backend Dokumenatation]()
 - [Dokumentation über Sicherheit]()
+- [Anleitung & FAQ]()
 
 ## Credits
 
-Dieses Projekt wird von der **FI24** im Rahmen ihrer Ausbildung entwickelt, Mitwirkende
+Dieses Projekt wird von der **FI24** im Rahmen ihrer Ausbildung entwickelt, Mitwirkende sind:
 
 [Peaemer (Jack)](https://github.com/peaemer/)
 
