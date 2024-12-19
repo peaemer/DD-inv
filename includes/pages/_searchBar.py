@@ -1,4 +1,4 @@
-from CTkListbox import CTkListbox
+from .ctk_listbox import CTkListbox #muss über 'pip install CTkListbox' installiert werden
 import customtkinter as ctk
 
 from ..sec_data_info import sqlite3api as db
