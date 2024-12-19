@@ -84,7 +84,7 @@ class adminRoleWindow(tk.Frame):
             print("DEBUG: on_entry_click executed")
             if role_search_entry.get() == 'Suche':
                 role_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
-                role_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+                role_search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
                 print("DEBUG: Cleared Entry for use")
 
         def on_focus_out(event):
@@ -101,7 +101,7 @@ class adminRoleWindow(tk.Frame):
             print("DEBUG: on_focus_out executed")  # Debug
             if role_search_entry.get() == '':
                 role_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                role_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+                role_search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
                 print("DEBUG: Reset Entry") #Debug
 
 
