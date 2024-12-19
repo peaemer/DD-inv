@@ -237,7 +237,8 @@ class userDetailsWindow(tk.Frame):
         for room in db.read_all_rollen():
             role_values.append(room['Rolle'])
         self.role_combobox = ttk.Combobox(input_frame_details_window, values=role_values,
-                                          font=("Arial", size_details_window))
+                                          font=("Arial", size_details_window),
+                                          state="readonly")
         self.role_combobox.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
 

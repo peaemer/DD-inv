@@ -100,7 +100,8 @@ def add_user_popup(parent):
         role_values.append(room['Rolle'])
     role_combobox_add_user_popup = ctk.CTkComboBox(
         input_frame_add_user_popup, values=role_values,
-        font=("Arial", size_add_user_popup), corner_radius=corner,fg_color=srhGrey,border_width=border)
+        font=("Arial", size_add_user_popup), corner_radius=corner,fg_color=srhGrey,border_width=border,
+        state="readonly")
 
     role_combobox_add_user_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
     role_combobox_add_user_popup.set("Rolle auswählen")

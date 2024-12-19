@@ -211,7 +211,8 @@ class detailsWindow(tk.Frame):
 
         self.room_combobox_details_window = ctk.CTkComboBox(input_frame_details_window, values=room_values,
                                                             font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
+                                                             corner_radius=corner,fg_color=srhGrey,border_width=border,
+                                                            state="readonly")
         self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
         self.room_combobox_details_window.set("Raum auswählen")  # Platzhalter
 
