@@ -62,6 +62,7 @@ def add_room_popup(parent):
     input_frame_add_room_popup.grid(row=1, column=0, pady=20, sticky=tk.NSEW)
     input_frame_add_room_popup.grid_columnconfigure(0, weight=1)
     input_frame_add_room_popup.grid_columnconfigure(1, weight=1)
+    input_frame_add_room_popup.grid_columnconfigure(2, weight=1)
 
     size_add_room_popup = 16
 

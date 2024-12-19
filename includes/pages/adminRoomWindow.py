@@ -198,8 +198,7 @@ class adminRoomWindow(tk.Frame):
                                  activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
-        from ._avatarManager import loadImage
-        self.admin_room_window_avatar = loadImage(parent=parent)
+        self.admin_room_window_avatar = cache.user_avatar
 
         # Füge einen Button mit dem Bild hinzu
         options_button_admin_room_window = tk.Button(header_frame,

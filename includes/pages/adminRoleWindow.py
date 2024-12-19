@@ -84,7 +84,7 @@ class adminRoleWindow(tk.Frame):
             print("DEBUG: on_entry_click executed")
             if role_search_entry.get() == 'Suche':
                 role_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
-                role_search_entry.config(fg='black')  # Setze Textfarbe auf schwarz
+                role_search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
                 print("DEBUG: Cleared Entry for use")
 
         def on_focus_out(event):
@@ -101,7 +101,7 @@ class adminRoleWindow(tk.Frame):
             print("DEBUG: on_focus_out executed")  # Debug
             if role_search_entry.get() == '':
                 role_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
-                role_search_entry.config(fg='grey')  # Textfarbe auf grau ändern
+                role_search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
                 print("DEBUG: Reset Entry") #Debug
 
 
@@ -216,8 +216,7 @@ class adminRoleWindow(tk.Frame):
                                  activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
-        from ._avatarManager import loadImage
-        self.admin_role_window_avatar = loadImage(parent=parent)
+        self.admin_role_window_avatar = cache.user_avatar
 
         # Füge einen Button mit dem Bild hinzu
         options_button_admin_role_window = tk.Button(header_frame,
@@ -325,14 +324,31 @@ class adminRoleWindow(tk.Frame):
         # Treeview mit Scrollbar verbinden
         role_tree.configure(yscrollcommand=role_tree_scroll.set)
 
+        # Scrollbar erstellen
+        h_role_tree_scroll = ctk.CTkScrollbar(
+            role_tree_frame,
+            orientation="horizontal",
+            command=role_tree.xview,
+            fg_color="white",
+            width=20,                                                # <--- +++++side scrollbar visibility+++++ #
+            corner_radius=scroll_corner,
+            button_color = srhGrey,
+            button_hover_color="#2980b9"
+        )
+        h_role_tree_scroll.grid(row=2, column=0, sticky=tk.W + tk.E)  # Scrollbar genau neben der Tabelle
+
+
+        # Treeview mit Scrollbar verbinden
+        role_tree.configure(xscrollcommand=h_role_tree_scroll.set)
+
         # Tags für alternierende Zeilenfarben konfigurieren
         role_tree.tag_configure("oddrow", background="#f7f7f7")
         role_tree.tag_configure("evenrow", background="white")
 
         # Spaltennamen und Breiten als Liste
         columns = [
-            ("ID", 20),
-            ("Rolle", 100),
+            ("ID", 30),
+            ("Rolle", 110),
             ("Rolle Löschbar", 150),
             ("Admin Feature", 150),
             ("Ansehen", 90),
@@ -341,12 +357,12 @@ class adminRoleWindow(tk.Frame):
             ("Erstellen", 100),
             ("Gruppe Löschen", 160),
             ("Gruppe Erstellen", 160),
-            ("Gruppe Bearbeiten", 170),
-            ("Rollen Erstellen", 160),
-            ("Rollen Bearbeiten", 160),
+            ("Gruppe Bearbeiten", 190),
+            ("Rollen Erstellen", 170),
+            ("Rollen Bearbeiten", 170),
             ("Rollen Löschen", 160),
             ("User Löschen", 160),
-            ("User Bearbeiten", 160),
+            ("User Bearbeiten", 190),
             ("User Erstellen", 160)
         ]
 

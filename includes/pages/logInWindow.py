@@ -1,10 +1,10 @@
-import sys
 import tkinter as tk
 import webbrowser
 from tkinter import *
 from tkinter import ttk, messagebox
 import cache
 from ._styles import *
+from ._avatarManager import check_internet_connection, loadImage
 import customtkinter as ctk
 from includes.sec_data_info import sqlite3api as db
 
@@ -25,6 +25,7 @@ class logInWindow(tk.Frame):
     :type log_out_btn: tk.PhotoImage
     """
     def __init__(self, parent, controller):
+        check_internet_connection()
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
 
@@ -65,7 +66,8 @@ class logInWindow(tk.Frame):
                 cache.user_group = benutzer_info.get('Rolle', '')  # Rolle des Benutzers speichern
                 cache.user_name = user  # Benutzernamen im Cache speichern
                 cache.user_group_data = next((rolle for rolle in db.read_all_rollen() if rolle['Rolle'] == cache.user_group), None)
-                cache.user_avatar = db.get_avatar_info(user) if db.get_avatar_info(user) else cache.user_avatar
+                cache.user_avatar = loadImage(parent=parent, image=db.get_avatar_info(user), defult_image=cache.user_default_avatar, width=48, height=48) if cache.internet else loadImage(parent=parent, image=cache.user_default_avatar, width=48, height=48)
+                cache.user_avatarx128 = loadImage(parent=parent, image=db.get_avatar_info(user), defult_image=cache.user_default_avatar, width=128, height=128) if cache.internet else loadImage(parent=parent, image=cache.user_default_avatar, width=128, height=128)
 
                 password_entry.delete(0, 'end')
                 username_entry.delete(0, 'end')

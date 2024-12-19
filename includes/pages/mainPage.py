@@ -12,7 +12,7 @@ from ._styles import *
 import customtkinter as ctk
 from customtkinter.windows.widgets.ctk_textbox import CTkTextbox
 import json
-from CTkListbox import * #muss über 'pip install CTkListbox' installiert werden
+from .ctk_listbox import *
 
 
 
@@ -246,13 +246,11 @@ class mainPage(tk.Frame):
                                    activebackground="#DF4807")
         log_out_button.grid(row=0, column=4, sticky=tk.E, padx=20)
 
-
-
         # Konvertiere das Bild für Tkinter
-        from ._avatarManager import loadImage
-        self.main_page_avatar = loadImage(parent=parent)
+        self.main_page_avatar = cache.user_avatar
 
         # Füge einen Button mit dem Bild hinzu
+        global main_page_options_button
         main_page_options_button = tk.Button(self.header_frame,
                                    image=self.main_page_avatar,
                                    command=show_settings_window,
@@ -539,6 +537,10 @@ class mainPage(tk.Frame):
                         cats.append(hw['Geraetetype'])
                         side_tree.insert(tree_parent, tk.END, text=hw['Geraetetype'])
 
+    def update_profile_picture(self=None):
+        main_page_avatar = cache.user_avatar
+        main_page_options_button.configure(image=main_page_avatar)
+
     # Aktualisieren der Data in der Tabelle
     def update_treeview_with_data(self = None, data=None):
         """
@@ -607,7 +609,9 @@ class mainPage(tk.Frame):
         """
 
         # Überprüfe die Benutzergruppe
-        if cache.user_group_data['ADMIN_FEATURE']:
+        if cache.user_group_data['ADMIN_FEATURE'] == "True":
+            print(cache.user_group_data)
+            print("admin")
             # Überprüfe, ob der Admin-Button bereits existiert
             if not hasattr(self, "admin_button"):
                 # Erstelle den Admin-Button, wenn er noch nicht existiert
