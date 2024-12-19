@@ -8,7 +8,7 @@ import cache
 from ._styles import *
 import customtkinter as ctk
 import json
-from CTkListbox import * #muss über 'pip install CTkListbox' installiert werden
+from .ctk_listbox import *
 
 
 

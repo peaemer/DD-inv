@@ -203,7 +203,7 @@ def pop_up_settings(parent, controller):
     from ._avatarManager import loadImage
 
     # Laden des Bildes für Profile Btn
-    parent.btn_image_set_profile_picture_settings = tk.PhotoImage(file="./includes/assets/SetProfileSettings.png")
+    parent.btn_image_set_profile_picture_settings = tk.PhotoImage(file=resource_path("./includes/assets/SetProfileSettings.png"))
 
     def setAvatar():
         cache.user_avatarx128 = loadImage(parent=parent, image=profile_image_url.get(), width=128, height=128)
