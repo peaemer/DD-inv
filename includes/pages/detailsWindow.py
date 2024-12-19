@@ -20,7 +20,7 @@ def show_details(selectedItem, tree, controller):
     """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selectedItem, "values")
-    print(f"DEBUG: Data of the selected item: {data}")  # Debug
+    print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Data of the selected item: {data}")  # Debug
     cache.selected_ID = data[0]
 
     controller.show_frame(detailsWindow)  # Zeige die Details-Seite
@@ -90,7 +90,7 @@ class detailsWindow(tk.Frame):
             show_settings_window_details_window()
                 Öffnet das Einstellungs-Pop-Up-Fenster im Detailfenster.
             """
-            print("DEBUG: Show settings window details window")
+            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 

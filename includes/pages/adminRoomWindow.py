@@ -54,7 +54,7 @@ class adminRoomWindow(tk.Frame):
             :ivar parent: Referenz zum übergeordneten Widget.
             :ivar controller: Referenz zur Steuerlogik oder dem Hauptcontroller.
             """
-            print("DEBUG: show settings window admin window") # Debug
+            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: show settings window admin window") # Debug
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -336,12 +336,12 @@ class adminRoomWindow(tk.Frame):
             """
             try:
                 selected_room = room_tree.focus()
-                print(f"DEBUG: Ausgewählter Raum: {selected_room}")  # Debug
+                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Ausgewählter Raum: {selected_room}")  # Debug
                 if selected_room:
                     from .roomDetailsWindow import roomDetailsWindow, show_room_details
                     show_room_details(selected_room, room_tree, controller)
             except Exception as e:
-                print(f"DEBUG: Fehler bei der Auswahl: {e}")
+                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
         room_tree.bind("<Double-1>", on_room_selected)
