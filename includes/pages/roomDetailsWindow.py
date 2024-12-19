@@ -1,14 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from tkinter import *
 from includes.sec_data_info import sqlite3api as db
 #import Security.UserSecurity as sec
 import cache
-import random, string
-
-LARGEFONT = ("Arial", 35)
-LOGINFONT = ("Arial", 40)
-srhGrey = "#d9d9d9"
+import customtkinter as ctk
+from ._styles import *
 
 
 def show_room_details(selected_room, tree, controller):
@@ -25,7 +21,7 @@ def show_room_details(selected_room, tree, controller):
     """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_room, "values")
-    print(f"DEBUG: Data of the selected item: {data}")
+    print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Data of the selected item: {data}")
     cache.selected_ID = data[0]
     controller.show_frame(roomDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
@@ -96,7 +92,7 @@ class roomDetailsWindow(tk.Frame):
                 Ein Steuerelement für die Verwaltung der Fenster- oder Anwendungslogik.
 
             """
-            print("DEBUG: Show settings window details window")
+            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
