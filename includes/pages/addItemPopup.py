@@ -1,8 +1,7 @@
 import tkinter as tk
-from tkinter import ttk
-
+import customtkinter as ctk
+from ._styles import *
 from includes.sec_data_info import sqlite3api as db
-import cache
 
 
 def add_item_popup(parent):
@@ -61,8 +60,11 @@ def add_item_popup(parent):
     header_frame_add_item_popup.grid_columnconfigure(0, weight=1)
 
     # Füge ein zentriertes Label hinzu
-    header_label_add_item_popup = tk.Label(header_frame_add_item_popup, background="#DF4807",
-                                       text="Erstellen", foreground="white", font=("Arial", 40))
+    header_label_add_item_popup = tk.Label(header_frame_add_item_popup,
+                                           background="#DF4807",
+                                           text="Erstellen",
+                                           foreground="white",
+                                           font=("Arial", 40))
     header_label_add_item_popup.grid(row=0, column=0, sticky=tk.NSEW)
 
     # Input-Frame
@@ -75,58 +77,86 @@ def add_item_popup(parent):
     size_add_item_popup = 16
 
     # Label und Eingabefeld hinzufügen
-    service_tag_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Service Tag", background="white",
-                                           font=("Arial", size_add_item_popup))
+    service_tag_label_add_item_popup = tk.Label(input_frame_add_item_popup,
+                                                text="Service Tag",
+                                                background="white",
+                                                font=("Arial", size_add_item_popup))
     service_tag_label_add_item_popup.grid(row=0, column=0, padx=0, pady=20, sticky=tk.E)
 
-    service_tag_entry_add_item_popup = tk.Entry(input_frame_add_item_popup, background="#d9d9d9",
-                                           font=("Arial", size_add_item_popup), bd=0)
+    service_tag_entry_add_item_popup = ctk.CTkEntry(input_frame_add_item_popup,
+                                                    border_width=0,
+                                                    text_color="black",
+                                                    fg_color=srhGrey,
+                                                    corner_radius=corner)
     service_tag_entry_add_item_popup.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Typ
-    type_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Typ", background="white",
-                                     font=("Arial", size_add_item_popup))
+    type_label_add_item_popup = tk.Label(input_frame_add_item_popup,
+                                         text="Typ",
+                                         background="white",
+                                         font=("Arial", size_add_item_popup))
     type_label_add_item_popup.grid(row=1, column=0, padx=0, pady=20, sticky=tk.E)
 
-    type_entry_add_item_popup = tk.Entry(input_frame_add_item_popup, background="#d9d9d9", font=("Arial", size_add_item_popup),
-                                     bd=0)
+    type_entry_add_item_popup = ctk.CTkEntry(input_frame_add_item_popup,
+                                                    border_width=0,
+                                                    text_color="black",
+                                                    fg_color=srhGrey,
+                                                    corner_radius=corner)
     type_entry_add_item_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Raum (Dropdown-Menü)
-    room_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Raum", background="white",
-                                     font=("Arial", size_add_item_popup))
+    room_label_add_item_popup = tk.Label(input_frame_add_item_popup,
+                                         text="Raum", background="white",
+                                         font=("Arial", size_add_item_popup))
     room_label_add_item_popup.grid(row=2, column=0, padx=0, pady=20, sticky=tk.E)
 
     # Combobox statt Entry
     room_values = []
     for room in db.fetch_all_rooms():
         room_values.append(room['Raum'])
-    room_combobox_add_item_popup = ttk.Combobox(input_frame_add_item_popup, values=room_values,
-                                                font=("Arial", size_add_item_popup),
-                                                state="readonly")
+    room_combobox_add_item_popup = ctk.CTkComboBox(input_frame_add_item_popup,
+                                                   values=room_values,
+                                                   font=("Arial", size_add_item_popup),
+                                                   fg_color=srhGrey,
+                                                   text_color="black",
+                                                   corner_radius=corner,
+                                                   border_width=0,
+                                                   state="readonly")
     room_combobox_add_item_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
-    room_combobox_add_item_popup.set("Raum auswählen")  # Platzhalter
 
     # Name
-    name_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Name", background="white",
-                                     font=("Arial", size_add_item_popup))
+    name_label_add_item_popup = tk.Label(input_frame_add_item_popup,
+                                         text="Name",
+                                         background="white",
+                                         font=("Arial", size_add_item_popup))
     name_label_add_item_popup.grid(row=3, column=0, padx=0, pady=20, sticky=tk.E)
 
-    name_entry_add_item_popup = tk.Entry(input_frame_add_item_popup, background="#d9d9d9", font=("Arial", size_add_item_popup),
-                                     bd=0)
+    name_entry_add_item_popup = ctk.CTkEntry(input_frame_add_item_popup,
+                                                    border_width=0,
+                                                    text_color="black",
+                                                    fg_color=srhGrey,
+                                                    corner_radius=corner)
     name_entry_add_item_popup.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Beschädigung
-    damaged_label_add_item_popup = tk.Label(input_frame_add_item_popup, text="Beschädigung", background="white",
-                                        font=("Arial", size_add_item_popup))
+    damaged_label_add_item_popup = tk.Label(input_frame_add_item_popup,
+                                            text="Beschädigung",
+                                            background="white",
+                                            font=("Arial", size_add_item_popup))
     damaged_label_add_item_popup.grid(row=4, column=0, padx=0, pady=20, sticky=tk.E)
 
-    damaged_button_add_item_popup = tk.Entry(input_frame_add_item_popup, background="#d9d9d9", font=("Arial", size_add_item_popup),
-                                         bd=0)
+    damaged_button_add_item_popup = ctk.CTkEntry(input_frame_add_item_popup,
+                                                    border_width=0,
+                                                    text_color="black",
+                                                    fg_color=srhGrey,
+                                                    corner_radius=corner)
     damaged_button_add_item_popup.grid(row=4, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
-
-    error_label = tk.Label(input_frame_add_item_popup, text="", background="white",fg="darkred",font=("Arial", 14))
+    error_label = tk.Label(input_frame_add_item_popup,
+                           text="",
+                           background="white",
+                           fg="darkred",
+                           font=("Arial", 14))
     error_label.grid(row=5, column=0,columnspan=2, padx=0, pady=20, sticky=tk.E)
 
     # Funktion zum Eintrag hinzufügen
@@ -193,12 +223,22 @@ def add_item_popup(parent):
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")
     button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
-    exit_button_add_item_popup = tk.Button(button_frame_add_item_popup, image=parent.exit_btn_add_item_popup,
-                                       bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=exit_entry)
+    exit_button_add_item_popup = tk.Button(button_frame_add_item_popup,
+                                           image=parent.exit_btn_add_item_popup,
+                                           bd=0,
+                                           relief=tk.FLAT,
+                                           bg="white",
+                                           activebackground="white",
+                                           command=exit_entry)
     exit_button_add_item_popup.pack(side=tk.LEFT, padx=10)  # Links platzieren
 
-    submit_button_add_item_popup = tk.Button(button_frame_add_item_popup, image=parent.add_btn_add_item_popup,
-                                         bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=submit_entry)
+    submit_button_add_item_popup = tk.Button(button_frame_add_item_popup,
+                                             image=parent.add_btn_add_item_popup,
+                                             bd=0,
+                                             relief=tk.FLAT,
+                                             bg="white",
+                                             activebackground="white",
+                                             command=submit_entry)
     submit_button_add_item_popup.pack(side=tk.LEFT, padx=10)  # Neben Exit-Button platzieren
 
     add_popup.grid_rowconfigure(0, weight=0)

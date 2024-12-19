@@ -1,5 +1,7 @@
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
+SETTINGS_FONT = ("Arial", 18, 'bold')
+SETTINGS_BTN_FONT = ("Arial", 15)
 lend_font = ("Arial", 20)
 srhGrey = "#d9d9d9"
 srhOrange = "#DF4807"

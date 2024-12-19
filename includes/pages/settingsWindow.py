@@ -2,20 +2,10 @@ import tkinter as tk
 import webbrowser
 from tkinter import ttk
 from tkinter import filedialog
-from urllib.request import URLopener
-
 import customtkinter as ctk
-from requests.utils import parse_dict_header
-
+from ._styles import *
 from includes.sec_data_info import sqlite3api as db
 import cache
-
-# Schriftarten / Farbschema
-LARGEFONT = ("Arial", 30)
-SETTINGSFONT = ("Arial", 18, 'bold')
-BTNFONT = ("Arial", 15)
-srhGrey = "#d9d9d9"
-srhOrange = "#DF4807"
 
 
 #########################
@@ -129,7 +119,7 @@ def pop_up_settings(parent, controller):
     # Überschrift Dein Profil
     profile_btn_label = tk.Label(frame_profile,
                                  text="Dein Profil",
-                                 font=SETTINGSFONT,
+                                 font=SETTINGS_FONT,
                                  bg="white")
     profile_btn_label.grid(row=0, column=0, pady=10, columnspan=2, sticky="new")
 
@@ -145,7 +135,7 @@ def pop_up_settings(parent, controller):
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
                                  text="Eingeloggt als\n" + cache.user_name,
-                                 font=BTNFONT,
+                                 font=SETTINGS_BTN_FONT,
                                  bg="white")
     profile_btn_label.grid(row=3, column=0, pady=10, rowspan=2, sticky="nw")
 
@@ -156,14 +146,14 @@ def pop_up_settings(parent, controller):
     # Schriftzug Rechte in der Gruppe
     profile_btn_label = tk.Label(frame_role,
                                  text="Rechte in der Gruppe",
-                                 font=BTNFONT,
+                                 font=SETTINGS_BTN_FONT,
                                  bg="white")
     profile_btn_label.grid(row=0, column=0, sticky="nw")
 
     for role in db.read_all_rollen():
         role2_btn_label = tk.Label(frame_role,
                                    text=role["Rolle"],
-                                   font=BTNFONT,
+                                   font=SETTINGS_BTN_FONT,
                                    bg="white",
                                    fg="gray")
         if cache.user_group == role["Rolle"]:
@@ -191,7 +181,7 @@ def pop_up_settings(parent, controller):
     # Eingabe für die Profilbild-URL
     profile_image_url_label = tk.Label(frame_profile,
                                        text="Profilbild-URL eingeben",
-                                       font=BTNFONT,
+                                       font=SETTINGS_BTN_FONT,
                                        bg="white")
     profile_image_url_label.grid(row=1, column=1, pady=10, sticky="ne")
 
@@ -245,7 +235,7 @@ def pop_up_settings(parent, controller):
     profile_btn_label = tk.Button(frame_profile,
                                   command=lambda: log_out(controller),
                                   text="Benutzer Abmelden",
-                                  font=BTNFONT,
+                                  font=SETTINGS_BTN_FONT,
                                   bg="white",
                                   cursor="hand2",
                                   image=parent.btn_image_logout,
@@ -263,14 +253,14 @@ def pop_up_settings(parent, controller):
     # Überschrift System erstellen
     radiobutton_label = tk.Label(frame_system,
                                  text="System",
-                                 font=SETTINGSFONT,
+                                 font=SETTINGS_FONT,
                                  bg="white")
     radiobutton_label.grid(row=0, column=0, pady=10, columnspan=2, sticky="new")
 
     # Überschrift Auflösung ändern
     button_bg_label = tk.Label(frame_system,
                                text="Auflösung anpassen",
-                               font=BTNFONT,
+                               font=SETTINGS_BTN_FONT,
                                bg="white")
     button_bg_label.grid(row=1, column=0, pady=10, sticky="nw")
 
@@ -283,12 +273,12 @@ def pop_up_settings(parent, controller):
             info_label.config(text="Bitte gültige Zahlen eingeben.")
 
     # Eingabefelder für Breite und Höhe
-    breite_label = tk.Label(frame_system, text="Breite", background="white", font=BTNFONT)
+    breite_label = tk.Label(frame_system, text="Breite", background="white", font=SETTINGS_BTN_FONT)
     breite_label.grid(row=2, column=0)
     breite_entry = ctk.CTkEntry(frame_system, corner_radius=20, fg_color=srhGrey, text_color="black", border_width=0)
     breite_entry.grid(row=3)
 
-    hoehe_label = tk.Label(frame_system, text="Höhe", background="white", font=BTNFONT)
+    hoehe_label = tk.Label(frame_system, text="Höhe", background="white", font=SETTINGS_BTN_FONT)
     hoehe_label.grid(row=4, column=0)
     hoehe_entry = ctk.CTkEntry(frame_system, corner_radius=20, fg_color=srhGrey,  text_color="black", border_width=0)
     hoehe_entry.grid(row=5)
@@ -315,14 +305,14 @@ def pop_up_settings(parent, controller):
     # Überschrift für Style
     radiobutton_label = tk.Label(frame_style,
                                  text="Style",
-                                 font=SETTINGSFONT,
+                                 font=SETTINGS_FONT,
                                  bg="white")
     radiobutton_label.grid(row=0, column=0, pady=1, columnspan=2, sticky="new")
 
     # Überschrift für Radiobutton-Kategorie
     radiobutton_label = tk.Label(frame_style,
                                  text="Setze einen vordefinierten Style",
-                                 font=BTNFONT,
+                                 font=SETTINGS_BTN_FONT,
                                  bg="white")
     radiobutton_label.grid(row=1, column=0, pady=1, columnspan=2, sticky="nw")
 
@@ -346,7 +336,7 @@ def pop_up_settings(parent, controller):
     # Überschrift für Backgroundbutton-Kategorie
     button_bg_label = tk.Label(frame_style,
                                text="Wähle aus einem Eigenem Bild",
-                               font=BTNFONT,
+                               font=SETTINGS_BTN_FONT,
                                bg="white")
     button_bg_label.grid(row=7, column=0, pady=10, columnspan=2, sticky="nw")
 
@@ -470,8 +460,8 @@ def pop_up_settings(parent, controller):
 
     # Style anpassen
     style = ttk.Style()
-    style.configure("Custom.TButton", background="white", font=BTNFONT, borderwidth=0)
-    style.configure("Custom.TRadiobutton", background="white", font=BTNFONT)
+    style.configure("Custom.TButton", background="white", font=SETTINGS_BTN_FONT, borderwidth=0)
+    style.configure("Custom.TRadiobutton", background="white", font=SETTINGS_BTN_FONT)
 
     ###############################
     # # L A Y O U T : U E B E R # #
@@ -484,14 +474,14 @@ def pop_up_settings(parent, controller):
     # Ueberschrift erstellen Über das DD-Inv Tool
     ueber_label = tk.Label(frame_ueber,
                            text="Über das DD-Inv Tool",
-                           font=SETTINGSFONT,
+                           font=SETTINGS_FONT,
                            bg="white")
     ueber_label.grid(row=0, column=0, pady=1, columnspan=2, sticky="new")
 
     # Unterüberschrift erstellen Credits
     Credits_label = tk.Label(frame_ueber,
                              text="Credits",
-                             font=BTNFONT,
+                             font=SETTINGS_BTN_FONT,
                              bg="white")
     Credits_label.grid(row=1, column=0, pady=10, sticky="new")
 
@@ -535,7 +525,7 @@ def pop_up_settings(parent, controller):
     # Unterueberschrift Tools
     build_label = tk.Label(frame_ueber,
                            text="Tools",
-                           font=BTNFONT,
+                           font=SETTINGS_BTN_FONT,
                            bg="white")
     build_label.grid(row=1, column=1, pady=10, sticky="new")
 
@@ -572,7 +562,7 @@ def pop_up_settings(parent, controller):
     # Unterueberschrift Unterstzütze Uns
     build_label = tk.Label(frame_ueber,
                            text="Unterstütze Uns",
-                           font=BTNFONT,
+                           font=SETTINGS_BTN_FONT,
                            bg="white")
     build_label.grid(row=1, column=2, pady=10, sticky="new")
 
@@ -607,7 +597,7 @@ def pop_up_settings(parent, controller):
     # Unterueberschrift Info
     build_label = tk.Label(frame_ueber,
                            text="Info",
-                           font=BTNFONT,
+                           font=SETTINGS_BTN_FONT,
                            bg="white")
     build_label.grid(row=5, column=2, pady=10, sticky="new")
 
@@ -693,7 +683,7 @@ def pop_up_settings(parent, controller):
                          text=category,
                          bd=0,
                          relief=tk.FLAT,
-                         font=SETTINGSFONT,
+                         font=SETTINGS_BTN_FONT,
                          fg="white",
                          bg=srhOrange)
         label.grid(padx=10, pady=8, row=idx + 1, column=0, sticky="w")

@@ -1,6 +1,5 @@
 import tkinter as tk
 import customtkinter as ctk
-from tkinter import ttk, messagebox
 from includes.sec_data_info import sqlite3api as sqlapi
 import string, random
 from ._styles import *
@@ -42,9 +41,9 @@ def add_room_popup(parent):
 
     try:
         from ._avatarManager import resource_path
-        add_popup.iconbitmap(resource_path("assets/srhIcon.ico"))
+        add_popup.iconbitmap(resource_path("includes/assets/srhIcon.ico"))
     except Exception as e:
-        print(f"DEBUG: Fehler beim Laden des Icons: {e}")
+        print(f"Fehler beim Laden des Icons: {e}")
 
     # Header
     header_frame_add_room_popup = tk.Frame(add_popup, background="#DF4807")
