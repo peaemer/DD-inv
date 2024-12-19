@@ -6,7 +6,7 @@ import json
 from typing import List,Dict, Final
 import tkinter as tk
 
-DEBUG_MODE:Final[bool] = False
+DEBUG_MODE:Final[bool] = True
 MAX_REPEATED_USES:Final[int] = 10
 
 search_is_running = False
@@ -64,7 +64,7 @@ def __scale_history_weights(loaded_history:list[dict[str, str]], search_term:str
             entry['weight'] = str(weight)
     return term_existed
 
-def __update_dropdown(new_items:List[str], dropdown:CTkListbox)->None:
+def __update_dropdown(loaded_history:list[dict[str,str]], dropdown:CTkListbox)->None:
 
     global cancel_dropdown_updates
     if cancel_dropdown_updates > 0:
@@ -78,18 +78,22 @@ def __update_dropdown(new_items:List[str], dropdown:CTkListbox)->None:
     except Exception as e:
             if DEBUG_MODE:print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to set grid of dropdown menu because of {e}""")
     if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:successfully set grid of dropdown""")
+    new_items_ = sorted(loaded_history,key=lambda x:x['weight'])
+    #new_items_.reverse()
+    print(new_items_)
     if dropdown:
         while dropdown.size() > 0:
             dropdown.delete(0, 0)
-            if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:removed all items from dropdown""")
+        if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:removed all items from dropdown""")
         if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:adding new items to dropdown""")
-        if not new_items:
+        if not new_items_:
             if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:new items are null""")
             if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:aborting dropdown update""")
             return
         try:
-            for item in new_items:
-                dropdown.insert(dropdown.size(), item)
+            for item in new_items_:
+                dropdown.insert(dropdown.size(), item['text'])
+                if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:added "{item['text']}" to dropdown menu""")
         except Exception as e:
             if DEBUG_MODE:print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to add item to dropdown menu because of {e}""")
             return
@@ -99,24 +103,26 @@ def __update_dropdown(new_items:List[str], dropdown:CTkListbox)->None:
         return
     if DEBUG_MODE:print(f"""[SearchBar][__update_dropdown]:finished dropdown update""")
 
-def __match_entries(loaded_history:List[dict[str, str]], search_term:str) -> List[str]:
+def __match_entries(loaded_history:List[dict[str, str]], search_term:str) -> List[dict[str,str]]:
     i:int = 0
-    result:List[str] = []
+    result:List[dict[str,str]] = []
     for entry in loaded_history:
         if search_term in entry['text']:
-            result.append(entry['text'])
+            result.append(entry)
             if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:adding "{entry}" to new dropdown options""")
             i = i+1
             if i>=3:
                 break
     return result
 
-def update_search(loaded_history:list[dict[str, str]], dropdown:CTkListbox, search_term:str, username:str)->None:
+def update_search(loaded_history:list[dict[str, str]], searchbar:ctk.CTkTextbox, dropdown:CTkListbox, root:tk.Frame, search_term:str, username:str)->None:
     """
         called when the searchbar text changed like the user typing an additional character into the search bar .
 
         :param list[dict[str,str]] loaded_history: the history of the user's search terms
+        :param CTkTextbox searchbar: the searchbar where the user is typing in
         :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
+        :param CTkFrame root: the root frame of the searchbar
         :param str search_term: the current search term
         :param str username: the current user's username
     """
@@ -128,24 +134,25 @@ def update_search(loaded_history:list[dict[str, str]], dropdown:CTkListbox, sear
         cancel_key_press_updates -= 1
         return
     if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:running update search for user "{username}" with searchbar text "{search_term}" and loaded history "{loaded_history}" """)
-
-    sorted_history:list[dict[str, str]] = sorted(loaded_history,key=lambda x:x['weight'])
-    if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:sorted history is "{sorted_history}" """)
-    new_options:List[str] = []
+    if search_term.endswith('\n'):
+        finish_search(loaded_history, searchbar, dropdown, root, search_term, username)
+        return
+    if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:loaded history "{loaded_history}" """)
+    new_options:List[dict[str,str]] = []
     i:int = 0
-    for entry in sorted_history:
+    for entry in loaded_history:
         if str(search_term) in entry['text']:
-            new_options.append(entry['text'])
+            new_options.append(entry)
             if DEBUG_MODE:print(f"""[SearchBar][update searchbar]:adding "{entry}" to new dropdown options""")
             i = i+1
         if i>=6:
             break
     if DEBUG_MODE:print(f"""[SearchBar][update_search]:chose "{__match_entries(loaded_history, search_term.lower())}" as new options for dropdown""")
-    __update_dropdown(__match_entries(sorted_history, search_term.lower()), dropdown)
+    __update_dropdown(__match_entries(loaded_history, search_term.lower()),dropdown)
 
 
 
-def finish_search(loaded_history:list[dict[str,str]], searchbar:ctk.CTkEntry, dropdown:CTkListbox, root:tk.Frame, search_term:str, username:str)->None:
+def finish_search(loaded_history:list[dict[str,str]], searchbar:ctk.CTkTextbox, dropdown:CTkListbox, root:tk.Frame, search_term:str, username:str)->None:
     """
         Called once user stops typing into the search bar.
         Recalculates the weight and repeated_uses of each term.
@@ -153,13 +160,13 @@ def finish_search(loaded_history:list[dict[str,str]], searchbar:ctk.CTkEntry, dr
 
         Parameters:
         :param list[dict[str,str]] loaded_history: the history of the user's search terms
-        :param tk.Entry searchbar: the search bar
+        :param tk.Entry searchbar: the search bar where the user is typing in
         :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
         :param tk.Frame root: the root of th searchbar
         :param str search_term: the current search term
         :param str username: the current user's username
     """
-    global search_is_running
+    global search_is_running, cancel_key_press_updates
     if not search_is_running:
         return
     if DEBUG_MODE:print(f"""[SearchBar]:running finishing search for user {username} with searchbar text "{search_term}" and loaded history "{loaded_history}" """)
@@ -181,26 +188,28 @@ def finish_search(loaded_history:list[dict[str,str]], searchbar:ctk.CTkEntry, dr
             loaded_history.append(entry)
         reloaded_history: str = db.read_benutzer_suchverlauf(username)
         if DEBUG_MODE:print(f"""[SearchBar]: reloaded loaded_history is now "{reloaded_history}" for user "{username}" """)
-    searchbar.delete(0, tk.END)
+    searchbar.delete(0.0,'end-1c')
     dropdown.grid_forget()
+    cancel_key_press_updates = 0
     root.focus()
     search_is_running = False
 
-def start_search(loaded_history:List[Dict[str,str]], searchbar:ctk.CTkEntry, dropdown:CTkListbox, search_term:str, username:str):
+def start_search(loaded_history:List[Dict[str,str]], searchbar:ctk.CTkTextbox, dropdown:CTkListbox, root:tk.Frame, search_term:str, username:str):
 
     """
         called when the user starts typing into the search bar
 
         Parameters:
         :param list[dict[str,str]] loaded_history: the history of the user's search terms
-        :param tk.Entry searchbar: the search bar
+        :param tk.Entry searchbar: the search bar where the user is typing in
         :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
+        :param tk.Frame root: the root of th searchbar
         :param str search_term: the current search term
         :param str username: the current user's username
     """
     global search_is_running, cancel_key_press_updates
     if search_is_running:
-        update_search(loaded_history,dropdown,search_term, username)
+        update_search(loaded_history, searchbar, dropdown, root, search_term, username)
     search_is_running = True
     if DEBUG_MODE:print(f"""[SearchBar]:starting search for user "{username}" with searchbar text "{search_term}" """)
     history_string:str = db.read_benutzer_suchverlauf(username)
@@ -209,18 +218,19 @@ def start_search(loaded_history:List[Dict[str,str]], searchbar:ctk.CTkEntry, dro
     loaded_history.clear()
     for entry in temp_history:
         loaded_history.append(entry)
-    searchbar.delete(0, tk.END)
-    new_items: list[str] = []
-    for entry in loaded_history:
-        new_items.append(entry['text'])
-    __update_dropdown(__match_entries(loaded_history,search_term), dropdown)
+    searchbar.delete(1.0,'end-1c')
+    #new_items: list[str] = []
+    #for entry in loaded_history:
+    #    new_items.append(entry['text'])
+    #new_items.reverse()
+    __update_dropdown(loaded_history, dropdown)
 
 
-def on_dropdown_select(searchbar:ctk.CTkEntry, dropdown:CTkListbox, username:str)->None:
+def on_dropdown_select(searchbar:ctk.CTkTextbox, dropdown:CTkListbox, username:str)->None:
     """
         called when a dropdown entry is clicked
 
-        :param searchbar: the search bar
+        :param searchbar: the search bar where the user is typing in
         :param CTkListbox dropdown: the dropdown
         :param str username: the current user's username
     """
@@ -229,10 +239,10 @@ def on_dropdown_select(searchbar:ctk.CTkEntry, dropdown:CTkListbox, username:str
         return
     selected_button_text = dropdown.get(dropdown.curselection())
     if DEBUG_MODE:print(f"""[SearchBar]:user "{username}" selected item "{selected_button_text}" from dropdown""")
-    searchbar.delete(0, tk.END)
+    searchbar.delete(1.0,'end-1c')
     cancel_key_press_updates += 1
     try:
-        searchbar.insert(0, selected_button_text)
+        searchbar.insert('end', selected_button_text)
     except Exception as e:
         print(f"""[EXCEPTION][SearchBar][__update_dropdown]:failed to add text to searchbar menu because of {e}""")
     if DEBUG_MODE:print(f"[SearchBar][OnDropdownSelect]:finished on dropdown select")
