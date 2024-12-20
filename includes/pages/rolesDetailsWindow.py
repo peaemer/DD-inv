@@ -27,7 +27,7 @@ def show_roles_details(selected_roles, tree, controller):
     """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_roles, "values")
-    print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Data of the selected item: {data}") # Debug
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Data of the selected item: {data}") # Debug
     cache.selected_ID = data[0]
     controller.show_frame(rolesDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
@@ -98,7 +98,7 @@ class rolesDetailsWindow(tk.Frame):
                 Ein Steuerelement für die Verwaltung der Fenster- oder Anwendungslogik.
 
             """
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Show settings window details window")
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 

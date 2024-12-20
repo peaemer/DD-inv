@@ -59,7 +59,7 @@ class adminUserWindow(tk.Frame):
             :ivar parent: Der übergeordnete Container dieses Frames.
             :ivar controller: Kontrollinstanz für die Verwaltung der Frames.
             """
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: show settings window admin window")
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -369,12 +369,12 @@ class adminUserWindow(tk.Frame):
             """
             try:
                 selected_user = user_tree.focus()
-                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Ausgewählter User: {selected_user}")  # Debug
+                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Ausgewählter User: {selected_user}")  # Debug
                 if selected_user:
                     from .userDetailsWindow import userDetailsWindow, show_user_details
                     show_user_details(selected_user, user_tree, controller)
             except Exception as e:
-                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Fehler bei der Auswahl: {e}")
+                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)

@@ -29,7 +29,7 @@ class ddINV(tk.Tk):
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: MainFrame successfully created") # Debug
+        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: MainFrame successfully created") # Debug
 
         self.frames = {}
 
@@ -38,7 +38,7 @@ class ddINV(tk.Tk):
 
     def show_frame(self, cont):
         if cont not in self.frames:
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: {cont.__name__} is being dynamically created.") # Debug
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: {cont.__name__} is being dynamically created.") # Debug
             frame = cont(self.container, self)  # Frame erstellen
             self.frames[cont] = frame  # Zu Frames hinzufügen
             frame.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
@@ -49,7 +49,7 @@ class ddINV(tk.Tk):
             frame.tkraise()  # Frame sichtbar machen
 
             if hasattr(frame, 'on_load') and callable(frame.on_load):
-                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: on_load is being called for {cont.__name__}")  # Debug
+                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: on_load is being called for {cont.__name__}")  # Debug
                 frame.on_load()
 
 if __name__ == "__main__":

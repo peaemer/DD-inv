@@ -41,21 +41,21 @@ def load_image_from_url(url, default=None):
     :rtype: PIL.Image.Image
     :raises requests.HTTPError: Wird ausgelöst, wenn die HTTP-Anfrage fehlschlägt, z.B. bei 404 oder 500.
     """
-    print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: load_image_from_url: ", url, "")
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: load_image_from_url: ", url, "")
     if not cache.internet:
         if not default.endswith(".png") or not default.endswith(".jpg") or not default.endswith(".jpeg"):
             img_data = base64.b64decode(cache.user_default_avatar)
             img = Image.open(BytesIO(img_data))
         else:
             img = Image.open(default)
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: img: ", img, "")
+        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: img: ", img, "")
         return img
 
     try:
         response = requests.get(url)
         response.raise_for_status()  # Überprüft, ob die Anfrage erfolgreich war
         img_data = BytesIO(response.content)  # Bilddaten in einen BytesIO-Stream laden
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: img_data: ", img_data, "")
+        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: img_data: ", img_data, "")
         return Image.open(img_data)
     except requests.exceptions.RequestException as e:
         if default.endswith(".png") or default.endswith(".jpg") or default.endswith(".jpeg"):
@@ -63,7 +63,7 @@ def load_image_from_url(url, default=None):
         else:
             img_data = base64.b64decode(cache.user_default_avatar)
             img = Image.open(BytesIO(img_data))
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: img: ", img, "")
+        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: img: ", img, "")
         return img
 
 
@@ -79,10 +79,10 @@ def load_image_from_base64(base64_string):
     :return: Ein Bild-Objekt, das aus dem dekodierten Bild-String erstellt wurde.
     :rtype: Image
     """
-    print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: load_image_from_base64: ", base64_string, "")
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: load_image_from_base64: ", base64_string, "")
     img_data = base64.b64decode(base64_string)
     img = Image.open(BytesIO(img_data))
-    print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: img: ", img, "")
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: img: ", img, "")
     return img
 
 

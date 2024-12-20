@@ -131,7 +131,7 @@ class mainPage(tk.Frame):
             """
             from .addItemPopup import add_item_popup
             add_item_popup(self)
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: add_item executed")  # Debug
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: add_item executed")  # Debug
 
         def on_entry_click():
             """
@@ -150,7 +150,7 @@ class mainPage(tk.Frame):
             :type event: tk.Event
 
             """
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: [MainPageEvent]: on_entry_click executed")
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: [MainPageEvent]: on_entry_click executed")
             if search_entry.get() == 'Suche':
                 search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
@@ -196,7 +196,7 @@ class mainPage(tk.Frame):
                 anderer Interaktionen zwischen Subkomponenten der GUI.
             :type controller: Objekt
             """
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: [MainPageEvent]:on_focus_out")
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: [MainPageEvent]:on_focus_out")
             if search_entry_var.get() == '':
                 search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 search_entry.configure(fg_color=srhGrey)  # Textfarbe auf grau ändern
@@ -445,7 +445,7 @@ class mainPage(tk.Frame):
 
             try:
                 selected_item = tree.focus()
-                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Selected Item: {selected_item}")
+                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Selected Item: {selected_item}")
                 if selected_item:
                     from .detailsWindow import detailsWindow, show_details
                     show_details(selected_item, tree, controller)
@@ -494,7 +494,7 @@ class mainPage(tk.Frame):
             selected_item = side_tree.selection()
             if selected_item:
                 selected_text = side_tree.item(selected_item, 'text')
-                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: ", selected_text)
+                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: ", selected_text)
                 if selected_text == "Alle Räume":
                     # Alle Daten in der Haupttabelle anzeigen
                     self.update_treeview_with_data()
@@ -519,7 +519,7 @@ class mainPage(tk.Frame):
         tree.bind("<Double-1>", on_item_selected)
 
     def update_sidetree_with_data(self = None, rooms = None):
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: update_sidetree_with_data aufgerufen.") # Debug
+        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: update_sidetree_with_data aufgerufen.") # Debug
         side_tree.delete(*side_tree.get_children())
         side_tree.insert("", tk.END, text="Alle Räume")
         if rooms is None:
@@ -626,7 +626,7 @@ class mainPage(tk.Frame):
         else:
             # Entferne den Admin-Button, falls er existiert
             if hasattr(self, "admin_button"):
-                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Removed Admin window") #Debug
+                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Removed Admin window") #Debug
                 self.admin_button.grid_remove()
 
         self.update_treeview_with_data()

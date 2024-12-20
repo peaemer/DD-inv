@@ -54,7 +54,7 @@ def lend_popup(parent, data, controller: ddINV):
         from ._avatarManager import resource_path
         popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
     except Exception as e:
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Fehler beim Laden des Icons: {e}")
+        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fehler beim Laden des Icons: {e}")
 
     # Funktion, um die Eingaben zu verarbeiten
     def confirm_lend():
@@ -73,7 +73,7 @@ def lend_popup(parent, data, controller: ddINV):
         item = name_entry.get().strip()
         borrower = entry.get().strip()
         lend_date = time_entry.get().strip()
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Item: {item}, Borrower: {borrower}, Date:")
+        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Item: {item}, Borrower: {borrower}, Date:")
         print(cache.selected_ID)
         db.create_ausleih_historie(cache.selected_ID, borrower, lend_date)
         db.update_hardware_by_ID(cache.selected_ID, neue_Ausgeliehen_von=borrower)

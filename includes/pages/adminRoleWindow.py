@@ -59,7 +59,7 @@ class adminRoleWindow(tk.Frame):
             :ivar parent: Der übergeordnete Container dieses Frames.
             :ivar controller: Kontrollinstanz für die Verwaltung der Frames.
             """
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: show settings window admin window")
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -81,11 +81,11 @@ class adminRoleWindow(tk.Frame):
 
             Die Klasse erbt von ``tk.Frame`` und wird in einem Eltern-Widget integriert.
             """
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: on_entry_click executed")
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: on_entry_click executed")
             if role_search_entry.get() == 'Suche':
                 role_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 role_search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
-                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Cleared Entry for use")
+                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Cleared Entry for use")
 
         def on_focus_out(event):
             """
@@ -98,11 +98,11 @@ class adminRoleWindow(tk.Frame):
             :param controller: Die Steuermechanik, die die Navigation zwischen Frames behandelt
             :type controller: object
             """
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: on_focus_out executed")  # Debug
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: on_focus_out executed")  # Debug
             if role_search_entry.get() == '':
                 role_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 role_search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
-                print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Reset Entry") #Debug
+                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Reset Entry") #Debug
 
 
         def on_key_press(event):
@@ -127,7 +127,7 @@ class adminRoleWindow(tk.Frame):
 
             """
             typed_key = event.char  # The character of the typed key
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Key pressed:" , typed_key)
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Key pressed:" , typed_key)
 
         def change_to_room():
             """
@@ -145,7 +145,7 @@ class adminRoleWindow(tk.Frame):
             """
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: change_to_role executed")  # Debug
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: change_to_role executed")  # Debug
 
         def change_to_user():
             """
@@ -159,7 +159,7 @@ class adminRoleWindow(tk.Frame):
             """
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: change_to_user executed")  # Debug
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: change_to_user executed")  # Debug
 
         def add_role():
             """
@@ -178,7 +178,7 @@ class adminRoleWindow(tk.Frame):
             """
             from .addRolePopup import add_role_popup
             add_role_popup(self)
-            print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: Add role executed") #Debug
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Add role executed") #Debug
 
         global tree
 
@@ -450,4 +450,4 @@ class adminRoleWindow(tk.Frame):
                 tags=(tag,)
             )
             i += 1
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}: adminRoleWindow treeview updated") #Debug
+        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: adminRoleWindow treeview updated") #Debug
