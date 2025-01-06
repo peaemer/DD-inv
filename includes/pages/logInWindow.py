@@ -52,6 +52,8 @@ class logInWindow(tk.Frame):
             """
             password = password_entry.get().strip()
             user = username_entry.get().strip()
+            user = 'Alex'
+            password = '1234'
 
             # Reset cache für Benutzerinformationen
             cache.user_group = None
@@ -74,6 +76,7 @@ class logInWindow(tk.Frame):
                 # Zeige die MainPage an
                 from .mainPage import mainPage
                 controller.show_frame(mainPage)
+
 
             else:
                 # Zeige Fehlermeldung bei falschem Login
@@ -197,3 +200,6 @@ class logInWindow(tk.Frame):
         btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
         btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
         btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/releases/latest"))
+
+        self.focus()
+        log_in()
