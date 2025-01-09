@@ -11,7 +11,7 @@ from typing import Final
 import tkinter as tk
 
 DEBUG_MODE: Final[bool] = True
-DEBUG_MAYHEM: Final[bool] = False
+DEBUG_MAYHEM: Final[bool] = True
 MAX_REPEATED_USES: Final[int] = 5
 fallback_username: Final[str] = '1234'
 
@@ -22,11 +22,6 @@ last_searchbar_text_length: int = 0
 
 loaded_history: list[dict[str, str]] = []
 do_on_finish: list[Callable] = []
-
-
-def add_update_to_cancel():
-    global cancel_key_press_updates
-    cancel_key_press_updates += 1
 
 
 def __debug(message: str):
