@@ -198,10 +198,8 @@ def update_search(dropdown: CTkListbox, search_term: str, username: str) -> None
         __debug(f"""[SearchbarLogic][update searchbar]:canceling 1 out of {cancel_key_press_updates} to be canceled """)
         cancel_key_press_updates -= 1
         return
-    __debug(
-        f"""[SearchbarLogic][update searchbar]:running update search for user "{username}" with searchbar text "{search_term}" and loaded history "{loaded_history}" """)
-    __debug(
-        f"""[SearchbarLogic][update_search]:chose "{__match_entries(search_term.lower())}" as new options for dropdown""")
+    __debug(f"""[SearchbarLogic][update searchbar]:running update search for user "{username}" with searchbar text "{search_term}" and loaded history "{loaded_history}" """)
+    __debug(f"""[SearchbarLogic][update_search]:chose "{__match_entries(search_term.lower())}" as new options for dropdown""")
     __update_dropdown(dropdown, search_term)
 
 
@@ -235,8 +233,7 @@ def finish_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, root: tk.Fram
             #if all(history_entry['text'] != search_term for history_entry in temp_history):
             new_entry = {'weight': '100', 'repeated_uses': '1', 'text': search_term.lower()}
             loaded_history.append(new_entry)
-            if DEBUG_MODE: print(
-                f"""[SearchbarLogic]:adding: "{new_entry}" to search history as it didn't exist in the database""")
+            if DEBUG_MODE: print(f"""[SearchbarLogic]:adding: "{new_entry}" to search history as it didn't exist in the database""")
             __debug(f"""[SearchbarLogic]:loaded history is now "{loaded_history}" """)
         __debug(f"""[SearchbarLogic]: writing "{json.dumps(loaded_history)}" to database """)
         db.update_benutzer(username, neue_suchverlauf=json.dumps(loaded_history))
@@ -253,7 +250,7 @@ def finish_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, root: tk.Fram
         for do in do_on_finish:
             do()
     search_is_running = False
-    __debug(f"""[SearchbarLogic]: search is  "{search_is_running}" running for user "{username}" """)
+    __debug_e(f"""[SearchbarLogic]: search is  "{search_is_running}" running for user "{username}" """)
 
 
 def start_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, search_term: str, username: str) -> None:
@@ -283,7 +280,7 @@ def start_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, search_term: s
     __debug_e(f"""[SearchbarLogic]:complete read history "{loaded_history}" """)
     searchbar.delete(1.0, 'end-1c')
     __update_dropdown(dropdown, search_term)
-    __debug(f"""[SearchbarLogic]: search is running "{search_is_running}" for user "{username}" """)
+    __debug_e(f"""[SearchbarLogic]: search is running "{search_is_running}" for user "{username}" """)
 
 
 def on_dropdown_select(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, username: str) -> None:

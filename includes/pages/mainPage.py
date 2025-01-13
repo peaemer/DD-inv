@@ -360,6 +360,7 @@ class mainPage(tk.Frame):
         search_entry_oval.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
         dropdown.grid(padx=0, pady=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
+        #binde Funktionen an die events der Suchleiste
         search_entry_oval.bind('<FocusIn>', lambda  _: search_entry.focus())
         search_entry.add_on_focus_in_event(lambda  _: dropdown_overlay_frame.tkraise(tree_frame))
         search_entry.add_on_focus_out_event(lambda _: tree_frame.tkraise(dropdown_overlay_frame))
