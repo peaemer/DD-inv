@@ -4,6 +4,7 @@ SETTINGS_FONT = ("Arial", 18, 'bold')
 SETTINGS_BTN_FONT = ("Arial", 15)
 lend_font = ("Arial", 20)
 srhGrey = "#d9d9d9"
+srhGreyHover = "#c9c9c9"
 srhOrange = "#DF4807"
 srhBlue = "#00699a"
 corner = 20

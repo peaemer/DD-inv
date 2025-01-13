@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+import customtkinter as ctk
+from ..CTkScrollableDropdown import *
 from datetime import datetime
 
 #from tkcalendar import Calendar, DateEntry
@@ -112,7 +114,13 @@ def lend_popup(parent, data, controller: ddINV):
     name_label = tk.Label(popup, text="Name", font=lend_font, bg="white", anchor="w")
     name_label.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
-    name_entry = tk.Entry(popup, font=lend_font, bg=srhGrey, relief=tk.FLAT)
+    name_entry = ctk.CTkEntry(popup,font=lend_font,
+                                    corner_radius=corner,
+                                    fg_color=srhGrey,
+                                    border_width=border,
+                                    text_color="black",
+                                    state="readonly",
+                                    justify="center")
     name_entry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
 
     borrower_label = tk.Label(popup, text="Ausleiher", font=lend_font, bg="white", anchor="w")
@@ -123,8 +131,25 @@ def lend_popup(parent, data, controller: ddINV):
         users = []
         for user in db.read_all_benutzer():
             users.append(user['Nutzername'])
-        entry = ttk.Combobox(popup, font=("Arial", 16), values=users)
+        entry = ctk.CTkComboBox(
+            popup,
+            fg_color=srhGrey,
+            text_color="black",
+            border_width=border,
+
+            dropdown_fg_color=srhGrey,
+            dropdown_text_color="black",
+            button_color=srhGrey,
+            font=lend_font,
+            corner_radius=corner
+        )
         entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
+        CTkScrollableDropdown(entry,values=users, button_color=srhGrey,
+                              frame_corner_radius=corner, autocomplete=True, fg_color=srhGrey,
+                              text_color="black", frame_border_width=border, frame_border_color=srhGrey,
+                              alpha=1, justify="left",hover_color=srhGreyHover)
+
+
         entry.set(cache.user_name)
     else:
         entry_var = tk.StringVar()
@@ -135,11 +160,19 @@ def lend_popup(parent, data, controller: ddINV):
     label = tk.Label(popup, text="Ausleihdatum", font=lend_font, bg="white", anchor="w")
     label.grid(row=3, column=0, padx=20, pady=10, sticky="w")
 
-    time_entry = tk.Entry(popup, font=lend_font, bg=srhGrey, relief=tk.FLAT)
+    time_entry = ctk.CTkEntry(
+        popup,
+        font=lend_font,  # Specify the font
+        fg_color=srhGrey,  # Set background color
+        border_width=border,
+        corner_radius=corner,
+        text_color="black"
+    )
     time_entry.grid(row=3, column=1, padx=20, pady=10, sticky="ew")
 
     popup.grid_columnconfigure(1, weight=1)  # Spalte 1 flexibel
 
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Datum {datetime.now():%d.%m.%Y %H:%M}")  # Debug
     time_entry.insert(0, f'{datetime.now():%d.%m.%Y %H:%M}')
     name_entry.insert(0, data["name"])
 
@@ -147,14 +180,21 @@ def lend_popup(parent, data, controller: ddINV):
     button_frame = tk.Frame(popup, bg="white")
     button_frame.grid(row=4, column=0, columnspan=2, pady=20)
 
-    confirm_btn = tk.Button(
-        button_frame, text="Bestätigen", font=lend_font, bg="#DF4807", fg="white",
-        relief=tk.FLAT, command=confirm_lend
+    confirm_btn = ctk.CTkButton(
+        button_frame,
+        text="Bestätigen",
+        font=LOGINFONT,
+        fg_color="#DF4807",  # Button background color
+        text_color="white",  # Text color
+        hover_color="#c73e07",  # Optional: Set hover color
+        corner_radius=corner,
+        command=confirm_lend
     )
+
     confirm_btn.grid(row=0, column=0, padx=10)
 
-    cancel_btn = tk.Button(
-        button_frame, text="Abbrechen", font=lend_font, bg=srhGrey, relief=tk.FLAT,
+    cancel_btn = ctk.CTkButton(
+        button_frame, text="Abbrechen",corner_radius=corner, font=LOGINFONT, fg_color=srhGrey,text_color="black", hover_color="#B0B0B0",
         command=popup.destroy
     )
     cancel_btn.grid(row=0, column=1, padx=10)
