@@ -159,6 +159,7 @@ class adminUserWindow(tk.Frame):
             """
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
+            adminRoomWindow.update_treeview_with_data()
 
         def change_to_roles():
             """
@@ -172,6 +173,7 @@ class adminUserWindow(tk.Frame):
             """
             from .adminRoleWindow import adminRoleWindow
             controller.show_frame(adminRoleWindow)
+            adminRoleWindow.update_treeview_with_data()
 
         def add_user():
             """
@@ -277,6 +279,7 @@ class adminUserWindow(tk.Frame):
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
+        global user_add_button
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
         user_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white",
                                     activebackground="white", command=add_user)
@@ -412,3 +415,8 @@ class adminUserWindow(tk.Frame):
                 tags=(tag,)
             )
             i += 1
+        print(cache.user_group_data['USER_ERSTELLEN'])
+        if cache.user_group_data['USER_ERSTELLEN'] == "False":
+            user_add_button.grid_forget()
+        else:
+            user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")

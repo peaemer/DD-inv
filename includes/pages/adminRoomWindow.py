@@ -150,6 +150,7 @@ class adminRoomWindow(tk.Frame):
             """
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
+            adminUserWindow.update_treeview_with_data()
 
         def change_to_roles():
             """
@@ -162,6 +163,7 @@ class adminRoomWindow(tk.Frame):
             """
             from .adminRoleWindow import adminRoleWindow
             controller.show_frame(adminRoleWindow)
+            adminRoleWindow.update_treeview_with_data()
 
 
         global tree
@@ -253,6 +255,7 @@ class adminRoomWindow(tk.Frame):
 
 
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/HinzuSmall_blue.png"))
+        global room_add_button
         room_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white", activebackground="white", command=add_room)
         room_add_button.grid(padx=10, pady=5, row=0, column=2, sticky="w")
 
@@ -376,3 +379,7 @@ class adminRoomWindow(tk.Frame):
                 tags=(tag,)
             )
             i += 1
+        if cache.user_group_data['GRUPPEN_ERSTELLEN'] == "False":
+            room_add_button.grid_forget()
+        else:
+            room_add_button.grid(padx=10, pady=5, row=0, column=2, sticky="w")

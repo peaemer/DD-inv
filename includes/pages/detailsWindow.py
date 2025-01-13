@@ -338,7 +338,7 @@ class detailsWindow(tk.Frame):
         self.return_btn = tk.PhotoImage(file=resource_path("./includes/assets/Zurueckgeben.png"))
 
         # Buttons in ein separates Frame
-        global button_frame_add_item_popup, lend_button, ret_button
+        global button_frame_add_item_popup, lend_button, ret_button, delete_button, edit_button
         button_frame_add_item_popup = tk.Frame(self, background="white")
         button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
@@ -354,13 +354,13 @@ class detailsWindow(tk.Frame):
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                  command= delete_entry)
-        delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+        #delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 
         edit_button = tk.Button(button_frame_add_item_popup, image=self.edit_btn,
                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                command=refresh_entry)
-        edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
+        #edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
 
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
@@ -399,6 +399,15 @@ class detailsWindow(tk.Frame):
                         values=(entry['Ausgeliehen_am'], entry['Nutzername']),
                         tags=(tag,)
                     )
+
+        if cache.user_group_data['ENTRY_LOESCHEN'] == "False":
+            delete_button.pack_forget()
+        else:
+            delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
+        if cache.user_group_data['ENTRY_BEARBEITEN'] == "False":
+            edit_button.pack_forget()
+        else:
+            edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
 
         if db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == "" or db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == " ":
             lend_button.pack_forget()

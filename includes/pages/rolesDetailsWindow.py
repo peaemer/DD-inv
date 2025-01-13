@@ -440,10 +440,13 @@ class rolesDetailsWindow(tk.Frame):
         """
         # Daten in die Entry-Felder einfügen
         self.role_name.configure(text=data[0])
-        self.view.select() if data[1] == "✔" else self.view.deselect()
-        self.delete_rl.select() if data[2] == "✔" else self.delete_rl.deselect()
-        delete_button.pack(side=tk.LEFT, padx=20) if data[2] == "✔" and cache.user_group_data['ROLLEN_LOESCHEN'] == "True" else delete_button.forget()
-        self.feature.select() if data[3] == "✔" else self.feature.deselect()
+        self.delete_rl.select() if data[1] == "✔" else self.delete_rl.deselect()
+        if data[1] == "✔" and cache.user_group_data['ROLLEN_LOESCHEN'] == "True":
+            delete_button.pack(side=tk.LEFT, padx=20)
+        else:
+            delete_button.pack_forget()
+        self.feature.select() if data[2] == "✔" else self.feature.deselect()
+        self.view.select() if data[3] == "✔" else self.view.deselect()
         self.delete.select() if data[4] == "✔" else self.delete.deselect()
         self.edit.select() if data[5] == "✔" else self.edit.deselect()
         self.create.select() if data[6] == "✔" else self.create.deselect()
@@ -452,5 +455,11 @@ class rolesDetailsWindow(tk.Frame):
         self.edit_g.select() if data[9] == "✔" else self.edit_g.deselect()
         self.create_r.select() if data[10] == "✔" else self.create_r.deselect()
         self.edit_r.select() if data[11] == "✔" else self.edit_r.deselect()
-        edit_button.pack(side=tk.LEFT, padx=20) if cache.user_group_data['ROLLEN_BEARBEITEN'] == "True" else edit_button.forget()
+        if cache.user_group_data['ROLLEN_BEARBEITEN'] == "True":
+            edit_button.pack(side=tk.LEFT, padx=20)
+        else:
+            edit_button.pack_forget()
         self.delete_r.select() if data[12] == "✔" else self.delete_r.deselect()
+        self.delete_u.select() if data[13] == "✔" else self.delete_u.deselect()
+        self.edit_u.select() if data[14] == "✔" else self.edit_u.deselect()
+        self.create_u.select() if data[15] == "✔" else self.create_u.deselect()

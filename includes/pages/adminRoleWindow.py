@@ -145,6 +145,7 @@ class adminRoleWindow(tk.Frame):
             """
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
+            adminRoomWindow.update_treeview_with_data()
             print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: change_to_role executed")  # Debug
 
         def change_to_user():
@@ -159,6 +160,7 @@ class adminRoleWindow(tk.Frame):
             """
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
+            adminUserWindow.update_treeview_with_data()
             print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: change_to_user executed")  # Debug
 
         def add_role():
@@ -270,10 +272,11 @@ class adminRoleWindow(tk.Frame):
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
+        global group_add_button
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
-        user_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white",
+        group_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white",
                                     activebackground="white", command=add_role)
-        user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
+        group_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         self.searchBtn = tk.PhotoImage(file=resource_path("./includes/assets/search_button_blue.png"))
         search_button = tk.Button(search_frame,
@@ -451,3 +454,7 @@ class adminRoleWindow(tk.Frame):
             )
             i += 1
         print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: adminRoleWindow treeview updated") #Debug
+        if cache.user_group_data['ROLLEN_ERSTELLEN'] == "False":
+            group_add_button.grid_forget()
+        else:
+            group_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")

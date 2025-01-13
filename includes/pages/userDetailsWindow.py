@@ -300,6 +300,8 @@ class userDetailsWindow(tk.Frame):
         button_frame_add_item_popup = tk.Frame(self, background="white")
         button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
+        global delete_button, edit_button
+
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                  command= delete_entry)
@@ -351,3 +353,12 @@ class userDetailsWindow(tk.Frame):
         self.email.insert(0, data[3])
 
         self.role_combobox.set(data[4])  # Platzhalter
+
+        if cache.user_group_data['USER_LOESCHEN'] == "True":
+            delete_button.pack(side=tk.LEFT, padx=20)
+        else:
+            delete_button.pack_forget()
+        if cache.user_group_data['USER_BEARBEITEN'] == "True":
+            edit_button.pack(side=tk.LEFT, padx=20)
+        else:
+            edit_button.pack_forget()

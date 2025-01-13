@@ -67,6 +67,7 @@ class mainPage(tk.Frame):
             """
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
+            adminUserWindow.update_treeview_with_data()
 
         # Speichere die Funktion als Attribut, um später darauf zuzugreifen
         self.show_admin_window = show_admin_window
@@ -341,7 +342,7 @@ class mainPage(tk.Frame):
 
         #erstelle den hinufügen-button im auf dem search frame
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Erstellen.png"))
-        add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        self.add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
         self.search_btn = tk.PhotoImage(file=resource_path("./includes/assets/SearchButton.png"))
         search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=search)
 
@@ -362,7 +363,7 @@ class mainPage(tk.Frame):
 
         # setze die grid layaouts der buttons und der suchleiste im search-frame
         search_button.grid(padx=5, pady=5, row=0, column=0)
-        add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
+        #self.add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
         dropdown.grid(padx=0, pady=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
@@ -605,6 +606,10 @@ class mainPage(tk.Frame):
         """
 
         # Überprüfe die Benutzergruppe
+        if cache.user_group_data['ENTRY_ERSTELLEN'] == "True":
+            self.add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
+        else:
+            self.add_button.grid_forget()
         if cache.user_group_data['ADMIN_FEATURE'] == "True":
             print(cache.user_group_data)
             print("admin")
