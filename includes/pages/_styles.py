@@ -1,5 +1,5 @@
 LARGEFONT = ("Arial", 35)
-LOGINFONT = ("Arial", 40)
+LOGINFONT = ("Arial", 35)
 SETTINGS_FONT = ("Arial", 18, 'bold')
 SETTINGS_BTN_FONT = ("Arial", 15)
 lend_font = ("Arial", 20)
