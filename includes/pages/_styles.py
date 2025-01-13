@@ -10,5 +10,6 @@ srhBlue = "#00699a"
 corner = 20
 scroll_corner = 10
 border = 0
+comboborder = 2
 debug_ANSI_style = "\033[33m"
 ANSI_style_END = "\033[0m"

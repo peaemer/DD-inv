@@ -146,7 +146,7 @@ def lend_popup(parent, data, controller: ddINV):
         entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
         CTkScrollableDropdown(entry,values=users, button_color=srhGrey,
                               frame_corner_radius=corner, autocomplete=True, fg_color=srhGrey,
-                              text_color="black", frame_border_width=border, frame_border_color=srhGrey,
+                              text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
                               alpha=1, justify="left",hover_color=srhGreyHover)
 
 

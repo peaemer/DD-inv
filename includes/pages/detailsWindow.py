@@ -5,6 +5,7 @@ from includes.sec_data_info import sqlite3api as db
 import cache
 from ._styles import *
 import customtkinter as ctk
+from ..CTkScrollableDropdown import *
 
 
 def show_details(selectedItem, tree, controller):
@@ -137,7 +138,7 @@ class detailsWindow(tk.Frame):
         container_frame.grid_columnconfigure(0, weight=1)  # Baumansicht
         container_frame.grid_columnconfigure(1, weight=1)  # Eingabefelder
 
-        size_details_window = 30
+        size_details_window = 28
 
         # Ändere die Position des TreeFrames
         tree_frame_details_window = tk.Frame(container_frame, background="red", width=200, height=400)
@@ -187,7 +188,7 @@ class detailsWindow(tk.Frame):
 
         self.service_tag_entry_details_window = ctk.CTkEntry(input_frame_details_window,
                                                              font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
+                                                             corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
         self.service_tag_entry_details_window.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Typ
@@ -196,7 +197,7 @@ class detailsWindow(tk.Frame):
         type_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.type_entry_details_window = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
+                                                             corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
         self.type_entry_details_window.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Raum (Dropdown-Menü)
@@ -209,11 +210,18 @@ class detailsWindow(tk.Frame):
         for room in db.fetch_all_rooms():
             room_values.append(room['Raum'])
 
-        self.room_combobox_details_window = ctk.CTkComboBox(input_frame_details_window, values=room_values,
+        self.room_combobox_details_window = ctk.CTkComboBox(input_frame_details_window,
                                                             font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,border_width=border,
+                                                             corner_radius=corner,button_color=srhGrey ,fg_color=srhGrey,
+                                                            text_color="black",border_width=border,
                                                             state="readonly")
+
         self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+        CTkScrollableDropdown(self.room_combobox_details_window, values=room_values,button_color=srhGrey,
+                              frame_corner_radius=corner, autocomplete=True, fg_color=srhGrey,
+                              text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
+                              alpha=1, justify="left",hover_color=srhGreyHover)
+
         self.room_combobox_details_window.set("Raum auswählen")  # Platzhalter
 
         # Name
@@ -222,7 +230,7 @@ class detailsWindow(tk.Frame):
         name_label_details_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.name_entry_details_window = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
+                                                             corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
         self.name_entry_details_window.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Beschädigung
@@ -232,7 +240,7 @@ class detailsWindow(tk.Frame):
 
         self.damaged_entry_details_window = ctk.CTkEntry(input_frame_details_window,
                                                          font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,border_width=border)
+                                                             corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
         self.damaged_entry_details_window.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Funktion zum Eintrag hinzufügen
