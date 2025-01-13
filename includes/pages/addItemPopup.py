@@ -1,6 +1,7 @@
 import tkinter as tk
 from ._styles import *
 import customtkinter as ctk
+from ..CTkScrollableDropdown import *
 from includes.sec_data_info import sqlite3api as db
 
 
@@ -75,7 +76,7 @@ def add_item_popup(parent):
     input_frame_add_item_popup.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
     input_frame_add_item_popup.grid_columnconfigure(1, weight=1)
 
-    size_add_item_popup = 16
+    size_add_item_popup = 18
 
     # Label und Eingabefeld hinzufügen
     service_tag_label_add_item_popup = tk.Label(input_frame_add_item_popup,
@@ -120,10 +121,15 @@ def add_item_popup(parent):
                                                    font=("Arial", size_add_item_popup),
                                                    fg_color=srhGrey,
                                                    text_color="black",
+                                                   button_color=srhGrey,
                                                    corner_radius=corner,
                                                    border_width=0,
                                                    state="readonly")
     room_combobox_add_item_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    CTkScrollableDropdown(room_combobox_add_item_popup, values=room_values, button_color=srhGrey,
+                          frame_corner_radius=corner, autocomplete=True, fg_color=srhGrey,
+                          text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
+                          alpha=1, justify="left", hover_color=srhGreyHover)
 
     # Name
     name_label_add_item_popup = tk.Label(input_frame_add_item_popup,

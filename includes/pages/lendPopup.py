@@ -119,8 +119,8 @@ def lend_popup(parent, data, controller: ddINV):
                                     fg_color=srhGrey,
                                     border_width=border,
                                     text_color="black",
-                                    state="readonly",
-                                    justify="center")
+
+                                    justify="left")
     name_entry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
 
     borrower_label = tk.Label(popup, text="Ausleiher", font=lend_font, bg="white", anchor="w")
