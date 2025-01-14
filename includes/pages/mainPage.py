@@ -607,8 +607,7 @@ class mainPage(tk.Frame):
         else:
             self.add_button.grid_forget()
         if cache.user_group_data['ADMIN_FEATURE'] == "True":
-            print(cache.user_group_data)
-            print("admin")
+            print("DEBUG: Admin")
             # Überprüfe, ob der Admin-Button bereits existiert
             if not hasattr(self, "admin_button"):
                 # Erstelle den Admin-Button, wenn er noch nicht existiert

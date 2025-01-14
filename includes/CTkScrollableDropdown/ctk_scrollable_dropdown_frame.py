@@ -7,6 +7,9 @@ import customtkinter
 import sys
 import difflib
 
+from customtkinter import CTkComboBox
+
+
 class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
     
     def __init__(self, attach, x=None, y=None, button_color=None, height: int = 200, width: int = None,
@@ -16,7 +19,7 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
                  text_color=None, autocomplete=False, **button_kwargs):
 
         super().__init__(master=attach.winfo_toplevel(), bg_color=attach.cget("bg_color"))
-        
+
         self.attach = attach
         self.corner = 11 if frame_corner_radius else 0
         self.padding = 0
@@ -165,9 +168,10 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         parent_widget = self.nametowidget(parent_name)
 
         # Check if the parent widget is a frame
-        if isinstance(parent_widget, customtkinter.CTkFrame):
-            self.x_pos = parent_widget.winfo_x() + self.attach.winfo_x()
-            self.y_pos = parent_widget.winfo_y() + self.attach.winfo_y() + self.attach.winfo_reqheight() + 5
+        import tkinter as tk
+        if isinstance(parent_widget, tk.Frame):
+            self.x_pos = parent_widget.winfo_x() + self.attach.winfo_x() + 20
+            self.y_pos = parent_widget.winfo_y() + self.attach.winfo_y() + self.attach.winfo_reqheight() + self.height + 5 #Box höhe
 
         if self.resize:
             if self.button_num <= 5:
