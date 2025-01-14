@@ -1,8 +1,6 @@
 # DD-inv
 
-![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)![PyCharm](https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green)![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)![Windows XP](https://img.shields.io/badge/Windows%20xp-003399?style=for-the-badge&logo=windowsxp&logoColor=white)<a href="https://ko-fi.com/dd_inv" target="_blank">
-  <img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-Fi">
-</a>
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)![PyCharm](https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green)![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)![Windows XP](https://img.shields.io/badge/Windows%20xp-003399?style=for-the-badge&logo=windowsxp&logoColor=white)![Ko-Fi](""https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)
 
 
 ## Einführung
@@ -13,14 +11,14 @@ Das Projekt befindet sich derzeit in der Entwicklung und wird kontinuierlich erw
 
 ## Funktionen (Implementiert)
 
-- **Inventarverwaltung**: Hinzufügen, Bearbeiten und Löschen von Einträgen im Inventar. Dazu können Details zum jeweiligen Eintrag eingesehen werden, wie Ausgeliehen von..., oder Beschädigungen u.a.
-- **Such- und Filterfunktionen**: Intelligente Suche und Filteroptionen für Inventargegenstände. Darüberhinaus eine Suchhistorie und Speicherrung der bishärigen Suchen.
-- **Login Funktion**: Jeder Nutzer soll seine eigenen Login mit Profil besitzen
-- **Benutzerverwaltung**: Unterstützung für mehrere Benutzerrollen mit entsprechenden Berechtigungen.
-- **Admin Funktionen**: Erstellen von Nutzern und Rollen sowie das ändern ihrer Rechte und das einsehen der Details für Nutzer, Räume und Rollen.
+- **Inventarverwaltung**: Hinzufügen, Bearbeiten und Löschen von Einträgen im Inventar. Dazu können Details zum jeweiligen Eintrag eingesehen werden, u.a. Ausgeliehen von..., Beschädigungen..., oder Typ.
+- **Such- und Filterfunktionen**: Intelligente Suche und Filteroptionen für Inventargegenstände. Darüberhinaus eine Suchhistorie. Speicherung sowie Autofill in der Suchleiste.
+- **Login Funktion**: Jeder Nutzer hat seinen eigenen Login mit individuellen Einstellungen. 
+- **Benutzerverwaltung**: Unterstützung für die Benutzerrollen Admin, User und Gast. Dazu können mehrere Nutzerrollen erstellt und individuell angepasst werden. 
+- **Admin Funktionen**: Erstellen sowie Verwalten von Nutzern, Räumen und Rollen. Dazu einsehen und ändern an Einträgen.
 - **Datenexport**: Export von Inventardaten in CSV- und andere Formate möglich.
 - **Statistiken**: Anzeige von Statistiken und Berichten zum Inventar. Zum Beispiel einer Ausleihistorie der jeweiligen Benutezr.
-- **Design**: Setzen eines Profilbildes für jeweilgen Benutzer.
+- **Design**: Setzen eines Profilbildes für den jeweilgen Benutzer. 
 
 ## Voraussetzungen
 
@@ -35,16 +33,17 @@ Das Projekt befindet sich derzeit in der Entwicklung und wird kontinuierlich erw
    ```bash
    git clone https://github.com/peaemer/DD-inv.git
    cd DD-inv
+   `````````
 ## Geplante Features, welche noch Implementiert werden
 
--> **Portable version** Datenbank soll ohne installation überall auf Standard geräten nutzbar sein
--> **Design** Anapssen des Hintergrundes der App sowie der Farbe
--> **Datenbank** Einbinden der Datenbank in die App
--> **Suchfeld** Autocomplete beim Eingeben von Wörtern in der Suchleiste
+-> **Portable version** Datenbank soll ohne installation überall auf Standard geräten nutzbar sein.
+-> **Design** Anapssen des Hintergrundes der App sowie der ihrer Farbe. 
+-> **System** Anpassen der Auflösung in den Einstellungen sowie der größe des Inhalts. 
+-> **Datenbank** Einbinden der Datenbank in die App.
 
 ## Projektstatus
 
-Das projekt wird **aktiv** entwickelt. Es können Bugs auftreteten und einige Features sind noch nicht vollständig implementiert. Die Akutelle Version des Inventarisierungstools ist aktuell eine **BETA**!
+Das projekt wird **aktiv** entwickelt. Es können Bugs auftreteten und einige Features sind noch nicht vollständig implementiert. Die Akutelle Version des Inventarisierungstools ist eine **BETA**!
 
 ## Dokumentationen
 
