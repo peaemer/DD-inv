@@ -125,11 +125,11 @@ def add_item_popup(parent):
                                                    corner_radius=corner,
                                                    border_width=0,
                                                    state="readonly")
-    room_combobox_add_item_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
-    CTkScrollableDropdown(room_combobox_add_item_popup, values=room_values, button_color=srhGrey,
+    room_combobox_add_item_popup.grid(row=2, column=1, padx=20, pady=20, sticky="ew")
+    CTkScrollableDropdownFrame(room_combobox_add_item_popup, values=room_values, button_color=srhGrey, #BUGGY
                           frame_corner_radius=corner, autocomplete=True, fg_color=srhGrey,
                           text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
-                          alpha=1, justify="left", hover_color=srhGreyHover)
+                          justify="left")
 
     # Name
     name_label_add_item_popup = tk.Label(input_frame_add_item_popup,
