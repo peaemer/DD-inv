@@ -21,7 +21,7 @@ class ddINV(ctk.CTk):
         super().__init__(*args, **kwargs)
         self.title("Inventartool")
         self.configure(background="white")
-        self.state("zoomed")
+        #self.state("zoomed")
 
         # Set window dimensions and icon
         self.geometry(f'{self.winfo_screenwidth()}x{self.winfo_screenheight()}+0+0')
