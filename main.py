@@ -1,7 +1,7 @@
 import tkinter as tk
 import threading
 from tkinter import mainloop
-
+import customtkinter as ctk
 import includes
 from includes.pages._styles import *
 
@@ -16,7 +16,7 @@ from includes.pages import (logInWindow,
                             adminRoleWindow)
 
 
-class ddINV(tk.Tk):
+class ddINV(ctk.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Inventartool")
