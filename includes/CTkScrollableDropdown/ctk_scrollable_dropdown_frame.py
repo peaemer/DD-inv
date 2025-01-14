@@ -153,27 +153,38 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         self.destroy()
         self.disable = True
 
+#wip
+
     def place_dropdown(self):
         self.x_pos = self.attach.winfo_x() if self.x is None else self.x + self.attach.winfo_rootx()
         self.y_pos = self.attach.winfo_y() + self.attach.winfo_reqheight() + 5 if self.y is None else self.y + self.attach.winfo_rooty()
-        self.width_new = self.attach.winfo_width()-45+self.corner if self.width is None else self.width
-        
+        self.width_new = self.attach.winfo_width() - 45 + self.corner if self.width is None else self.width
+
+        # Determine the parent widget of self.attach
+        parent_name = self.attach.winfo_parent()
+        parent_widget = self.nametowidget(parent_name)
+
+        # Check if the parent widget is a frame
+        if isinstance(parent_widget, customtkinter.CTkFrame):
+            self.x_pos = parent_widget.winfo_x() + self.attach.winfo_x()
+            self.y_pos = parent_widget.winfo_y() + self.attach.winfo_y() + self.attach.winfo_reqheight() + 5
+
         if self.resize:
-            if self.button_num<=5:      
+            if self.button_num <= 5:
                 self.height_new = self.button_height * self.button_num + 55
             else:
                 self.height_new = self.button_height * self.button_num + 35
-            if self.height_new>self.height:
+            if self.height_new > self.height:
                 self.height_new = self.height
- 
+
         self.frame.configure(width=self.width_new, height=self.height_new)
         self.frame._scrollbar.configure(height=self.height_new)
         self.place(x=self.x_pos, y=self.y_pos)
-        
+
         if sys.platform.startswith("darwin"):
             self.dummy_entry.pack()
             self.after(100, self.dummy_entry.pack_forget())
-            
+
         self.lift()
         self.attach.focus()
    

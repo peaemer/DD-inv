@@ -1,4 +1,5 @@
 import tkinter as tk
+from doctest import master
 from tkinter import ttk
 from tkinter import *
 from includes.sec_data_info import sqlite3api as db
@@ -216,11 +217,12 @@ class detailsWindow(tk.Frame):
                                                             text_color="black",border_width=border,
                                                             state="readonly")
 
-        self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
-        CTkScrollableDropdown(self.room_combobox_details_window, values=room_values,button_color=srhGrey,
+
+        self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky="ew")
+        CTkScrollableDropdownFrame(self.room_combobox_details_window, values=room_values,button_color=srhGrey, #BUGGY
                               frame_corner_radius=corner, autocomplete=True, fg_color=srhGrey,
                               text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
-                              alpha=1, justify="left",hover_color=srhGreyHover)
+                              justify="left")
 
         self.room_combobox_details_window.set("Raum auswählen")  # Platzhalter
 

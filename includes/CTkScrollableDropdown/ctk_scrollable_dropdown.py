@@ -13,7 +13,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
     def __init__(self, attach, x=None, y=None, button_color=None, height: int = 200, width: int = None,
                  fg_color=None, button_height: int = 20, justify="center", scrollbar_button_color=None,
                  scrollbar=True, scrollbar_button_hover_color=None, frame_border_width=2, values=[],
-                 command=None, image_values=[], alpha: float = 0.97, frame_corner_radius=20, double_click=False,
+                 command=None, image_values=[], frame_corner_radius=20, double_click=False,
                  resize=True, frame_border_color=None, text_color=None, autocomplete=False, 
                  hover_color=None, **button_kwargs):
         
@@ -21,7 +21,6 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         
         self.focus()
         self.lift()
-        self.alpha = alpha
         self.attach = attach
         self.corner = frame_corner_radius
         self.padding = 0
@@ -50,8 +49,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         self.attach.winfo_toplevel().bind('<Configure>', lambda e: self._withdraw() if not self.disable else None, add="+")
         self.attach.winfo_toplevel().bind("<ButtonPress>", lambda e: self._withdraw() if not self.disable else None, add="+")        
         self.bind("<Escape>", lambda e: self._withdraw() if not self.disable else None, add="+")
-        
-        self.attributes('-alpha', 0)
+
         self.disable = False
         self.fg_color = customtkinter.ThemeManager.theme["CTkFrame"]["fg_color"] if fg_color is None else fg_color
         self.scroll_button_color = customtkinter.ThemeManager.theme["CTkScrollbar"]["button_color"] if scrollbar_button_color is None else scrollbar_button_color
@@ -130,7 +128,6 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
             
         self.withdraw()
 
-        self.attributes("-alpha", self.alpha)
 
     def _destroy(self):
         self.after(500, self.destroy_popup)
@@ -166,7 +163,6 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         for i in range(100,0,-10):
             if not self.winfo_exists():
                 break
-            self.attributes("-alpha", i/100)
             self.update()
             time.sleep(1/100)
             
@@ -174,7 +170,6 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         for i in range(0,100,10):
             if not self.winfo_exists():
                 break
-            self.attributes("-alpha", i/100)
             self.update()
             time.sleep(1/100)
             
@@ -216,7 +211,6 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         self.geometry('{}x{}+{}+{}'.format(self.width_new, self.height_new,
                                            self.x_pos, self.y_pos))
         self.fade_in()
-        self.attributes('-alpha', self.alpha)
         self.attach.focus()
 
     def _iconify(self):
@@ -314,9 +308,7 @@ class CTkScrollableDropdown(customtkinter.CTkToplevel):
         if "height" in kwargs:
             self.height = kwargs.pop("height")
             self.height_new = self.height
-            
-        if "alpha" in kwargs:
-            self.alpha = kwargs.pop("alpha")
+
             
         if "width" in kwargs:
             self.width = kwargs.pop("width")

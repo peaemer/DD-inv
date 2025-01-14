@@ -329,7 +329,7 @@ class mainPage(tk.Frame):
             :type event: tk.Event
             """
             print(f"New size - Width: {event.x} Height: {event.y}") #Debug
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}:", show_size) # Debug
+        #print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}:", show_size) # Debug
 
         dropdown_overlay_frame: tk.Frame = tk.Frame(middle_frame, background="white")
         search_frame: tk.Frame= tk.Frame(middle_frame, bg="white")
@@ -341,7 +341,7 @@ class mainPage(tk.Frame):
         search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white",command=lambda:search_entry.finish_search(cache.user_name))
 
         #erstelle den hinufügen-button im auf dem search frame
-        dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame, font=("Arial", 20), bg_color="white",border_color=srhGrey, corner_radius=10, scrollbar_fg_color="white", scrollbar_button_color='white', scrollbar_button_hover_color='white')
+        dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame, font=("Arial", 20), text_color='black', bg_color="white",border_color=srhGrey, corner_radius=10, scrollbar_fg_color="white", scrollbar_button_color='white', scrollbar_button_hover_color='white')
         search_entry_oval:CTkEntry = CTkEntry(search_frame, text_color="black", fg_color=srhGrey, bg_color="white", font=("Arial", 26), corner_radius=20, border_width=0, height=25)
         search_entry:Searchbar2 = Searchbar2(self, search_frame, dropdown, cache.user_name)
 

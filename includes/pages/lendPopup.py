@@ -144,10 +144,10 @@ def lend_popup(parent, data, controller: ddINV):
             corner_radius=corner
         )
         entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
-        CTkScrollableDropdown(entry,values=users, button_color=srhGrey,
+        CTkScrollableDropdownFrame(entry,values=users, button_color=srhGrey, #BUGGY
                               frame_corner_radius=corner, autocomplete=True, fg_color=srhGrey,
                               text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
-                              alpha=1, justify="left",hover_color=srhGreyHover)
+                              justify="left")
 
 
         entry.set(cache.user_name)
@@ -175,6 +175,8 @@ def lend_popup(parent, data, controller: ddINV):
     print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Datum {datetime.now():%d.%m.%Y %H:%M}")  # Debug
     time_entry.insert(0, f'{datetime.now():%d.%m.%Y %H:%M}')
     name_entry.insert(0, data["name"])
+    name_entry.configure(state="readonly")
+    time_entry.configure(state="readonly")
 
     # Buttonbereich
     button_frame = tk.Frame(popup, bg="white")
