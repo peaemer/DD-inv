@@ -64,6 +64,7 @@ class logInWindow(tk.Frame):
             if security.verifyUser(user, password):  # Benutzer authentifizieren
                 # Benutzerinformationen aus der Datenbank abrufen
                 benutzer_info = db.read_benutzer(user)
+                cache.user = benutzer_info
                 cache.user_group = benutzer_info.get('Rolle', '')  # Rolle des Benutzers speichern
                 cache.user_name = user  # Benutzernamen im Cache speichern
                 cache.user_group_data = next((rolle for rolle in db.read_all_rollen() if rolle['Rolle'] == cache.user_group), None)
