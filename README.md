@@ -1,15 +1,15 @@
 # DD-inv
 
-![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)![PyCharm](https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green)![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)![Windows XP](https://img.shields.io/badge/Windows%20xp-003399?style=for-the-badge&logo=windowsxp&logoColor=white)![Ko-Fi](""https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)
-
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)![PyCharm](https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green)![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)![Windows XP](https://img.shields.io/badge/Windows%20xp-003399?style=for-the-badge&logo=windowsxp&logoColor=white)<a href="https://ko-fi.com/dd_inv" target="_blank">
+  <img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-Fi"></a>
 
 ## Einführung
 
-**DD-inv** (Doomsday-Inventar) ist ein Inventarisierungstool, das im Rahmen der Ausbildung der FI24 entwickelt wird. Es soll die Verwaltung und Organisation von Inventargegenständen erleichtern und bietet eine intuitive Benutzeroberfläche sowie eine robuste Datenbankanbindung.
+**DD-inv** (Doomsday-Inventar) ist ein Inventarisierungstool, das im Rahmen der Ausbildung der FI24 entwickelt wird. Es soll die Verwaltung und Organisation von Inventargegenständen, wie Pheriphere oder Laptops erleichtern. Daher bietet das Tool eine intuitive Benutzeroberfläche sowie eine robuste Datenbankanbindung.
 
-Das Projekt befindet sich derzeit in der Entwicklung und wird kontinuierlich erweitert. 
+Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich durch Funktionen erweitert.. 
 
-## Funktionen (Implementiert)
+## Funktionen (Implementiert):
 
 - **Inventarverwaltung**: Hinzufügen, Bearbeiten und Löschen von Einträgen im Inventar. Dazu können Details zum jeweiligen Eintrag eingesehen werden, u.a. Ausgeliehen von..., Beschädigungen..., oder Typ.
 - **Such- und Filterfunktionen**: Intelligente Suche und Filteroptionen für Inventargegenstände. Darüberhinaus eine Suchhistorie. Speicherung sowie Autofill in der Suchleiste.
@@ -34,7 +34,7 @@ Das Projekt befindet sich derzeit in der Entwicklung und wird kontinuierlich erw
    git clone https://github.com/peaemer/DD-inv.git
    cd DD-inv
    `````````
-## Geplante Features, welche noch Implementiert werden
+## Geplante Features, welche noch Implementiert werden:
 
 -> **Portable version** Datenbank soll ohne installation überall auf Standard geräten nutzbar sein.
 -> **Design** Anapssen des Hintergrundes der App sowie der ihrer Farbe. 
@@ -55,7 +55,7 @@ Das projekt wird **aktiv** entwickelt. Es können Bugs auftreteten und einige Fe
 
 ## Credits
 
-Dieses Projekt wird von der **FI24** im Rahmen ihrer Ausbildung entwickelt, Mitwirkende sind:
+Dieses Projekt wird von der **FI24** im Rahmen ihrer Ausbildung entwickelt. Mitwirkende sind:
 
 [Peaemer (Jack)](https://github.com/peaemer/)
 
