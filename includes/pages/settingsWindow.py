@@ -62,6 +62,8 @@ def pop_up_settings(parent, controller):
     from ._avatarManager import resource_path
     popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))  # Fenster-Icon
 
+    cache.user["Email"]
+
     # Grid-Layout für Popup konfigurieren (danymische groeße)
     popup.grid_rowconfigure(0, weight=0)  # Bereich fuer Kategorien
     popup.grid_rowconfigure(1, weight=1)  # Hauptbereich

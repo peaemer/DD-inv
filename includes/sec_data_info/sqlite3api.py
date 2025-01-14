@@ -9,7 +9,7 @@ __use__fallback_path: bool = True
 __fallback_path: str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
 
 
-def init_connection():
+def init_connection()->sqlite3.Connection:
     """
     Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
     - Überprüft, ob die Datenbankdatei existiert
@@ -32,14 +32,14 @@ def init_connection():
 # B E N U T Z E R - E N D P U N K T #
 #####################################
 
-def create_benutzer(nutzername, passwort, email):
+def create_benutzer(nutzername:str, passwort:str, email:str)->None:
     """
     Fügt einen neuen Benutzer zur Tabelle `Benutzer` hinzu.
     Passwort_hashed_value wird genutzt um Plain_Passwörter in ein Hash wert zu ändern
     {e.args} werden genutzt um genauere Fehlermeldungen zurück zu bekommen
-    :param Nutzername:z.B. LukasFa
+    :param nutzername:z.B. LukasFa
     :param passwort:z.B. #Lukas1234 (Wird ihn ein Hashwert umgewandelt)
-    :param Email:z.B. Lukas.Fabisch@fabisch.com
+    :param email:z.B. Lukas.Fabisch@fabisch.com
     """
     try:
         passwort_hashed_value = hashPassword(passwort)

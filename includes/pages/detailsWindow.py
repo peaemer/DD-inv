@@ -274,32 +274,6 @@ class detailsWindow(tk.Frame):
             mainPage.update_sidetree_with_data()
             controller.show_frame(mainPage)
 
-        def delete_entry():
-            """
-            Eine Klasse, die ein Detailfenster als Unterklasse von `tk.Frame` darstellt. Es
-            bietet die Möglichkeit, bestimmte Hardware-Datensätze aus einer Datenbank zu
-            löschen und die Anzeige in der Hauptseite zu aktualisieren.
-
-            Attribute
-            ---------
-            parent
-                Der übergeordnete Tkinter-Container für die Frame-Erstellung.
-            controller
-                Eine Instanz, die für die Navigation zwischen den Frames verantwortlich ist.
-
-            Methoden
-            -------
-            delete_entry
-                Löscht den aktuell ausgewählten Hardware-Eintrag aus der Datenbank und
-                aktualisiert die Anzeige in der Hauptseite.
-
-            """
-            db.delete_hardware_by_id(cache.selected_ID)
-            from .mainPage import mainPage
-            mainPage.update_treeview_with_data()
-            mainPage.update_sidetree_with_data()
-            controller.show_frame(mainPage)
-
         def lend(data):
             """
             Eine Klasse, die die Details-Ansicht als Tkinter-Frame darstellt.
@@ -341,6 +315,32 @@ class detailsWindow(tk.Frame):
             mainPage.update_treeview_with_data()
             controller.show_frame(mainPage)
 
+        def delete_entry():
+            """
+            Eine Klasse, die ein Detailfenster als Unterklasse von `tk.Frame` darstellt. Es
+            bietet die Möglichkeit, bestimmte Hardware-Datensätze aus einer Datenbank zu
+            löschen und die Anzeige in der Hauptseite zu aktualisieren.
+
+            Attribute
+            ---------
+            parent
+                Der übergeordnete Tkinter-Container für die Frame-Erstellung.
+            controller
+                Eine Instanz, die für die Navigation zwischen den Frames verantwortlich ist.
+
+            Methoden
+            -------
+            delete_entry
+                Löscht den aktuell ausgewählten Hardware-Eintrag aus der Datenbank und
+                aktualisiert die Anzeige in der Hauptseite.
+
+            """
+            db.delete_hardware_by_id(cache.selected_ID)
+            from .mainPage import mainPage
+            mainPage.update_treeview_with_data()
+            mainPage.update_sidetree_with_data()
+            controller.show_frame(mainPage)
+
         from ._avatarManager import resource_path
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/Aktualisieren.png"))
         self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))
@@ -361,9 +361,17 @@ class detailsWindow(tk.Frame):
                                 command=lambda: return_item({"name": self.name_entry_details_window.get()}))
 
 
+        def customMessageBoxCall():
+            from customMessageBoxDelete import customMessageBoxDelete
+            customMessageBoxDelete(parent,
+                                           title="Aktion Bestätigen",
+                                           message="Willst du diesen Eintrag unwiederruflich löschen?",
+                                           delete_callback=delete_entry)
+
+
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                 command= delete_entry)
+                                 command=customMessageBoxCall)
         #delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 

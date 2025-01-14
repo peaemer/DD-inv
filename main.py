@@ -5,8 +5,15 @@ from tkinter import mainloop
 import includes
 from includes.pages._styles import *
 
-from includes.pages import logInWindow, mainPage, userDetailsWindow, detailsWindow, roomDetailsWindow, adminRoomWindow, \
-    adminUserWindow, adminRoleWindow
+from includes.pages import (logInWindow,
+                            mainPage,
+                            userDetailsWindow,
+                            detailsWindow,
+                            roomDetailsWindow,
+                            customMessageBoxDelete,
+                            adminRoomWindow,
+                            adminUserWindow,
+                            adminRoleWindow)
 
 
 class ddINV(tk.Tk):
