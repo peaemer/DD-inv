@@ -16,12 +16,12 @@ from includes.pages import (logInWindow,
                             adminRoleWindow)
 
 
-class ddINV(ctk.CTk):
+class ddINV(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Inventartool")
         self.configure(background="white")
-        #self.state("zoomed")
+        self.state("zoomed")
 
         # Set window dimensions and icon
         self.geometry(f'{self.winfo_screenwidth()}x{self.winfo_screenheight()}+0+0')
