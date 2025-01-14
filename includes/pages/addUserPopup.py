@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import customtkinter as ctk
+from ..CTkScrollableDropdown import *
 from includes.sec_data_info import sqlite3api as db
 import string, random
 from ._styles import *
@@ -42,8 +43,8 @@ def add_user_popup(parent):
         print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fehler beim Laden des Icons: {e}")
 
     # Header
-    header_frame_add_item_popup = tk.Frame(add_popup, background="#DF4807")
-    header_frame_add_item_popup.grid(row=0, column=0, sticky="new")
+    header_frame_add_item_popup = tk.Frame(add_popup, background="#00699a")
+    header_frame_add_item_popup.grid(row=0, column=0,columnspan=3, sticky="new")
     header_frame_add_item_popup.grid_columnconfigure(0, weight=1)
 
     header_label_add_item_popup = tk.Label(
@@ -52,63 +53,60 @@ def add_user_popup(parent):
     )
     header_label_add_item_popup.grid(row=0, column=0, sticky=tk.NSEW)
 
-    # Input Frame
-    input_frame_add_user_popup = tk.Frame(add_popup, background="white")
-    input_frame_add_user_popup.grid(row=1, column=0, pady=20, sticky=tk.NSEW)
-    input_frame_add_user_popup.grid_columnconfigure(0, weight=1)
-    input_frame_add_user_popup.grid_columnconfigure(1, weight=1)
-    input_frame_add_user_popup.grid_columnconfigure(2, weight=1)
-
     size_add_user_popup = 16
 
     # Username
     username_label_add_user_popup = tk.Label(
-        input_frame_add_user_popup, text="Username", background="white",
+        add_popup, text="Username", background="white",
         font=("Arial", size_add_user_popup)
     )
-    username_label_add_user_popup.grid(row=0, column=0, padx=10, pady=20, sticky=tk.E)
+    username_label_add_user_popup.grid(row=1, column=0, padx=10, pady=0, sticky=tk.E)
 
-    username_entry_add_user_popup = ctk.CTkEntry(input_frame_add_user_popup,
+    username_entry_add_user_popup = ctk.CTkEntry(add_popup,
                                              fg_color="#d9d9d9",
                                              text_color="black",
                                              border_width=border,
                                              corner_radius=corner)
-    username_entry_add_user_popup.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    username_entry_add_user_popup.grid(row=1, column=1, padx=20, pady=0, sticky=tk.W + tk.E)
 
     # Email
-    email_add_user_popup = tk.Label(input_frame_add_user_popup,
+    email_add_user_popup = tk.Label(add_popup,
                                     text="E-Mail", background="white",
                                     font=("Arial", size_add_user_popup))
-    email_add_user_popup.grid(row=1, column=0, padx=10, pady=20, sticky=tk.E)
+    email_add_user_popup.grid(row=2, column=0, padx=10, pady=0, sticky=tk.E)
 
-    email_entry_add_user_popup = ctk.CTkEntry(input_frame_add_user_popup,
+    email_entry_add_user_popup = ctk.CTkEntry(add_popup,
                                              fg_color="#d9d9d9",
                                              text_color="black",
                                              border_width=border,
                                              corner_radius=corner)
-    email_entry_add_user_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    email_entry_add_user_popup.grid(row=2, column=1, padx=20, pady=0, sticky=tk.W + tk.E)
 
     # Rolle
     role_label_add_user_popup = tk.Label(
-        input_frame_add_user_popup, text="Rolle", background="white",
+        add_popup, text="Rolle", background="white",
         font=("Arial", size_add_user_popup)
     )
-    role_label_add_user_popup.grid(row=2, column=0, padx=10, pady=20, sticky=tk.E)
+    role_label_add_user_popup.grid(row=3, column=0, padx=10, pady=0, sticky=tk.E)
 
     role_values = []
     for room in db.read_all_rollen():
         role_values.append(room['Rolle'])
     role_combobox_add_user_popup = ctk.CTkComboBox(
-        input_frame_add_user_popup, values=role_values,
-        font=("Arial", size_add_user_popup), corner_radius=corner,fg_color=srhGrey,border_width=border,
+        add_popup,
+        font=("Arial", size_add_user_popup),text_color="black", corner_radius=corner,button_color=srhGrey ,fg_color=srhGrey,border_width=border,
         state="readonly")
+    CTkScrollableDropdownFrame(role_combobox_add_user_popup, values=role_values, button_color=srhGrey,  # BUGGY
+                               frame_corner_radius=corner, fg_color=srhGrey,
+                               text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
+                               justify="left")
 
-    role_combobox_add_user_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+    role_combobox_add_user_popup.grid(row=3, column=1, padx=20, pady=0, sticky=tk.W + tk.E)
     role_combobox_add_user_popup.set("Rolle auswählen")
 
 
-    error_label = tk.Label(input_frame_add_user_popup, text="", background="white",fg="darkred",font=("Arial", 14))
-    error_label.grid(row=3, column=0,columnspan=2, padx=0, pady=20)
+    error_label = tk.Label(add_popup, text="", background="white",fg="darkred",font=("Arial", 14))
+    error_label.grid(row=4, column=0,columnspan=3, padx=0, pady=0)
 
     # Buttons
     def submit_entry():
@@ -151,7 +149,7 @@ def add_user_popup(parent):
     parent.exit_btn_add_item_popup = tk.PhotoImage(file=resource_path("./includes/assets/AbbrechenButton.png"))
 
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")
-    button_frame_add_item_popup.grid(row=2, column=0, pady=20, sticky=tk.NSEW)
+    button_frame_add_item_popup.grid(row=5, column=0, pady=20,columnspan=3, sticky=tk.NSEW)
     button_frame_add_item_popup.grid_columnconfigure(0, weight=1)
     button_frame_add_item_popup.grid_columnconfigure(1, weight=1)
 
@@ -169,6 +167,10 @@ def add_user_popup(parent):
 
     # Grid Configuration
     add_popup.grid_rowconfigure(0, weight=1)  # Header
-    add_popup.grid_rowconfigure(1, weight=2)  # Input-Bereich
+    add_popup.grid_rowconfigure(1, weight=1)  # Input-Bereich
     add_popup.grid_rowconfigure(2, weight=1)  # Buttons
+    add_popup.grid_rowconfigure(3, weight=1)  # Buttons
+    add_popup.grid_rowconfigure(4, weight=1)  # Buttons
     add_popup.grid_columnconfigure(0, weight=1)  # Zentriere alle Inhalte
+    add_popup.grid_columnconfigure(1, weight=1)  # Zentriere alle Inhalte
+    add_popup.grid_columnconfigure(2, weight=1)  # Zentriere alle Inhalte
