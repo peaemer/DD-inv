@@ -175,6 +175,8 @@ def lend_popup(parent, data, controller: ddINV):
     print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Datum {datetime.now():%d.%m.%Y %H:%M}")  # Debug
     time_entry.insert(0, f'{datetime.now():%d.%m.%Y %H:%M}')
     name_entry.insert(0, data["name"])
+    name_entry.configure(state="readonly")
+    time_entry.configure(state="readonly")
 
     # Buttonbereich
     button_frame = tk.Frame(popup, bg="white")

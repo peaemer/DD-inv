@@ -329,7 +329,7 @@ class mainPage(tk.Frame):
             :type event: tk.Event
             """
             print(f"New size - Width: {event.x} Height: {event.y}") #Debug
-        print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}:", show_size) # Debug
+        #print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}:", show_size) # Debug
 
         dropdown_overlay_frame: tk.Frame = tk.Frame(middle_frame, background="white")
         search_frame: tk.Frame= tk.Frame(middle_frame, bg="white")
