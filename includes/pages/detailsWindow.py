@@ -7,6 +7,7 @@ import cache
 from ._styles import *
 import customtkinter as ctk
 from ..CTkScrollableDropdown import *
+from .customMessageBoxDelete import *
 
 
 def show_details(selectedItem, tree, controller):
@@ -360,13 +361,13 @@ class detailsWindow(tk.Frame):
                                 bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                 command=lambda: return_item({"name": self.name_entry_details_window.get()}))
 
-
         def customMessageBoxCall():
-            from customMessageBoxDelete import customMessageBoxDelete
-            customMessageBoxDelete(parent,
-                                           title="Aktion Bestätigen",
-                                           message="Willst du diesen Eintrag unwiederruflich löschen?",
-                                           delete_callback=delete_entry)
+            customMessageBoxDelete(self,
+                                   title="Aktion Bestätigen",
+                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
+                                   controller=controller,
+                                   type=InteractionTypes.DELETE_ITEM)
+
 
 
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,

@@ -1,10 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from includes.sec_data_info import sqlite3api as db
-#import Security.UserSecurity as sec
-import cache
-import customtkinter as ctk
-from ._styles import *
+from .customMessageBoxDelete import *
 
 
 def show_room_details(selected_room, tree, controller):
@@ -223,6 +219,13 @@ class roomDetailsWindow(tk.Frame):
             mainPage.update_sidetree_with_data()
             controller.show_frame(adminRoomWindow)
 
+        def customMessageBoxCall():
+            customMessageBoxDelete(self,
+                                   title="Aktion Bestätigen",
+                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
+                                   controller=controller,
+                                   type="DELETE_ROOM")
+
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
         self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))
         self.delete_btn = tk.PhotoImage(file=resource_path("./includes/assets/Loeschen.png"))
@@ -235,7 +238,7 @@ class roomDetailsWindow(tk.Frame):
 
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                 command= delete_entry)
+                                 command=customMessageBoxCall)
         delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 

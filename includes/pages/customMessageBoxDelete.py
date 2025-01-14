@@ -1,12 +1,37 @@
 import tkinter as tk
 import customtkinter as ctk
+import cache
+import includes.sec_data_info.sqlite3api as db
 from ._styles import *
 
 
-def customMessageBoxDelete(parent, title, message, delete_callback=None):
-    title = title
-    message = message
+def delete_entry(contr):
+    cache.msgbox.destroy()
+    db.delete_hardware_by_id(cache.selected_ID)
+    from .mainPage import mainPage
+    mainPage.update_treeview_with_data()
+    mainPage.update_sidetree_with_data()
+    contr.show_frame(mainPage)
 
+def delete_user(contr):
+    db.delete_benutzer(cache.selected_ID)
+    from .adminUserWindow import adminUserWindow
+    adminUserWindow.update_treeview_with_data()
+    contr.show_frame(adminUserWindow)
+
+def delete_room(contr):
+    from .adminRoomWindow import adminRoomWindow
+    adminRoomWindow.update_treeview_with_data()
+    from .mainPage import mainPage
+    mainPage.update_sidetree_with_data()
+    contr.show_frame(adminRoomWindow)
+
+def delete_roles(contr):
+    from .adminRoleWindow import adminRoleWindow
+    adminRoleWindow.update_treeview_with_data()
+    contr.show_frame(adminRoleWindow)
+
+def customMessageBoxDelete(parent, controller, title, message, type):
     msg_box = tk.Toplevel(parent)
     msg_box.title(title)
     msg_box.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
@@ -19,7 +44,7 @@ def customMessageBoxDelete(parent, title, message, delete_callback=None):
     screen_height = parent.winfo_screenheight()
 
     # Fensterbreite und -höhe definieren
-    window_width = 350
+    window_width = 450
     window_height = 80
 
     # Berechne die Position, um das Fenster in der Mitte des Bildschirms zu platzieren
@@ -34,10 +59,18 @@ def customMessageBoxDelete(parent, title, message, delete_callback=None):
     except Exception as e:
         print(f"Fehler beim Laden des Icons: {e}")
 
-    #def zum löschen eines Eintrages
-    def delete_entry():
-        if delete_callback:
-            delete_callback()  #Aufruf der spezifischen Loeschfunktion
+    cache.msgbox = msg_box
+
+    def selectType():
+        match(type):
+            case "DELETE_ITEM":
+                delete_entry(controller)
+            case "DELETE_USER":
+                delete_user(controller)
+            case "DELETE_ROOM":
+                delete_room(controller)
+            case "DELETE_ROLE":
+                delete_roles(controller)
         msg_box.destroy()
 
     info_msg = tk.Frame(msg_box, background="white")
@@ -51,23 +84,25 @@ def customMessageBoxDelete(parent, title, message, delete_callback=None):
                        text_color="black",
                        font=("Arial", 20),
                        justify="center")
-    msg.grid(row=1, column=0, padx=15, pady=5, sticky="nesw")
+    msg.grid(row=0, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     delete = ctk.CTkButton(info_msg,
                            text="Löschen",
                            border_width=0,
                            fg_color=srhOrange,
-                           command=delete_entry)
-    delete.grid(row=2, column=0, padx=40, pady=10)
+                           text_color="white",
+                           command=selectType)
+    delete.grid(row=1, column=0, padx=0, pady=10)
 
     cancel = ctk.CTkButton(info_msg,
                            text="Abbrechen",
                            border_width=0,
                            fg_color=srhGrey,
+                           text_color="black",
                            command=msg_box.destroy)
-    cancel.grid(row=2, column=0, padx=40, pady=10)
+    cancel.grid(row=1, column=1, padx=0, pady=10)
 
     info_msg.grid_rowconfigure(0, weight=0)
-    info_msg.grid_rowconfigure(1, weight=1)
+    info_msg.grid_rowconfigure(1, weight=0)
     info_msg.grid_columnconfigure(0, weight=1)
-    info_msg.grid_columnconfigure(1, weight=0)
+    info_msg.grid_columnconfigure(1, weight=1)

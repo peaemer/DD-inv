@@ -1,11 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
-from includes.sec_data_info import sqlite3api as db
-from includes.sec_data_info import UserSecurity as sec
 from ._avatarManager import resource_path
-import cache
 import random, string
+from .customMessageBoxDelete import *
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -16,7 +14,7 @@ def show_user_details(selected_user, tree, controller):
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_user, "values")
     print(f"Data of the selected item: {data}")
-    cache.selected_ID = data[0]
+    cache.selected_ID = data[1]
     controller.show_frame(userDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
     details = controller.frames[userDetailsWindow]
@@ -110,6 +108,13 @@ class userDetailsWindow(tk.Frame):
             from .adminUserWindow import adminUserWindow
             adminUserWindow.update_treeview_with_data()
             controller.show_frame(adminUserWindow)
+
+        def customMessageBoxCall():
+            customMessageBoxDelete(self,
+                                   title="Aktion Bestätigen",
+                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
+                                   controller=controller,
+                                   type="DELETE_USER")
 
         self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
@@ -304,7 +309,7 @@ class userDetailsWindow(tk.Frame):
 
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                 command= delete_entry)
+                                 command= customMessageBoxCall)
         delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 

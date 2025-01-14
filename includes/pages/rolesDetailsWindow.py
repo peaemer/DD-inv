@@ -1,12 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-
 from includes.sec_data_info import sqlite3api as sqlapi
-import cache
-import customtkinter as ctk
-from ._styles import *
-
+from .customMessageBoxDelete import *
 from main import ddINV
+
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -33,7 +30,6 @@ def show_roles_details(selected_roles, tree, controller):
     # Frame aktualisieren und anzeigen
     details = controller.frames[rolesDetailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-
 
 
 class rolesDetailsWindow(tk.Frame):
@@ -401,6 +397,13 @@ class rolesDetailsWindow(tk.Frame):
             adminRoleWindow.update_treeview_with_data()
             controller.show_frame(adminRoleWindow)
 
+        def customMessageBoxCall():
+            customMessageBoxDelete(self,
+                                   title="Aktion Bestätigen",
+                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
+                                   controller=controller,
+                                   type="DELETE_ROLE")
+
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
         self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))
         self.delete_btn = tk.PhotoImage(file=resource_path("./includes/assets/Loeschen.png"))
@@ -412,7 +415,7 @@ class rolesDetailsWindow(tk.Frame):
         global delete_button, edit_button
         delete_button = tk.Button(button_frame_update_role, image=self.delete_btn,
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                 command= delete_entry)
+                                 command=customMessageBoxCall)
         # delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 

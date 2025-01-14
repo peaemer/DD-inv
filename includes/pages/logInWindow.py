@@ -2,9 +2,7 @@ import tkinter as tk
 import webbrowser
 from tkinter import *
 from tkinter import ttk
-import cache
-from ._styles import *
-from .customMessageBoxLogin import customMessageBoxLogin
+from .customMessageBoxDelete import *
 from ._avatarManager import check_internet_connection, loadImage
 import customtkinter as ctk
 from includes.sec_data_info import sqlite3api as db
@@ -78,9 +76,11 @@ class logInWindow(tk.Frame):
 
             else:
                 # Zeige Fehlermeldung bei falschem Login
-                customMessageBoxLogin(parent=parent, title="Fehler bei Eingabe", message="Passwort oder Benutzername falsch")
-                password_entry.delete(0, 'end')
-
+                customMessageBoxDelete(self,
+                                       title="Error",
+                                       message="Falsche Eingabe. Bitte versuchen Sie es erneut.",
+                                       controller=controller,
+                                       type="WRONG_LOGIN")
 
         def on_enter(event):
             """
