@@ -1,3 +1,4 @@
+user = ""
 user_group = ""
 user_group_data = []
 user_name = ""

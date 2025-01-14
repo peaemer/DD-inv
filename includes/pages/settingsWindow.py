@@ -536,12 +536,6 @@ def pop_up_settings(parent, controller):
                           {"name": "Python", "url": "https://www.python.org/", "image": resource_path("includes/assets/PythonSettings.png")},
                           {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07", "image": resource_path("includes/assets/WindowsXPSettings.png")}]
 
-    def open_url(url):
-        if url:
-            webbrowser.open_new_tab(url)
-        else:
-            print("Fehler beim Laden der URL")
-
     parent.images_tools = []
 
     for index, button in enumerate(buttons_data_tools, start=2):
@@ -569,12 +563,6 @@ def pop_up_settings(parent, controller):
     # Liste mit den Namenm, URL, Bild fuer Projekt Unterstuetzen
     buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": resource_path("includes/assets/KoFiSettings.png")},
                             {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de", "image": resource_path("includes/assets/FeedbackSettings.png")}]
-
-    def open_url(url):
-        if url:
-            webbrowser.open_new_tab(url)
-        else:
-            print("Fehler beim Laden der URL")
 
     parent.images_support = []
 
@@ -604,12 +592,6 @@ def pop_up_settings(parent, controller):
     # Liste mit den Namenm, URL, Bild fuer Info
     buttons_data_info = [{"name": "VersionBuild   V. 0.1 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest", "image": resource_path("includes/assets/DD-Inv_Logo.png")},
                          {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv", "image": resource_path("includes/assets/GitHubSettings.png")}]
-
-    def open_url(url):
-        if url:
-            webbrowser.open_new_tab(url)
-        else:
-            print("Fehler beim Laden der URL")
 
     parent.images_info = []
 
