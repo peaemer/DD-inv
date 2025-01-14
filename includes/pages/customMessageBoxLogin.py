@@ -3,7 +3,7 @@ import customtkinter as ctk
 from ._styles import *
 
 
-class customMessageBox:
+class customMessageBoxLogin:
     def __init__(self, parent, title, message):
         self.title = title
         self.message = message
@@ -35,6 +35,13 @@ class customMessageBox:
         except Exception as e:
             print(f"Fehler beim Laden des Icons: {e}")
 
+        #def für die Enterfunktion
+        def on_enter_error(event):
+            """
+            Schließe das Error Fenster beim drücken der Entertaste.
+            """
+            msg_box.destroy()
+
         error_msg = tk.Frame(msg_box, background="white")
         error_msg.grid(row=0,
                        column=0,
@@ -55,7 +62,11 @@ class customMessageBox:
                                                command=msg_box.destroy)
         self.btn_press_destroy.grid(row=2, column=0, padx=40, pady=10)
 
+        # Bind die Enter-Taste
+        self.btn_press_destroy.bind("<Return>", lambda event: msg_box.destroy())
+
         error_msg.grid_rowconfigure(0, weight=0)
         error_msg.grid_rowconfigure(1, weight=1)
         error_msg.grid_columnconfigure(0, weight=1)
         error_msg.grid_columnconfigure(1, weight=0)
+
