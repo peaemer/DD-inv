@@ -145,7 +145,7 @@ def lend_popup(parent, data, controller: ddINV):
         )
         entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
         CTkScrollableDropdownFrame(entry,values=users, button_color=srhGrey, #BUGGY
-                              frame_corner_radius=corner, autocomplete=True, fg_color=srhGrey,
+                              frame_corner_radius=corner, fg_color=srhGrey,
                               text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
                               justify="left")
 
@@ -177,6 +177,7 @@ def lend_popup(parent, data, controller: ddINV):
     name_entry.insert(0, data["name"])
     name_entry.configure(state="readonly")
     time_entry.configure(state="readonly")
+    entry.configure(state="readonly")
 
     # Buttonbereich
     button_frame = tk.Frame(popup, bg="white")
