@@ -1,12 +1,11 @@
 import base64
 import os
 import sys
+import cache
 import requests
 from ._styles import *
 from io import BytesIO
 from PIL import Image, ImageTk
-
-import cache
 
 
 def check_internet_connection():
@@ -24,8 +23,6 @@ def check_internet_connection():
     except requests.RequestException:
         cache.internet = False
         return False
-
-
 
 def load_image_from_url(url, default=None):
     """
@@ -66,7 +63,6 @@ def load_image_from_url(url, default=None):
         print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: img: ", img, "")
         return img
 
-
 def load_image_from_base64(base64_string):
     """
     Decodiert einen Base64-kodierten Bild-String und lädt das Bild-Objekt.
@@ -84,7 +80,6 @@ def load_image_from_base64(base64_string):
     img = Image.open(BytesIO(img_data))
     print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: img: ", img, "")
     return img
-
 
 def loadImage(parent, image: str = None, defult_image = None, width: int = 48, height: int = 48):
     if image is None:

@@ -1,7 +1,6 @@
 import tkinter as tk
 import webbrowser
 from tkinter import ttk
-from tkinter import filedialog
 import customtkinter as ctk
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
@@ -54,15 +53,15 @@ def pop_up_settings(parent, controller):
     # Bildschirmbreite und hoehe ermitteln (fenster mittig auf Bildschirm setzten)
     screen_width = parent.winfo_screenwidth()
     screen_height = parent.winfo_screenheight()
-    window_width, window_height = 850, 550
+    window_width, window_height = 800, 550
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
     popup.resizable(False, False)  # Fenstergroeße anpassbar
+
+    #Einfuegen des SRH-Icons
     from ._avatarManager import resource_path
     popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))  # Fenster-Icon
-
-    cache.user["Email"]
 
     # Grid-Layout für Popup konfigurieren (danymische groeße)
     popup.grid_rowconfigure(0, weight=0)  # Bereich fuer Kategorien
@@ -70,15 +69,20 @@ def pop_up_settings(parent, controller):
     popup.grid_columnconfigure(0, weight=0)  # Seitenleiste
     popup.grid_columnconfigure(1, weight=1)  # Hauptinhalt
 
+    #def zum aendern des Icons im Header bassierend auf der angezeiten Seite
     def update_header_icon(categorie):
-        """Aktualisiert das Header-Icon basierend auf der ausgewählten Kategorie."""
-        # Wähle das passende Icon basierend auf der Kategorie
-        # new_icon = category_icons.get(categories)
-        for cat in category_icons:
-            if cat == categorie:
-                new_icon = category_icons.get(cat)
-                header_label.configure(image=new_icon)
-                header_label.image = new_icon  # Verhindert, dass das Bild von der Garbage Collection gelöscht wird.
+        try:
+            """Aktualisiert das Header-Icon basierend auf der ausgewählten Kategorie."""
+            # Wähle das passende Icon basierend auf der Kategorie
+            # new_icon = category_icons.get(categories)
+            for cat in category_icons:
+                if cat == categorie:
+                    new_icon = category_icons.get(cat)
+                    header_label.configure(image=new_icon)
+                    header_label.image = new_icon  # Verhindert, dass das Bild von der Garbage Collection gelöscht wird.
+
+        except Exception as e:
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error when loading or changing the icon in the heading area. {e}")
 
     # Header-Bereich erstellen
     header_frame_settings = tk.Frame(popup, background=srhGrey)
@@ -92,13 +96,13 @@ def pop_up_settings(parent, controller):
     default_icon = tk.PhotoImage(file=resource_path("./includes/assets/ProfileSettingsIcon.png"))
     category_icons: dict = {"Profil": tk.PhotoImage(file=resource_path("./includes/assets/ProfileSettingsIcon.png")),
                             "System": tk.PhotoImage(file=resource_path("./includes/assets/SystemSettingsIcon.png")),
-                            "Style": tk.PhotoImage(file=resource_path("./includes/assets/StyleIconSettings.png")),
                             "Über DD-Inv": tk.PhotoImage(file=resource_path("./includes/assets/Tool.png"))}
 
     # Standard-Header-Icon
     popup.optionsHead = default_icon
     header_label = tk.Label(header_frame_settings, image=popup.optionsHead, foreground="white", background=srhGrey)
     header_label.grid(row=1, column=0, padx=0, pady=10, sticky="nesw")
+
     # Seitenleiste
     side_settings = tk.Frame(popup, width=200, bg=srhOrange)
     side_settings.grid(row=0, column=0, rowspan=2, sticky="nsw")
@@ -109,6 +113,9 @@ def pop_up_settings(parent, controller):
     popup.srh_logo = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
     srh_logo_label = tk.Label(side_settings, image=popup.srh_logo, bg=srhOrange)
     srh_logo_label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
+
+    #DEBUG PRINT
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Complete loading of the 'Main' settings page.")
 
     ###################################
     # # L A Y O U T : P R O F I L E # #
@@ -131,32 +138,35 @@ def pop_up_settings(parent, controller):
     # Profilbild zum Laden importieren
     parent.avatar = cache.user_avatarx128
     parent.settings_img_label = tk.Label(frame_profile, image=parent.avatar)
-    parent.settings_img_label.grid(row=1, column=1, pady=0,rowspan=2, columnspan=1, sticky="nse")
+    parent.settings_img_label.grid(row=1, column=0, pady=0 ,rowspan=2, columnspan=1, sticky="ns")
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
                                  text="Eingeloggt als\n" + cache.user_name,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=1, column=0, pady=10, rowspan=1, sticky="nw")
+    profile_btn_label.grid(row=3, column=0, pady=10, rowspan=1, sticky="nw")
 
-    frame_role = tk.Frame(frame_profile, padx=5, pady=10, bg="white", highlightcolor="blue")
-    frame_role.grid(row=2, column=0, rowspan=1, sticky="nw")
-    iR = 0
+    frame_role = tk.Frame(frame_profile,
+                          padx=5,
+                          pady=10,
+                          bg="white",
+                          highlightcolor="blue")
+    frame_role.grid(row=4, column=0, rowspan=1, sticky="nw")
 
     # Schriftzug Rechte in der Gruppe
     profile_btn_label = tk.Label(frame_role,
                                  text="Rechte in der Gruppe",
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=0, column=0, sticky="nw")
+    profile_btn_label.grid(row=3, column=3, sticky="nw")
 
     role2_btn_label = tk.Label(frame_role,
                                text=cache.user_group,
                                font=SETTINGS_BTN_FONT,
                                bg="white",
                                fg="black")
-    role2_btn_label.grid(row=iR + 1, column=0, pady=0, sticky="nw")
+    role2_btn_label.grid(row= 4, column=3, pady=0, sticky="nw")
 
     # PNG-Bild für Btn
     def load_button_images_profile():
@@ -177,14 +187,17 @@ def pop_up_settings(parent, controller):
 
     # Eingabe für die Profilbild-URL
     profile_image_url_label = tk.Label(frame_profile,
-                                       text="Profilbild-URL eingeben",
+                                       text="Profilbild-URL / Bas64 eingeben",
                                        font=SETTINGS_BTN_FONT,
                                        bg="white")
-    profile_image_url_label.grid(row=1, column=2, pady=10, sticky="ne")
+    profile_image_url_label.grid(row=1, column=1, pady=10, sticky="new")
 
-    profile_image_url = ctk.CTkEntry(frame_profile, border_width=border, corner_radius=corner, text_color="black",
+    profile_image_url = ctk.CTkEntry(frame_profile,
+                                     border_width=border,
+                                     corner_radius=corner,
+                                     text_color="black",
                                      fg_color=srhGrey)
-    profile_image_url.grid(row=2, column=2, pady=40, sticky="nsew")
+    profile_image_url.grid(row=2, column=1, pady=10, sticky="new")
 
     # Importieren der Funktion URL
     from ._avatarManager import loadImage
@@ -193,14 +206,18 @@ def pop_up_settings(parent, controller):
     parent.btn_image_set_profile_picture_settings = tk.PhotoImage(file=resource_path("./includes/assets/SetProfileSettings.png"))
 
     def setAvatar():
-        cache.user_avatarx128 = loadImage(parent=parent, image=profile_image_url.get(), width=128, height=128)
-        parent.avatar_new = cache.user_avatarx128
-        cache.user_avatar = loadImage(parent=parent, image=profile_image_url.get(), width=48, height=48)
-        parent.avatar = cache.user_avatar
-        db.upsert_avatar(cache.user_name, profile_image_url.get())
-        parent.settings_img_label.configure(image=parent.avatar_new)
-        from .mainPage import mainPage
-        mainPage.update_profile_picture()
+        try:
+            cache.user_avatarx128 = loadImage(parent=parent, image=profile_image_url.get(), width=128, height=128)
+            parent.avatar_new = cache.user_avatarx128
+            cache.user_avatar = loadImage(parent=parent, image=profile_image_url.get(), width=48, height=48)
+            parent.avatar = cache.user_avatar
+            db.upsert_avatar(cache.user_name, profile_image_url.get())
+            parent.settings_img_label.configure(image=parent.avatar_new)
+            from .mainPage import mainPage
+            mainPage.update_profile_picture()
+
+        except Exception as e:
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error while applying the profile picture.  {e}")
 
     # Button zum Aktualisieren des Profilbilds
     update_image_button = tk.Button(frame_profile,
@@ -210,7 +227,7 @@ def pop_up_settings(parent, controller):
                                     borderwidth=0,
                                     cursor="hand2",
                                     command=lambda: setAvatar())
-    update_image_button.grid(row=3, column=1, pady=10, sticky="ne")
+    update_image_button.grid(row=3, column=1, pady=10, sticky="new")
 
     # def zum Abmelden des Benutzers
     def log_out(controller):
@@ -223,10 +240,28 @@ def pop_up_settings(parent, controller):
                            verantwortlich ist.
         :type controller: Controller-Klasse
         """
-        from .logInWindow import logInWindow
-        cache.user_group = None  # Benutzergruppe zurücksetzen
-        controller.show_frame(logInWindow)
-        popup.destroy()
+        try:
+            from .logInWindow import logInWindow
+            cache.user_group = None  # Benutzergruppe zurücksetzen
+            controller.show_frame(logInWindow)
+            popup.destroy()
+
+        except Exception as e:
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error during logout by the user. {e}")
+
+    # Laden des Bildes auf dem Passwort Btn
+    parent.btn_image_password = tk.PhotoImage(file=resource_path("./includes/assets/ResetPasswordSettings.png"))
+
+    # Schriftzug Passwort ändern
+    profile_btn_label = tk.Button(frame_profile,
+                                  command=lambda:"",
+                                  text="Passwort ändern",
+                                  font=SETTINGS_BTN_FONT,
+                                  bg="white",
+                                  cursor="hand2",
+                                  image=parent.btn_image_password,
+                                  borderwidth=0)
+    profile_btn_label.grid(row=5, column=1, pady=10, sticky="new")
 
     # Schriftzug Benutzer Abmelden
     profile_btn_label = tk.Button(frame_profile,
@@ -237,7 +272,9 @@ def pop_up_settings(parent, controller):
                                   cursor="hand2",
                                   image=parent.btn_image_logout,
                                   borderwidth=0)
-    profile_btn_label.grid(row=4, column=1, pady=10, sticky="ne")
+    profile_btn_label.grid(row=6, column=1, pady=10, sticky="new")
+
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Complete loading of the 'Profile' settings page.")
 
     #################################
     # # L A Y O U T : S Y S T E M # #
@@ -255,7 +292,6 @@ def pop_up_settings(parent, controller):
     frame_system.grid_rowconfigure(5, weight=1)
     frame_system.grid_rowconfigure(6, weight=1)
     frame_system.grid_rowconfigure(7, weight=1)
-
 
     # Überschrift System erstellen
     radiobutton_label = tk.Label(frame_system,
@@ -285,190 +321,32 @@ def pop_up_settings(parent, controller):
     breite_entry = ctk.CTkEntry(frame_system, corner_radius=20, fg_color=srhGrey, text_color="black", border_width=0)
     breite_entry.grid(row=3)
 
-    hoehe_label = tk.Label(frame_system, text="Höhe", background="white", font=SETTINGS_BTN_FONT)
+    hoehe_label = tk.Label(frame_system,
+                           text="Höhe",
+                           background="white",
+                           font=SETTINGS_BTN_FONT)
     hoehe_label.grid(row=4, column=0)
-    hoehe_entry = ctk.CTkEntry(frame_system, corner_radius=20, fg_color=srhGrey,  text_color="black", border_width=0)
+
+    hoehe_entry = ctk.CTkEntry(frame_system,
+                               corner_radius=20,
+                               fg_color=srhGrey,
+                               text_color="black",
+                               border_width=0)
     hoehe_entry.grid(row=5)
 
     # Button zur Bestätigung
     parent.set_res_btn = tk.PhotoImage(file=resource_path("./includes/assets/SetResSettings.png"))
-    aendern_button = tk.Button(frame_system, image=parent.set_res_btn, borderwidth=0, command=lambda: fenster_groesse_aendern(parent))
+    aendern_button = tk.Button(frame_system,
+                               image=parent.set_res_btn,
+                               borderwidth=0,
+                               command=lambda: fenster_groesse_aendern(parent))
     aendern_button.grid(row=6, pady=10)
 
     # Label für Fehlermeldungen
     info_label = tk.Label(frame_system, text="", background="white")
     info_label.grid(row=7, pady=10)
 
-    ################################
-    # # L A Y O U T : S T Y L E # #
-    ################################
-
-    # Dynamischer Frame mit Einstellungsmöglichkeiten
-    frame_style = tk.Frame(popup, bg="white")
-    frame_style.grid(row=1, column=1, rowspan=2, sticky="nesw")
-
-    frame_style.columnconfigure(0, weight=1)
-
-    # Überschrift für Style
-    radiobutton_label = tk.Label(frame_style,
-                                 text="Style",
-                                 font=SETTINGS_FONT,
-                                 bg="white")
-    radiobutton_label.grid(row=0, column=0, pady=1, columnspan=2, sticky="new")
-
-    # Überschrift für Radiobutton-Kategorie
-    radiobutton_label = tk.Label(frame_style,
-                                 text="Setze einen vordefinierten Style",
-                                 font=SETTINGS_BTN_FONT,
-                                 bg="white")
-    radiobutton_label.grid(row=1, column=0, pady=1, columnspan=2, sticky="nw")
-
-    # Radiobuttons zur Auswahl von Farben (Themes)
-    storage_variable = tk.StringVar(value="White")
-
-    parent.option_zero = tk.PhotoImage(file=resource_path("./includes/assets/DefaultBtnSettings.png"))
-    parent.option_one = tk.PhotoImage(file=resource_path("./includes/assets/GreenBtnSettings.png"))
-    parent.option_two = tk.PhotoImage(file=resource_path("./includes/assets/BlueBtnSettings.png"))
-    parent.option_three = tk.PhotoImage(file=resource_path("./includes/assets/YellowBtnSettings.png"))
-    parent.option_for = tk.PhotoImage(file=resource_path("./includes/assets/BlackBtnSettings.png"))
-
-    radio_buttons_left = [("Standard", parent.option_zero, "White"),
-                          ("Grün", parent.option_one, "dark Green"),
-                          ("Blau", parent.option_two, "light Blue")]
-
-    radio_buttons_right = [("Gelb", parent.option_three, "Yellow"),
-                           ("Schwarz", parent.option_for, "Black")]
-
-
-    # Überschrift für Backgroundbutton-Kategorie
-    button_bg_label = tk.Label(frame_style,
-                               text="Wähle aus einem Eigenem Bild",
-                               font=SETTINGS_BTN_FONT,
-                               bg="white")
-    button_bg_label.grid(row=7, column=0, pady=10, columnspan=2, sticky="nw")
-
-    # def fuer btn change app background
-    def change_app_background(color):
-        """
-        Funktion, um den App-Hintergrundfarben zu ändern.
-
-        Diese Funktion nimmt eine Farbe als Eingabe und aktualisiert sowohl den
-        Hintergrund einer bestimmten Eltern-Komponente als auch den eines Popup-Fensters
-        mit der angegebenen Farbe. Sie wird verwendet, um das Erscheinungsbild der
-        Benutzeroberfläche dynamisch anzupassen.
-
-        :param color: Die neue Hintergrundfarbe als Zeichenkette.
-        :type color: str
-        :return: Diese Funktion hat keinen Rückgabewert.
-        """
-        parent.configure(bg=color)
-        popup.configure(bg=color)
-
-    for idx, (text, image, value) in enumerate(radio_buttons_left):
-        ttk.Radiobutton(frame_style,
-                        image=image,
-                        text=text,
-                        variable=storage_variable,
-                        value=value,
-                        style="Custom.TRadiobutton",
-                        command=lambda color=value: change_app_background(color)).grid(row=idx + 2,
-                                                                                       column=0,
-                                                                                       pady=5,
-                                                                                       sticky="w")
-
-    for idx, (text, image, value) in enumerate(radio_buttons_right):
-        ttk.Radiobutton(frame_style,
-                        image=image,
-                        text=text,
-                        variable=storage_variable,
-                        value=value,
-                        style="Custom.TRadiobutton",
-                        command=lambda color=value: change_app_background(color)).grid(row=idx + 2,
-                                                                                       column=1,
-                                                                                       pady=5,
-                                                                                       sticky="e")
-
-    # PNG-Bilder für Buttons laden
-    def load_button_images_style():
-        """
-        Lädt die Bilder für die Schaltflächen im Button-Stil.
-
-        Diese Funktion lädt und gibt zwei `tk.PhotoImage`-Objekte für die Darstellung von
-        Schaltflächenbildern zurück. Die Bilder werden aus angegebenen Dateien geladen und
-        können anschließend in der Benutzeroberfläche verwendet werden.
-
-        :raises FileNotFoundError: Wenn die angegebenen Bilddateien nicht gefunden werden.
-
-        :return: Ein Tupel von `tk.PhotoImage`-Objekten, das die Bilder für die
-                 Schaltflächen enthält.
-        :rtype: Tuple[tk.PhotoImage, tk.PhotoImage]
-        """
-        btn_image_select = tk.PhotoImage(file=resource_path("./includes/assets/BesseresAussehenWählen.png"))
-        btn_image_reset = tk.PhotoImage(file=resource_path("./includes/assets/HintergrundZurücksetzen.png"))
-        return btn_image_select, btn_image_reset
-
-    # Laden der Bilder auf den Bts
-    parent.btn_image_select, parent.btn_image_reset = load_button_images_style()
-
-    # Hintergrundbild-Auswahl
-    def apply_selected_image_style():
-        """
-        Zeigt ein Popup-Fenster für die Einstellungen an und ermöglicht es den Benutzern, ein Hintergrundbild
-        auszuwählen. Diese Funktion öffnet ein Dateidialogfeld, um ein Bild auszuwählen, und wendet das ausgewählte
-        Bild als Hintergrund auf das übergebene Eltern-Widget an.
-
-        :param parent: Das übergeordnete Widget bzw. der Container, auf den das ausgewählte Bild angewendet werden soll.
-        :type parent: tk.Widget
-        :param controller: Der Controller, der für die Steuerung des Popup-Fensters verantwortlich ist.
-        :type controller: object
-        :return: Es wird kein Wert zurückgegeben.
-        """
-        file_path = filedialog.askopenfilename(title="Wähle ein Bild aus...",
-                                               filetypes=[("Bilddateien", "*.png;*.jpg;*.jpeg")])
-
-        if file_path:
-            bg_image = tk.PhotoImage(file=file_path)
-            parent.bg_label = tk.Label(parent, image=bg_image)
-            parent.bg_label.image = bg_image
-            parent.bg_label.place(relx=0, rely=0, relwidth=1, relheight=1)
-
-    btn_chose_picture = ttk.Button(frame_style,
-                                   text="Besseres Aussehen auswählen...",
-                                   style="Custom.TButton",
-                                   image=parent.btn_image_select,
-                                   command=apply_selected_image_style)
-    btn_chose_picture.grid(row=len(radio_buttons_right) + 7, column=0, pady=10, sticky="w")
-
-    # Hintergrund setzen
-    def set_default_background():
-        """
-        Konfiguriert die Pop-up-Einstellungen für eine spezifische Oberfläche.
-        Das Hauptziel der Funktion ist es, das Erscheinungsbild des Pop-ups gemäß
-        angegebener Parameter zu definieren.
-
-        :param parent: Die übergeordnete Oberfläche, auf der das Pop-up angewendet wird.
-        :type parent: Widget
-        :param controller: Kontrollinstanz, die die Logik des Pop-ups steuert.
-        :type controller: Object
-        :return: Keine Rückgabe.
-        :rtype: None
-        """
-        parent.configure(bg="white")
-        popup.configure(bg="white")
-        if hasattr(parent, "bg_label"):
-            parent.bg_label.destroy()
-
-    btn_set_bg = ttk.Button(frame_style,
-                            text="Hintergrund zurücksetzen",
-                            style="Custom.TButton",
-                            image=parent.btn_image_reset,
-                            command=set_default_background)
-    btn_set_bg.grid(row=len(radio_buttons_right) + 8, column=0, pady=10, sticky="w")
-
-    # Style anpassen
-    style = ttk.Style()
-    style.configure("Custom.TButton", background="white", font=SETTINGS_BTN_FONT, borderwidth=0)
-    style.configure("Custom.TRadiobutton", background="white", font=SETTINGS_BTN_FONT)
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Complete loading of the 'System' settings page.")
 
     ###############################
     # # L A Y O U T : U E B E R # #
@@ -491,11 +369,11 @@ def pop_up_settings(parent, controller):
     ueber_label.grid(row=0, column=0, pady=0, columnspan=3, sticky="new")
 
     # Unterüberschrift erstellen Credits
-    Credits_label = tk.Label(frame_ueber,
+    credits_label = tk.Label(frame_ueber,
                              text="Credits",
                              font=SETTINGS_BTN_FONT,
                              bg="white")
-    Credits_label.grid(row=1, column=0, pady=10, sticky="new")
+    credits_label.grid(row=1, column=0, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Credits
     buttons_data_credits = [{"name": "Peaemer (Jack)", "url": "https://github.com/peaemer/", "image": "https://avatars.githubusercontent.com/u/148626202?v=4"},
@@ -590,7 +468,9 @@ def pop_up_settings(parent, controller):
                                   compound="left",
                                   background="white")
             btn_label.grid(row=index, column=2, pady=2, padx=15, sticky="new")
-            btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
+            btn_label.bind("<Button-1>",
+                           lambda e,
+                           url=button["url"]: open_url(url))
         except Exception as e:
             print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
 
@@ -619,9 +499,13 @@ def pop_up_settings(parent, controller):
                                   compound="left",
                                   background="white")
             btn_label.grid(row=index, column=2, pady=2, padx=40, sticky="new")
-            btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
+            btn_label.bind("<Button-1>",
+                           lambda e,
+                           url=button["url"]: open_url(url))
         except Exception as e:
             print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
+
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Complete loading of the 'About Us' settings page.")
 
     ###############################
     # # F R A M E : S W I T C H # #
@@ -630,7 +514,6 @@ def pop_up_settings(parent, controller):
     # Kategorien in der Seitenleiste
     categories = ["Profil",
                   "System",
-                  "Style",
                   "Über DD-Inv"]
 
     category_labels_settings = []
@@ -638,7 +521,6 @@ def pop_up_settings(parent, controller):
     # Zuordnung der Frames zu den Kategorien
     frames = {"Profil": frame_profile,
               "System": frame_system,
-              "Style": frame_style,
               "Über DD-Inv": frame_ueber}
 
     current_frame = frames["Profil"]  # Halte den aktuell sichtbaren Frame
@@ -697,3 +579,5 @@ def pop_up_settings(parent, controller):
     for key, frame in frames.items():
         if key != "Profil":  # Verstecke nur die anderen Frames
             frame.grid_remove()
+
+    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fully load the switch to switch between the settings pages.")
