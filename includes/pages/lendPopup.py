@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
+
+from .Searchbar.Logging import Logger
 from ..CTkScrollableDropdown import *
 from datetime import datetime
 
@@ -10,6 +12,8 @@ import cache
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
 from main import ddINV
+
+logger:Logger = Logger('LendPopup')
 
 def lend_popup(parent, data, controller: ddINV):
     """
@@ -56,7 +60,7 @@ def lend_popup(parent, data, controller: ddINV):
         from ._avatarManager import resource_path
         popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
     except Exception as e:
-        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fehler beim Laden des Icons: {e}")
+        logger.error(f"Fehler beim Laden des Icons: {e}")
 
     # Funktion, um die Eingaben zu verarbeiten
     def confirm_lend():
@@ -75,8 +79,8 @@ def lend_popup(parent, data, controller: ddINV):
         item = name_entry.get().strip()
         borrower = entry.get().strip()
         lend_date = time_entry.get().strip()
-        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Item: {item}, Borrower: {borrower}, Date:")
-        print(cache.selected_ID)
+        logger.debug(f"Item: {item}, Borrower: {borrower}, Date:")
+        logger.debug(f"cache.selected_ID:{cache.selected_ID}")
         db.create_ausleih_historie(cache.selected_ID, borrower, lend_date)
         db.update_hardware_by_id(cache.selected_ID, neue_ausgeliehen_von=borrower)
         from .mainPage import mainPage
@@ -172,7 +176,7 @@ def lend_popup(parent, data, controller: ddINV):
 
     popup.grid_columnconfigure(1, weight=1)  # Spalte 1 flexibel
 
-    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Datum {datetime.now():%d.%m.%Y %H:%M}")  # Debug
+    logger.debug(f"Datum {datetime.now():%d.%m.%Y %H:%M}")  # Debug
     time_entry.insert(0, f'{datetime.now():%d.%m.%Y %H:%M}')
     name_entry.insert(0, data["name"])
     name_entry.configure(state="readonly")
