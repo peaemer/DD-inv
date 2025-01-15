@@ -1,13 +1,14 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from includes.sec_data_info import sqlite3api as sqlapi
+from includes.pages.Searchbar.Logging import Logger
 from .customMessageBoxDelete import *
 from main import ddINV
 
+logger:Logger = Logger('rolesDetailsWindow')
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
-srhGrey = "#d9d9d9"
 
 
 def show_roles_details(selected_roles, tree, controller):
@@ -24,7 +25,7 @@ def show_roles_details(selected_roles, tree, controller):
     """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_roles, "values")
-    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Data of the selected item: {data}") # Debug
+    logger.debug(f"Data of the selected item: {data}") # Debug
     cache.selected_ID = data[0]
     controller.show_frame(rolesDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
@@ -94,7 +95,7 @@ class rolesDetailsWindow(tk.Frame):
                 Ein Steuerelement für die Verwaltung der Fenster- oder Anwendungslogik.
 
             """
-            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Show settings window details window")
+            logger.debug(f"Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -361,7 +362,7 @@ class rolesDetailsWindow(tk.Frame):
                 "USER_BEARBEITEN": edit_u,
                 "USER_ERSTELLEN": create_u
             }
-            print(sqlapi.update_role(self.role_name.cget("text"), **rechte))
+            logger.debug(sqlapi.update_role(self.role_name.cget("text"), **rechte))
             from .adminRoleWindow import adminRoleWindow
             adminRoleWindow.update_treeview_with_data()
             controller.show_frame(adminRoleWindow)

@@ -7,6 +7,7 @@ reset_style:Final[str] = '\033[0;0m'
 
 DEBUG_MODE_NORMAL:Final[bool] = True
 DEBUG_MODE_ALL:Final[bool] = True
+color_mode:bool = True
 
 
 class Logger:
@@ -24,11 +25,11 @@ class Logger:
             levels:str = ''
             for level in self.levels:
                 levels = levels + f'[{level}]'
-            print(f'{message_type_style}[Debug]{class_style}{levels}:{reset_style}' + message)
+            print(f'{message_type_style if color_mode == True else ''}[Debug]{class_style if color_mode == True else ''}{levels}:{reset_style if color_mode == True else ''}' + message)
 
     def debug_e(self, message:str):
         if DEBUG_MODE_ALL is True:
             levels:str = ''
             for level in self.levels:
                 levels = levels + f'[{level}]'
-            print(f'{message_type_style}[Debug]{class_style}{levels}:{reset_style}' + message)
+            print(f'{message_type_style if color_mode == True else ''}[Debug]{class_style if color_mode == True else ''}{levels}:{reset_style if color_mode == True else ''}' + message)
