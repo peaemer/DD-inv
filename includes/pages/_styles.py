@@ -6,6 +6,7 @@ lend_font = ("Arial", 20)
 srhGrey = "#d9d9d9"
 srhGreyHover = "#c9c9c9"
 srhOrange = "#DF4807"
+srhOrangeHover = "#e84c09"
 srhBlue = "#00699a"
 corner = 20
 scroll_corner = 10
