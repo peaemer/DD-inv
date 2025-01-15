@@ -78,7 +78,7 @@ def lend_popup(parent, data, controller: ddINV):
         print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Item: {item}, Borrower: {borrower}, Date:")
         print(cache.selected_ID)
         db.create_ausleih_historie(cache.selected_ID, borrower, lend_date)
-        db.update_hardware_by_ID(cache.selected_ID, neue_Ausgeliehen_von=borrower)
+        db.update_hardware_by_id(cache.selected_ID, neue_ausgeliehen_von=borrower)
         from .mainPage import mainPage
         mainPage.update_treeview_with_data()
         controller.show_frame(mainPage)

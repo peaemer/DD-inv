@@ -63,8 +63,8 @@ class Searchbar2(CTkTextbox):
         """
             clears all characters in the searchbar that are behind the start index and are highlighted as hint text.
 
-            :param start_index: position after which the hit text has to be removed.
-            :param finish_index: position until which the hit text has to be removed.
+            :param int start_index: position after which the hit text has to be removed.
+            :param int finish_index: position until which the hit text has to be removed.
         """
         if finish_index <= -1:
             finish_index = self.__get_term_length()

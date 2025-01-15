@@ -1,6 +1,4 @@
 import sqlite3
-import os
-import sys
 from .UserSecurity import *
 
 # Pfad zur Datenbankdatei
@@ -9,12 +7,12 @@ __use__fallback_path: bool = True
 __fallback_path: str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
 
 
-def init_connection()->sqlite3.Connection:
+def init_connection() -> sqlite3.Connection:
     """
-    Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
-    - Überprüft, ob die Datenbankdatei existiert
-    - falls die Datenbank nicht existiert, wird entweder die Fallback Datenbankt oder eine Exception geworfen.
-    - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
+        Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
+        - Überprüft, ob die Datenbankdatei existiert
+        - falls die Datenbank nicht existiert, wird entweder die Fallback Datenbankt oder eine Exception geworfen.
+        - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
     """
     if not os.path.exists(path):
         if __use__fallback_path:
@@ -32,14 +30,17 @@ def init_connection()->sqlite3.Connection:
 # B E N U T Z E R - E N D P U N K T #
 #####################################
 
-def create_benutzer(nutzername:str, passwort:str, email:str)->None:
+def create_benutzer(nutzername:str, passwort:str, email:str) -> str:
     """
-    Fügt einen neuen Benutzer zur Tabelle `Benutzer` hinzu.
-    Passwort_hashed_value wird genutzt um Plain_Passwörter in ein Hash wert zu ändern
-    {e.args} werden genutzt um genauere Fehlermeldungen zurück zu bekommen
-    :param nutzername:z.B. LukasFa
-    :param passwort:z.B. #Lukas1234 (Wird ihn ein Hashwert umgewandelt)
-    :param email:z.B. Lukas.Fabisch@fabisch.com
+        Fügt einen neuen Benutzer zur Tabelle `Benutzer` hinzu.
+        Passwort_hashed_value wird genutzt um Plain_Passwörter in ein Hash wert zu ändern
+        {e.args} werden genutzt um genauere Fehlermeldungen zurück zu bekommen
+
+        :param str nutzername: z.B. LukasFa
+        :param str passwort: z.B. #Lukas1234 (Wird ihn ein Hashwert umgewandelt)
+        :param str email: z.B. Lukas.Fabisch@fabisch.com
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
         passwort_hashed_value = hashPassword(passwort)
@@ -60,12 +61,14 @@ def create_benutzer(nutzername:str, passwort:str, email:str)->None:
         return f"Fehler beim Hinzufügen des Benutzers: {e.args[0]}"
 
 
-def read_all_benutzer():
+def read_all_benutzer() -> list[dict[str, str]]:
     """
         Ruft alle Benutzer aus der Tabelle `Benutzer` ab.
         Fetchall um jeden einzelnen Eintrag zu bekommen
         RuntimeError ist dafür da um fehler bei der Dictionary vorzubeugen
-        """
+
+        :return: eine Liste aus den daten aller Benutzer. Die Nutzerdaten werden in jeweils einem dictionary ausgegeben.
+    """
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -77,10 +80,13 @@ def read_all_benutzer():
         raise RuntimeError(f"Fehler beim Abrufen der Benutzer: {e.args[0]}")
 
 
-def read_benutzer(nutzername):
+def read_benutzer(nutzername:str) -> dict[str,str]:
     """
-    Ruft die Daten eines spezifischen Benutzers ab.
-    :param Nutzername
+        Ruft die Daten eines spezifischen Benutzers ab.
+
+        :param str nutzername: der name des zu lesenden benutzers
+
+        :return: die Daten des nutzers in form eines dictionaries
     """
     try:
         with init_connection() as con:
@@ -95,9 +101,11 @@ def read_benutzer(nutzername):
 def read_benutzer_suchverlauf(nutzername):
     """
        Ruft den Suchverlauf eines spezifischen Benutzers ab.
-       :param nutzername: Der Benutzername, dessen Suchverlauf abgerufen werden soll.
+
+       :param str nutzername: Der Benutzername, dessen Suchverlauf abgerufen werden soll.
+
        :return: Der Suchverlauf des Benutzers oder None, falls keiner vorhanden ist.
-       """
+   """
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -108,14 +116,17 @@ def read_benutzer_suchverlauf(nutzername):
         raise RuntimeError(f"Fehler beim Abrufen des Suchverlaufs: {e.args[0]}")
 
 
-def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_rolle=None, neue_suchverlauf=None):
+def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', neue_rolle:str='', neue_suchverlauf:str=''):
     """
-    Aktualisiert die Daten eines Benutzers (Passwort, Email, Rolle).
-    :param Nutzername
-    :param neues_passwort:(falls kein neues, leer lassen und neues Komma setzten)
-    :param neues_email:(falls kein neues, leer lassen und neues Komma setzten)
-    :param neue_rolle:(falls kein neues, leer lassen und neues Komma setzten)
-    :param neue_suchverlauf:(falls kein neues, leer lassen und neues Komma setzten)
+        Aktualisiert die Daten eines Benutzers (Passwort, Email, Rolle, Suchverlauf).
+
+        :param str nutzername: der name des zu lesenden Benutzers.
+        :param str neues_passwort:(falls kein neues, leer lassen und neues Komma setzten)
+        :param str neues_email:(falls kein neues, leer lassen und neues Komma setzten)
+        :param str neue_rolle:(falls kein neues, leer lassen und neues Komma setzten)
+        :param str neue_suchverlauf:(falls kein neues, leer lassen und neues Komma setzten)
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
@@ -148,9 +159,11 @@ def update_benutzer(nutzername, neues_passwort=None, neues_email=None, neue_roll
         return f"Fehler beim Aktualisieren des Benutzers: {e.args[0]}"
 
 
-def delete_benutzer(nutzername):
+def delete_benutzer(nutzername:str) -> str:
     """
-    Löscht einen Benutzer aus der Tabelle `Benutzer`.
+        Löscht einen Benutzer aus der Tabelle `Benutzer.
+
+        :param str nutzername:
     """
     try:
         with init_connection() as con:
@@ -166,22 +179,25 @@ def delete_benutzer(nutzername):
 # H A R D W A R E - E N D P U N K T #
 #####################################
 
-def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Raum):
+def create_hardware(service_tag:str, geraetetyp:str, modell:str, beschaedigung, ausgeliehen_von, raum) -> str:
     """
-    Erstellt einen neuen Eintrag in der Tabelle `Hardware`.
-    :param Service_Tag
-    :param Geraetetyp
-    :param Modell
-    :param Beschaedigung
-    :param Ausgeliehen_von
-    :param Standort
+        Erstellt einen neuen Eintrag in der Tabelle `Hardware`.
+
+        :param str service_tag:
+        :param str geraetetyp:
+        :param str modell:
+        :param str beschaedigung:
+        :param str ausgeliehen_von:
+        :param str raum:
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
             cur.execute(
                 "INSERT INTO Hardware (Service_Tag, Geraetetype, Modell, Beschaedigung, Ausgeliehen_von, Raum) VALUES (?, ?, ?, ?, ?, ?)",
-                (Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_von, Raum)
+                (service_tag, geraetetyp, modell, beschaedigung, ausgeliehen_von, raum)
             )
             con.commit()
         return "Hardware-Eintrag wurde erstellt."
@@ -189,9 +205,9 @@ def create_hardware(Service_Tag, Geraetetyp, Modell, Beschaedigung, Ausgeliehen_
         return f"Fehler beim Erstellen des Hardware-Eintrags: {e.args[0]}"
 
 
-def fetch_hardware():
+def fetch_hardware() ->list[dict[str, str]]:
     """
-    Ruft alle Hardware-Einträge aus der Tabelle `Hardware` ab.
+        Ruft alle Hardware-Einträge aus der Tabelle `Hardware` ab.
     """
     try:
         with init_connection() as con:
@@ -203,31 +219,39 @@ def fetch_hardware():
         raise RuntimeError(f"Fehler beim Abrufen der Hardware: {e.args[0]}")
 
 
-def fetch_hardware_by_id(ID):
+def fetch_hardware_by_id(id:int):
     """
-    Ruft die Daten einer spezifischen Hardware anhand ihres `Service_Tag` ab.
-    :param ID:zum identifizieren des Datensatzes
+        Ruft die Daten einer spezifischen Hardware anhand ihres `Service_Tag` ab.
+        :param int id: eine Konstante zum identifizieren des Datensatzes
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
             # ID muss hier mit einem Komma an ende übergeben werden um als Tuple zu agieren
             # Warum? keine Ahnung aber der Wert muss ein Tuplse sein sonst findet er nichts
-            cur.execute("SELECT * FROM Hardware WHERE ID = ?", (ID,))
+            cur.execute("SELECT * FROM Hardware WHERE ID = ?", (id,))
             row = cur.fetchone()
             return dict(row) if row else None
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Hardware: {e.args[0]}")
 
 
-def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_Modell=None, neue_Geraetetyp=None,
-                          neue_beschaedigung=None, neue_Standort=None):
+def update_hardware_by_id(
+            id:int,
+            neue_ausgeliehen_von:str = None,
+            neue_modell:str = None,
+            neue_geraetetyp:str = None,
+            neue_beschaedigung:str = None,
+            neue_standort:str = None):
     """
-    Aktualisiert bestimmte Felder einer Hardware basierend auf dem `Service_Tag`.
-    :param ID: zum identifizieren des Datensatzes
-    :param neue_Ausgeliehen_von:falls kein neues, leer lassen und neues Komma setzten
-    :param neue_beschaedigung:(falls kein neues, leer lassen und neues Komma setzten)
-    :param neue_Standort:(falls kein neues, leer lassen und neues Komma setzten)
+        Aktualisiert bestimmte Felder einer Hardware basierend auf dem `Service_Tag`.
+
+        :param int id: zum identifizieren des Datensatzes
+        :param str neue_modell:
+        :param str neue_geraetetyp:
+        :param str neue_ausgeliehen_von: falls kein neues, leer lassen und neues Komma setzten
+        :param str neue_beschaedigung: (falls kein neues, leer lassen und neues Komma setzten)
+        :param str neue_standort: (falls kein neues, leer lassen und neues Komma setzten)
     """
     try:
         with init_connection() as con:
@@ -235,27 +259,27 @@ def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_Modell=None, neue_
             update_fields = []
             parameters = []
 
-            if neue_Ausgeliehen_von != None:
+            if neue_ausgeliehen_von:
                 update_fields.append("Ausgeliehen_von = ?")
-                parameters.append(neue_Ausgeliehen_von)
+                parameters.append(neue_ausgeliehen_von)
             if neue_beschaedigung:
                 update_fields.append("Beschaedigung = ?")
                 parameters.append(neue_beschaedigung)
-            if neue_Standort:
+            if neue_standort:
                 update_fields.append("Raum = ?")
-                parameters.append(neue_Standort)
-            if neue_Modell:
+                parameters.append(neue_standort)
+            if neue_modell:
                 update_fields.append("Modell = ?")
-                parameters.append(neue_Modell)
-            if neue_Geraetetyp:
+                parameters.append(neue_modell)
+            if neue_geraetetyp:
                 update_fields.append("Geraetetype = ?")
-                parameters.append(neue_Geraetetyp)
+                parameters.append(neue_geraetetyp)
 
             if not update_fields:
                 return "Keine Aktualisierungsdaten vorhanden."
 
             sql_query = f"UPDATE Hardware SET {', '.join(update_fields)} WHERE ID = ?"
-            parameters.append(ID)
+            parameters.append(id)
             cur.execute(sql_query, parameters)
             con.commit()
         return "Hardware erfolgreich aktualisiert."
@@ -263,15 +287,18 @@ def update_hardware_by_ID(ID, neue_Ausgeliehen_von=None, neue_Modell=None, neue_
         return f"Fehler beim Aktualisieren der Hardware: {e.args[0]}"
 
 
-def delete_hardware_by_id(ID):
+def delete_hardware_by_id(id:int) -> str:
     """
-    Löscht einen Hardware-Eintrag aus der Tabelle `Hardware`.
-    :param ID:zum idenzifizieren des Datensatzes
+        Löscht einen Hardware-Eintrag aus der Tabelle `Hardware.
+
+        :param int id: eine Konstante zum idenzifizieren des Datensatzes
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
-            cur.execute("DELETE FROM Hardware WHERE ID = ?", (ID,))
+            cur.execute("DELETE FROM Hardware WHERE ID = ?", (id,))
             con.commit()
         return "Hardware-Eintrag wurde erfolgreich entfernt."
     except sqlite3.Error as e:
@@ -282,11 +309,15 @@ def delete_hardware_by_id(ID):
 # N U T Z E R R O L L E N - R E C H T E - E N D P U N K T #
 ###########################################################
 
-def create_rolle(Rolle, **rechte):
+def create_rolle(rolle:str, **rechte:dict[str,str]) -> str:
     """
-    Fügt eine neue Nutzerrolle mit spezifischen Rechten in die Tabelle `NutzerrollenRechte` ein.
-    Rollenrechte müssen damit nur noch angehangen werden
+        Fügt eine neue Nutzerrolle mit spezifischen Rechten in die Tabelle `NutzerrollenRechte` ein.
+        Rollenrechte müssen damit nur noch angehangen werden
 
+        :param str rolle:
+        :param dict rechte:
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
@@ -295,16 +326,19 @@ def create_rolle(Rolle, **rechte):
             placeholders = ', '.join(['?'] * len(rechte))
             values = list(rechte.values())
             cur.execute(f"INSERT INTO NutzerrollenRechte (Rolle, {columns}) VALUES (?, {placeholders})",
-                        [Rolle] + values)
+                        [rolle] + values)
             con.commit()
         return "Nutzerrolle wurde erfolgreich erstellt."
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen der Rolle: {e.args[0]}"
 
 
-def read_all_rollen():
+def read_all_rollen() -> list[dict[str,str]]:
     """
-    Ruft alle Rollen aus der Tabelle `NutzerrollenRechte` ab.
+        Ruft alle Rollen aus der Tabelle `NutzerrollenRechte` ab.
+
+        :return: eine Liste aller in der Datenbank gespeicherten Rollen.
+            Die Rechte jeder Rolle werden jeweils in einem dictionary ausgegeben.
     """
     try:
         with init_connection() as con:
@@ -316,28 +350,33 @@ def read_all_rollen():
         raise RuntimeError(f"Fehler beim Abrufen der Rollen: {e.args[0]}")
 
 
-def delete_rolle(Rolle):
+def delete_rolle(rolle:str) -> str:
     """
-    Entfernt eine Rolle aus der Tabelle `NutzerrollenRechte`.
+        Entfernt eine bestimmte Rolle aus der Tabelle `NutzerrollenRechte`.
+
+        :param str rolle:
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
-            cur.execute("DELETE FROM NutzerrollenRechte WHERE Rolle = ?", (Rolle,))
+            cur.execute("DELETE FROM NutzerrollenRechte WHERE Rolle = ?", (rolle,))
             con.commit()
         return "Rolle wurde erfolgreich entfernt."
     except sqlite3.Error as e:
         return f"Fehler beim Entfernen der Rolle: {e.args[0]}"
 
 
-def update_role(Rolle: str, **rechte):
+def update_role(rolle: str, **rechte:str) -> str:
     """
-    Aktualisiert die Rechte für eine bestimmte Nutzerrolle in der Tabelle `NutzerrollenRechte`.
-    Die Rechte werden als benannte Argumente übergeben (z.B. Column1=value1, Column2=value2).
+        Aktualisiert die Rechte einer bestimmten Nutzerrolle in der Tabelle `NutzerrollenRechte`.
+        Die Rechte werden als benannte Argumente übergeben (z.B. Column1=value1, Column2=value2).
 
-    :param Rolle: Die Rolle, deren Rechte aktualisiert werden sollen.
-    :param rechte: Die zu aktualisierenden Rechte als benannte Argumente.
-    :return: Erfolgsmeldung oder Fehlerbeschreibung.
+        :param str rolle: Die Rolle, deren Rechte aktualisiert werden sollen.
+        :param rechte: Die zu aktualisierenden Rechte als benannte Argumente.
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
@@ -350,7 +389,7 @@ def update_role(Rolle: str, **rechte):
             values = list(rechte.values())
 
             # SQL-Update-Abfrage
-            cur.execute(f"UPDATE NutzerrollenRechte SET {columns} WHERE Rolle = ?", values + [Rolle])
+            cur.execute(f"UPDATE NutzerrollenRechte SET {columns} WHERE Rolle = ?", values + [rolle])
 
             # Änderungen in der Datenbank übernehmen
             con.commit()
@@ -365,12 +404,15 @@ def update_role(Rolle: str, **rechte):
 # A U S L E I H - H I S T O R I E - E N D P U N K T E #
 #######################################################
 
-def create_ausleih_historie(Hardware_ID, Nutzername, Ausgeliehen_am):
+def create_ausleih_historie(hardware_id:str, nutzername:str, ausgeliehen_am:str) -> str:
     """
-    Erstellt einen neuen Eintrag in der Tabelle `Ausleih-Historie`.
-    - `Service_Tag`: Fremdschlüssel zur Hardware-Tabelle.
-    - `Nutzername`: Fremdschlüssel zur Benutzer-Tabelle.
-    - Optional können Ausleihdatum und Rückgabedatum angegeben werden.
+        Erstellt einen neuen Eintrag in der Tabelle `Ausleih-Historie`.
+
+        :param int hardware_id: Fremdschlüssel zur Hardware-Tabelle.
+        :param str nutzername: Fremdschlüssel zur Benutzer-Tabelle.
+        :param str ausgeliehen_am:können Ausleihdatum und Rückgabedatum angegeben werden.
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
@@ -380,7 +422,7 @@ def create_ausleih_historie(Hardware_ID, Nutzername, Ausgeliehen_am):
                 INSERT INTO Ausleih_Historie(Hardware_ID, Nutzername, Ausgeliehen_am)
                 VALUES (?, ?, ?)
                 """,
-                (Hardware_ID, Nutzername, Ausgeliehen_am)
+                (hardware_id, nutzername, ausgeliehen_am)
             )
             con.commit()
             return "Eintrag in der Ausleih-Historie wurde erfolgreich erstellt."
@@ -388,10 +430,11 @@ def create_ausleih_historie(Hardware_ID, Nutzername, Ausgeliehen_am):
         return f"Fehler beim Erstellen des Eintrags: {e}"
 
 
-def fetch_ausleih_historie():
+def fetch_ausleih_historie() -> list[dict[str, str]]|str:
     """
-    Ruft alle Einträge aus der Tabelle `Ausleih-Historie` ab.
-    - Gibt eine Liste von Dictionaries mit den Daten zurück.
+        Ruft alle Einträge aus der Tabelle `Ausleih-Historie` ab.
+
+        :return: eine Liste von Dictionaries mit den Daten oder eine Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
@@ -404,32 +447,37 @@ def fetch_ausleih_historie():
         return f"Fehler beim Abrufen der Historie: {e}"
 
 
-def fetch_ausleih_historie_by_id(ID):
+def fetch_ausleih_historie_by_id(id:int) -> dict[str,str]|str|None:
     """
-    Ruft einen spezifischen Eintrag der Tabelle `Ausleih-Historie` anhand der ID ab.
-    - Gibt ein Dictionary mit den Daten zurück oder None, falls der Eintrag nicht existiert.
-    :param ID: ID muss unbedingt angegeben werden
+        Ruft einen spezifischen Eintrag der Tabelle `Ausleih-Historie` anhand der ID ab.
+
+        :param int id: eine Konstante zum idenzifizieren des Datensatzes
+
+        :return: ein Dictionary mit der Ausleihhistorie dieses Hardwareobjekts, None falls der Eintrag nicht existiert, oder eine Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
             con.row_factory = sqlite3.Row
             cur = con.cursor()
-            cur.execute("SELECT * FROM Ausleih_Historie WHERE ID = ?", (ID,))
+            cur.execute("SELECT * FROM Ausleih_Historie WHERE ID = ?", (id,))
             row = cur.fetchone()
             return dict(row) if row else None
     except sqlite3.Error as e:
         return f"Fehler beim Abrufen des Eintrags: {e}"
 
 
-def delete_ausleih_historie(ID):
+def delete_ausleih_historie(id:int) -> str:
     """
-     Löscht einen Eintrag aus der Tabelle `Ausleih-Historie` anhand der ID.
-     :param ID:ID muss mit angegeben werden
+         Löscht einen Eintrag aus der Tabelle `Ausleih-Historie` anhand der ID.
+
+         :param int id: eine Konstante zum idenzifizieren des Datensatzes.
+
+         :return: Erfolgsmeldung oder Fehlerbeschreibung.
      """
     try:
         with init_connection() as con:
             cur = con.cursor()
-            cur.execute("DELETE FROM Ausleih_Historie WHERE ID = ?", (ID,))
+            cur.execute("DELETE FROM Ausleih_Historie WHERE ID = ?", (id,))
             con.commit()
             return "Eintrag erfolgreich gelöscht."
     except sqlite3.Error as e:
@@ -440,26 +488,30 @@ def delete_ausleih_historie(ID):
 # R O O M _ I N F O - E N D P U N K T E #
 #########################################
 
-def create_room(Raum, Ort):
+def create_room(raum:str, ort:str)->str:
     """
-    Wird zum erstellen von neuen Räumen benutzt
-    :param Raum (Raumname z.B. E220)
-    :param Ort (Ortsname z.B. Haus E 1. Etage)
+        Wird zum erstellen von neuen Räumen benutzt
+
+        :param str raum: (Raumname z.B. E220)
+        :param str ort: (Ortsname z.B. Haus E 1. Etage)
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
-            cur.execute("INSERT INTO Room_Info(Raum, Ort) VALUES (?, ?)", (Raum, Ort))
+            cur.execute("INSERT INTO Room_Info(Raum, Ort) VALUES (?, ?)", (raum, ort))
             con.commit()
             return "Raum wurde erfolgreich erstellt."
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen des Raumes: {e}"
 
 
-def fetch_all_rooms():
+def fetch_all_rooms() -> list[dict[str,str]] | str:
     """
-    Mit der Funktion rufen wir alle bis jetzt erstellten Räume in der Datenbank auf
-    :return: Gesamte Liste aller Räume in einer Dictionary
+        Mit der Funktion rufen wir alle bis jetzt erstellten Räume in der Datenbank auf
+
+        :return: Gesamte Liste aller Räume in einer Dictionary
     """
     try:
         with init_connection() as con:
@@ -472,31 +524,33 @@ def fetch_all_rooms():
         return f"Fehler beim Abrufen der Räume: {e}"
 
 
-def search_room(Raum):
+def search_room(raum:str) -> dict[str,str] | str:
     """
+        :param str raum: (Raumname z.B. E220)
 
-    :param Raum (Raumname z.B. E220)
-    :return: Gibt nur die Informationen über den einzelnen Raum aus
+        :return: die Daten dieses einzelnen Raums aus
     """
     try:
         with init_connection() as con:
             con.row_factory = sqlite3.Row
             cur = con.cursor()
-            cur.execute("SELECT * FROM Room_Info WHERE Raum = ?", (Raum,))
+            cur.execute("SELECT * FROM Room_Info WHERE Raum = ?", (raum,))
             row = cur.fetchone()
             return dict(row) if row else None
     except sqlite3.Error as e:
         return f"Fehler beim Suchen des Raumes: {e}"
 
 
-def update_room(Raum, neu_Raum, neu_Ort):
+def update_room(raum:str, neu_raum:str, neu_ort:str) -> str:
     """
-    If Statement schaut nach, was genau geändert werden soll, if not zum absichern damit keine sachen auf NUll gesetzt werden
-    Query zum updaten von zu updaten
-    :param Raum:hier wird festgelegt welcher Primarykey angesprochen werden soll
-    :param neu_Raum:die neue Value für Raum
-    :param neu_Ort:die neue Value für Ort
-    :returns geänderter Wert:
+        If Statement schaut nach, was genau geändert werden soll, if not zum absichern damit keine sachen auf NUll gesetzt werden
+        Query zum updaten von zu updaten
+
+        :param str raum: hier wird festgelegt welcher Primarykey angesprochen werden soll
+        :param str neu_raum: die neue Value für Raum
+        :param neu_ort: die neue Value für Ort
+
+        :returns geänderter Wert:
     """
     try:
         with init_connection() as con:
@@ -504,18 +558,18 @@ def update_room(Raum, neu_Raum, neu_Ort):
             update_fields = []
             parameters = []
 
-            if neu_Raum:
+            if neu_raum:
                 update_fields.append("Raum = ?")
-                parameters.append(neu_Raum)
-            if neu_Ort:
+                parameters.append(neu_raum)
+            if neu_ort:
                 update_fields.append("Ort = ?")
-                parameters.append(neu_Ort)
+                parameters.append(neu_ort)
 
             if not update_fields:
                 return "Keine Aktualisierungsdaten vorhanden."
 
             sql_query = f"UPDATE Room_Info SET {', '.join(update_fields)} WHERE Raum = ?"
-            parameters.append(Raum)
+            parameters.append(raum)
             cur.execute(sql_query, parameters)
             con.commit()
             return "Raum erfolgreich aktualisiert."
@@ -523,15 +577,18 @@ def update_room(Raum, neu_Raum, neu_Ort):
         return f"Fehler beim Aktualisieren des Raumes: {e}"
 
 
-def delete_room(Raum):
+def delete_room(raum:str)->str:
     """
-    Funktion zum entfernen von Räumen, bitte nur verwenden wenn nötig.
-    :param Raum:
+        Funktion zum entfernen von Räumen, bitte nur verwenden wenn nötig.
+
+        :param str raum:
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
-            cur.execute("DELETE FROM Room_Info WHERE Raum = ?", (Raum,))
+            cur.execute("DELETE FROM Room_Info WHERE Raum = ?", (raum,))
             con.commit()
             return "Raum erfolgreich gelöscht."
     except sqlite3.Error as e:
@@ -542,25 +599,27 @@ def delete_room(Raum):
 # A V A T A R _ I N F O R M A T I O N - E N D P U N K T E #
 ###########################################################
 
-def upsert_avatar(Nutzername, Avatar_link):
+def upsert_avatar(nutzername:str, avatar_link:str) -> str:
     """
-    Erstellt ein neues Avatar in der Datenbank.
-    Wenn bereits ein Avatar mit dem gleichen Nutzername existiert,
-    wird dieser gelöscht und durch den neuen Avatar ersetzt.
+        Erstellt ein neues Avatar in der Datenbank.
+        Wenn bereits ein Avatar mit dem gleichen Nutzername existiert,
+        wird dieser gelöscht und durch den neuen Avatar ersetzt.
 
-    :param Nutzername: Der Name des Nutzers.
-    :param Avatar_link: Der Link zum Avatar des Nutzers.
+        :param str nutzername: Der Name des Nutzers.
+        :param str avatar_link: Der Link zum Avatar des Nutzers.
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
 
             # Optional: Delete the old entry explicitly
-            cur.execute("DELETE FROM Avatar_information WHERE Nutzername = ?", (Nutzername,))
+            cur.execute("DELETE FROM Avatar_information WHERE Nutzername = ?", (nutzername,))
 
             # Insert the new entry (this automatically replaces any existing entry)
             cur.execute("INSERT INTO Avatar_information (Nutzername, Avatar_link) VALUES (?, ?)",
-                        (Nutzername, Avatar_link))
+                        (nutzername, avatar_link))
 
             con.commit()
             return "Avatar erfolgreich erstellt."
@@ -568,19 +627,19 @@ def upsert_avatar(Nutzername, Avatar_link):
         return f"Fehler beim erstellen des Avatars: {e}"
 
 
-def get_avatar_info(Nutzername):
+def get_avatar_info(nutzername:str) -> dict[str, str]|None:
     """
-    Holt die Avatar-Informationen für eine gegebene Avatar_id aus der Tabelle `Avatar_Informationen`.
+        Holt die Avatar-Informationen für eine gegebene Avatar_id aus der Tabelle `Avatar_Informationen`.
 
-    :param Avatar_id: Die ID des Avatars, dessen Informationen abgerufen werden sollen.
-    :return: Ein Dictionary mit den Avatar-Daten oder eine Fehlermeldung, falls keine Daten gefunden wurden.
+        :param str nutzername:
+        :return: Ein Dictionary mit den Avatar-Daten oder eine Fehlermeldung, falls keine Daten gefunden wurden.
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
 
             # SQL-Abfrage, um Avatar-Informationen zu erhalten
-            cur.execute("SELECT Nutzername, Avatar_link FROM Avatar_information WHERE Nutzername = ?", (Nutzername,))
+            cur.execute("SELECT Nutzername, Avatar_link FROM Avatar_information WHERE Nutzername = ?", (nutzername,))
 
             # Einzeln abgerufene Zeile
             row = cur.fetchone()
@@ -591,5 +650,5 @@ def get_avatar_info(Nutzername):
             else:
                 # Falls keine Zeile gefunden wird
                 return None
-    except sqlite3.Error as e:
+    except sqlite3.Error:
         return None

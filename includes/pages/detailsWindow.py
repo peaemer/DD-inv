@@ -270,7 +270,7 @@ class detailsWindow(tk.Frame):
             else:
                 damage = self.damaged_entry_details_window.get()
             print(damage)
-            print(db.update_hardware_by_ID(cache.selected_ID, neue_beschaedigung=damage, neue_Standort=room, neue_Modell=name, neue_Geraetetyp=type))
+            print(db.update_hardware_by_id(cache.selected_ID, neue_beschaedigung=damage, neue_standort=room, neue_modell=name, neue_geraetetyp=type))
             from .mainPage import mainPage
             mainPage.update_sidetree_with_data()
             controller.show_frame(mainPage)
@@ -311,7 +311,7 @@ class detailsWindow(tk.Frame):
                                den Zustand der Anwendung verwaltet.
             :type controller: beliebiger Typ
             """
-            db.update_hardware_by_ID(cache.selected_ID, neue_Ausgeliehen_von=" ")
+            db.update_hardware_by_id(cache.selected_ID, neue_ausgeliehen_von=" ")
             from .mainPage import mainPage
             mainPage.update_treeview_with_data()
             controller.show_frame(mainPage)
