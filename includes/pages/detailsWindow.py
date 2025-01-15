@@ -247,6 +247,13 @@ class detailsWindow(tk.Frame):
                                                              corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
         self.damaged_entry_details_window.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
+        pierre_label = tk.Label(input_frame_details_window,
+                               text="@Pierre",
+                               background="white",
+                               fg="darkred",
+                               font=("Arial", 14))
+        pierre_label.grid(row=5, column=0, columnspan=2, padx=0, pady=20, sticky="ew")
+
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
             """
