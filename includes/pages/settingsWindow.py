@@ -58,7 +58,7 @@ def pop_up_settings(parent, controller):
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
-    popup.resizable(True, True)  # Fenstergroeße anpassbar
+    popup.resizable(False, False)  # Fenstergroeße anpassbar
     from ._avatarManager import resource_path
     popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))  # Fenster-Icon
 
@@ -81,12 +81,12 @@ def pop_up_settings(parent, controller):
                 header_label.image = new_icon  # Verhindert, dass das Bild von der Garbage Collection gelöscht wird.
 
     # Header-Bereich erstellen
-    header_frame_settings = tk.Frame(popup)
-    header_frame_settings.grid(row=0, column=0, columnspan=2, sticky="nesw")
+    header_frame_settings = tk.Frame(popup, background=srhGrey)
+    header_frame_settings.grid(row=0, column=1, columnspan=1, sticky="new")
 
     # Konfiguration für Header
-    header_frame_settings.grid_columnconfigure(1, weight=1)
-    header_frame_settings.grid_rowconfigure(1, weight=1)
+    header_frame_settings.grid_columnconfigure(0, weight=1)
+    header_frame_settings.grid_rowconfigure(0, weight=1)
 
     # Icons laden
     default_icon = tk.PhotoImage(file=resource_path("./includes/assets/ProfileSettingsIcon.png"))
@@ -97,11 +97,11 @@ def pop_up_settings(parent, controller):
 
     # Standard-Header-Icon
     popup.optionsHead = default_icon
-    header_label = tk.Label(header_frame_settings, image=popup.optionsHead, foreground="white")
-    header_label.grid(row=1, column=0, padx=370, pady=10, sticky="nesw")
+    header_label = tk.Label(header_frame_settings, image=popup.optionsHead, foreground="white", background=srhGrey)
+    header_label.grid(row=1, column=0, padx=0, pady=10, sticky="nesw")
     # Seitenleiste
     side_settings = tk.Frame(popup, width=200, bg=srhOrange)
-    side_settings.grid(row=0, column=0, rowspan=2, sticky="nesw")
+    side_settings.grid(row=0, column=0, rowspan=2, sticky="nsw")
     side_settings.grid_columnconfigure(0, weight=1)
 
     # SRH Logo in der Seitenleiste
@@ -116,17 +116,19 @@ def pop_up_settings(parent, controller):
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_profile = tk.Frame(popup, bg="white")
-    frame_profile.grid(row=1, column=1, rowspan=2, columnspan=1, sticky="nesw")
+    frame_profile.grid(row=1, column=1, sticky="nsew")
+    frame_profile.grid_columnconfigure(0, weight=1)
+    frame_profile.grid_columnconfigure(1, weight=1)
 
     # Überschrift Dein Profil
     profile_btn_label = tk.Label(frame_profile,
                                  text="Dein Profil",
                                  font=SETTINGS_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=0, column=0, pady=10, columnspan=2, sticky="new")
+    profile_btn_label.grid(row=0, column=0, pady=0, columnspan=2, sticky="new")
 
     # Frame für das Profilbild
-    frame_within_picture = tk.Frame(frame_profile, padx=5, bg="white", highlightcolor="blue")
+    frame_within_picture = tk.Frame(frame_profile, padx=0, bg="white", highlightcolor="blue")
     frame_within_picture.grid(row=0, column=0, rowspan=1, sticky="nw")
 
     # Profilbild zum Laden importieren
@@ -139,7 +141,9 @@ def pop_up_settings(parent, controller):
                                  text="Eingeloggt als\n" + cache.user_name,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=3, column=0, pady=10, rowspan=2, sticky="nw")
+    profile_btn_label.grid(row=3, column=0, pady=10, rowspan=1, sticky="nw")
+
+
 
     frame_role = tk.Frame(frame_profile, padx=5, pady=30, bg="white", highlightcolor="blue")
     frame_role.grid(row=4, column=0, rowspan=1, sticky="nw")
@@ -152,16 +156,12 @@ def pop_up_settings(parent, controller):
                                  bg="white")
     profile_btn_label.grid(row=0, column=0, sticky="nw")
 
-    for role in db.read_all_rollen():
-        role2_btn_label = tk.Label(frame_role,
-                                   text=role["Rolle"],
-                                   font=SETTINGS_BTN_FONT,
-                                   bg="white",
-                                   fg="gray")
-        if cache.user_group == role["Rolle"]:
-            role2_btn_label.configure(fg="black")
-        role2_btn_label.grid(row=iR + 1, column=0, pady=0, sticky="nw")
-        iR += 1
+    role2_btn_label = tk.Label(frame_role,
+                               text=cache.user_group,
+                               font=SETTINGS_BTN_FONT,
+                               bg="white",
+                               fg="black")
+    role2_btn_label.grid(row=iR + 1, column=0, pady=0, sticky="nw")
 
     # PNG-Bild für Btn
     def load_button_images_profile():
@@ -250,21 +250,31 @@ def pop_up_settings(parent, controller):
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_system = tk.Frame(popup, bg="white")
-    frame_system.grid(row=1, column=1, rowspan=2, sticky="nesw")
+    frame_system.grid(row=1, column=1, rowspan=1, sticky="nsew")
+    frame_system.grid_columnconfigure(0, weight=1)
+    frame_system.grid_rowconfigure(0, weight=1)
+    frame_system.grid_rowconfigure(1, weight=1)
+    frame_system.grid_rowconfigure(2, weight=1)
+    frame_system.grid_rowconfigure(3, weight=1)
+    frame_system.grid_rowconfigure(4, weight=1)
+    frame_system.grid_rowconfigure(5, weight=1)
+    frame_system.grid_rowconfigure(6, weight=1)
+    frame_system.grid_rowconfigure(7, weight=1)
+
 
     # Überschrift System erstellen
     radiobutton_label = tk.Label(frame_system,
                                  text="System",
                                  font=SETTINGS_FONT,
                                  bg="white")
-    radiobutton_label.grid(row=0, column=0, pady=10, columnspan=2, sticky="new")
+    radiobutton_label.grid(row=0, column=0, pady=10, columnspan=1, sticky="new")
 
     # Überschrift Auflösung ändern
     button_bg_label = tk.Label(frame_system,
                                text="Auflösung anpassen",
                                font=SETTINGS_BTN_FONT,
                                bg="white")
-    button_bg_label.grid(row=1, column=0, pady=10, sticky="nw")
+    button_bg_label.grid(row=1, column=0, pady=10, sticky="new")
 
     def fenster_groesse_aendern(parent):
         breite = breite_entry.get()
@@ -471,7 +481,7 @@ def pop_up_settings(parent, controller):
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_ueber = tk.Frame(popup, bg="white")
-    frame_ueber.grid(row=1, column=1, rowspan=2, sticky="new")
+    frame_ueber.grid(row=1, column=1, rowspan=2, sticky="nsew")
 
     # Ueberschrift erstellen Über das DD-Inv Tool
     ueber_label = tk.Label(frame_ueber,
@@ -632,7 +642,9 @@ def pop_up_settings(parent, controller):
               "Über DD-Inv": frame_ueber}
 
     current_frame = frames["Profil"]  # Halte den aktuell sichtbaren Frame
-    current_frame.grid(row=1, column=1, rowspan=2, sticky="nw")
+    current_frame.grid(row=1, column=1, rowspan=1, columnspan=1, sticky="nsew")
+    current_frame.columnconfigure(0, weight=1)
+    current_frame.columnconfigure(1, weight=1)
 
     # Funktion zum Anzeigen des Frames
     def show_frame_settings(category):
@@ -644,7 +656,9 @@ def pop_up_settings(parent, controller):
             print("if current_frame")
         new_frame = frames.get(category)
         if new_frame:  # Wenn der neue Frame existiert
-            new_frame.grid(row=1, column=1, rowspan=2, sticky="nw")
+            new_frame.grid(row=1, column=1, rowspan=2, sticky="nsew")
+            new_frame.columnconfigure(0, weight=1)
+            new_frame.rowconfigure(0, weight=1)
             current_frame = new_frame
             print(f"Neuer aktueller Frame: {current_frame}")
 
