@@ -44,8 +44,8 @@ def customMessageBoxDelete(parent, controller, title, message, type):
     screen_height = parent.winfo_screenheight()
 
     # Fensterbreite und -höhe definieren
-    window_width = 450
-    window_height = 80
+    window_width = 460
+    window_height = 100
 
     # Berechne die Position, um das Fenster in der Mitte des Bildschirms zu platzieren
     center_x = int(screen_width / 2 - window_width / 2)

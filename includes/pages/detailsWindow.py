@@ -367,7 +367,7 @@ class detailsWindow(tk.Frame):
                                    title="Aktion Bestätigen",
                                    message="Willst du diesen Eintrag unwiderruflich löschen?",
                                    controller=controller,
-                                   type=InteractionTypes.DELETE_ITEM)
+                                   type="DELETE_ITEM")
 
 
 

@@ -77,8 +77,8 @@ class logInWindow(tk.Frame):
             else:
                 # Zeige Fehlermeldung bei falschem Login
                 customMessageBoxDelete(self,
-                                       title="Error",
-                                       message="Falsche Eingabe. Bitte versuchen Sie es erneut.",
+                                       title="Nutzername oder Passwort falsch",
+                                       message="Nutzername und Passwort stimmen nicht überein.\n Bitte versuchen Sie es erneut.",
                                        controller=controller,
                                        type="WRONG_LOGIN")
 
