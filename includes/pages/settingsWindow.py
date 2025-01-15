@@ -101,7 +101,7 @@ def pop_up_settings(parent, controller):
     # Standard-Header-Icon
     popup.optionsHead = default_icon
     header_label = tk.Label(header_frame_settings, image=popup.optionsHead, foreground="white", background=srhGrey)
-    header_label.grid(row=1, column=0, padx=0, pady=10, sticky="nesw")
+    header_label.grid(row=1, column=0, padx=0, pady=10, sticky="nsew")
     # Seitenleiste
     side_settings = tk.Frame(popup, width=200, bg=srhOrange)
     side_settings.grid(row=0, column=0, rowspan=2, sticky="nsw")
@@ -122,44 +122,42 @@ def pop_up_settings(parent, controller):
     frame_profile.grid(row=1, column=1, sticky="nsew")
     frame_profile.grid_columnconfigure(0, weight=1)
     frame_profile.grid_columnconfigure(1, weight=1)
-    frame_profile.grid_columnconfigure(2, weight=1)
 
     # Überschrift Dein Profil
     profile_btn_label = tk.Label(frame_profile,
                                  text="Dein Profil",
                                  font=SETTINGS_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=0, column=0, pady=0, columnspan=3, sticky="new")
+    profile_btn_label.grid(row=0, column=0, pady=0, columnspan=3, sticky="nsew")
 
     # Profilbild zum Laden importieren
     parent.avatar = cache.user_avatarx128
     parent.settings_img_label = tk.Label(frame_profile, image=parent.avatar)
-    parent.settings_img_label.grid(row=1, column=1, pady=0,rowspan=2, columnspan=1, sticky="nse")
+    parent.settings_img_label.grid(row=1, column=1, pady=0,rowspan=1, columnspan=1, sticky="new")
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
                                  text="Eingeloggt als\n" + cache.user_name,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=1, column=0, pady=10, rowspan=1, sticky="nw")
+    profile_btn_label.grid(row=1, column=0, pady=10, rowspan=1, sticky="nsew")
 
     frame_role = tk.Frame(frame_profile, padx=5, pady=10, bg="white", highlightcolor="blue")
-    frame_role.grid(row=2, column=0, rowspan=1, sticky="nw")
-    iR = 0
+    frame_role.grid(row=2, column=0)
 
     # Schriftzug Rechte in der Gruppe
     profile_btn_label = tk.Label(frame_role,
-                                 text="Rechte in der Gruppe",
+                                 text="In der Gruppe",
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=0, column=0, sticky="nw")
+    profile_btn_label.grid(row=0, column=0)
 
     role2_btn_label = tk.Label(frame_role,
                                text=cache.user_group,
                                font=SETTINGS_BTN_FONT,
                                bg="white",
                                fg="black")
-    role2_btn_label.grid(row=iR + 1, column=0, pady=0, sticky="nw")
+    role2_btn_label.grid(row=1, column=0, pady=0, sticky="new")
 
     # PNG-Bild für Btn
     def load_button_images_profile():
@@ -183,11 +181,11 @@ def pop_up_settings(parent, controller):
                                        text="Profilbild-URL eingeben",
                                        font=SETTINGS_BTN_FONT,
                                        bg="white")
-    profile_image_url_label.grid(row=1, column=2, pady=10, sticky="ne")
+    profile_image_url_label.grid(row=2, column=1, pady=10, sticky="new")
 
     profile_image_url = ctk.CTkEntry(frame_profile, border_width=border, corner_radius=corner, text_color="black",
                                      fg_color=srhGrey)
-    profile_image_url.grid(row=2, column=2, pady=40, sticky="nsew")
+    profile_image_url.grid(row=3, column=1, pady=40, sticky="new")
 
     # Importieren der Funktion URL
     from ._avatarManager import loadImage
@@ -213,7 +211,7 @@ def pop_up_settings(parent, controller):
                                     borderwidth=0,
                                     cursor="hand2",
                                     command=lambda: setAvatar())
-    update_image_button.grid(row=3, column=1, pady=10, sticky="ne")
+    update_image_button.grid(row=4, column=1, pady=10, sticky="new")
 
     # def zum Abmelden des Benutzers
     def log_out(controller):
@@ -240,7 +238,7 @@ def pop_up_settings(parent, controller):
                                   cursor="hand2",
                                   image=parent.btn_image_logout,
                                   borderwidth=0)
-    profile_btn_label.grid(row=4, column=1, pady=10, sticky="ne")
+    profile_btn_label.grid(row=5, column=1, pady=10, sticky="new")
 
     #################################
     # # L A Y O U T : S Y S T E M # #
