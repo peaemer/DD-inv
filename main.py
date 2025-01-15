@@ -3,6 +3,7 @@ import threading
 from tkinter import mainloop
 import customtkinter as ctk
 import includes
+from includes.pages.Searchbar.Logging import Logger
 from includes.pages._styles import *
 
 from includes.pages import (logInWindow,
@@ -15,6 +16,7 @@ from includes.pages import (logInWindow,
                             adminUserWindow,
                             adminRoleWindow)
 
+logger:Logger = Logger('main')
 
 class ddINV(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -36,7 +38,7 @@ class ddINV(tk.Tk):
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 
-        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: MainFrame successfully created") # Debug
+        logger.debug("MainFrame successfully created") # Debug
 
         self.frames = {}
 
@@ -45,7 +47,7 @@ class ddINV(tk.Tk):
 
     def show_frame(self, cont):
         if cont not in self.frames:
-            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: {cont.__name__} is being dynamically created.") # Debug
+            logger.debug(f"{cont.__name__} is being dynamically created.") # Debug
             frame = cont(self.container, self)  # Frame erstellen
             self.frames[cont] = frame  # Zu Frames hinzufügen
             frame.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
@@ -56,7 +58,7 @@ class ddINV(tk.Tk):
             frame.tkraise()  # Frame sichtbar machen
 
             if hasattr(frame, 'on_load') and callable(frame.on_load):
-                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: on_load is being called for {cont.__name__}")  # Debug
+                logger.debug(f"on_load is being called for {cont.__name__}")  # Debug
                 frame.on_load()
 
 if __name__ == "__main__":

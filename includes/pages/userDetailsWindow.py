@@ -4,6 +4,7 @@ from tkinter import *
 from ._avatarManager import resource_path
 import random, string
 from .customMessageBoxDelete import *
+from.Searchbar.Logging import Logger
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -13,7 +14,7 @@ srhGrey = "#d9d9d9"
 def show_user_details(selected_user, tree, controller):
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_user, "values")
-    print(f"Data of the selected item: {data}")
+    Logger('UserDetailsWindow').debug(f"Data of the selected item: {data}")
     cache.selected_ID = data[1]
     controller.show_frame(userDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen

@@ -2,13 +2,14 @@ import tkinter as tk
 from doctest import master
 from tkinter import ttk
 from tkinter import *
-from includes.sec_data_info import sqlite3api as db
+from .Searchbar.Logging import Logger
 import cache
 from ._styles import *
 import customtkinter as ctk
 from ..CTkScrollableDropdown import *
 from .customMessageBoxDelete import *
 
+logger:Logger = Logger('DetailsWindow')
 
 def show_details(selectedItem, tree, controller):
     """
@@ -23,7 +24,7 @@ def show_details(selectedItem, tree, controller):
     """
     # Daten aus der ausgewählten Zeile
     data = tree.item(selectedItem, "values")
-    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Data of the selected item: {data}")  # Debug
+    logger.debug(f"Data of the selected item: {data}")  # Debug
     cache.selected_ID = data[0]
 
     controller.show_frame(detailsWindow)  # Zeige die Details-Seite
@@ -93,7 +94,7 @@ class detailsWindow(tk.Frame):
             show_settings_window_details_window()
                 Öffnet das Einstellungs-Pop-Up-Fenster im Detailfenster.
             """
-            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Show settings window details window")
+            logger.debug("Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -269,8 +270,8 @@ class detailsWindow(tk.Frame):
                 damage = "None"
             else:
                 damage = self.damaged_entry_details_window.get()
-            print(damage)
-            print(db.update_hardware_by_id(cache.selected_ID, neue_beschaedigung=damage, neue_standort=room, neue_modell=name, neue_geraetetyp=type))
+            logger.debug(f"damage:{damage}")
+            logger.debug(f"db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID, neue_beschaedigung=damage, neue_standort=room, neue_modell=name, neue_geraetetyp=type)}")
             from .mainPage import mainPage
             mainPage.update_sidetree_with_data()
             controller.show_frame(mainPage)
@@ -291,7 +292,7 @@ class detailsWindow(tk.Frame):
                                den Zustand der Anwendung verwaltet.
             :type controller: beliebiger Typ
             """
-            print("Übergebene Daten:", data)
+            logger.debug(f"Übergebene Daten: {data}")
             from .lendPopup import lend_popup
             lend_popup(self, data, controller)
 

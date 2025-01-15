@@ -16,7 +16,7 @@ from customtkinter.windows.widgets.ctk_textbox import CTkTextbox
 import json
 from .ctk_listbox import *
 
-
+logger:Logger = Logger('MainPage')
 
 # Hauptseite (zweites Fenster)
 class mainPage(tk.Frame):
@@ -130,7 +130,7 @@ class mainPage(tk.Frame):
             """
             from .addItemPopup import add_item_popup
             add_item_popup(self)
-            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: add_item executed")  # Debug
+            logger.debug("add_item executed")  # Debug
 
         global tree
 
@@ -261,7 +261,7 @@ class mainPage(tk.Frame):
                           Informationen über das Größenänderungsereignis enthält.
             :type event: tk.Event
             """
-            print(f"New size - Width: {event.x} Height: {event.y}") #Debug
+            logger.debug(f"New size - Width: {event.x} Height: {event.y}") #Debug
         #print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}:", show_size) # Debug
 
         dropdown_overlay_frame: tk.Frame = tk.Frame(middle_frame, background="white")
@@ -375,12 +375,12 @@ class mainPage(tk.Frame):
 
             try:
                 selected_item = tree.focus()
-                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Selected Item: {selected_item}")
+                logger.debug(f"Selected Item: {selected_item}")
                 if selected_item:
                     from .detailsWindow import detailsWindow, show_details
                     show_details(selected_item, tree, controller)
             except Exception as e:
-                print(f"Error during selection: {e}") #Debug
+                logger.debug(f"Error during selection: {e}") #Debug
 
 
         def on_side_tree_select(event):
@@ -424,7 +424,7 @@ class mainPage(tk.Frame):
             selected_item = side_tree.selection()
             if selected_item:
                 selected_text = side_tree.item(selected_item, 'text')
-                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: ", selected_text)
+                logger.debug(selected_text)
                 if selected_text == "Alle Räume":
                     # Alle Daten in der Haupttabelle anzeigen
                     self.update_treeview_with_data()
@@ -449,7 +449,7 @@ class mainPage(tk.Frame):
         tree.bind("<Double-1>", on_item_selected)
 
     def update_sidetree_with_data(self = None, rooms = None):
-        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: update_sidetree_with_data aufgerufen.") # Debug
+        logger.debug("update_sidetree_with_data aufgerufen.") # Debug
         side_tree.delete(*side_tree.get_children())
         side_tree.insert("", tk.END, text="Alle Räume")
         if rooms is None:
@@ -540,7 +540,7 @@ class mainPage(tk.Frame):
         else:
             self.add_button.grid_forget()
         if cache.user_group_data['ADMIN_FEATURE'] == "True":
-            print("DEBUG: Admin")
+            logger.debug("Admin")
             # Überprüfe, ob der Admin-Button bereits existiert
             if not hasattr(self, "admin_button"):
                 # Erstelle den Admin-Button, wenn er noch nicht existiert
@@ -559,7 +559,7 @@ class mainPage(tk.Frame):
         else:
             # Entferne den Admin-Button, falls er existiert
             if hasattr(self, "admin_button"):
-                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Removed Admin window") #Debug
+                logger.debug("Removed Admin window") #Debug
                 self.admin_button.grid_remove()
 
         self.update_treeview_with_data()
