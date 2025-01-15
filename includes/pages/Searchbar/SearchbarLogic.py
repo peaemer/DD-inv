@@ -293,5 +293,5 @@ def on_dropdown_select(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, username
     try:
         searchbar.insert('end', selected_button_text)
     except Exception as e:
-        print(f"""[EXCEPTION]failed to add text to searchbar menu because of {e}""")
+        logger.error(f"""[EXCEPTION]failed to add text to searchbar menu because of {e}""")
     logger.debug(f"finished on dropdown select")

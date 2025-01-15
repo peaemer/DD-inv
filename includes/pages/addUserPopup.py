@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import customtkinter as ctk
+
+from .Searchbar.Logging import Logger
 from ..CTkScrollableDropdown import *
 from includes.sec_data_info import sqlite3api as db
 import string, random
@@ -27,6 +29,8 @@ def add_user_popup(parent):
     screen_width = parent.winfo_screenwidth()
     screen_height = parent.winfo_screenheight()
 
+    logger:Logger = Logger('AddUserPopup')
+
     window_width = 650
     window_height = 650
 
@@ -40,7 +44,7 @@ def add_user_popup(parent):
         from ._avatarManager import resource_path
         add_popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
     except Exception as e:
-        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fehler beim Laden des Icons: {e}")
+        logger.error(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fehler beim Laden des Icons: {e}")
 
     # Header
     header_frame_add_item_popup = tk.Frame(add_popup, background="#00699a")

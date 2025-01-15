@@ -1,4 +1,6 @@
 import tkinter as tk
+
+from .Searchbar.Logging import Logger
 from ._styles import *
 import customtkinter as ctk
 from ..CTkScrollableDropdown import *
@@ -47,12 +49,14 @@ def add_item_popup(parent):
     add_popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
     add_popup.resizable(False, False)
 
+    logger:Logger = Logger('addItemPopup')
+
     # Icon setzen (optional)
     try:
         from ._avatarManager import resource_path
         add_popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
     except Exception as e:
-        print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fehler beim Laden des Icons: {e}")
+        logger.debug(f"Fehler beim Laden des Icons: {e}")
 
     # Erstelle einen Header-Bereich
     header_frame_add_item_popup = tk.Frame(add_popup, height=10, background="#DF4807")
@@ -192,7 +196,7 @@ def add_item_popup(parent):
         if type == "" or room == "Raum auswählen" or name == "":
             error_label.configure(text="Bitte fülle alle Felder aus (Typ, Raum, Name)")
         else:
-            print(db.create_hardware(tag,type,name,damage,None,room))
+            logger.debug(db.create_hardware(tag,type,name,damage,None,room))
             from .mainPage import mainPage
             mainPage.update_treeview_with_data(data=None)
             mainPage.update_sidetree_with_data()

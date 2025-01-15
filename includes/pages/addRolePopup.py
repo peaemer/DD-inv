@@ -1,6 +1,8 @@
 import tkinter as tk
 import customtkinter as ctk
 from tkinter import ttk, messagebox
+
+from includes.pages.Searchbar.Logging import Logger
 from includes.sec_data_info import sqlite3api as db
 import string, random
 from ._styles import *
@@ -39,7 +41,7 @@ def add_role_popup(parent):
     try:
         add_popup.iconbitmap("includes/assets/srhIcon.ico")
     except Exception as e:
-        print(f"Fehler beim Laden des Icons: {e}")
+        Logger('AddRolePopup').error(f"Fehler beim Laden des Icons: {e}")
 
     # Header
     header_frame_add_role_popup = tk.Frame(add_popup, background="#DF4807")

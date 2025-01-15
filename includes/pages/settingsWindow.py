@@ -3,10 +3,13 @@ import webbrowser
 from tkinter import ttk
 from tkinter import filedialog
 import customtkinter as ctk
+
+from .Searchbar.Logging import Logger
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
 import cache
 
+logger:Logger = Logger('SettingsWindow')
 
 #########################
 # H A U P T L A Y O U T #
@@ -509,7 +512,7 @@ def pop_up_settings(parent, controller):
         if url:
             webbrowser.open_new_tab(url)
         else:
-            print("Fehler beim Laden der URL")
+            logger.error("Fehler beim Laden der URL")
 
     # Eine Liste, um alle Bilder zu speichern, damit sie im Speicher bleiben
     parent.images_credits = []
@@ -532,7 +535,7 @@ def pop_up_settings(parent, controller):
             btn_label.grid(row=index, column=0, pady=2, padx=15, sticky="new")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
-            print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
+            logger.error('test')
 
     # Unterueberschrift Tools
     build_label = tk.Label(frame_ueber,
@@ -563,7 +566,7 @@ def pop_up_settings(parent, controller):
             btn_label.grid(row=index, column=1, pady=2, padx=40, sticky="new")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
-            print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
+            logger.error(f"Fehler beim Laden des Bildes {button['image']}: {e}")
 
     # Unterueberschrift Unterstzütze Uns
     build_label = tk.Label(frame_ueber,
@@ -592,7 +595,7 @@ def pop_up_settings(parent, controller):
             btn_label.grid(row=index, column=2, pady=2, padx=15, sticky="new")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
-            print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
+            logger.error(f"Fehler beim Laden des Bildes {button['image']}: {e}")
 
     # Unterueberschrift Info
     build_label = tk.Label(frame_ueber,
@@ -621,7 +624,7 @@ def pop_up_settings(parent, controller):
             btn_label.grid(row=index, column=2, pady=2, padx=40, sticky="new")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
-            print(f"Fehler beim Laden des Bildes {button['image']}: {e}")
+            logger.error(f"Fehler beim Laden des Bildes {button['image']}: {e}")
 
     ###############################
     # # F R A M E : S W I T C H # #
@@ -648,19 +651,19 @@ def pop_up_settings(parent, controller):
 
     # Funktion zum Anzeigen des Frames
     def show_frame_settings(category):
-        print(f"Aktuell sichtbarer Frame vor Verstecken: {frames}")
+        logger.debug(f"Aktuell sichtbarer Frame vor Verstecken: {frames}")
         nonlocal current_frame  # Zugriff auf die äußere Variable
-        print(current_frame)
+        logger.debug(f"current_frame:{current_frame}")
         if current_frame:  # Falls bereits ein Frame angezeigt wird
             current_frame.grid_remove()  # Verstecke den aktuellen Frame
-            print("if current_frame")
+            logger.debug(f"frame:{current_frame}")
         new_frame = frames.get(category)
         if new_frame:  # Wenn der neue Frame existiert
             new_frame.grid(row=1, column=1, rowspan=2, sticky="nsew")
             new_frame.columnconfigure(0, weight=1)
             new_frame.rowconfigure(0, weight=1)
             current_frame = new_frame
-            print(f"Neuer aktueller Frame: {current_frame}")
+            logger.debug(f"Neuer aktueller Frame: {current_frame}")
 
     # Funktion für Klick auf Kategorie
     def on_category_click_settings(label_settings, category_settings):
@@ -668,7 +671,7 @@ def pop_up_settings(parent, controller):
         # Setze alle Labels zurück
         for cat in category_labels_settings:
             cat.config(fg="white")
-            print("if on_category_click")
+            logger.debug("if on_category_click")
         # Hervorhebung des angeklickten Labels
         label_settings.config(fg="Black")
         # Zeige den zugehörigen Frame

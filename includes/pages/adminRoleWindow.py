@@ -406,8 +406,7 @@ class adminRoleWindow(tk.Frame):
                     from .rolesDetailsWindow import rolesDetailsWindow, show_roles_details
                     show_roles_details(selected_user, role_tree, controller)
             except Exception as e:
-
-                print(f"Error during selection: {e}") # Debug
+                logger.error(f"Error during selection: {e}") # Debug
 
         # Binde die Ereignisfunktion an die Treeview
         role_tree.bind("<Double-1>", on_item_selected)
