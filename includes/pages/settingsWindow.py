@@ -119,34 +119,29 @@ def pop_up_settings(parent, controller):
     frame_profile.grid(row=1, column=1, sticky="nsew")
     frame_profile.grid_columnconfigure(0, weight=1)
     frame_profile.grid_columnconfigure(1, weight=1)
+    frame_profile.grid_columnconfigure(2, weight=1)
 
     # Überschrift Dein Profil
     profile_btn_label = tk.Label(frame_profile,
                                  text="Dein Profil",
                                  font=SETTINGS_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=0, column=0, pady=0, columnspan=2, sticky="new")
-
-    # Frame für das Profilbild
-    frame_within_picture = tk.Frame(frame_profile, padx=0, bg="white", highlightcolor="blue")
-    frame_within_picture.grid(row=0, column=0, rowspan=1, sticky="nw")
+    profile_btn_label.grid(row=0, column=0, pady=0, columnspan=3, sticky="new")
 
     # Profilbild zum Laden importieren
     parent.avatar = cache.user_avatarx128
     parent.settings_img_label = tk.Label(frame_profile, image=parent.avatar)
-    parent.settings_img_label.grid()
+    parent.settings_img_label.grid(row=1, column=1, pady=0,rowspan=2, columnspan=1, sticky="nse")
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
                                  text="Eingeloggt als\n" + cache.user_name,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=3, column=0, pady=10, rowspan=1, sticky="nw")
+    profile_btn_label.grid(row=1, column=0, pady=10, rowspan=1, sticky="nw")
 
-
-
-    frame_role = tk.Frame(frame_profile, padx=5, pady=30, bg="white", highlightcolor="blue")
-    frame_role.grid(row=4, column=0, rowspan=1, sticky="nw")
+    frame_role = tk.Frame(frame_profile, padx=5, pady=10, bg="white", highlightcolor="blue")
+    frame_role.grid(row=2, column=0, rowspan=1, sticky="nw")
     iR = 0
 
     # Schriftzug Rechte in der Gruppe
@@ -185,11 +180,11 @@ def pop_up_settings(parent, controller):
                                        text="Profilbild-URL eingeben",
                                        font=SETTINGS_BTN_FONT,
                                        bg="white")
-    profile_image_url_label.grid(row=1, column=1, pady=10, sticky="ne")
+    profile_image_url_label.grid(row=1, column=2, pady=10, sticky="ne")
 
-    profile_image_url = ctk.CTkEntry(frame_profile, border_width=0, corner_radius=20, text_color="black",
+    profile_image_url = ctk.CTkEntry(frame_profile, border_width=border, corner_radius=corner, text_color="black",
                                      fg_color=srhGrey)
-    profile_image_url.grid(row=1, column=1, pady=40, sticky="ne")
+    profile_image_url.grid(row=2, column=2, pady=40, sticky="nsew")
 
     # Importieren der Funktion URL
     from ._avatarManager import loadImage
@@ -267,7 +262,7 @@ def pop_up_settings(parent, controller):
                                  text="System",
                                  font=SETTINGS_FONT,
                                  bg="white")
-    radiobutton_label.grid(row=0, column=0, pady=10, columnspan=1, sticky="new")
+    radiobutton_label.grid(row=0, column=0, pady=0, columnspan=1, sticky="new")
 
     # Überschrift Auflösung ändern
     button_bg_label = tk.Label(frame_system,
@@ -481,14 +476,19 @@ def pop_up_settings(parent, controller):
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
     frame_ueber = tk.Frame(popup, bg="white")
-    frame_ueber.grid(row=1, column=1, rowspan=2, sticky="nsew")
+    frame_ueber.grid(row=1, column=1, rowspan=1, sticky="nsew")
+    frame_ueber.grid_columnconfigure(0, weight=1)
+    frame_ueber.grid_columnconfigure(1, weight=1)
+    frame_ueber.grid_columnconfigure(2, weight=1)
+    frame_ueber.grid_rowconfigure(0, weight=1)
+
 
     # Ueberschrift erstellen Über das DD-Inv Tool
     ueber_label = tk.Label(frame_ueber,
                            text="Über das DD-Inv Tool",
                            font=SETTINGS_FONT,
                            bg="white")
-    ueber_label.grid(row=0, column=0, pady=1, columnspan=2, sticky="new")
+    ueber_label.grid(row=0, column=0, pady=0, columnspan=3, sticky="new")
 
     # Unterüberschrift erstellen Credits
     Credits_label = tk.Label(frame_ueber,
