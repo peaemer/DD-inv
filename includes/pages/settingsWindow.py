@@ -84,7 +84,7 @@ def pop_up_settings(parent, controller):
                     header_label.image = new_icon  # Verhindert, dass das Bild von der Garbage Collection gelöscht wird.
 
         except Exception as e:
-            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error when loading or changing the icon in the heading area. {e}")
+            logger.error(f"Error when loading or changing the icon in the heading area. {button['image']}: {e}")
 
     # Header-Bereich erstellen
     header_frame_settings = tk.Frame(popup, background=srhGrey)
@@ -115,8 +115,8 @@ def pop_up_settings(parent, controller):
     srh_logo_label = tk.Label(side_settings, image=popup.srh_logo, bg=srhOrange)
     srh_logo_label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
-    #DEBUG PRINT
-    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Complete loading of the 'Main' settings page.")
+    #LOGGER PRINT
+    logger.debug(f"Complete loading of the 'Main' settings page. {['image']}")
 
     ###################################
     # # L A Y O U T : P R O F I L E # #
@@ -145,28 +145,21 @@ def pop_up_settings(parent, controller):
                                  text="Eingeloggt als\n" + cache.user_name,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=3, column=0, pady=10, rowspan=1, sticky="nw")
-
-    frame_role = tk.Frame(frame_profile,
-                          padx=5,
-                          pady=10,
-                          bg="white",
-                          highlightcolor="blue")
-    frame_role.grid(row=4, column=0, rowspan=1, sticky="nw")
+    profile_btn_label.grid(row=3, column=0, pady=5, rowspan=1, sticky="new")
 
     # Schriftzug Rechte in der Gruppe
-    profile_btn_label = tk.Label(frame_role,
-                                 text="Rechte in der Gruppe",
+    profile_btn_label = tk.Label(frame_profile,
+                                 text="Rechte des Users",
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=3, column=3, sticky="nw")
+    profile_btn_label.grid(row=4, column=0, pady=5, sticky="new")
 
-    role2_btn_label = tk.Label(frame_role,
+    role2_btn_label = tk.Label(frame_profile,
                                text=cache.user_group,
                                font=SETTINGS_BTN_FONT,
                                bg="white",
                                fg="black")
-    role2_btn_label.grid(row= 4, column=3, pady=0, sticky="nw")
+    role2_btn_label.grid(row= 5, column=0, pady=5, sticky="new")
 
     # PNG-Bild für Btn
     def load_button_images_profile():
@@ -217,7 +210,9 @@ def pop_up_settings(parent, controller):
             mainPage.update_profile_picture()
 
         except Exception as e:
-            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error while applying the profile picture.  {e}")
+            logger.error(f"Error while applying the profile picture. {button['image']}: {e}")
+            info_label.config(text="Bitte eine valide URL oder Base64 eingeben.")
+            info_label.config(text="Eingabe ungültig.")
 
     # Button zum Aktualisieren des Profilbilds
     update_image_button = tk.Button(frame_profile,
@@ -273,7 +268,9 @@ def pop_up_settings(parent, controller):
                                   image=parent.btn_image_logout,
                                   borderwidth=0)
     profile_btn_label.grid(row=6, column=1, pady=10, sticky="new")
-    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Complete loading of the 'Profile' settings page.")
+
+    #LOGGER PRINT
+    logger.debug(f"Complete loading of the 'Profile' settings page. {['image']}")
 
     #################################
     # # L A Y O U T : S Y S T E M # #
@@ -345,7 +342,8 @@ def pop_up_settings(parent, controller):
     info_label = tk.Label(frame_system, text="", background="white")
     info_label.grid(row=7, pady=10)
 
-    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Complete loading of the 'System' settings page.")
+    #LOGGER PRINT
+    logger.debug(f"Complete loading of the 'System' settings page. {['image']}")
 
     ###############################
     # # L A Y O U T : U E B E R # #
@@ -358,7 +356,6 @@ def pop_up_settings(parent, controller):
     frame_ueber.grid_columnconfigure(1, weight=1)
     frame_ueber.grid_columnconfigure(2, weight=1)
     frame_ueber.grid_rowconfigure(0, weight=1)
-
 
     # Ueberschrift erstellen Über das DD-Inv Tool
     ueber_label = tk.Label(frame_ueber,
@@ -502,7 +499,10 @@ def pop_up_settings(parent, controller):
                            lambda e,
                            url=button["url"]: open_url(url))
         except Exception as e:
-            logger.error(f"Fehler beim Laden des Bildes {button['image']}: {e}")
+            logger.error(f"Error loading the image. {button['image']}: {e}")
+
+    # LOGGER PRINT
+    logger.debug(f"Complete loading of the 'About-Us' settings page. {['image']}")
 
     ###############################
     # # F R A M E : S W I T C H # #
@@ -577,4 +577,5 @@ def pop_up_settings(parent, controller):
         if key != "Profil":  # Verstecke nur die anderen Frames
             frame.grid_remove()
 
-    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fully load the switch to switch between the settings pages.")
+    #LOGGER PRINT
+    logger.debug(f"Fully load the switch to switch between the settings pages. {['image']}")
