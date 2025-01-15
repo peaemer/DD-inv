@@ -134,7 +134,7 @@ class roomDetailsWindow(tk.Frame):
         # Konfiguration der Container-Spalten
         container_frame.grid_columnconfigure(0, weight=1)
 
-        size_details_window = 30
+        size_details_window = 28
 
         # Input-Frame
         input_frame_details_window = tk.Frame(container_frame, background="white")
@@ -148,8 +148,8 @@ class roomDetailsWindow(tk.Frame):
                             font=("Arial", size_details_window), background="white")
         room_num.grid(column=0, row=0, sticky=tk.EW, padx=20, pady=10)
 
-        self.room_num_entry = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                       background=srhGrey, relief=tk.SOLID)
+        self.room_num_entry = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
+                                       fg_color=srhGrey,text_color="black",corner_radius=corner, border_width=border)
         self.room_num_entry.grid(column=1, row=0, sticky=tk.EW, padx=20, pady=10)
 
         # Ort
@@ -157,8 +157,8 @@ class roomDetailsWindow(tk.Frame):
                                               font=("Arial", size_details_window), background="white")
         place_label_details_window.grid(column=0, row=2, sticky=tk.EW, padx=20, pady=10)
 
-        self.place_entry = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                                    background=srhGrey, relief=tk.SOLID)
+        self.place_entry = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
+                                    fg_color=srhGrey,text_color="black",corner_radius=corner, border_width=border)
         self.place_entry.grid(column=1, row=2, sticky=tk.EW, padx=20, pady=10)
 
 
