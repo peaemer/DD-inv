@@ -8,6 +8,7 @@ from customtkinter import CTkEntry
 from includes.sec_data_info import sqlite3api as sqlapi
 from .Searchbar import SearchbarLogic as sb
 from .Searchbar.Searchbar2 import Searchbar2
+from .Searchbar.Logging import Logger
 import cache
 from ._styles import *
 import customtkinter as ctk
@@ -91,7 +92,7 @@ class mainPage(tk.Frame):
             cache.user_name = ""
             controller.show_frame(logInWindow)
 
-        def search(search_term:str):                           # funktionalität hinzufügen
+        def search(search_term:str) -> None:
             """
 
             """
@@ -130,74 +131,6 @@ class mainPage(tk.Frame):
             from .addItemPopup import add_item_popup
             add_item_popup(self)
             print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: add_item executed")  # Debug
-
-        def on_entry_click():
-            """
-            Eine Klasse, die die Hauptseite in einer Tkinter-basierten GUI-Anwendung repräsentiert. Sie erbt von
-            `tk.Frame` und implementiert Interaktionen wie das Entfernen eines Platzhalters in einem
-            Suchfeld, wenn dieses fokussiert wird.
-
-            :param parent: Das übergeordnete Widget, das als Container für dieses Frame dient.
-            :type parent: tk.Widget
-            :param controller: Der Controller, der die Navigation zwischen verschiedenen Seiten innerhalb der Anwendung verwaltet.
-            :type controller: Any
-
-            :method on_entry_click(event): Ereignis-Handler für das Klicken in das Suchfeld. Entfernt den Platzhaltertext und
-                                           setzt die Textfarbe auf schwarz, wenn der Platzhaltertext vorhanden ist.
-            :param event: Ein Tkinter-Ereignisobjekt, das das durch den Benutzer ausgelöste Ereignis beschreibt.
-            :type event: tk.Event
-
-            """
-            print("DEBUG: [MainPageEvent]: on_entry_click executed")
-            if search_entry.get(1.0,'end-1c') == 'Suche':
-                search_entry.delete(1.0, "end")  # Lösche den Platzhalter-Text
-                search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
-            sb.start_search(search_entry, dropdown, search_entry.get(1.0,'end-1c'), cache.user_name)
-            dropdown_overlay_frame.tkraise(tree_frame)
-
-        def on_key_press(var1:str, var2:str, var3:str):
-            """
-            Eine Klasse, die ein Frame-Objekt für die Hauptseite einer Tkinter-Anwendung darstellt.
-
-            Zusammenfassung:
-            Diese Klasse bietet eine grundlegende Struktur für die Hauptseite innerhalb
-            einer grafischen Benutzeroberfläche, die mit Tkinter erstellt wird. Ein
-            zentrales Ereignis-Handling für Tastatureingaben (z.B. on_key_press-Methode)
-            wird implementiert, um Benutzereingaben zu verarbeiten.
-
-            :parameter parent: Das übergeordnete Tkinter-Widget, dem dieses Frame hinzugefügt wird.
-            :parameter controller: Ein Controller-Objekt, das zur Steuerung der Anwendungslogik verwendet wird.
-            """
-            print(f"DEBUG: [MainPageEvent]:on_key_press")
-            if not search_entry.edit_modified() or search_entry.get(1.0, 'end-1c') == '' or search_entry.get(1.0, 'end-1c') == 'Suche':
-                return
-            print(f"""DEBUG: [MainPage]: executing on_key_press with searchbar text "{search_entry.get(1.0,'end-1c')}" """)
-            #sb.check_typed_events(search_entry,dropdown,self,search_entry.get(1.0, 'end-1c'),cache.user_name)
-            #sb.update_search(cache.loaded_history, search_entry, dropdown, self, search_entry.get(1.0,'end-1c'), cache.user_name)
-
-        def on_focus_out():
-            """
-            Die Klasse `mainPage` stellt eine Benutzeroberfläche dar, die von der
-            Tkinter Frame-Klasse abgeleitet ist. Sie dient als Hauptseite einer GUI-Anwendung
-            und ermöglicht verschiedene Interaktionen.
-
-            Es wird ein Fokus-Event überwacht und bei einem Fokusverlust eine Überprüfung
-            des Suchfeldes durchgeführt, um gegebenenfalls Platzhaltertext und die passende
-            Textfarbe zu setzen.
-
-            :param parent: Das übergeordnete Tkinter-Widget, das den Rahmen enthält.
-            :type parent: tk.Widget
-            :param controller: Ein Kontrollobjekt für die Verwaltung der Navigation und
-                anderer Interaktionen zwischen Subkomponenten der GUI.
-            :type controller: Objekt
-            """
-            print(f"DEBUG: [MainPageEvent]:on_focus_out")
-            if search_entry.get(1.0,'end-1c') == '':
-                search_entry.insert('end', 'Suche')  # Platzhalter zurücksetzen
-                search_entry.configure(fg_color=srhGrey)  # Textfarbe auf grau ändern
-                search_entry.configure(bg_color='white')
-            dropdown.grid_forget()
-            tree_frame.tkraise(dropdown_overlay_frame)
 
         global tree
 

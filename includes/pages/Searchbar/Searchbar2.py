@@ -3,10 +3,11 @@ from copy import copy
 from typing import Final
 from customtkinter import CTkTextbox
 import tkinter as tk
+
+from .Logging import Logger
 from .._styles import srhGrey
 from ..ctk_listbox import CTkListbox
 from .SearchbarLogic import start_search, update_search, finish_search, get_most_suggested_term
-from .SearchbarLogic import DEBUG_MAYHEM, DEBUG_MODE
 
 ALLOWED_CHARACTERS: Final[list[str]] = [
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
@@ -18,13 +19,7 @@ STOPS_FAST_MARKING: Final[list[str]] = [
     '_', ' ', ',', '.'
 ]
 
-def debug(message: any):
-    if DEBUG_MODE: print('[SearchBar]' + str(message))
-
-
-def debug_e(message: any):
-    if DEBUG_MAYHEM: print('[SearchBar]' + str(message))
-
+logger:Logger = Logger('Searchbar')
 
 class Searchbar2(CTkTextbox):
     root: tk.Frame = None
@@ -66,18 +61,19 @@ class Searchbar2(CTkTextbox):
             :param int start_index: position after which the hit text has to be removed.
             :param int finish_index: position until which the hit text has to be removed.
         """
+        logger_:Logger = Logger('clear_autocomplete_text',levels=logger.levels)
         if finish_index <= -1:
             finish_index = self.__get_term_length()
         if self.__get_term_length() < finish_index:
-            debug(f"""[__clear_autocomplete_text]:start index {start_index} is greater than total term length {self.__get_term_length()} """)
+            logger_.debug(f"""start index {start_index} is greater than total term length {self.__get_term_length()} """)
             return
         while start_index < finish_index:
             if self.__has_tag(start_index, 'hint'):
-                debug_e(f"""[__clear_autocomplete_text]:deleting text {self.get(f'1.{start_index}')} at pos {start_index}""")
+                logger_.debug_e(f"""deleting text {self.get(f'1.{start_index}')} at pos {start_index}""")
                 self.delete(f'1.{start_index}')
             else:
                 start_index += 1
-        debug_e(f"""[__clear_autocomplete_text]:moving cursor to {start_index}""")
+        logger_.debug_e(f"""moving cursor to {start_index}""")
 
     def __set_autocomplete_text(self, full_suggested_term: str) -> None:
         """
@@ -90,9 +86,9 @@ class Searchbar2(CTkTextbox):
         self.__clear_autocomplete_text(column)
         hint_text: str = full_suggested_term.replace(self.__get_term_before_cursor().lower(), '', 1)
         if len(hint_text) > 0:
-            debug(f"""[__set_autocomplete_text]:setting hit text "{hint_text}" """)
+            logger.debug(f"""setting hit text "{hint_text}" """)
             self.insert('end', hint_text, 'hint')
-            debug_e(f"""[__set_autocomplete_text]:setting mark at "1.{column}" """)
+            logger.debug_e(f"""setting mark at "1.{column}" """)
             self.mark_set("insert", f'1.{column}')
 
     def __on_newline_typed(self, username: str) -> None:
@@ -103,7 +99,7 @@ class Searchbar2(CTkTextbox):
 
             :param username: the current user's username.
         """
-        debug("[__on_newline_typed]:last key action was newline")
+        logger.debug("last key action was newline")
         for command in self.__on_finish_commands:
             command(self.__get_term())
         finish_search(self, self.dropdown, self.parent, self.__get_term(), username)
@@ -119,7 +115,7 @@ class Searchbar2(CTkTextbox):
         self.tag_remove('edit', 1.0, f'1.{self.__get_term_length()}')
         self.tag_add('normal', 1.0, f'1.{self.__get_term_length()}')
         self.mark_set("insert", f'1.{self.__get_term_length()}')
-        debug_e(f"""[__on_tab_typed]:setting mark at "1.{self.__get_term_length()}" """)
+        logger.debug_e(f"""setting mark at "1.{self.__get_term_length()}" """)
         update_search(self.dropdown, self.__get_term(), username)
 
     def __on_escape_typed(self) -> None:
@@ -127,7 +123,7 @@ class Searchbar2(CTkTextbox):
             called when the user presses escape.
             clears all characters that are marked as hint text
         """
-        debug("[__on_escape_typed]:last key action was escape")
+        logger.debug("last key action was escape")
         if not self.__has_tag(self.__get_insert_column() + 1, 'hint'):
             self.__on_focus_out()
         self.__clear_autocomplete_text()
@@ -151,7 +147,7 @@ class Searchbar2(CTkTextbox):
 
                 :param str username: the current user's username
         """
-        debug("[__on_tab_typed]:last key action was a normal key")
+        logger.debug("last key action was a normal key")
         self.__clear_autocomplete_text(self.__get_insert_column())
         for command in self.__on_update_commands:
             command(self.__get_term())
@@ -167,12 +163,13 @@ class Searchbar2(CTkTextbox):
 
                 :param Tk.event event: the event of the button press
         """
-        debug("[__on_up_down_typed]:last key action was either up or down arrow")
+        logger_:Logger = Logger('on_up_down_typed',levels=logger.levels)
+        logger_.debug("last key action was either up or down arrow")
         if event.keysym == 'Up':
             if self.dropdown.selections:
                 for i in range(0, len(self.dropdown.buttons)):
                     if self.dropdown.buttons[i] == self.dropdown.selections[0]:
-                        debug(f"[__on_up_down_typed]:found selected button {self.dropdown.buttons[i]} at i:{i}")
+                        logger_.debug(f":found selected button {self.dropdown.buttons[i]} at i:{i}")
                         self.dropdown.selections.clear()
                         self.dropdown.selections.append(self.dropdown.buttons[i-1 if i> 0 else 0])
             else:
@@ -183,7 +180,7 @@ class Searchbar2(CTkTextbox):
         else:
             if self.dropdown.selections:
                 for i in range(0, len(self.dropdown.buttons)):
-                    debug(f"[__on_up_down_typed]:found selected button {self.dropdown.buttons[i]} at i:{i}")
+                    logger_.debug(f":found selected button {self.dropdown.buttons[i]} at i:{i}")
                     if self.dropdown.buttons[i] == self.dropdown.selections[0]:
                         self.dropdown.selections.clear()
                         self.dropdown.selections.append(self.dropdown.buttons[i])
@@ -246,9 +243,9 @@ class Searchbar2(CTkTextbox):
             self.__control_down = False
 
     def __on_mouse_single_click(self, event: tk.Event, username:str) -> str:
-        debug(f"""[__on_mouse_double_click]:executing on_mouse_single_click""")
+        logger.debug(f"""executing on_mouse_single_click""")
         if not self.focus_get() == self:
-            debug_e(f"""[__on_mouse_single_click]:focusing searchbar""")
+            logger.debug_e(f"""focusing searchbar""")
             self.focus()
         self.mark_set("insert", self.index(f"@{event.x},{event.y}"))
         if (
@@ -265,7 +262,7 @@ class Searchbar2(CTkTextbox):
         """
 
         """
-        debug(f"""[__on_mouse_double_click]:executing on_mouse_double_click""")
+        logger.debug(f"""executing on_mouse_double_click""")
         column = self.__get_insert_column()
         start:int=self.__get_insert_column()
         if self.__has_tag(column - 1, 'hint') or self.__has_tag(column +1, 'hint'):
@@ -287,7 +284,7 @@ class Searchbar2(CTkTextbox):
             clears the searchbar.
             calls all events that are bound via the add_on_focus_in_event method.
         """
-        debug(f"""[__on_focus_in]:executing on_focus_in with searchbar text "{self.__get_term()}" """)
+        logger.debug(f"""executing on_focus_in with searchbar text "{self.__get_term()}" """)
         self.delete(1.0, "end")
         start_search(self, dropdown, self.__get_term(), username)
         for command in self.__on_focus_in_commands:
@@ -299,7 +296,7 @@ class Searchbar2(CTkTextbox):
             clears the searchbar text and inserts 'Suche' with only 'normal' tag.
             calls all events that are bound via the add_on_focus_out_event method.
         """
-        debug(f"""[__on_focus_out]: executing on_focus_out with searchbar text "{self.__get_term()}" """)
+        logger.debug(f"""executing on_focus_out with searchbar text "{self.__get_term()}" """)
         self.delete(1.0, 'end-1c')
         self.insert('end', 'Suche', tags='normal')
         self.configure(text_color='black',state='normal')
