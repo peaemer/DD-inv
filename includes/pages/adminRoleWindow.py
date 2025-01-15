@@ -354,7 +354,7 @@ class adminRoleWindow(tk.Frame):
         # Spaltennamen und Breiten als Liste
         columns = [
             ("ID", 30),
-            ("Rolle", 110),
+            ("Rolle", 250),
             ("Rolle Löschbar", 150),
             ("Admin Feature", 150),
             ("Ansehen", 90),

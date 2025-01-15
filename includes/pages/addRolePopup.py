@@ -3,6 +3,7 @@ import customtkinter as ctk
 from tkinter import ttk, messagebox
 from includes.sec_data_info import sqlite3api as db
 import string, random
+from ._styles import *
 
 
 def add_role_popup(parent):
@@ -62,14 +63,14 @@ def add_role_popup(parent):
     # Admin
     admin = tk.Label(input_frame_add_role_popup,
                      text="Rollenname",
-                     font=("Arial", size_add_role_popup),
+                     font=("Arial", size_add_role_popup+2),
                      background="white")
     admin.grid(row=0, column=0, pady=10, sticky="new")
 
     parent.role_name_entry = ctk.CTkEntry(input_frame_add_role_popup,
                                           fg_color="#d9d9d9",
                                           text_color="black",
-                                          border_width=0)
+                                          border_width=border, corner_radius=corner)
     parent.role_name_entry.grid(row=0, column=1, columnspan=2, pady=10, sticky="new")
 
     # Ansehen
