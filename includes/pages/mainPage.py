@@ -270,6 +270,9 @@ class mainPage(tk.Frame):
         #erstelle den hinufügen-button im auf dem search frame
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Erstellen.png"))
         self.add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+
+        ##Button Alternative## self.add_button = ctk.CTkButton(search_frame,text="Erstellen",font=("Arial", 25),text_color="white", border_width=border,corner_radius=corner, fg_color=srhOrange, hover_color=srhOrangeHover, command=add_item)
+
         self.search_btn = tk.PhotoImage(file=resource_path("./includes/assets/SearchButton.png"))
         search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white",command=lambda:search_entry.finish_search(cache.user_name))
 
@@ -334,7 +337,7 @@ class mainPage(tk.Frame):
             width=20,
             corner_radius=10,
             button_color = srhGrey,
-            button_hover_color="#2980b9"
+            button_hover_color=srhOrange
         )
         scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
 

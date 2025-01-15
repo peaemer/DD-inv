@@ -3,8 +3,11 @@ from tkinter import ttk
 from tkinter import *
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
+from .Searchbar.Logging import Logger
 from ._styles import *
 import customtkinter as ctk  #pip install customtkinter
+
+logger:Logger = Logger('AdminUserWindow')
 
 # Hauptseite (zweites Fenster)
 class adminUserWindow(tk.Frame):
@@ -28,9 +31,11 @@ class adminUserWindow(tk.Frame):
     :ivar searchBtn: Speichert das Bild für den Such-Button.
     :type searchBtn: tk.PhotoImage
     """
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
+
 
         def go_back_admin_window():
             """
@@ -59,7 +64,7 @@ class adminUserWindow(tk.Frame):
             :ivar parent: Der übergeordnete Container dieses Frames.
             :ivar controller: Kontrollinstanz für die Verwaltung der Frames.
             """
-            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: show settings window admin window")
+            logger.debug("show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
@@ -372,12 +377,12 @@ class adminUserWindow(tk.Frame):
             """
             try:
                 selected_user = user_tree.focus()
-                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Ausgewählter User: {selected_user}")  # Debug
+                logger.debug(f"Ausgewählter User: {selected_user}")  # Debug
                 if selected_user:
                     from .userDetailsWindow import userDetailsWindow, show_user_details
                     show_user_details(selected_user, user_tree, controller)
             except Exception as e:
-                print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fehler bei der Auswahl: {e}")
+                logger.error(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
         user_tree.bind("<Double-1>", on_item_selected)
@@ -415,7 +420,7 @@ class adminUserWindow(tk.Frame):
                 tags=(tag,)
             )
             i += 1
-        print(cache.user_group_data['USER_ERSTELLEN'])
+        logger.debug(f"USER_ERSTELLEN:{cache.user_group_data['USER_ERSTELLEN']}")
         if cache.user_group_data['USER_ERSTELLEN'] == "False":
             user_add_button.grid_forget()
         else:

@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tkinter import *
+from customtkinter import *
+from ..CTkScrollableDropdown import *
 from ._avatarManager import resource_path
 import random, string
 from .customMessageBoxDelete import *
@@ -14,7 +16,7 @@ srhGrey = "#d9d9d9"
 def show_user_details(selected_user, tree, controller):
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_user, "values")
-    Logger('UserDetailsWindow').debug(f"Data of the selected item: {data}")
+    Logger('UserDetailsWindow').debug(f"Data of the selected user: {data}")
     cache.selected_ID = data[1]
     controller.show_frame(userDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
@@ -161,7 +163,7 @@ class userDetailsWindow(tk.Frame):
 
 
 
-        size_details_window = 30
+        size_details_window = 28
 
 
 
@@ -212,8 +214,8 @@ class userDetailsWindow(tk.Frame):
                                                 font=("Arial", size_details_window), background="white")
         name.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.name = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                             background=srhGrey, relief=tk.SOLID)
+        self.name = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
+                             fg_color=srhGrey, border_width=border, corner_radius=corner, text_color="black")
         self.name.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         #Passwort
@@ -221,8 +223,8 @@ class userDetailsWindow(tk.Frame):
                                           font=("Arial", size_details_window), background="white")
         password_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.reset_password = tk.Button(input_frame_details_window, font=("Arial", 24),text="Passwort zurücksetzen" ,command=reset_pass,
-                                                  background=srhGrey, relief=tk.SOLID)
+        self.reset_password = ctk.CTkButton(input_frame_details_window, font=("Arial", size_details_window),text="Passwort zurücksetzen" ,command=reset_pass,
+                                                  fg_color=srhGrey, border_width=border, corner_radius=corner, text_color="black")
         self.reset_password.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         #Email
@@ -230,8 +232,8 @@ class userDetailsWindow(tk.Frame):
                                           font=("Arial", size_details_window), background="white")
         email_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.email = tk.Entry(input_frame_details_window, font=("Arial", size_details_window),
-                              background=srhGrey, relief=tk.SOLID)
+        self.email = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
+                              fg_color=srhGrey, border_width=border, corner_radius=corner, text_color="black")
         self.email.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
         #Rolle
@@ -242,10 +244,14 @@ class userDetailsWindow(tk.Frame):
         role_values = []
         for room in db.read_all_rollen():
             role_values.append(room['Rolle'])
-        self.role_combobox = ttk.Combobox(input_frame_details_window, values=role_values,
+        self.role_combobox = ctk.CTkComboBox(input_frame_details_window, values=role_values,
                                           font=("Arial", size_details_window),
-                                          state="readonly")
+                                          state="readonly", fg_color=srhGrey, border_width=border,button_color=srhGrey, corner_radius=corner, text_color="black")
         self.role_combobox.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
+        CTkScrollableDropdownFrame(self.role_combobox,values=role_values, button_color=srhGrey, #BUGGY
+                              frame_corner_radius=corner, fg_color=srhGrey,
+                              text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
+                              justify="left")
 
 
         # Funktion zum Eintrag hinzufügen
