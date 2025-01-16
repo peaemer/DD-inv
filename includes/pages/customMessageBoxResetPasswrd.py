@@ -1,6 +1,8 @@
 import tkinter as tk
 import customtkinter as ctk
 from ._styles import *
+import cache
+from ..sec_data_info.UserSecurity import set_password
 
 
 def customMessageBoxResetPasswrd(parent, controller, title, message):
@@ -32,22 +34,24 @@ def customMessageBoxResetPasswrd(parent, controller, title, message):
         print(f"Fehler beim Laden des Icons: {e}")
 
     # def zum Umschalten der Passwortsichtbarkeit
-    def toggle_password():
-        password_visible = ctk.BooleanVar(value=False)
-        if password_visible.get():
+    parent.see_pw = False
+    def toggle_password(true=True):
+        if parent.see_pw:
             msg_passwrd_first.configure(show="•")  # Zeichen durch Punkte verdecken
+            msg_passwrd_second.configure(show="•")  # Zeichen durch Punkte verdecken
             toggle_button.configure(text="Passwort anzeigen")
-            password_visible.set(False)
+            parent.see_pw = False
         else:
             msg_passwrd_first.configure(show="")  # Zeichen sichtbar machen
+            msg_passwrd_second.configure(show="")  # Zeichen sichtbar machen
             toggle_button.configure(text="Passwort verstecken")
-            password_visible.set(True)
+            parent.see_pw = true
 
     passwrd_msg = tk.Frame(passwrd_msg_box, background="white")
     passwrd_msg.grid(row=0,
                      column=0,
                      columnspan=1,
-                    sticky="nesw")
+                     sticky="nesw")
 
     msg = ctk.CTkLabel(passwrd_msg,
                        text=message,
@@ -58,20 +62,20 @@ def customMessageBoxResetPasswrd(parent, controller, title, message):
 
     #1. Feld für das eintragen des Passwortes
     msg_passwrd_first = ctk.CTkLabel(passwrd_msg,
-                       text="Bitte Passwort eingeben:",
-                       text_color="black",
-                       font=("Arial", 20),
-                       justify="center")
+                                     text="Bitte Passwort eingeben:",
+                                     text_color="black",
+                                     font=("Arial", 20),
+                                     justify="center")
     msg_passwrd_first.grid(row=1, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     msg_passwrd_first = ctk.CTkEntry(passwrd_msg,
-                       fg_color=srhGrey,
-                       border_width=0,
-                       text_color="black",
-                       show="•",
-                       corner_radius=20,
-                       font=("Arial", 20),
-                       justify="center")
+                                     fg_color=srhGrey,
+                                     border_width=0,
+                                     text_color="black",
+                                     show="•",
+                                     corner_radius=20,
+                                     font=("Arial", 20),
+                                     justify="center")
     msg_passwrd_first.grid(row=2, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     #2. Feld zum wiederholen des Passwortes
@@ -107,7 +111,9 @@ def customMessageBoxResetPasswrd(parent, controller, title, message):
                           border_width=0,
                           fg_color=srhOrange,
                           text_color="white",
-                          command=None)
+                          command=set_password(cache.selected_ID,
+                                               msg_passwrd_first.get(),
+                                               msg_passwrd_second.get()))
     accpt.grid(row=6, column=0, padx=0, pady=10)
 
     #Btn zum Abbrechen
