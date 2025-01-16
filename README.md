@@ -22,6 +22,9 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 
 ## Voraussetzungen
 
+> [!TIP]
+> Falls du unseren Sourcecode verändern oder ansehen möchtest empfehlen wir dir eine Entwicklungsumgebung (IDE) wie [PyCharm](https://www.jetbrains.com/de-de/pycharm/) oder [Visual Studio Code](https://code.visualstudio.com/).
+
 [**Python 3.10+**](https://www.python.org/downloads/windows/)<br/>
 [**SQLite 3**](https://www.sqlite.org/) (Standardmäßig integriert, andere Datenbanken werden optional unterstützt)<br/>
 [**Pip**](https://pypi.org/project/pip/) zur Verwaltung von Abhängigkeiten, wie PIL, CTK, etc.<br/>
@@ -29,16 +32,16 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 
 ## Installation und Ausführung
 
-1. **Repository klonen**
+**Repository klonen**
    ```bash
    git clone https://github.com/peaemer/DD-inv.git
    cd DD-inv
    `````````
    
-## Geplante Features, welche noch Implementiert werden:
+## Geplante Funktionen
 
 - [ ] **Portable version** Datenbank soll ohne installation überall auf Standard geräten nutzbar sein.<br/>
-- [ ] **Design** Anapssen des Hintergrundes der App sowie der ihrer Farbe.<br/>
+- [ ] **Design** Anapssen des Hintergrundes der App sowie der Farbe.<br/>
 - [ ] **System** Anpassen der Auflösung in den Einstellungen sowie der größe des Inhalts.<br/> 
 - [ ] **Datenbank** Einbinden der Datenbank in die App.
 
@@ -77,10 +80,8 @@ Dieses Projekt wird von der **FI24** im Rahmen ihrer Ausbildung entwickelt. Mitw
 
 [FemRene (Rene)](https://github.com/FemRene)
 
-**Tam Ngyuen**
+[Tam Ngyuen]()
 
 ## Unterstüzt und Gefödert durch 
 
-
 ![srhHeader](https://github.com/user-attachments/assets/7592aeef-c2d3-40f3-b446-e0a64a8f632e)
-
