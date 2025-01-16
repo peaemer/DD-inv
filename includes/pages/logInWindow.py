@@ -164,7 +164,7 @@ class logInWindow(tk.Frame):
                                     fg_color=srhGrey,
                                     border_width=border,
                                     text_color="black",
-                                    show="*",
+                                    show="•",
                                     justify="center")
         password_entry.grid(column=3, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 

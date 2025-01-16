@@ -3,6 +3,7 @@ import webbrowser
 from tkinter import ttk
 import customtkinter as ctk
 from .Searchbar.Logging import Logger
+from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
 import cache
@@ -249,7 +250,11 @@ def pop_up_settings(parent, controller):
 
     # Schriftzug Passwort ändern
     profile_btn_label = tk.Button(frame_profile,
-                                  command=lambda:"",
+                                  command=lambda:customMessageBoxResetPasswrd(controller,
+                                                                              parent,
+                                                                              title="Passwort erneut erstellen",
+                                                                              message="Bitte ändere das Passwort \n "
+                                                                                      "in den nachfolgenden Feldern."),
                                   text="Passwort ändern",
                                   font=SETTINGS_BTN_FONT,
                                   bg="white",
