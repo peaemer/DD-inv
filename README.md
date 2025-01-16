@@ -9,7 +9,7 @@
 
 Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich durch Funktionen erweitert.. 
 
-## Funktionen (Implementiert):
+## Funktionen
 
 - [x] **Inventarverwaltung**<br/> Hinzufügen, Bearbeiten und Löschen von Einträgen im Inventar. Dazu können Details zum jeweiligen Eintrag eingesehen werden, u.a. Ausgeliehen von..., Beschädigungen..., oder Typ.
 - [x] **Such- und Filterfunktionen**<br/> Intelligente Suche und Filteroptionen für Inventargegenstände. Darüberhinaus eine Suchhistorie. Speicherung sowie Autofill in der Suchleiste.
@@ -22,24 +22,25 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 
 ## Voraussetzungen
 
-- **Python 3.10+**
-- **SQLite 3** (Standardmäßig integriert, andere Datenbanken werden optional unterstützt)
-- **Pip** zur Verwaltung von Abhängigkeiten, wie PIL, CTK, etc.
-- **tkinter / customtkinter / Figma** zum erstellen der GUI
+[**Python 3.10+**](https://www.python.org/downloads/windows/)<br/>
+[**SQLite 3**](https://www.sqlite.org/) (Standardmäßig integriert, andere Datenbanken werden optional unterstützt)<br/>
+[**Pip**](https://pypi.org/project/pip/) zur Verwaltung von Abhängigkeiten, wie PIL, CTK, etc.<br/>
+[**tkinter**](https://docs.python.org/3/library/tkinter.html) / [**customtkinter**](https://customtkinter.tomschimansky.com/) / [**Figma**](https://www.figma.com/) zum erstellen der GUI
 
 ## Installation und Ausführung
 
-1. **Repository klonen**:
+1. **Repository klonen**
    ```bash
    git clone https://github.com/peaemer/DD-inv.git
    cd DD-inv
    `````````
+   
 ## Geplante Features, welche noch Implementiert werden:
 
---> **Portable version** Datenbank soll ohne installation überall auf Standard geräten nutzbar sein.<br/>
---> **Design** Anapssen des Hintergrundes der App sowie der ihrer Farbe.<br/>
---> **System** Anpassen der Auflösung in den Einstellungen sowie der größe des Inhalts.<br/> 
---> **Datenbank** Einbinden der Datenbank in die App.
+- [ ] **Portable version** Datenbank soll ohne installation überall auf Standard geräten nutzbar sein.<br/>
+- [ ] **Design** Anapssen des Hintergrundes der App sowie der ihrer Farbe.<br/>
+- [ ] **System** Anpassen der Auflösung in den Einstellungen sowie der größe des Inhalts.<br/> 
+- [ ] **Datenbank** Einbinden der Datenbank in die App.
 
 ## Projektstatus
 
@@ -77,4 +78,9 @@ Dieses Projekt wird von der **FI24** im Rahmen ihrer Ausbildung entwickelt. Mitw
 [FemRene (Rene)](https://github.com/FemRene)
 
 **Tam Ngyuen**
+
+## Unterstüzt und Gefödert durch 
+
+
+![srhHeader](https://github.com/user-attachments/assets/7592aeef-c2d3-40f3-b446-e0a64a8f632e)
 
