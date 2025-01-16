@@ -1,9 +1,11 @@
 import tkinter as tk
 import customtkinter as ctk
 import cache
+from .Searchbar.Logging import Logger
 import includes.sec_data_info.sqlite3api as db
 from ._styles import *
 
+logger:Logger = Logger('SettingsWindow')
 
 def delete_entry(contr):
     cache.msgbox.destroy()
@@ -32,12 +34,12 @@ def delete_roles(contr):
     contr.show_frame(adminRoleWindow)
 
 def customMessageBoxDelete(parent, controller, title, message, type):
-    msg_box = tk.Toplevel(parent)
-    msg_box.title(title)
-    msg_box.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
-    msg_box.grab_set()  # Blockiere Interaktionen mit dem Hauptfenster
-    msg_box.attributes('-topmost', 0)
-    msg_box.configure(background="white")
+    delete_msg_box = tk.Toplevel(parent)
+    delete_msg_box.title(title)
+    delete_msg_box.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
+    delete_msg_box.grab_set()  # Blockiere Interaktionen mit dem Hauptfenster
+    delete_msg_box.attributes('-topmost', 0)
+    delete_msg_box.configure(background="white")
 
     # Bildschirmbreite und -höhe ermitteln
     screen_width = parent.winfo_screenwidth()
@@ -51,15 +53,15 @@ def customMessageBoxDelete(parent, controller, title, message, type):
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
 
-    msg_box.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
-    msg_box.resizable(False, False)
+    delete_msg_box.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
+    delete_msg_box.resizable(False, False)
 
     try:
-        msg_box.iconbitmap("includes/assets/srhIcon.ico")
+        delete_msg_box.iconbitmap("includes/assets/srhIcon.ico")
     except Exception as e:
-        print(f"Fehler beim Laden des Icons: {e}")
+        logger.debug(f"Error while loading icon {e}")
 
-    cache.msgbox = msg_box
+    cache.msgbox = delete_msg_box
 
     def selectType():
         match(type):
@@ -71,22 +73,22 @@ def customMessageBoxDelete(parent, controller, title, message, type):
                 delete_room(controller)
             case "DELETE_ROLE":
                 delete_roles(controller)
-        msg_box.destroy()
+        delete_msg_box.destroy()
 
-    info_msg = tk.Frame(msg_box, background="white")
-    info_msg.grid(row=0,
+    delete_msg = tk.Frame(delete_msg_box, background="white")
+    delete_msg.grid(row=0,
                   column=0,
                   columnspan=1,
                   sticky="nesw")
 
-    msg = ctk.CTkLabel(info_msg,
+    msg = ctk.CTkLabel(delete_msg,
                        text=message,
                        text_color="black",
                        font=("Arial", 20),
                        justify="center")
     msg.grid(row=0, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
-    delete = ctk.CTkButton(info_msg,
+    delete = ctk.CTkButton(delete_msg,
                            text="Löschen",
                            border_width=0,
                            fg_color=srhOrange,
@@ -94,15 +96,15 @@ def customMessageBoxDelete(parent, controller, title, message, type):
                            command=selectType)
     delete.grid(row=1, column=0, padx=0, pady=10)
 
-    cancel = ctk.CTkButton(info_msg,
+    cancel = ctk.CTkButton(delete_msg,
                            text="Abbrechen",
                            border_width=0,
                            fg_color=srhGrey,
                            text_color="black",
-                           command=msg_box.destroy)
+                           command=delete_msg_box.destroy)
     cancel.grid(row=1, column=1, padx=0, pady=10)
 
-    info_msg.grid_rowconfigure(0, weight=0)
-    info_msg.grid_rowconfigure(1, weight=0)
-    info_msg.grid_columnconfigure(0, weight=1)
-    info_msg.grid_columnconfigure(1, weight=1)
+    delete_msg.grid_rowconfigure(0, weight=0)
+    delete_msg.grid_rowconfigure(1, weight=0)
+    delete_msg.grid_columnconfigure(0, weight=1)
+    delete_msg.grid_columnconfigure(1, weight=1)
