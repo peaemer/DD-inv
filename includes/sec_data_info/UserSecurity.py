@@ -17,9 +17,9 @@ def __hash_password(plain_password: str) -> bytearray:
     """
         hashes a plain password into a byte array using sha512 encryption
 
-        :param str plain_password: the plain password that has to be hashed
+        :param str plain_password: the plain password that hasto be hashed
     """
-    return bytearray(sha512(plain_password.encode('utf-8')).digest())
+    return sha512(plain_password.encode('utf-8')).digest()
 
 def __is_invalid_name(name: str) -> bool:
     """
@@ -29,10 +29,10 @@ def __is_invalid_name(name: str) -> bool:
 
         :return bool: whether the name is valid
     """
-    return not name or name == ''
+    return name == None or name == ''
 
 
-def __compare_password(plain_password: str, hashed_password: bytearray) -> bool:
+def __compare_password(plain_password: str, hashed_password: bytearray|str) -> bool:
     """
         compares a plain with an already hashed password
 
@@ -53,7 +53,7 @@ def hash_password(plain_password: str) -> str:
 
         :return string: the hashed and formatted string
     """
-    if __is_invalid_name(plain_password):
+    if __is_invalid_name(plain_password) == True:
         raise Exception('invalid password')
     return str(__hash_password(plain_password))
 
@@ -68,22 +68,22 @@ def verify_user(username: str, plain_password: str) -> bool:
 
         :return bool: whether the plain password matches the stored one after the plain password was hashed
     """
-
     benutzer = db.read_benutzer(username)
+    logger.debug(f"database password: {benutzer['Passwort']}, entered password: {__hash_password(plain_password)}")
     try:
         if benutzer:
             # Check if the supplied password matches the stored hash
             if __compare_password(plain_password, benutzer['Passwort']):
-                logger.debug(f'User {username} was successfully verified.')
+                logger.debug(f"User {username} was successfully verified.")
                 return True
             else:
-                logger.debug("Incorrect password.")
+                logger.debug("[UserSecurity]: Incorrect password.")
                 return False
         else:
-            logger.debug(f"User '{username}' was not found.")
+            logger.debug(f"[UserSecurity]: User '{username}' was not found.")
             return False
-    except RuntimeError:
-        logger.debug(f"User '{username}' was not found.")
+    except:
+        logger.debug(f"[UserSecurity]: User '{username}' was not found.")
         return False
 
 
