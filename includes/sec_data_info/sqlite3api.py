@@ -43,7 +43,7 @@ def create_benutzer(nutzername:str, passwort:str, email:str) -> str:
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
     try:
-        passwort_hashed_value = hashPassword(passwort)
+        passwort_hashed_value = hash_password(passwort)
         # wird benutzt um das Passwort in ein Hashwert zu ändern
         with init_connection() as con:
             cur = con.cursor()
@@ -136,7 +136,7 @@ def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', n
 
             if neues_passwort:
                 update_fields.append("Passwort = ?")
-                parameters.append(hashPassword(neues_passwort))
+                parameters.append(hash_password(neues_passwort))
             if neues_email:
                 update_fields.append("Email = ?")
                 parameters.append(neues_email)

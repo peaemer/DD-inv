@@ -58,7 +58,7 @@ class logInWindow(tk.Frame):
             # Importiere Sicherheits- und Datenbankmodule
             from includes.sec_data_info import UserSecurity as security
 
-            if security.verifyUser(user, password):  # Benutzer authentifizieren
+            if security.verify_user(user, password):  # Benutzer authentifizieren
                 # Benutzerinformationen aus der Datenbank abrufen
                 benutzer_info = db.read_benutzer(user)
                 cache.user = benutzer_info
