@@ -36,7 +36,6 @@ class Logger:
             self.__debug(message)
 
     def error(self, message:str):
-        print('test')
         levels: str = ''
         for level in self.levels:
             levels = levels + f'[{level}]'
