@@ -87,7 +87,7 @@ def verify_user(username: str, plain_password: str) -> bool:
         return False
 
 
-def set_password(username:str, new_password:str, confirm_password:str) -> None:
+def set_password(username:str, new_password:str, confirm_password:str, ) -> None:
     """
         checks whether both passwords are the same.
         if the password are the same, hashes the new password and overwrites the users password inside the database.

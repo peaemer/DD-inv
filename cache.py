@@ -9,3 +9,4 @@ user_default_avatar = "iVBORw0KGgoAAAANSUhEUgAAA0gAAANaCAYAAACz+WxLAAAABHNCSVQIC
 loaded_history:list[dict[str,str]] = []
 internet = True
 msgbox = None
+controller = None

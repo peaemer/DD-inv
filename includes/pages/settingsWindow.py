@@ -8,7 +8,8 @@ from ._styles import *
 from includes.sec_data_info import sqlite3api as db
 import cache
 
-logger:Logger = Logger('SettingsWindow')
+logger: Logger = Logger('SettingsWindow')
+
 
 #########################
 # H A U P T L A Y O U T #
@@ -139,7 +140,7 @@ def pop_up_settings(parent, controller):
     # Profilbild zum Laden importieren
     parent.avatar = cache.user_avatarx128
     parent.settings_img_label = tk.Label(frame_profile, image=parent.avatar)
-    parent.settings_img_label.grid(row=1, column=0, pady=0 ,rowspan=2, columnspan=1, sticky="ns")
+    parent.settings_img_label.grid(row=1, column=0, pady=0, rowspan=2, columnspan=1, sticky="ns")
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
@@ -160,7 +161,7 @@ def pop_up_settings(parent, controller):
                                font=SETTINGS_BTN_FONT,
                                bg="white",
                                fg="black")
-    role2_btn_label.grid(row= 5, column=0, pady=5, sticky="new")
+    role2_btn_label.grid(row=5, column=0, pady=5, sticky="new")
 
     # PNG-Bild für Btn
     def load_button_images_profile():
@@ -197,7 +198,8 @@ def pop_up_settings(parent, controller):
     from ._avatarManager import loadImage
 
     # Laden des Bildes für Profile Btn
-    parent.btn_image_set_profile_picture_settings = tk.PhotoImage(file=resource_path("./includes/assets/SetProfileSettings.png"))
+    parent.btn_image_set_profile_picture_settings = tk.PhotoImage(
+        file=resource_path("./includes/assets/SetProfileSettings.png"))
 
     def setAvatar():
         try:
@@ -224,9 +226,10 @@ def pop_up_settings(parent, controller):
                                     cursor="hand2",
                                     command=lambda: setAvatar())
     update_image_button.grid(row=3, column=1, pady=10, sticky="new")
-
+    global cotr
+    contr: controller = controller
     # def zum Abmelden des Benutzers
-    def log_out(controller):
+    def log_out_settings():
         """
         Zeigt die Einstellungs-Popup-Funktionalität an und erlaubt es dem Benutzer, sich auszuloggen.
 
@@ -239,7 +242,7 @@ def pop_up_settings(parent, controller):
         try:
             from .logInWindow import logInWindow
             cache.user_group = None  # Benutzergruppe zurücksetzen
-            controller.show_frame(logInWindow)
+            contr.show_frame(logInWindow)
             popup.destroy()
 
         except Exception as e:
@@ -249,12 +252,13 @@ def pop_up_settings(parent, controller):
     parent.btn_image_password = tk.PhotoImage(file=resource_path("./includes/assets/ResetPasswordSettings.png"))
 
     # Schriftzug Passwort ändern
+    cache.controller = controller
     profile_btn_label = tk.Button(frame_profile,
-                                  command=lambda:customMessageBoxResetPasswrd(controller,
-                                                                              parent,
-                                                                              title="Passwort erneut erstellen",
-                                                                              message="Bitte ändere das Passwort \n "
-                                                                                      "in den nachfolgenden Feldern."),
+                                  command=lambda: customMessageBoxResetPasswrd(parent=parent,
+                                                                               title="Passwort ändern",
+                                                                               message="Bitte ändere das Passwort \n "
+                                                                                       "in den nachfolgenden Feldern.",
+                                                                               calb=log_out_settings),
                                   text="Passwort ändern",
                                   font=SETTINGS_BTN_FONT,
                                   bg="white",
@@ -265,7 +269,7 @@ def pop_up_settings(parent, controller):
 
     # Schriftzug Benutzer Abmelden
     profile_btn_label = tk.Button(frame_profile,
-                                  command=lambda: log_out(controller),
+                                  command=lambda: log_out_settings(controller),
                                   text="Benutzer Abmelden",
                                   font=SETTINGS_BTN_FONT,
                                   bg="white",
@@ -377,11 +381,16 @@ def pop_up_settings(parent, controller):
     credits_label.grid(row=1, column=0, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Credits
-    buttons_data_credits = [{"name": "Peaemer (Jack)", "url": "https://github.com/peaemer/", "image": "https://avatars.githubusercontent.com/u/148626202?v=4"},
-                            {"name": "Alex5X5 (Alex)", "url": "https://github.com/Alex5X5", "image": "https://avatars.githubusercontent.com/u/75848461?v=4"},
-                            {"name": "GitSchwan (Fabian)", "url": "https://github.com/GitSchwan", "image": "https://avatars.githubusercontent.com/u/173039634?v=4"},
-                            {"name": "Chauto (Anakin)", "url": "https://github.com/Chautoo", "image": "https://avatars.githubusercontent.com/u/89986856?v=4"},
-                            {"name": "FemRene (Rene)", "url": "https://github.com/FemRene", "image": "https://avatars.githubusercontent.com/u/110292225?v=4"},
+    buttons_data_credits = [{"name": "Peaemer (Jack)", "url": "https://github.com/peaemer/",
+                             "image": "https://avatars.githubusercontent.com/u/148626202?v=4"},
+                            {"name": "Alex5X5 (Alex)", "url": "https://github.com/Alex5X5",
+                             "image": "https://avatars.githubusercontent.com/u/75848461?v=4"},
+                            {"name": "GitSchwan (Fabian)", "url": "https://github.com/GitSchwan",
+                             "image": "https://avatars.githubusercontent.com/u/173039634?v=4"},
+                            {"name": "Chauto (Anakin)", "url": "https://github.com/Chautoo",
+                             "image": "https://avatars.githubusercontent.com/u/89986856?v=4"},
+                            {"name": "FemRene (Rene)", "url": "https://github.com/FemRene",
+                             "image": "https://avatars.githubusercontent.com/u/110292225?v=4"},
                             {"name": "Tam", "url": "", "image": ""}]
 
     def open_url(url):
@@ -397,7 +406,9 @@ def pop_up_settings(parent, controller):
     for index, button in enumerate(buttons_data_credits, start=2):
         try:
             if button["image"]:
-                button_image = loadImage(parent=parent, image=button["image"], defult_image=resource_path("includes/assets/GitHubSettings.png"), width=48, height=48)
+                button_image = loadImage(parent=parent, image=button["image"],
+                                         defult_image=resource_path("includes/assets/GitHubSettings.png"), width=48,
+                                         height=48)
             else:
                 # Optional: Ein Standardbild verwenden, wenn kein Bild angegeben ist
                 button_image = tk.PhotoImage(file=resource_path("includes/assets/GitHubSettings.png"))
@@ -421,11 +432,15 @@ def pop_up_settings(parent, controller):
     build_label.grid(row=1, column=1, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer genutzte Tools
-    buttons_data_tools = [{"name": "SQL3", "url": "https://www.sqlite.org/", "image": resource_path("includes/assets/SQL3Settings.png")},
-                          {"name": "Figma", "url": "https://www.figma.com/", "image": resource_path("includes/assets/FigmaSettings.png")},
-                          {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/", "image": resource_path("includes/assets/PyCharmSettings.png")},
-                          {"name": "Python", "url": "https://www.python.org/", "image": resource_path("includes/assets/PythonSettings.png")},
-                          {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07", "image": resource_path("includes/assets/WindowsXPSettings.png")}]
+    buttons_data_tools = [
+        {"name": "SQL3", "url": "https://www.sqlite.org/", "image": resource_path("includes/assets/SQL3Settings.png")},
+        {"name": "Figma", "url": "https://www.figma.com/", "image": resource_path("includes/assets/FigmaSettings.png")},
+        {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/",
+         "image": resource_path("includes/assets/PyCharmSettings.png")},
+        {"name": "Python", "url": "https://www.python.org/",
+         "image": resource_path("includes/assets/PythonSettings.png")},
+        {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07",
+         "image": resource_path("includes/assets/WindowsXPSettings.png")}]
 
     parent.images_tools = []
 
@@ -452,8 +467,10 @@ def pop_up_settings(parent, controller):
     build_label.grid(row=1, column=2, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Projekt Unterstuetzen
-    buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": resource_path("includes/assets/KoFiSettings.png")},
-                            {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de", "image": resource_path("includes/assets/FeedbackSettings.png")}]
+    buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv",
+                             "image": resource_path("includes/assets/KoFiSettings.png")},
+                            {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de",
+                             "image": resource_path("includes/assets/FeedbackSettings.png")}]
 
     parent.images_support = []
 
@@ -471,7 +488,7 @@ def pop_up_settings(parent, controller):
             btn_label.grid(row=index, column=2, pady=2, padx=15, sticky="new")
             btn_label.bind("<Button-1>",
                            lambda e,
-                           url=button["url"]: open_url(url))
+                                  url=button["url"]: open_url(url))
         except Exception as e:
             logger.error(f"Fehler beim Laden des Bildes {button['image']}: {e}")
 
@@ -483,8 +500,11 @@ def pop_up_settings(parent, controller):
     build_label.grid(row=5, column=2, pady=10, sticky="new")
 
     # Liste mit den Namenm, URL, Bild fuer Info
-    buttons_data_info = [{"name": "VersionBuild   V. 0.1 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest", "image": resource_path("includes/assets/DD-Inv_Logo.png")},
-                         {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv", "image": resource_path("includes/assets/GitHubSettings.png")}]
+    buttons_data_info = [
+        {"name": "VersionBuild   V. 0.1 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest",
+         "image": resource_path("includes/assets/DD-Inv_Logo.png")},
+        {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv",
+         "image": resource_path("includes/assets/GitHubSettings.png")}]
 
     parent.images_info = []
 
@@ -502,7 +522,7 @@ def pop_up_settings(parent, controller):
             btn_label.grid(row=index, column=2, pady=2, padx=40, sticky="new")
             btn_label.bind("<Button-1>",
                            lambda e,
-                           url=button["url"]: open_url(url))
+                                  url=button["url"]: open_url(url))
         except Exception as e:
             logger.error(f"Error loading the image. {button['image']}: {e}")
 
