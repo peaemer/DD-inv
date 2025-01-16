@@ -18,7 +18,6 @@ def __hash_password(plain_password: str) -> bytearray:
         hashes a plain password into a byte array using sha512 encryption
 
         :param str plain_password: the plain password that has to be hashed
-
     """
     return bytearray(sha512(plain_password.encode('utf-8')).digest())
 
@@ -26,28 +25,20 @@ def __is_invalid_name(name: str) -> bool:
     """
         a shortcut function for checking whether the supplied string is null or empty 
 
-        Parameters
-        ----------
         :param str name: the name that has to be checked
 
-        Return
-        ------
         :return bool: whether the name is valid
     """
-    return name == None or name == ''
+    return not name or name == ''
 
 
 def __compare_password(plain_password: str, hashed_password: bytearray) -> bool:
     """
         compares a plain with an already hashed password
 
-        Parameters
-        ----------
         :param str plain_password: the plain password that has to be compared
         :param bytearray hashed_password: the already hashed password that has to be compared
 
-        Return
-        ------
         :return bool: whether the plain password matches the already hashed one after the plain password was hashed
     """
     #hash the plain password and check if the hash is equal to the given
@@ -95,11 +86,11 @@ def verify_user(username: str, plain_password: str) -> bool:
         logger.debug(f"User '{username}' was not found.")
         return False
 
-def set_password(username:str, new_password:str, confirm_password:str)->None:
+
+def set_password(username:str, new_password:str, confirm_password:str) -> None:
     """
         checks whether both passwords are the same.
         if the password are the same, hashes the new password and overwrites the users password inside the database.
-
 
         :param str username: the name of the user whoes password should be verifyed
         :param str new_password: the new password that the user wants to set
