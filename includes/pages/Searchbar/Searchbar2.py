@@ -61,7 +61,7 @@ class Searchbar2(CTkTextbox):
             :param int start_index: position after which the hit text has to be removed.
             :param int finish_index: position until which the hit text has to be removed.
         """
-        logger_:Logger = Logger('clear_autocomplete_text',levels=logger.levels)
+        logger_:Logger = Logger.from_logger(logger, 'clear_autocomplete_text')
         if finish_index <= -1:
             finish_index = self.__get_term_length()
         if self.__get_term_length() < finish_index:
@@ -163,7 +163,8 @@ class Searchbar2(CTkTextbox):
 
                 :param Tk.event event: the event of the button press
         """
-        logger_:Logger = Logger('on_up_down_typed',levels=logger.levels)
+        logger_:Logger = Logger.from_logger(logger, 'on_up_down_typed')
+
         logger_.debug("last key action was either up or down arrow")
         if event.keysym == 'Up':
             if self.dropdown.selections:

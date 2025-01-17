@@ -61,8 +61,8 @@ def customMessageBoxResetPasswrd(parent, title, message, calb = None):
         """
         try:
             if msg_passwrd_first.get() and len(msg_passwrd_first.get()) >= 8:
-
-                set_password(cache.selected_ID, msg_passwrd_first.get(),msg_passwrd_second.get())
+                logger.debug(cache.user_name)
+                set_password(cache.user_name, msg_passwrd_first.get(),msg_passwrd_second.get())
                 from includes.pages import logInWindow
                 cache.user_group = None  # Benutzergruppe zurücksetzen
                 cache.user_name = None
@@ -73,7 +73,7 @@ def customMessageBoxResetPasswrd(parent, title, message, calb = None):
                 return (info_label.config(text="Das Passwort muss mind. 8 Zeichen lang sein!"),)
 
         except Exception as e:
-            logger.error(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error during logout by the user. {e}")
+            logger.error(f"Error during logout by the user. {e}")
 
     passwrd_msg = tk.Frame(passwrd_msg_box, background="white")
     passwrd_msg.grid(row=0,

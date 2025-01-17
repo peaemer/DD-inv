@@ -136,7 +136,7 @@ def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', n
 
             if neues_passwort:
                 update_fields.append("Passwort = ?")
-                parameters.append(hash_password(neues_passwort))
+                parameters.append(neues_passwort)
             if neues_email:
                 update_fields.append("Email = ?")
                 parameters.append(neues_email)

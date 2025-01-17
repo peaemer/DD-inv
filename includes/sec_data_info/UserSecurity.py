@@ -69,21 +69,22 @@ def verify_user(username: str, plain_password: str) -> bool:
         :return bool: whether the plain password matches the stored one after the plain password was hashed
     """
     benutzer = db.read_benutzer(username)
-    logger.debug(f"database password: {benutzer['Passwort']}, entered password: {__hash_password(plain_password)}")
+    logger_:Logger = Logger.from_logger(logger,'verify user')
+    logger_.debug(f"database password: {benutzer['Passwort']}, entered password: {__hash_password(plain_password)}")
     try:
         if benutzer:
             # Check if the supplied password matches the stored hash
             if __compare_password(plain_password, benutzer['Passwort']):
-                logger.debug(f"User {username} was successfully verified.")
+                logger_.debug(f"User {username} was successfully verified.")
                 return True
             else:
-                logger.debug("[UserSecurity]: Incorrect password.")
+                logger_.debug("Incorrect password.")
                 return False
         else:
-            logger.debug(f"[UserSecurity]: User '{username}' was not found.")
+            logger_.debug(f"User '{username}' was not found.")
             return False
-    except:
-        logger.debug(f"[UserSecurity]: User '{username}' was not found.")
+    except RuntimeError:
+        logger_.debug(f"User '{username}' was not found.")
         return False
 
 
@@ -101,12 +102,16 @@ def set_password(username:str, new_password:str, confirm_password:str, ) -> None
         return
     if __is_invalid_name(confirm_password):
         return
-    hashed_password = __hash_password(new_password)
+    hashed_new_password = __hash_password(new_password)
     if new_password != confirm_password:
-        logger.debug(f"""passwords "{hashed_password}" and "{hash_password(confirm_password)}" don't match.""")
+        logger.error(f"""passwords "{str(hashed_new_password)}" and "{str(__hash_password(confirm_password))}" don't match""")
         return
     try:
-        if db.update_benutzer(username, neues_passwort=str(hashed_password)) != 'Benutzer erfolgreich aktualisiert':
-            logger.error(f"""failed to update password "{hashed_password}" for user "{username}" """)
+        logger.debug(f"updating password of user {username} to {str(hashed_new_password)}")
+        if db.update_benutzer(username, neues_passwort=str(hashed_new_password)) != 'Benutzer erfolgreich aktualisiert.':
+            logger.error(f"""failed to update password "{hashed_new_password}" for user "{username}" """)
+        else:
+            logger.debug(f"""password "{hashed_new_password}" was updated successfully.""")
+            logger.debug(f"""reloaded password is "{str(db.read_benutzer(username)['Passwort'])}"" """)
     except RuntimeError:
-        logger.debug(f"User '{username}' was not found.")
+        logger.error(f"User '{username}' was not found.")

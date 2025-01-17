@@ -15,11 +15,16 @@ class Logger:
 
     levels:list[str]
 
-    def __init__(self, level:str, levels:list[str]=None):
+    def __init__(self, level:str):
         self.levels:list[str] = []
-        if levels:
-            self.levels = copy(levels)
         self.levels.append(level)
+
+    @classmethod
+    def from_logger(cls, existing_logger:'Logger', sublevel:str):
+        new_logger = cls.__new__(cls)
+        new_logger.levels = existing_logger.levels.copy()
+        new_logger.levels.append(sublevel)
+        return new_logger
 
     def __debug(self, message:str):
         levels: str = ''

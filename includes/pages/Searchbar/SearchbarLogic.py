@@ -63,7 +63,7 @@ def __update_dropdown(dropdown: CTkListbox, search_term: str) -> None:
         :param str search_term: the search term
     """
     global cancel_dropdown_updates, loaded_history
-    logger_:Logger = Logger('update_dropdown',levels=logger.levels)
+    logger_:Logger = Logger.from_logger(logger,'update_dropdown')
     if cancel_dropdown_updates > 0:
         cancel_dropdown_updates -= 1
         logger_.debug(f"canceling dropdown update")
@@ -123,7 +123,7 @@ def __scale_history_weights(search_term: str) -> bool:
     """
     global loaded_history
 
-    logger_ = Logger('scale history weights',levels=logger.levels)
+    logger_:Logger = Logger.from_logger(logger,'scale history weights')
 
     def weight_function(y: float, a: float) -> float:
         """
@@ -255,7 +255,7 @@ def start_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, search_term: s
         :param str username: the current user's username
     """
     global search_is_running, cancel_key_press_updates, loaded_history
-    logger_:Logger = Logger('start_search',levels=logger.levels)
+    logger_:Logger = Logger.from_logger(logger,'start_search')
     if search_is_running:
         update_search(dropdown, search_term, username)
     search_is_running = True
