@@ -7,9 +7,35 @@ from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
 import cache
+import os
+import json
 
+
+CONFIG_PATH = "user_config.json"
 logger: Logger = Logger('SettingsWindow')
 
+
+######################
+# S P E I C H E R N #
+#####################
+
+def load_settings():
+    """
+    Lädt Benutzereinstellungen aus einer JSON-Datei.
+    Gibt Standardwerte zurück, wenn die Datei nicht existiert.
+    """
+    if os.path.exists(CONFIG_PATH):
+        with open(CONFIG_PATH, "r") as file:
+            return json.load(file)
+    return {"resolution": {"width": 800, "height": 600}}  # Standardwerte
+
+
+def save_settings(settings):
+    """
+    Speichert Benutzereinstellungen in einer JSON-Datei.
+    """
+    with open(CONFIG_PATH, "w") as file:
+        json.dump(settings, file, indent=4)
 
 #########################
 # H A U P T L A Y O U T #
@@ -48,7 +74,6 @@ def pop_up_settings(parent, controller):
     # erstellt ein neues Fenster
     popup = tk.Toplevel(parent)
     popup.title("Einstellungen")
-    popup.geometry("850x550")  # groeße des Fensters
     popup.configure(background="white")  # Hintergrundfarbe
     popup.transient(parent)  # Setzt Hauptfenster in Hintergrund
     popup.grab_set()  # Fokus auf Popup
@@ -139,7 +164,9 @@ def pop_up_settings(parent, controller):
 
     # Profilbild zum Laden importieren
     parent.avatar = cache.user_avatarx128
-    parent.settings_img_label = tk.Label(frame_profile, image=parent.avatar)
+    parent.settings_img_label = tk.Label(frame_profile,
+                                         image=parent.avatar,
+                                         background="white")
     parent.settings_img_label.grid(row=1, column=0, pady=0, rowspan=2, columnspan=1, sticky="ns")
 
     # Schriftzug Eingeloggt als
@@ -151,17 +178,35 @@ def pop_up_settings(parent, controller):
 
     # Schriftzug Rechte in der Gruppe
     profile_btn_label = tk.Label(frame_profile,
-                                 text="Rechte des Users",
+                                 text="Rechte des Users\n" + cache.user_group,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
     profile_btn_label.grid(row=4, column=0, pady=5, sticky="new")
 
-    role2_btn_label = tk.Label(frame_profile,
-                               text=cache.user_group,
-                               font=SETTINGS_BTN_FONT,
-                               bg="white",
-                               fg="black")
-    role2_btn_label.grid(row=5, column=0, pady=5, sticky="new")
+    def load_user_email(nutzername):
+        """
+        Lädt die E-Mail-Adresse eines Benutzers aus der Datenbank.
+
+        :param nutzername: Der Benutzername, dessen E-Mail abgerufen werden soll.
+        :return: Die E-Mail-Adresse oder ein Fehlerhinweis.
+        """
+        from includes.sec_data_info.sqlite3api import read_benutzer
+        try:
+            benutzer_data = read_benutzer(nutzername)
+            if benutzer_data and "Email" in benutzer_data:
+                return benutzer_data["Email"]
+            else:
+                return "E-Mail nicht gefunden"
+        except Exception as e:
+            logger.error(f"Error while trying to load email: {e}")
+            return "Fehler beim Laden"
+
+    # Schriftzug E-Mail-Adresse
+    profile_btn_label = tk.Label(frame_profile,
+                                 text="E-Mail-Adressse\n" + load_user_email(cache.user_name),
+                                 font=SETTINGS_BTN_FONT,
+                                 bg="white")
+    profile_btn_label.grid(row=5, column=0, pady=5, sticky="new")
 
     # PNG-Bild für Btn
     def load_button_images_profile():
@@ -185,14 +230,16 @@ def pop_up_settings(parent, controller):
                                        text="Profilbild-URL / Bas64 eingeben",
                                        font=SETTINGS_BTN_FONT,
                                        bg="white")
-    profile_image_url_label.grid(row=1, column=1, pady=10, sticky="new")
+    profile_image_url_label.grid(row=1, column=1, pady=5, sticky="esw")
 
     profile_image_url = ctk.CTkEntry(frame_profile,
                                      border_width=border,
                                      corner_radius=corner,
                                      text_color="black",
-                                     fg_color=srhGrey)
-    profile_image_url.grid(row=2, column=1, pady=10, sticky="new")
+                                     fg_color=srhGrey,
+                                     font=SETTINGS_FONT,
+                                     width=250)
+    profile_image_url.grid(row=2, column=1, columnspan=1, pady=5)
 
     # Importieren der Funktion URL
     from ._avatarManager import loadImage
