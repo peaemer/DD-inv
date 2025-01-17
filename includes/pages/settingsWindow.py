@@ -9,6 +9,7 @@ from includes.sec_data_info import sqlite3api as db
 import cache
 import os
 import json
+import sys
 
 
 CONFIG_PATH = "user_config.json"
@@ -19,6 +20,16 @@ logger: Logger = Logger('SettingsWindow')
 # S P E I C H E R N #
 #####################
 
+# speichern der Einstellungen von windowSettings.py
+def save_settings(dictionary: dict):
+    """
+    Speichert Benutzereinstellungen in einer JSON-Datei.
+    """
+    jobj = json.dumps(dictionary, indent=4)
+    with open("config.json", "w") as outfile:
+        outfile.write(jobj)
+
+# setezen der neuen Aufloesung
 def load_settings():
     """
     Lädt Benutzereinstellungen aus einer JSON-Datei.
@@ -29,13 +40,13 @@ def load_settings():
             return json.load(file)
     return {"resolution": {"width": 800, "height": 600}}  # Standardwerte
 
-
-def save_settings(settings):
+# neustarten der Anwendung
+def restart_app():
     """
-    Speichert Benutzereinstellungen in einer JSON-Datei.
+    Startet die Anwendung neu, indem der aktuelle Prozess durch den neuen ersetzt wird.
     """
-    with open(CONFIG_PATH, "w") as file:
-        json.dump(settings, file, indent=4)
+    python = sys.executable  # Pfad zur Python-Executable
+    os.execl(python, python, *sys.argv)
 
 #########################
 # H A U P T L A Y O U T #
@@ -276,7 +287,7 @@ def pop_up_settings(parent, controller):
     global cotr
     contr: controller = controller
     # def zum Abmelden des Benutzers
-    def log_out_settings():
+    def log_out_settings(controller: controller):
         """
         Zeigt die Einstellungs-Popup-Funktionalität an und erlaubt es dem Benutzer, sich auszuloggen.
 
@@ -363,7 +374,13 @@ def pop_up_settings(parent, controller):
         breite = breite_entry.get()
         hoehe = hoehe_entry.get()
         if breite.isdigit() and hoehe.isdigit():  # Überprüfen, ob die Eingaben Zahlen sind
-            parent.geometry(f"{breite}x{hoehe}")
+            dicti = {
+                "breite": int(breite),
+                "hoehe": int(hoehe)
+            }
+            save_settings(dicti)  # Auflösung speichern
+            info_label.config(text="Auflösung wird gespeichert und App geschlossen.")
+            parent.after(2000, restart_app)  # Verzögerung von 2 Sekunden und dann Neustart
         else:
             info_label.config(text="Bitte gültige Zahlen eingeben.")
 
@@ -548,7 +565,7 @@ def pop_up_settings(parent, controller):
 
     # Liste mit den Namenm, URL, Bild fuer Info
     buttons_data_info = [
-        {"name": "VersionBuild   V. 0.1 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest",
+        {"name": "VersionBuild   V. 0.2 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest",
          "image": resource_path("includes/assets/DD-Inv_Logo.png")},
         {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv",
          "image": resource_path("includes/assets/GitHubSettings.png")}]
