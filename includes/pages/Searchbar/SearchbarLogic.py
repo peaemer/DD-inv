@@ -2,7 +2,7 @@ import math
 from collections.abc import Callable
 from copy import copy
 
-from .Logging import Logger
+from includes.util.Logging import Logger
 
 from includes.pages.ctk_listbox import CTkListbox
 from includes.sec_data_info import sqlite3api as db

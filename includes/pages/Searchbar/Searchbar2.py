@@ -4,7 +4,7 @@ from typing import Final
 from customtkinter import CTkTextbox
 import tkinter as tk
 
-from .Logging import Logger
+from includes.util.Logging import Logger
 from .._styles import srhGrey
 from ..ctk_listbox import CTkListbox
 from .SearchbarLogic import start_search, update_search, finish_search, get_most_suggested_term

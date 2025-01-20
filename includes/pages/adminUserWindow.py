@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import *
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
-from .Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 from ._styles import *
 import customtkinter as ctk  #pip install customtkinter
 

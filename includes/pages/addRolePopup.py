@@ -1,10 +1,8 @@
 import tkinter as tk
 import customtkinter as ctk
-from tkinter import ttk, messagebox
 
-from includes.pages.Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 from includes.sec_data_info import sqlite3api as db
-import string, random
 from ._styles import *
 
 

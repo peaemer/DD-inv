@@ -4,7 +4,7 @@ from tkinter import *
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
 from ._styles import *
-from.Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 import customtkinter as ctk  #pip install customtkinter
 
 logger:Logger = Logger('AdminRoleWindow')

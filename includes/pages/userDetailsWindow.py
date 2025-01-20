@@ -1,14 +1,11 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from tkinter import *
 from customtkinter import *
 from ..CTkScrollableDropdown import *
 from ._avatarManager import resource_path
-import random, string
 from .customMessageBoxDelete import *
-from.Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 from ..sec_data_info import UserSecurity
-from ..sec_data_info.UserSecurity import hash_password
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)

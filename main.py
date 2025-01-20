@@ -1,21 +1,8 @@
 import tkinter as tk
-import threading
-from tkinter import mainloop
-import customtkinter as ctk
-import includes
-from includes.pages.Searchbar.Logging import Logger
-from includes.pages._styles import *
+from includes.util.Logging import Logger
 import json
 
-from includes.pages import (logInWindow,
-                            mainPage,
-                            userDetailsWindow,
-                            detailsWindow,
-                            roomDetailsWindow,
-                            customMessageBoxDelete,
-                            adminRoomWindow,
-                            adminUserWindow,
-                            adminRoleWindow)
+from includes.pages import (logInWindow)
 
 logger: Logger = Logger('main')
 

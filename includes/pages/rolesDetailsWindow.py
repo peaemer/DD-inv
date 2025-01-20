@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from includes.sec_data_info import sqlite3api as sqlapi
-from includes.pages.Searchbar.Logging import Logger
 from .customMessageBoxDelete import *
 from main import ddINV
 

@@ -1,18 +1,15 @@
 import tkinter as tk
-from shutil import which
 from tkinter import ttk
-from tkinter import *
 
 from customtkinter import CTkEntry
 
 from includes.sec_data_info import sqlite3api as sqlapi
 from .Searchbar import SearchbarLogic as sb
 from .Searchbar.Searchbar2 import Searchbar2
-from .Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 import cache
 from ._styles import *
 import customtkinter as ctk
-from customtkinter.windows.widgets.ctk_textbox import CTkTextbox
 import json
 from .ctk_listbox import *
 

@@ -2,7 +2,7 @@ import tkinter as tk
 import webbrowser
 from tkinter import ttk
 import customtkinter as ctk
-from .Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
