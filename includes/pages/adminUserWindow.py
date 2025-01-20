@@ -6,6 +6,7 @@ import cache
 from includes.util.Logging import Logger
 from ._styles import *
 import customtkinter as ctk  #pip install customtkinter
+from ._sort_tree import sort_column
 
 logger:Logger = Logger('AdminUserWindow')
 
@@ -277,6 +278,17 @@ class adminUserWindow(tk.Frame):
         # Tags für alternierende Zeilenfarben konfigurieren
         user_tree.tag_configure("oddrow", background="#f7f7f7")
         user_tree.tag_configure("evenrow", background="white")
+
+        user_columns = [
+            ("# 1", "ID", 60),
+            ("# 2", "Nutzername", 200),
+            ("# 3", "Passwort", 200),
+            ("# 4", "E-Mail", 300),
+            ("# 5", "Rolle", 100)
+        ]
+        for col_id, col_name, col_width in user_columns:
+            user_tree.column(col_id, anchor=tk.CENTER, width=col_width)
+            user_tree.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(user_tree, c, False))
 
         ### listbox for directories
         user_tree.column("# 1", anchor=CENTER, width=60)

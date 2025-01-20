@@ -27,7 +27,6 @@ def sort_column(tree_name: ttk.Treeview, col, reverse=False):
         - Die Funktion modifiziert den Header der Spalte, sodass beim nächsten Klick die Sortierrichtung
           umgekehrt wird.
     """
-
     # Daten aus der Treeview abrufen
     data = [(tree_name.set(item, col), item) for item in tree_name.get_children('')]
 
