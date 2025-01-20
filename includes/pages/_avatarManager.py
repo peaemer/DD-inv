@@ -6,7 +6,7 @@ import requests
 from .Searchbar.Logging import Logger
 from ._styles import *
 from io import BytesIO
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageDraw
 
 import cache
 
@@ -85,25 +85,30 @@ def load_image_from_base64(base64_string):
     logger.debug(f"img:{img}")
     return img
 
-def loadImage(parent, image: str = None, defult_image = None, width: int = 48, height: int = 48):
+def loadImage(parent, image: str = None, defult_image=None, width: int = 48, height: int = 48):
     if image is None:
-        image = cache.user_default_avatar
+        image = cache.user_default_avatar  # Assuming 'cache' is predefined
+
+    # Load image (from URL or base64)
     if image.startswith("http"):
-            img = load_image_from_url(image, defult_image)
-
-            # Bild skalieren (z. B. auf 128x128 Pixel)
-            img = img.resize((width, height))
-
-            parent.img_tk = ImageTk.PhotoImage(img)
-            return parent.img_tk
+        img = load_image_from_url(image, defult_image)
     else:
         img = load_image_from_base64(image)
 
-        # Bild skalieren (z. B. auf 128x128 Pixel)
-        img = img.resize((width, height))
+    # Resize Image
+    img = img.resize((width, height), Image.LANCZOS)
 
-        parent.img_tk = ImageTk.PhotoImage(img)
-        return parent.img_tk
+    # Make Image Rounded
+    mask = Image.new("L", (width, height), 0)
+    draw = ImageDraw.Draw(mask)
+    draw.ellipse((0, 0, width, height), fill=255)
+
+    rounded_img = Image.new("RGBA", (width, height))
+    rounded_img.paste(img, (0, 0), mask)
+
+    # Convert to Tkinter Image
+    parent.img_tk = ImageTk.PhotoImage(rounded_img)
+    return parent.img_tk
 
 def resource_path(relative_path):
     """ Get the absolute path to resource files (supports PyInstaller and development). """
