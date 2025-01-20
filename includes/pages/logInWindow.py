@@ -4,10 +4,10 @@ from tkinter import *
 from tkinter import ttk
 
 import cache
-from .customMessageBoxDelete import *
 from ._avatarManager import check_internet_connection, loadImage
 import customtkinter as ctk
 from includes.sec_data_info import sqlite3api as db
+from ._styles import *
 
 
 class logInWindow(tk.Frame):
@@ -77,13 +77,13 @@ class logInWindow(tk.Frame):
                 cache.controller = controller
                 controller.show_frame(mainPage)
 
-            else:
+            #else:
                 # Zeige Fehlermeldung bei falschem Login
-                customMessageBoxDelete(self,
-                                       title="Nutzername oder Passwort falsch",
-                                       message="Nutzername und Passwort stimmen nicht überein.\n Bitte versuchen Sie es erneut.",
-                                       controller=controller,
-                                       type="WRONG_LOGIN")
+                #customMessageBoxDelete(self,
+                #                       title="Nutzername oder Passwort falsch",
+                #                       message="Nutzername und Passwort stimmen nicht überein.\n Bitte versuchen Sie es erneut.",
+                #                       controller=controller,
+                #                       type="WRONG_LOGIN")
 
         def on_enter(event):
             """

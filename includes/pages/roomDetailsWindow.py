@@ -1,6 +1,9 @@
-import tkinter as tk
 from tkinter import ttk, messagebox
-from .customMessageBoxDelete import *
+import tkinter as tk
+from .settingsWindow import *
+import cache
+from ._styles import *
+from .customMessageBox import customMessageBox, MessageBoxStore
 
 
 def show_room_details(selected_room, tree, controller):
@@ -220,11 +223,27 @@ class roomDetailsWindow(tk.Frame):
             controller.show_frame(adminRoomWindow)
 
         def customMessageBoxCall():
-            customMessageBoxDelete(self,
-                                   title="Aktion Bestätigen",
-                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
-                                   controller=controller,
-                                   type="DELETE_ROOM")
+            #customMessageBoxDelete(self,
+            #                       title="Aktion Bestätigen",
+            #                       message="Willst du diesen Eintrag unwiderruflich löschen?",
+            #                       controller=controller,
+            #                       type="DELETE_ROOM")
+            title = "Aktion Bestätigen"
+            delete = ctk.CTkButton(MessageBoxStore.msg_frame,
+                                   text="Löschen",
+                                   border_width=0,
+                                   fg_color=srhOrange,
+                                   cursor="hand2",
+                                   text_color="white",
+                                   command=delete_entry)
+            delete2 = ctk.CTkButton(MessageBoxStore.msg_frame,
+                                   text="Löschen2",
+                                   border_width=0,
+                                   fg_color=srhOrange,
+                                   cursor="hand2",
+                                   text_color="white",
+                                   command=delete_entry)
+            customMessageBox(self, title=title, message="Willst du diesen Eintrag unwiderruflich löschen?", buttons={0: delete, 1: delete2})
 
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
         self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))

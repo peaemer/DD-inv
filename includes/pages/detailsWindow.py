@@ -1,8 +1,10 @@
-import tkinter as tk
-from tkinter import ttk
 from tkinter import *
+
 from ..CTkScrollableDropdown import *
-from .customMessageBoxDelete import *
+import tkinter as tk
+from .settingsWindow import *
+import cache
+from ._styles import *
 
 logger:Logger = Logger('DetailsWindow')
 
@@ -306,11 +308,12 @@ class detailsWindow(tk.Frame):
                                 command=lambda: return_item({"name": self.name_entry_details_window.get()}))
 
         def customMessageBoxCall():
-            customMessageBoxDelete(self,
-                                   title="Aktion Bestätigen",
-                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
-                                   controller=controller,
-                                   type="DELETE_ITEM")
+            print("")
+            #customMessageBoxDelete(self,
+            #                       title="Aktion Bestätigen",
+            #                       message="Willst du diesen Eintrag unwiderruflich löschen?",
+            #                       controller=controller,
+            #                       type="DELETE_ITEM")
 
 
 

@@ -1,11 +1,16 @@
-import tkinter as tk
 from tkinter import ttk, messagebox
 from customtkinter import *
+
 from ..CTkScrollableDropdown import *
 from ._avatarManager import resource_path
-from .customMessageBoxDelete import *
-from includes.util.Logging import Logger
 from ..sec_data_info import UserSecurity
+
+import tkinter as tk
+from .settingsWindow import *
+import cache
+from ._styles import *
+
+import tkinter
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -112,11 +117,12 @@ class userDetailsWindow(tk.Frame):
                 controller.show_frame(adminUserWindow)
 
         def customMessageBoxCall():
-            customMessageBoxDelete(self,
-                                   title="Aktion Bestätigen",
-                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
-                                   controller=controller,
-                                   type="DELETE_USER")
+            print("")
+            #customMessageBoxDelete(self,
+            #                       title="Aktion Bestätigen",
+            #                       message="Willst du diesen Eintrag unwiderruflich löschen?",
+            #                       controller=controller,
+            #                       type="DELETE_USER")
 
         self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 

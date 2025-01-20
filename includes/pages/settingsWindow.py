@@ -3,7 +3,6 @@ import webbrowser
 from tkinter import ttk
 import customtkinter as ctk
 from includes.util.Logging import Logger, DEBUG_MODE_NORMAL, DEBUG_MODE_ALL
-from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
 import cache
@@ -11,6 +10,7 @@ import os
 import json
 import sys
 
+from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 
 CONFIG_PATH = "user_config.json"
 logger: Logger = Logger('SettingsWindow')

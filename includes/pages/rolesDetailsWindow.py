@@ -1,8 +1,9 @@
-import tkinter as tk
 from tkinter import ttk, messagebox
 from includes.sec_data_info import sqlite3api as sqlapi
-from .customMessageBoxDelete import *
 from main import ddINV
+import tkinter as tk
+from .settingsWindow import *
+import cache
 
 logger:Logger = Logger('rolesDetailsWindow')
 
