@@ -345,6 +345,11 @@ class mainPage(tk.Frame):
             for index, (_, item) in enumerate(data):
                 tree.move(item, "", index)
 
+                # Tags für odd/even-Reihen neu setzen
+            for index, item in enumerate(tree.get_children('')):
+                tag = "oddrow" if index % 2 == 0 else "evenrow"
+                tree.item(item, tags=(tag,))
+
             # Header aktualisieren, um Sortierrichtung zu wechseln
             tree.heading(col, command=lambda: sort_column(col, not reverse))
 
