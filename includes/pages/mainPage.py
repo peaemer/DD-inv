@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from customtkinter import CTkEntry
+from ._sort_tree import sort_column
 from includes.sec_data_info import sqlite3api as sqlapi
 from .Searchbar import SearchbarLogic as sb
 from .Searchbar.Searchbar2 import Searchbar2
@@ -315,41 +316,6 @@ class mainPage(tk.Frame):
         tree.tkraise()
         self.update_treeview_with_data()
 
-        def sort_column(col, reverse):
-            # Daten aus der Treeview abrufen
-            data = [(tree.set(item, col), item) for item in tree.get_children('')]
-
-            # Prüfen, ob die Spalte hauptsächlich numerische Daten enthält
-            def is_numeric(value):
-                try:
-                    float(value)
-                    return True
-                except ValueError:
-                    return False
-
-            # Entscheiden, ob die Spalte als Zahl oder Text sortiert werden soll
-            if all(is_numeric(row[0]) for row in data):
-                # Sortieren nach numerischem Wert
-                key_func = lambda x: float(x[0])
-            else:
-                # Sortieren als Text
-                key_func = lambda x: str(x[0])
-
-            # Daten sortieren
-            data.sort(key=key_func, reverse=reverse)
-
-            # Reihenfolge in der Treeview aktualisieren
-            for index, (_, item) in enumerate(data):
-                tree.move(item, "", index)
-
-                # Tags für odd/even-Reihen neu setzen
-            for index, item in enumerate(tree.get_children('')):
-                tag = "oddrow" if index % 2 == 0 else "evenrow"
-                tree.item(item, tags=(tag,))
-
-            # Header aktualisieren, um Sortierrichtung zu wechseln
-            tree.heading(col, command=lambda: sort_column(col, not reverse))
-
 
 
         # Funktion für das Ereignis-Binding
@@ -367,13 +333,13 @@ class mainPage(tk.Frame):
 
         def on_side_tree_select(event):
             """
-                on_side_tree_select(event):
-                    Wird ausgelöst, wenn ein Element im side_tree ausgewählt wird. Diese
-                    Methodik ermöglicht:
-                    - Das Anzeigen aller Daten, wenn "Alle Räume" ausgewählt wird.
-                    - Das Filtern und Anzeigen von Daten basierend auf dem Raum.
-                    - Weitere spezifische Filterlogiken, wenn das übergeordnete über den
-                      Elternknoten bestimmt wird.
+            on_side_tree_select(event):
+                Wird ausgelöst, wenn ein Element im side_tree ausgewählt wird. Diese
+                Methodik ermöglicht:
+                - Das Anzeigen aller Daten, wenn "Alle Räume" ausgewählt wird.
+                - Das Filtern und Anzeigen von Daten basierend auf dem Raum.
+                - Weitere spezifische Filterlogiken, wenn das übergeordnete über den
+                  Elternknoten bestimmt wird.
 
             :Rückgabewerte:
                 Keine der Methoden in dieser Klasse gibt Werte zurück.

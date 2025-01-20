@@ -4,6 +4,7 @@ from tkinter import *
 import includes.sec_data_info.sqlite3api as sqlapi
 import cache
 from ._styles import *
+from ._sort_tree import sort_column
 import customtkinter as ctk
 
 
@@ -234,11 +235,17 @@ class adminRoomWindow(tk.Frame):
         room_tree.tag_configure("oddrow", background="#f7f7f7")
         room_tree.tag_configure("evenrow", background="white")
 
-        ### listbox for directories
-        room_tree.column("# 1", anchor=CENTER, width=200)
-        room_tree.heading("# 1", text="Raum", )
-        room_tree.column("# 2", anchor=CENTER, width=300)
-        room_tree.heading("# 2", text="Ort")
+        room_columns = [
+            ("# 1", "Raum", 200),
+            ("# 2", "Ort", 300),
+        ]
+
+        for col_id, col_name, col_width in room_columns:
+            room_tree.column(col_id, anchor=tk.CENTER, width=col_width)
+            room_tree.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(room_tree, c, False))
+
+
+
         room_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
         room_tree.tkraise()
         self.update_treeview_with_data()
