@@ -623,12 +623,13 @@ def pop_up_settings(parent, controller):
             current_frame.grid_remove()  # Verstecke den aktuellen Frame
             logger.debug(f"frame:{current_frame}")
         new_frame = frames.get(category)
+        logger.debug(f"new_frame after creation:{new_frame}")
         if new_frame:  # Wenn der neue Frame existiert
-            new_frame.grid(row=1, column=1, rowspan=2, sticky="nsew")
+            new_frame.grid(row=1, column=1, rowspan=1, sticky="nsew")
             new_frame.columnconfigure(0, weight=1)
-            new_frame.rowconfigure(0, weight=1)
+            new_frame.rowconfigure(0, weight=0)
             current_frame = new_frame
-            logger.debug(f"Neuer aktueller Frame: {current_frame}")
+            logger.debug(f"New current_frame: {current_frame}")
 
     # Funktion für Klick auf Kategorie
     def on_category_click_settings(label_settings, category_settings):
