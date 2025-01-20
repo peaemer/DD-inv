@@ -299,24 +299,56 @@ class mainPage(tk.Frame):
         tree.tag_configure("oddrow", background="#f7f7f7")
         tree.tag_configure("evenrow", background="white")
 
-        # listbox for directories
-        tree.column("# 1", anchor=CENTER, width=40)
-        tree.heading("# 1", text="ID")
-        tree.column("# 2", anchor=CENTER, width=130)
-        tree.heading("# 2", text="Service Tag")
-        tree.column("# 3", anchor=CENTER, width=230)
-        tree.heading("# 3", text="Typ")
-        tree.column("# 4", anchor=CENTER, width=120)
-        tree.heading("# 4", text="Raum")
-        tree.column("# 5", anchor=CENTER, width=250)
-        tree.heading("# 5", text="Name")
-        tree.column("# 6", anchor=CENTER, width=300)
-        tree.heading("# 6", text="Beschädigung")
-        tree.column("# 7", anchor=CENTER, width=240)
-        tree.heading("# 7", text="Ausgeliehen von")
+        # Spaltenüberschriften und Konfiguration
+        columns = [
+            ("# 1", "ID", 40),
+            ("# 2", "Service Tag", 130),
+            ("# 3", "Typ", 230),
+            ("# 4", "Raum", 120),
+            ("# 5", "Name", 250),
+            ("# 6", "Beschädigung", 300),
+            ("# 7", "Ausgeliehen von", 240),
+        ]
+        for col_id, col_name, col_width in columns:
+            tree.column(col_id, anchor=tk.CENTER, width=col_width)
+            tree.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(c, False))
+
+
         tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
         tree.tkraise()
         self.update_treeview_with_data()
+
+        def sort_column(col, reverse):
+            # Daten aus der Treeview abrufen
+            data = [(tree.set(item, col), item) for item in tree.get_children('')]
+
+            # Prüfen, ob die Spalte hauptsächlich numerische Daten enthält
+            def is_numeric(value):
+                try:
+                    float(value)
+                    return True
+                except ValueError:
+                    return False
+
+            # Entscheiden, ob die Spalte als Zahl oder Text sortiert werden soll
+            if all(is_numeric(row[0]) for row in data):
+                # Sortieren nach numerischem Wert
+                key_func = lambda x: float(x[0])
+            else:
+                # Sortieren als Text
+                key_func = lambda x: str(x[0])
+
+            # Daten sortieren
+            data.sort(key=key_func, reverse=reverse)
+
+            # Reihenfolge in der Treeview aktualisieren
+            for index, (_, item) in enumerate(data):
+                tree.move(item, "", index)
+
+            # Header aktualisieren, um Sortierrichtung zu wechseln
+            tree.heading(col, command=lambda: sort_column(col, not reverse))
+
+
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
@@ -440,6 +472,7 @@ class mainPage(tk.Frame):
                         entry['Modell'], damage, entry['Ausgeliehen_von']),
                 tags=(tag,)
             )
+
 
     def on_load(self):
         """
