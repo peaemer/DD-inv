@@ -272,13 +272,13 @@ def add_role_popup(parent):
 
     exit_button_add_item_popup = tk.Button(
         button_frame_add_item_popup, image=parent.exit_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=exit_entry
+        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=exit_entry
     )
     exit_button_add_item_popup.grid(row=0, column=0, padx=10, pady=10, sticky=tk.E)
 
     submit_button_add_item_popup = tk.Button(
         button_frame_add_item_popup, image=parent.add_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=submit_entry
+        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=submit_entry
     )
     submit_button_add_item_popup.grid(row=0, column=1, padx=10, pady=10, sticky=tk.W)
 

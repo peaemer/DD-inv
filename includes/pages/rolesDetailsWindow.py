@@ -415,13 +415,13 @@ class rolesDetailsWindow(tk.Frame):
 
         global delete_button, edit_button
         delete_button = tk.Button(button_frame_update_role, image=self.delete_btn,
-                                 bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                                 bd=0, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white",
                                  command=customMessageBoxCall)
         # delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 
         edit_button = tk.Button(button_frame_update_role, image=self.edit_btn,
-                               bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                               bd=0, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white",
                                command=refresh_entry)
         # edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
 

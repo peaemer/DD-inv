@@ -16,7 +16,7 @@ CONFIG_PATH = "user_config.json"
 logger: Logger = Logger('SettingsWindow')
 
 
-######################
+#####################
 # S P E I C H E R N #
 #####################
 

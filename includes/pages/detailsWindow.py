@@ -245,6 +245,7 @@ class detailsWindow(tk.Frame):
         update_label = tk.Label(input_frame_details_window,
                                text="",
                                background="white",
+                               cursor="hand2",
                                fg="darkred",
                                font=("Arial", 14))
         update_label.grid(row=5, column=0, columnspan=2, padx=0, pady=20, sticky="ew")
@@ -357,11 +358,11 @@ class detailsWindow(tk.Frame):
         button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
         lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
-                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2",
                                 command=lambda: lend({"name": self.name_entry_details_window.get()}))
 
         ret_button = tk.Button(button_frame_add_item_popup, image=self.return_btn,
-                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2",
                                 command=lambda: return_item({"name": self.name_entry_details_window.get()}))
 
         def customMessageBoxCall():
@@ -373,13 +374,13 @@ class detailsWindow(tk.Frame):
 
 
 
-        delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
+        delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,cursor="hand2",
                                  bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                  command=customMessageBoxCall)
         #delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 
-        edit_button = tk.Button(button_frame_add_item_popup, image=self.edit_btn,
+        edit_button = tk.Button(button_frame_add_item_popup, image=self.edit_btn,cursor="hand2",
                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",
                                command=refresh_entry)
         #edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren

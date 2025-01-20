@@ -177,6 +177,7 @@ class logInWindow(tk.Frame):
             form_frame,
             image=self.log_out_btn,
             bg="white",
+            cursor="hand2",
             command=log_in,
             bd=0,
             relief=tk.FLAT,

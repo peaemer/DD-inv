@@ -232,6 +232,7 @@ def add_item_popup(parent):
                                            bd=0,
                                            relief=tk.FLAT,
                                            bg="white",
+                                           cursor="hand2",
                                            activebackground="white",
                                            command=exit_entry)
     exit_button_add_item_popup.grid(row=0, column=0)  # Links platzieren
@@ -241,6 +242,7 @@ def add_item_popup(parent):
                                              bd=0,
                                              relief=tk.FLAT,
                                              bg="white",
+                                             cursor="hand2",
                                              activebackground="white",
                                              command=submit_entry)
     submit_button_add_item_popup.grid(row=0, column=1)  # Neben Exit-Button platzieren

@@ -140,7 +140,6 @@ def lend_popup(parent, data, controller: ddINV):
             fg_color=srhGrey,
             text_color="black",
             border_width=border,
-
             dropdown_fg_color=srhGrey,
             dropdown_text_color="black",
             button_color=srhGrey,
@@ -197,11 +196,10 @@ def lend_popup(parent, data, controller: ddINV):
         corner_radius=corner,
         command=confirm_lend
     )
-
-    confirm_btn.grid(row=0, column=0, padx=10)
+    confirm_btn.grid(row=0, column=1, padx=10)
 
     cancel_btn = ctk.CTkButton(
         button_frame, text="Abbrechen",corner_radius=corner, font=LOGINFONT, fg_color=srhGrey,text_color="black", hover_color="#B0B0B0",
         command=popup.destroy
     )
-    cancel_btn.grid(row=0, column=1, padx=10)
+    cancel_btn.grid(row=0, column=0, padx=10)

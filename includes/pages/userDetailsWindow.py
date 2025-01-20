@@ -317,13 +317,13 @@ class userDetailsWindow(tk.Frame):
         global delete_button, edit_button
 
         delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
-                                 bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                                 bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2",
                                  command= customMessageBoxCall)
         delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 
         edit_button = tk.Button(button_frame_add_item_popup, image=self.edit_btn,
-                               bd=0, relief=tk.FLAT, bg="white", activebackground="white",
+                               bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2",
                                command=refresh_entry)
         edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
 

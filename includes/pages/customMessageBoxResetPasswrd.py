@@ -130,6 +130,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
                                   text="Passwort anzeigen",
                                   border_width=0,
                                   fg_color=srhGrey,
+                                  cursor="hand2",
                                   text_color="black",
                                   command=toggle_password)
     toggle_button.grid(row=5, column=0, padx=30, pady=10, sticky="ew", columnspan=2)
@@ -146,6 +147,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
                           text="Bestätigen",
                           border_width=0,
                           fg_color=srhOrange,
+                          cursor="hand2",
                           text_color="white",
                           command=log_out_box)
     accpt.grid(row=7, column=0, padx=0, pady=10)
@@ -156,6 +158,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
                            text="Abbrechen",
                            border_width=0,
                            fg_color=srhGrey,
+                           cursor="hand2",
                            text_color="black",
                            command=passwrd_msg_box.destroy)
     cancel.grid(row=7, column=1, padx=0, pady=10)
