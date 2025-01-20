@@ -1,11 +1,6 @@
 import tkinter as tk
-from doctest import master
 from tkinter import ttk
 from tkinter import *
-from .Searchbar.Logging import Logger
-import cache
-from ._styles import *
-import customtkinter as ctk
 from ..CTkScrollableDropdown import *
 from .customMessageBoxDelete import *
 
@@ -247,12 +242,12 @@ class detailsWindow(tk.Frame):
                                                              corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
         self.damaged_entry_details_window.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        pierre_label = tk.Label(input_frame_details_window,
-                               text="@Pierre",
+        update_label = tk.Label(input_frame_details_window,
+                               text="",
                                background="white",
                                fg="darkred",
                                font=("Arial", 14))
-        pierre_label.grid(row=5, column=0, columnspan=2, padx=0, pady=20, sticky="ew")
+        update_label.grid(row=5, column=0, columnspan=2, padx=0, pady=20, sticky="ew")
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
@@ -281,7 +276,7 @@ class detailsWindow(tk.Frame):
             logger.debug(f"db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID, neue_beschaedigung=damage, neue_standort=room, neue_modell=name, neue_geraetetyp=type)}")
             from .mainPage import mainPage
             mainPage.update_sidetree_with_data()
-            controller.show_frame(mainPage)
+            update_label.configure(text="Eintrag wurde aktualisiert")
 
         def lend(data):
             """

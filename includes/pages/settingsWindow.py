@@ -280,6 +280,7 @@ def pop_up_settings(parent, controller):
                                     text="Profilbild setzen",
                                     image=parent.btn_image_set_profile_picture_settings,
                                     bg="white",
+                                    activebackground="white",
                                     borderwidth=0,
                                     cursor="hand2",
                                     command=lambda: setAvatar())
@@ -320,6 +321,7 @@ def pop_up_settings(parent, controller):
                                   text="Passwort ändern",
                                   font=SETTINGS_BTN_FONT,
                                   bg="white",
+                                  activebackground="white",
                                   cursor="hand2",
                                   image=parent.btn_image_password,
                                   borderwidth=0)
@@ -331,6 +333,7 @@ def pop_up_settings(parent, controller):
                                   text="Benutzer Abmelden",
                                   font=SETTINGS_BTN_FONT,
                                   bg="white",
+                                  activebackground="white",
                                   cursor="hand2",
                                   image=parent.btn_image_logout,
                                   borderwidth=0)
@@ -348,13 +351,13 @@ def pop_up_settings(parent, controller):
     frame_system.grid(row=1, column=1, rowspan=1, sticky="nsew")
     frame_system.grid_columnconfigure(0, weight=1)
     frame_system.grid_rowconfigure(0, weight=1)
-    frame_system.grid_rowconfigure(1, weight=1)
-    frame_system.grid_rowconfigure(2, weight=1)
-    frame_system.grid_rowconfigure(3, weight=1)
-    frame_system.grid_rowconfigure(4, weight=1)
-    frame_system.grid_rowconfigure(5, weight=1)
-    frame_system.grid_rowconfigure(6, weight=1)
-    frame_system.grid_rowconfigure(7, weight=1)
+    frame_system.grid_rowconfigure(1, weight=0)
+    frame_system.grid_rowconfigure(2, weight=0)
+    frame_system.grid_rowconfigure(3, weight=0)
+    frame_system.grid_rowconfigure(4, weight=0)
+    frame_system.grid_rowconfigure(5, weight=0)
+    frame_system.grid_rowconfigure(6, weight=0)
+    frame_system.grid_rowconfigure(7, weight=0)
 
     # Überschrift System erstellen
     radiobutton_label = tk.Label(frame_system,
@@ -408,6 +411,9 @@ def pop_up_settings(parent, controller):
     aendern_button = tk.Button(frame_system,
                                image=parent.set_res_btn,
                                borderwidth=0,
+                               cursor="hand2",
+                               activebackground="white",
+                               background="white",
                                command=lambda: fenster_groesse_aendern(parent))
     aendern_button.grid(row=6, pady=10)
 
@@ -623,12 +629,13 @@ def pop_up_settings(parent, controller):
             current_frame.grid_remove()  # Verstecke den aktuellen Frame
             logger.debug(f"frame:{current_frame}")
         new_frame = frames.get(category)
+        logger.debug(f"new_frame after creation:{new_frame}")
         if new_frame:  # Wenn der neue Frame existiert
-            new_frame.grid(row=1, column=1, rowspan=2, sticky="nsew")
+            new_frame.grid(row=1, column=1, rowspan=1, sticky="nsew")
             new_frame.columnconfigure(0, weight=1)
-            new_frame.rowconfigure(0, weight=1)
+            new_frame.rowconfigure(0, weight=0)
             current_frame = new_frame
-            logger.debug(f"Neuer aktueller Frame: {current_frame}")
+            logger.debug(f"New current_frame: {current_frame}")
 
     # Funktion für Klick auf Kategorie
     def on_category_click_settings(label_settings, category_settings):

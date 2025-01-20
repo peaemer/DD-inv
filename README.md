@@ -18,7 +18,8 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 - [x] **Admin Funktionen**<br/> Erstellen sowie Verwalten von Nutzern, Räumen und Rollen. Dazu einsehen und ändern an Einträgen.
 - [x] **Datenexport**<br/> Export von Inventardaten in CSV- und andere Formate möglich.
 - [x] **Statistiken**<br/> Anzeige von Statistiken und Berichten zum Inventar. Zum Beispiel einer Ausleihistorie der jeweiligen Benutezr.
-- [x] **Design**<br/> Setzen eines Profilbildes für den jeweilgen Benutzer. 
+- [x] **Design**<br/> Setzen eines Profilbildes für den jeweilgen Benutzer.
+- [x] **Einstellungen**<br/> Setzen einer benutzerdefinierten Auflösung. 
 
 ## Voraussetzungen
 
@@ -44,6 +45,7 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 - [ ] **Design** Anapssen des Hintergrundes der App sowie der Farbe.<br/>
 - [ ] **System** Anpassen der Auflösung in den Einstellungen sowie der größe des Inhalts.<br/> 
 - [ ] **Datenbank** Einbinden der Datenbank in die App.
+- [ ] **Einstellungen** Ändern der Zoomstufe des Inhaltes der Apps. 
 
 ## Projektstatus
 
@@ -70,7 +72,7 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 
 Dieses Projekt wird von der **FI24** im Rahmen ihrer Ausbildung entwickelt. Mitwirkende sind:
 
-[Peaemer (Jack)](https://github.com/peaemer/)
+[Peamer (Jack)](https://github.com/peaemer/)
 
 [Alex5X5 (Alex)](https://github.com/Alex5X5)
 
