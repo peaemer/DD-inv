@@ -1,6 +1,9 @@
+import tkinter as tk
+from tkinter import ttk
 from tkinter import *
 
 from ..CTkScrollableDropdown import *
+from ._sort_tree import sort_column
 import tkinter as tk
 from .settingsWindow import *
 import cache
@@ -138,11 +141,16 @@ class detailsWindow(tk.Frame):
         tree_details_window.tag_configure("oddrow", background="#f7f7f7")
         tree_details_window.tag_configure("evenrow", background="white")
 
-        ### listbox for directories
-        tree_details_window.column("# 1", anchor=CENTER, width=180)
-        tree_details_window.heading("# 1", text="Nutzername", )
-        tree_details_window.column("# 2", anchor=CENTER, width=180)
-        tree_details_window.heading("# 2", text="Ausgeliehen am")
+        # Spaltenüberschriften und Konfiguration
+        details_window_columns = [
+            ("# 1", "ID", 200),
+            ("# 2", "Service Tag", 200),
+        ]
+
+        for col_id, col_name, col_width in details_window_columns:
+            tree_details_window.column(col_id, anchor=tk.CENTER, width=col_width)
+            tree_details_window.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(tree_details_window, c, False))
+
         tree_details_window.grid(row=1, column=0)
         tree_details_window.tkraise()
 
