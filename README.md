@@ -19,7 +19,7 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 - [x] **Datenexport**<br/> Export von Inventardaten in CSV- und andere Formate möglich.
 - [x] **Statistiken**<br/> Anzeige von Statistiken und Berichten zum Inventar. Zum Beispiel einer Ausleihistorie der jeweiligen Benutezr.
 - [x] **Design**<br/> Setzen eines Profilbildes für den jeweilgen Benutzer.
-- [x] **Einstellungen**<br/> Setzen einer benutzerdefinierten Auflösung. 
+- [x] **Einstellungen**<br/> Setzen einer benutzerdefinierten Auflösung sowie vergrößern oder verkleinern des Inhaltes der App. Desweiteren ist ein DEBUG-Modus für Administratoren über die Einstellungen an- und ausschaltbar.  
 
 ## Voraussetzungen
 
@@ -43,9 +43,7 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 
 - [ ] **Portable version** Datenbank soll ohne installation überall auf Standard geräten nutzbar sein.<br/>
 - [ ] **Design** Anapssen des Hintergrundes der App sowie der Farbe.<br/>
-- [ ] **System** Anpassen der Auflösung in den Einstellungen sowie der größe des Inhalts.<br/> 
 - [ ] **Datenbank** Einbinden der Datenbank in die App.
-- [ ] **Einstellungen** Ändern der Zoomstufe des Inhaltes der Apps. 
 
 ## Projektstatus
 
@@ -61,12 +59,14 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 
 ## FAQ
 
+- **Wie kann ich das Inventartool herunterladen und Installieren?**<br/> Das Tool kann direkt [hier über das Repositorie](https://github.com/peaemer/DD-inv/releases/latest) heruntergeladen werden. Sowohl als .exe als auch im als ZIP-Datei. 
 - **Wie kann ich mein Passwort ändern?**<br/> Ja. Öffne dazu das Inventariesierungstool und logge dich mit deinem Namen und Passwort ein. Drücke anschließdend in der rechten oberen Ecke auf dein Profilbild (Insofern keiens gesetzt ist es ein "A"). Dort wird dier nach dem öffnenen ein Feld "Passwort ändern" angezeigt. Klicke darauf und folge den Anweisungen im neuen geöffnetem Fenster. 
 - **Was passiert, wenn ich mein Passwort während des Logins nicht mehr weiß?**<br/> Falls du dein Passwort vergessen haben solltest um dich in das Inventariesierungstool einzuloggen, melde dich bei deinem Zuständigen Gruppen Administrator um dein Passwort durch ihn ändern zu lassen. Sobald die Änderung erfolgt ist, logge dich erneut in dAS 
 - **Wie kann ich ein Profilbild einfügen?**<br/> Um ein Profilbild einzufügen öffne das Inventariesierungstool. Logge dich mit deinem Benutzernamen und Passwort ein und naviegiere Anschließend in die Einstellungen.  (rechte obere Ecke auf dein Profilbild klicken (Insofern keiens gesetzt, ist es ein "A")). Dort gibt es die Überschrift "Profilbild-URL / Base64 eingeben". Trage unter diese Überschrift in das Feld die URL bzw. deinen [Base64-Text](https://base64.guru/converter/encode/image/png) ein.
 - **Kann ich einfach so Administratorrechte erhalten?**<br/> Nein. Administratorrechten ist nur für den Gruppenadmin sowie für die Entwickler des Programmes vorgesehen. 
 - **Wie kann ich eine Idee zum Inventartool weitergeben?**<br/> Hierfür gibt es mehrere Möglichkeiten. Entweder du gibst es an deinen Gruppenleiter weiter oder sendest eine [E-Mail an den Ersteller dieses Repositories](mailto:Jack-Mike.Saering@srhk.de).
-- **Gibt es eine Anleitung, in welcher die Funktionen des Programmes genau beschrieben sind?**<br/> Ja. Schaue dafür in den Abschnitt Dokumentation über diesem FAQ. 
+- **Gibt es eine Anleitung, in welcher die Funktionen des Programmes genau beschrieben sind?**<br/> Ja. Schaue dafür in den Abschnitt Dokumentation über diesem FAQ.
+- **Warum ist der DEBUG-Modus nur für Administratoren verfügbar?**<br/> Der DEBUG-Modus muss nicht zwingend notwenig von einem Benutzer ohne erweiterte Rechte verfügbar sein, weil dieser nur für erweiterte Fehlersuche und besseres Logging zur verfügung steht. 
 
 ## Credits
 
