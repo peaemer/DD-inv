@@ -446,7 +446,7 @@ class rolesDetailsWindow(tk.Frame):
         self.role_name.configure(text=data[0])
         self.delete_rl.select() if data[1] == "✔" else self.delete_rl.deselect()
         if data[1] == "✔" and cache.user_group_data['ROLLEN_LOESCHEN'] == "True":
-            delete_button.pack(side=tk.LEFT, padx=20,cursor="hand2")
+            delete_button.pack(side=tk.LEFT, padx=20)
         else:
             delete_button.pack_forget()
         self.feature.select() if data[2] == "✔" else self.feature.deselect()
@@ -460,7 +460,7 @@ class rolesDetailsWindow(tk.Frame):
         self.create_r.select() if data[10] == "✔" else self.create_r.deselect()
         self.edit_r.select() if data[11] == "✔" else self.edit_r.deselect()
         if cache.user_group_data['ROLLEN_BEARBEITEN'] == "True":
-            edit_button.pack(side=tk.LEFT, padx=20,cursor="hand2",)
+            edit_button.pack(side=tk.LEFT, padx=20)
         else:
             edit_button.pack_forget()
         self.delete_r.select() if data[12] == "✔" else self.delete_r.deselect()
