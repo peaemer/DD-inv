@@ -1,4 +1,11 @@
 {
+    "passwort": {
+        "sonderzeichen":false,
+        "zahlen":false,
+        "grossbuchstaben":false,
+        "kleinbuchstaben":false,
+        "laenge":0
+
   "fenster groesse": {
     "hoehe": 3840,
     "breite": 2160

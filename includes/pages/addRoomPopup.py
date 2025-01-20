@@ -1,9 +1,8 @@
 import tkinter as tk
 import customtkinter as ctk
 from includes.sec_data_info import sqlite3api as sqlapi
-import string, random
 
-from .Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 from ._styles import *
 
 #from GUI.pages import roomDetailsWindow

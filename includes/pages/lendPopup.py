@@ -1,8 +1,7 @@
 import tkinter as tk
-from tkinter import ttk
 import customtkinter as ctk
 
-from .Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 from ..CTkScrollableDropdown import *
 from datetime import datetime
 

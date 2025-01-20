@@ -53,39 +53,12 @@ class detailsWindow(tk.Frame):
         self.configure(background="white")
 
         def go_back_details_window():
-            """
-            Repräsentiert ein Fenster mit detaillierter Ansicht innerhalb der GUI-Anwendung. Die Klasse erbt von
-            `tk.Frame` und stellt eine Benutzeroberfläche zur Verfügung, die in der Lage ist, verschiedene
-            Unterseiten oder Frames zu laden und anzuzeigen. Dieses spezielle Fenster dient beispielsweise zur
-            Anzeige von Details und ermöglicht die Navigation zurück zur Hauptseite der Anwendung.
-
-            :Attributes:
-              parent:
-                Ein Widget, das das Eltern-Element dieses Frames darstellt. Das Eltern-Element bestimmt die
-                hierarchische Struktur und Position des Frames innerhalb des GUI-Layouts.
-              controller:
-                Ein Controller-Objekt, das die Verwaltung der Frame-Navigation und des Anwendungszustands
-                übernimmt. Hiermit können neue Seiten angezeigt werden.
-            """
             from .mainPage import mainPage
+            update_label.configure(text="")
             controller.show_frame(mainPage)
 
         def show_settings_window_details_window():
             """
-            Eine Klasse, die ein Detailfenster innerhalb einer Tkinter-Anwendung repräsentiert. Diese
-            Klasse erbt von ``tk.Frame`` und bietet Methoden, um bestimmte Ereignisse oder
-            Aktionen auszuführen, wie das Öffnen eines Einstellungsfensters innerhalb des
-            Detailfensters.
-
-            Attributes
-            ----------
-            parent : Any
-                Das übergeordnete Widget oder Objekt, zu dem dieses Frame gehört.
-            controller : Any
-                Der Controller, der zur Verwaltung dieses Fensters verwendet wird.
-
-            Methods
-            -------
             show_settings_window_details_window()
                 Öffnet das Einstellungs-Pop-Up-Fenster im Detailfenster.
             """
@@ -300,50 +273,17 @@ class detailsWindow(tk.Frame):
             lend_popup(self, data, controller)
 
         def return_item(data):
-            """
-            Eine Klasse, die die Details-Ansicht als Tkinter-Frame darstellt.
-
-            Diese Klasse ist für die Darstellung und Verwaltung einer spezifischen
-            Detailansicht innerhalb einer GUI-Anwendung verantwortlich. Sie erbt von
-            Tkinter's ``Frame`` und integriert zusätzliche Methoden zur Behandlung
-            spezifischer UI-Aktionen.
-
-            :param parent: Der übergeordnete Tkinter-Container, in den dieser Frame
-                           eingebunden wird.
-            :type parent: tk.Widget
-            :param controller: Ein Controller-Objekt, das die Steuerlogik enthält und
-                               den Zustand der Anwendung verwaltet.
-            :type controller: beliebiger Typ
-            """
             db.update_hardware_by_id(cache.selected_ID, neue_ausgeliehen_von=" ")
             from .mainPage import mainPage
             mainPage.update_treeview_with_data()
             controller.show_frame(mainPage)
 
         def delete_entry():
-            """
-            Eine Klasse, die ein Detailfenster als Unterklasse von `tk.Frame` darstellt. Es
-            bietet die Möglichkeit, bestimmte Hardware-Datensätze aus einer Datenbank zu
-            löschen und die Anzeige in der Hauptseite zu aktualisieren.
-
-            Attribute
-            ---------
-            parent
-                Der übergeordnete Tkinter-Container für die Frame-Erstellung.
-            controller
-                Eine Instanz, die für die Navigation zwischen den Frames verantwortlich ist.
-
-            Methoden
-            -------
-            delete_entry
-                Löscht den aktuell ausgewählten Hardware-Eintrag aus der Datenbank und
-                aktualisiert die Anzeige in der Hauptseite.
-
-            """
             db.delete_hardware_by_id(cache.selected_ID)
             from .mainPage import mainPage
             mainPage.update_treeview_with_data()
             mainPage.update_sidetree_with_data()
+            update_label.configure(text="")
             controller.show_frame(mainPage)
 
         from ._avatarManager import resource_path

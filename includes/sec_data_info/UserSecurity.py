@@ -5,7 +5,7 @@ import sys, os
 from random import Random
 
 from . import sqlite3api as db
-from ..pages.Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 
 sys.path.append(os.path.dirname(__file__) + r'\..')
 from typing import Final
@@ -160,13 +160,13 @@ def verify_user(username: str, plain_password: str) -> bool:
 
 def set_password(username:str, new_password:str|None, confirm_password:str|None, randomize_password:bool = False) -> str|None:
     """
-        checks whether both passwords are the same.
-        if the password are the same, hashes the new password and overwrites the users password inside the database.
+        checks whether both passwords are the same and whether they are not null or empty.
+        if the password are the same, hashes the new password and overwrites the users' password inside the database.
 
-        :param str username: the name of the user whoes password should be verifyed
+        :param str username: the name of the user whoes password should be changed
         :param str new_password: the new password that the user wants to set
         :param str confirm_password: has to be the same as new_password
-        :param bool randomize_password: whether to chose 8 random letters or numbers as the ew password
+        :param bool randomize_password: whether to chose 8 random letters or numbers as the new password
     """
     if not randomize_password:
         if __is_invalid_name(new_password):

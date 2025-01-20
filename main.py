@@ -1,8 +1,9 @@
 import json
 import tkinter as tk
+import json
 from tkinter import font
-from includes.pages import logInWindow
 from includes.pages.Searchbar.Logging import Logger
+from includes.pages import (logInWindow)
 
 
 logger: Logger = Logger('main')
