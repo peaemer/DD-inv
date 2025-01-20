@@ -193,7 +193,7 @@ def pop_up_settings(parent, controller):
     own_bio = ctk.CTkEntry(frame_profile,
                            border_width=1,
                            corner_radius=corner,
-                           placeholder_text="Bio oder so ka. Hab das nur Programmiert.",
+                           placeholder_text="Bio",
                            text_color="black",
                            fg_color="white",
                            border_color=srhGrey,  #pip3 install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org customtkinter --upgrade
@@ -242,7 +242,7 @@ def pop_up_settings(parent, controller):
 
     # Eingabe für die Profilbild-URL
     profile_image_url_label = tk.Label(frame_profile,
-                                       text="Profilbild-URL / Bas64 eingeben",
+                                       text="Profilbild-URL / Base64 eingeben",
                                        font=SETTINGS_BTN_FONT,
                                        bg="white")
     profile_image_url_label.grid(row=1, column=1, pady=5, sticky="esw")
