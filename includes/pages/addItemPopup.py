@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from .Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 from ._styles import *
 import customtkinter as ctk
 from ..CTkScrollableDropdown import *

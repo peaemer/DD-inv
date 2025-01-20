@@ -1,7 +1,7 @@
 import tkinter as tk
 import customtkinter as ctk
 import cache
-from .Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 import includes.sec_data_info.sqlite3api as db
 from ._styles import *
 

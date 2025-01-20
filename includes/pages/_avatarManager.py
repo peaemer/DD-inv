@@ -3,8 +3,7 @@ import os
 import sys
 import requests
 
-from .Searchbar.Logging import Logger
-from ._styles import *
+from includes.util.Logging import Logger
 from io import BytesIO
 from PIL import Image, ImageTk, ImageDraw
 

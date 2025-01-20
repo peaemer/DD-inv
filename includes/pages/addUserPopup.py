@@ -1,8 +1,8 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 import customtkinter as ctk
 
-from .Searchbar.Logging import Logger
+from includes.util.Logging import Logger
 from ..CTkScrollableDropdown import *
 from includes.sec_data_info import sqlite3api as db
 import string, random
