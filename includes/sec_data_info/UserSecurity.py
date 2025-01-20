@@ -1,3 +1,4 @@
+import json
 import string
 from hashlib import sha512
 import sys, os
@@ -11,6 +12,19 @@ from typing import Final
 
 fallback_username: Final[str] = 'test'
 fallback_password: Final[str] = 'password'
+
+SPECIAL_CHARACTERS:Final[list[str]] = [
+    '_', '-', ',', '.', '!', '§', '$', '%', '&', '/', '(', ')', '=','?', '+', '#', '~', "'", '<', '>', '|', '°', '^'
+]
+CAPITAL_LETTERS:Final[list[str]] = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+]
+LOWER_LETTERS:Final[list[str]] = [
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+]
+NUMBERS:Final[list[str]] = [
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+]
 
 logger:Logger = Logger('UserSecurity')
 
@@ -31,7 +45,7 @@ def __is_invalid_name(name: str) -> bool:
 
         :return bool: whether the name is valid
     """
-    return name == None or name == ''
+    return not name or name == ''
 
 
 def __compare_password(plain_password: str, hashed_password: bytearray|str) -> bool:
@@ -46,15 +60,59 @@ def __compare_password(plain_password: str, hashed_password: bytearray|str) -> b
     #hash the plain password and check if the hash is equal to the given
     return hashed_password == str(__hash_password(plain_password))
 
-def check_password_requirements(new_password:str) -> str:
+
+def __contains(chars:list[str], password:str) -> bool:
     """
-        gets the password rules that each password has to follow from the config and checks the password according to these rules
+        iterates over the array of chars and checks if it's inside the password
+        :param list[str] chars:
+        :param str password:
+
+        :return: whether at least one of the chars was inside the password
+    """
+    logger_:Logger = Logger.from_logger(logger,'__contains')
+    inside:bool = False
+    for char in chars:
+        if char in password:
+            logger_.debug_e(f"character '{char}' is inside the password")
+            inside = True
+            break
+        else:
+            logger_.debug_e(f"character '{char}' is not inside the password")
+    if not inside:
+        logger_.debug_e(f"none of the characters in list '{chars}' was inside the password")
+    return inside
+
+
+def check_password_requirements(new_password:str) -> str|None:
+    """
+        gets the password rules that every new password has to follow from the config and checks
+        wheter at least on of each of the requiered characters is inside the new password
 
         :param str new_password:
 
-        :return bool: whether the plain password matches the already hashed one after the plain password was hashed
+        :return: an error message why the password doesn't follow the rules
     """
-    pass
+    with (open('./config.json', 'r', encoding='utf-8') as file_handle):
+        rules:dict[str,str] = dict[str,dict[str,str]](json.loads(file_handle.read()))['passwort']
+        if bool(rules['sonderzeichen']):
+            if not __contains(SPECIAL_CHARACTERS, new_password):
+                return 'Das Passwort muss mindestens\nein Sonderzeichen enthalten!'
+
+        if bool(rules['zahlen']):
+            if not __contains(NUMBERS, new_password):
+                return 'Das Passwort muss mindestens\neine Ziffer enthalten!'
+
+        if bool(rules['grossbuchstaben']):
+            if not __contains(CAPITAL_LETTERS, new_password):
+                return 'Das Passwort muss mindestens\neinen Großbuchstaben enthalten!'
+
+        if bool(rules['kleinbuchstaben']):
+            if not __contains(LOWER_LETTERS, new_password):
+                return 'Das Passwort muss mindestens\neinen Kleinbuchstaben enthalten!'
+
+        if len(new_password) < int(rules['laenge']):
+            return f'Das Passwort muss mindestensmindestens {int(rules['laenge'])} Zeichen lang sein!'
+    return None
 
 
 def hash_password(plain_password: str) -> str:
@@ -65,7 +123,7 @@ def hash_password(plain_password: str) -> str:
 
         :return string: the hashed and formatted string
     """
-    if __is_invalid_name(plain_password) == True:
+    if __is_invalid_name(plain_password):
         raise Exception('invalid password')
     return str(__hash_password(plain_password))
 
@@ -108,14 +166,14 @@ def set_password(username:str, new_password:str|None, confirm_password:str|None,
         :param str username: the name of the user whoes password should be verifyed
         :param str new_password: the new password that the user wants to set
         :param str confirm_password: has to be the same as new_password
-        :param bool randomize_password: whether to chose 8 rnadom letters or numbers as the ew password
+        :param bool randomize_password: whether to chose 8 random letters or numbers as the ew password
     """
     if not randomize_password:
         if __is_invalid_name(new_password):
             logger.error(f"""password "{new_password}" is an invalid password""")
             return None
         if __is_invalid_name(confirm_password):
-            logger.error(f"""confimation password "{new_password}" is an invalid""")
+            logger.error(f"""confimation password "{confirm_password}" is an invalid password""")
             return None
         if new_password != confirm_password:
             logger.error(f"""passwords "{str(__hash_password(new_password))}" and "{str(__hash_password(confirm_password))}" don't match""")

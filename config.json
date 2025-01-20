@@ -1,8 +1,10 @@
 {
-    "sicherheit": {
+    "passwort": {
         "sonderzeichen":true,
         "zahlen":true,
-        "grossbuchstaben":true
+        "grossbuchstaben":true,
+        "kleinbuchstaben":true,
+        "laenge":8
     },
     "fenster groesse":{
         "breite": 1000000,

@@ -61,7 +61,7 @@ def __update_dropdown(dropdown: CTkListbox, search_term: str) -> None:
         :param CTkListbox dropdown: the dropdown where the suggested search terms are displayed
         :param str search_term: the search term
     """
-    global cancel_dropdown_updates, loaded_history
+    global loaded_history
     logger_:Logger = Logger.from_logger(logger,'update_dropdown')
     logger_.debug_e(f"updating dropdown")
     logger_.debug_e(f"""setting grid of dropdown""")
@@ -178,13 +178,10 @@ def update_search(dropdown: CTkListbox, search_term: str, username: str) -> None
         :param str search_term: the current search term
         :param str username: the current user's username
     """
-    global search_is_running, cancel_key_press_updates
+    global search_is_running
     if not search_is_running:
         return
-    if cancel_key_press_updates > 0:
-        logger.debug(f"""canceling 1 out of {cancel_key_press_updates} to be canceled """)
-        cancel_key_press_updates -= 1
-        return
+    logger.debug(f"""canceling 1 out of {cancel_key_press_updates} to be canceled """)
     logger.debug(f"""running update search for user "{username}" with searchbar text "{search_term}" and loaded history "{loaded_history}" """)
     logger.debug(f"""chose "{__match_entries(search_term.lower())}" as new options for dropdown""")
     __update_dropdown(dropdown, search_term)
@@ -289,5 +286,5 @@ def on_dropdown_select(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, username
     try:
         searchbar.insert('end', selected_button_text)
     except Exception as e:
-        logger.error(f"""[EXCEPTION]failed to add text to searchbar menu because of {e}""")
+        logger.error(f"""failed to add text to searchbar menu because of {e}""")
     logger.debug(f"finished on dropdown select")

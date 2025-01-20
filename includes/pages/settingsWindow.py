@@ -288,20 +288,16 @@ def pop_up_settings(parent, controller):
     global cotr
     contr: controller = controller
     # def zum Abmelden des Benutzers
-    def log_out_settings(controller: controller):
+    def log_out_settings(controller_):
         """
-        Zeigt die Einstellungs-Popup-Funktionalität an und erlaubt es dem Benutzer, sich auszuloggen.
+        Zeigt die Login-Popup-Funktionalität an und logt den Benutzer aus.
 
-        :param parent: Das Eltern-Widget, das als Basis für das Popup-Fenster dient.
-        :type parent: widget
-        :param controller: Der Controller, der für die Navigation und Zustandsverwaltung der Anwendung
-                           verantwortlich ist.
-        :type controller: Controller-Klasse
+        :param controller_: Der Controller, der für die Navigation und Zustandsverwaltung der Anwendung verantwortlich ist.
         """
         try:
             from .logInWindow import logInWindow
             cache.user_group = None  # Benutzergruppe zurücksetzen
-            contr.show_frame(logInWindow)
+            controller_.show_frame(logInWindow)
             popup.destroy()
 
         except Exception as e:
@@ -317,7 +313,7 @@ def pop_up_settings(parent, controller):
                                                                                title="Passwort ändern",
                                                                                message="Bitte ändere das Passwort \n "
                                                                                        "in den nachfolgenden Feldern.",
-                                                                               calb=log_out_settings),
+                                                                               calb= lambda :log_out_settings(controller)),
                                   text="Passwort ändern",
                                   font=SETTINGS_BTN_FONT,
                                   bg="white",
