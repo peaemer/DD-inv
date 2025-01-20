@@ -1,8 +1,10 @@
-import tkinter as tk
-from includes.util.Logging import Logger
 import json
-
+import tkinter as tk
+import json
+from tkinter import font
+from includes.pages.Searchbar.Logging import Logger
 from includes.pages import (logInWindow)
+
 
 logger: Logger = Logger('main')
 
@@ -13,7 +15,11 @@ class ddINV(tk.Tk):
         self.title("Inventartool")
         self.configure(background="white")
         self.state("zoomed")
-        self.configure(background="white")
+
+        # Standard-Schriftgröße und Zoom-Faktor
+        self.default_font_size = 12
+        self.zoom_factor = 1.0
+        self.custom_font = font.Font(family="Arial", size=self.default_font_size)
 
         # Set window dimensions and icon
         def load_resolution():
@@ -37,7 +43,10 @@ class ddINV(tk.Tk):
         from includes.pages._avatarManager import resource_path
         self.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
 
-        # Create a container for frames
+        from includes.pages._avatarManager import resource_path
+        self.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
+
+        # Container für Frames erstellen
         self.container = tk.Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
         self.container.grid_rowconfigure(0, weight=1)
@@ -47,8 +56,24 @@ class ddINV(tk.Tk):
 
         self.frames = {}
 
-        # Load the login window first
+        # Login-Fenster zuerst laden
         self.show_frame(logInWindow)
+
+    def update_zoom(self, value):
+        """Aktualisiert die Zoomstufe basierend auf dem Wert des Schiebereglers."""
+        self.zoom_factor = float(value)
+        new_font_size = int(self.default_font_size * self.zoom_factor)
+        self.custom_font.configure(size=new_font_size)
+
+        # Alle Frames aktualisieren
+        for frame in self.frames.values():
+            self.update_frame_widgets(frame)
+
+    def update_frame_widgets(self, frame):
+        """Passt alle Widgets im gegebenen Frame an die aktuelle Zoomstufe an."""
+        for widget in frame.winfo_children():
+            if isinstance(widget, (tk.Label, tk.Button, tk.Entry, tk.Text)):
+                widget.configure(font=self.custom_font)
 
     def show_frame(self, cont):
         if cont not in self.frames:
@@ -61,6 +86,9 @@ class ddINV(tk.Tk):
 
         if isinstance(frame, tk.Frame):
             frame.tkraise()  # Frame sichtbar machen
+
+            # Widgets im Frame aktualisieren
+            self.update_frame_widgets(frame)
 
             if hasattr(frame, 'on_load') and callable(frame.on_load):
                 logger.debug(f"on_load is being called for {cont.__name__}")  # Debug

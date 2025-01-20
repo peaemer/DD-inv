@@ -2,7 +2,7 @@ import tkinter as tk
 import webbrowser
 from tkinter import ttk
 import customtkinter as ctk
-from includes.util.Logging import Logger
+from includes.util.Logging import Logger, DEBUG_MODE_NORMAL, DEBUG_MODE_ALL
 from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
@@ -38,12 +38,12 @@ def load_settings():
     if os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, "r") as file:
             return json.load(file)
-    return {"resolution": {"width": 800, "height": 600}}  # Standardwerte
+    return {"resolution": {"width": 1920, "height": 1080}}  # Standardwerte
 
 # neustarten der Anwendung
-def restart_app():
+def close_app():
     """
-    Startet die Anwendung neu, indem der aktuelle Prozess durch den neuen ersetzt wird.
+    Schließt die Anwendung nach der Änderung einer Einstellung.
     """
     python = sys.executable  # Pfad zur Python-Executable
     os.execl(python, python, *sys.argv)
@@ -93,7 +93,7 @@ def pop_up_settings(parent, controller):
     # Bildschirmbreite und hoehe ermitteln (fenster mittig auf Bildschirm setzten)
     screen_width = parent.winfo_screenwidth()
     screen_height = parent.winfo_screenheight()
-    window_width, window_height = 800, 550
+    window_width, window_height = 850, 580
     center_x = int(screen_width / 2 - window_width / 2)
     center_y = int(screen_height / 2 - window_height / 2)
     popup.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
@@ -125,7 +125,8 @@ def pop_up_settings(parent, controller):
             logger.error(f"Error when loading or changing the icon in the heading area. {button['image']}: {e}")
 
     # Header-Bereich erstellen
-    header_frame_settings = tk.Frame(popup, background=srhGrey)
+    header_frame_settings = tk.Frame(popup,
+                                     background=srhGrey)
     header_frame_settings.grid(row=0, column=1, columnspan=1, sticky="new")
 
     # Konfiguration für Header
@@ -140,17 +141,25 @@ def pop_up_settings(parent, controller):
 
     # Standard-Header-Icon
     popup.optionsHead = default_icon
-    header_label = tk.Label(header_frame_settings, image=popup.optionsHead, foreground="white", background=srhGrey)
+    header_label = tk.Label(header_frame_settings,
+                            image=popup.optionsHead,
+                            foreground="white",
+                            background=srhGrey)
     header_label.grid(row=1, column=0, padx=0, pady=10, sticky="nsew")
+
     # Seitenleiste
-    side_settings = tk.Frame(popup, width=200, bg=srhOrange)
+    side_settings = tk.Frame(popup,
+                             width=200,
+                             bg=srhOrange)
     side_settings.grid(row=0, column=0, rowspan=2, sticky="nsw")
     side_settings.grid_columnconfigure(0, weight=1)
 
     # SRH Logo in der Seitenleiste
     from ._avatarManager import resource_path
     popup.srh_logo = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
-    srh_logo_label = tk.Label(side_settings, image=popup.srh_logo, bg=srhOrange)
+    srh_logo_label = tk.Label(side_settings,
+                              image=popup.srh_logo,
+                              bg=srhOrange)
     srh_logo_label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
     #LOGGER PRINT
@@ -180,19 +189,31 @@ def pop_up_settings(parent, controller):
                                          background="white")
     parent.settings_img_label.grid(row=1, column=0, pady=0, rowspan=2, columnspan=1, sticky="ns")
 
+    # Feld für eigene Bio
+    own_bio = ctk.CTkEntry(frame_profile,
+                           border_width=1,
+                           corner_radius=corner,
+                           placeholder_text="Bio oder so ka. Hab das nur Programmiert.",
+                           text_color="black",
+                           fg_color="white",
+                           border_color=srhGrey,  #pip3 install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org customtkinter --upgrade
+                           font=SETTINGS_FONT,
+                           width=250)
+    own_bio.grid(row=3, column=0, rowspan=1, pady=5, sticky="ns")
+
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
                                  text="Eingeloggt als\n" + cache.user_name,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=3, column=0, pady=5, rowspan=1, sticky="new")
+    profile_btn_label.grid(row=4, column=0, pady=5, rowspan=1, sticky="new")
 
     # Schriftzug Rechte in der Gruppe
     profile_btn_label = tk.Label(frame_profile,
                                  text="Rechte des Users\n" + cache.user_group,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=4, column=0, pady=5, sticky="new")
+    profile_btn_label.grid(row=5, column=0, pady=5, sticky="new")
 
     def load_user_email(nutzername):
         """
@@ -210,31 +231,14 @@ def pop_up_settings(parent, controller):
                 return "E-Mail nicht gefunden"
         except Exception as e:
             logger.error(f"Error while trying to load email: {e}")
-            return "Fehler beim Laden"
+            return "Error while loading the Email."
 
     # Schriftzug E-Mail-Adresse
     profile_btn_label = tk.Label(frame_profile,
                                  text="E-Mail-Adressse\n" + load_user_email(cache.user_name),
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=5, column=0, pady=5, sticky="new")
-
-    # PNG-Bild für Btn
-    def load_button_images_profile():
-        """
-        Lädt und gibt das Bild einer Schaltfläche für die Abmeldung des Benutzers zurück.
-
-        Dieses Bild kann in einer GUI verwendet werden, um eine konsistente Darstellung
-        der Benutzeroberfläche zu gewährleisten.
-
-        :return: Das Bild der Schaltfläche als `tk.PhotoImage` Objekt.
-        :rtype: tk.PhotoImage
-        """
-        btn_image_logout = tk.PhotoImage(file=resource_path("./includes/assets/BenutzerAbmeldenSettings.png"))
-        return btn_image_logout
-
-    # Laden des Bildes auf den Abmelden Btn
-    parent.btn_image_logout = load_button_images_profile()
+    profile_btn_label.grid(row=6, column=0, pady=5, sticky="new")
 
     # Eingabe für die Profilbild-URL
     profile_image_url_label = tk.Label(frame_profile,
@@ -285,6 +289,30 @@ def pop_up_settings(parent, controller):
                                     cursor="hand2",
                                     command=lambda: setAvatar())
     update_image_button.grid(row=3, column=1, pady=10, sticky="new")
+
+
+    # def zum Abmelden des Benutzers
+    global cotr
+    contr: controller = controller
+    def log_out_settings(controller: controller):
+        """
+        Zeigt die Einstellungs-Popup-Funktionalität an und erlaubt es dem Benutzer, sich auszuloggen.
+
+        :param parent: Das Eltern-Widget, das als Basis für das Popup-Fenster dient.
+        :type parent: widget
+        :param controller: Der Controller, der für die Navigation und Zustandsverwaltung der Anwendung
+                           verantwortlich ist.
+        :type controller: Controller-Klasse
+        """
+        try:
+            from .logInWindow import logInWindow
+            cache.user_group = None  # Benutzergruppe zurücksetzen
+            contr.show_frame(logInWindow)
+            popup.destroy()
+
+        except Exception as e:
+            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error during logout by the user. {e}")
+
     global cotr
     contr: controller = controller
     # def zum Abmelden des Benutzers
@@ -323,6 +351,23 @@ def pop_up_settings(parent, controller):
                                   borderwidth=0)
     profile_btn_label.grid(row=5, column=1, pady=10, sticky="new")
 
+    # PNG-Bild für Btn
+    def load_button_images_profile():
+        """
+        Lädt und gibt das Bild einer Schaltfläche für die Abmeldung des Benutzers zurück.
+
+        Dieses Bild kann in einer GUI verwendet werden, um eine konsistente Darstellung
+        der Benutzeroberfläche zu gewährleisten.
+
+        :return: Das Bild der Schaltfläche als `tk.PhotoImage` Objekt.
+        :rtype: tk.PhotoImage
+        """
+        btn_image_logout = tk.PhotoImage(file=resource_path("./includes/assets/BenutzerAbmeldenSettings.png"))
+        return btn_image_logout
+
+    # Laden des Bildes auf den Abmelden Btn
+    parent.btn_image_logout = load_button_images_profile()
+
     # Schriftzug Benutzer Abmelden
     profile_btn_label = tk.Button(frame_profile,
                                   command=lambda: log_out_settings(controller),
@@ -346,6 +391,7 @@ def pop_up_settings(parent, controller):
     frame_system = tk.Frame(popup, bg="white")
     frame_system.grid(row=1, column=1, rowspan=1, sticky="nsew")
     frame_system.grid_columnconfigure(0, weight=1)
+    frame_system.grid_columnconfigure(1, weight=1)
     frame_system.grid_rowconfigure(0, weight=1)
     frame_system.grid_rowconfigure(1, weight=0)
     frame_system.grid_rowconfigure(2, weight=0)
@@ -354,6 +400,9 @@ def pop_up_settings(parent, controller):
     frame_system.grid_rowconfigure(5, weight=0)
     frame_system.grid_rowconfigure(6, weight=0)
     frame_system.grid_rowconfigure(7, weight=0)
+    frame_system.grid_rowconfigure(8, weight=0)
+    frame_system.grid_rowconfigure(9, weight=0)
+    frame_system.grid_rowconfigure(10, weight=0)
 
     # Überschrift System erstellen
     radiobutton_label = tk.Label(frame_system,
@@ -373,22 +422,31 @@ def pop_up_settings(parent, controller):
         breite = breite_entry.get()
         hoehe = hoehe_entry.get()
         if breite.isdigit() and hoehe.isdigit():  # Überprüfen, ob die Eingaben Zahlen sind
-            dicti = {
-                "breite": int(breite),
-                "hoehe": int(hoehe)
-            }
+            dicti = {"breite": int(breite),
+                     "hoehe": int(hoehe)}
             save_settings(dicti)  # Auflösung speichern
-            info_label.config(text="Auflösung wird gespeichert und App geschlossen.")
-            parent.after(2000, restart_app)  # Verzögerung von 2 Sekunden und dann Neustart
+            info_label.config(text="Auflösung wird gespeichert und App geschlossen...")
+            parent.after(3000, close_app)  # Verzögerung von 3 Sekunden und dann Neustart
         else:
             info_label.config(text="Bitte gültige Zahlen eingeben.")
 
-    # Eingabefelder für Breite und Höhe
-    breite_label = tk.Label(frame_system, text="Breite", background="white", font=SETTINGS_BTN_FONT)
+    # Eingabefelder fuer Breite
+    breite_label = tk.Label(frame_system,
+                            text="Breite",
+                            background="white",
+                            font=SETTINGS_BTN_FONT)
     breite_label.grid(row=2, column=0)
-    breite_entry = ctk.CTkEntry(frame_system, corner_radius=20, fg_color=srhGrey, text_color="black", border_width=0)
-    breite_entry.grid(row=3)
 
+    breite_entry = ctk.CTkEntry(frame_system,
+                                corner_radius=20,
+                                fg_color=srhGrey,
+                                text_color="black",
+                                font=SETTINGS_BTN_FONT,
+                                placeholder_text="z.B. 1920",
+                                border_width=0)
+    breite_entry.grid(row=3, column=0)
+
+    # Eingabefeld fuer Hoehe
     hoehe_label = tk.Label(frame_system,
                            text="Höhe",
                            background="white",
@@ -399,8 +457,10 @@ def pop_up_settings(parent, controller):
                                corner_radius=20,
                                fg_color=srhGrey,
                                text_color="black",
+                               font=SETTINGS_BTN_FONT,
+                               placeholder_text="z.B. 1080",
                                border_width=0)
-    hoehe_entry.grid(row=5)
+    hoehe_entry.grid(row=5, column=0)
 
     # Button zur Bestätigung
     parent.set_res_btn = tk.PhotoImage(file=resource_path("./includes/assets/SetResSettings.png"))
@@ -411,11 +471,60 @@ def pop_up_settings(parent, controller):
                                activebackground="white",
                                background="white",
                                command=lambda: fenster_groesse_aendern(parent))
-    aendern_button.grid(row=6, pady=10)
+    aendern_button.grid(row=6, pady=5, column=0)
+
+    # Schriftzug DEBUG-Modus aktivieren / deaktivieren
+    zoom_label = tk.Label(frame_system,
+                          text="DEBUG-Modus aktivieren / deaktivieren",
+                          background="white",
+                          font=SETTINGS_BTN_FONT)
+    zoom_label.grid(row=7, column=0, pady=10, sticky="new")
+
+    # Checkbox DEBUG NORMAL
+    debug_normal_label = tk.Label(frame_system,
+                                  text="DEBUG-Normal",
+                                  background="white",
+                                  font=SETTINGS_BTN_FONT)
+    debug_normal_label.grid(row=8, column=0, pady=10, sticky="new")
+
+    parent.debug_normel = ctk.CTkCheckBox(frame_system, text_color="white")
+    parent.debug_normel.grid(column=1, row=8)
+
+    # Checkbox DEBUG ALL
+    debug_all_label = tk.Label(frame_system,
+                                  text="DEBUG-Alle",
+                                  background="white",
+                                  font=SETTINGS_BTN_FONT)
+    debug_all_label.grid(row=9, column=0, pady=10, sticky="new")
+
+    parent.debug_normel = ctk.CTkCheckBox(frame_system, text_color="white")
+    parent.debug_normel.grid(column=1, row=9)
+
+    # Label für die Zoomstufe
+    zoom_label = tk.Label(frame_system,
+                          text="Anpassen der Zoomstufe",
+                          background="white",
+                          font=SETTINGS_BTN_FONT)
+    zoom_label.grid(row=1, column=1, pady=10, sticky="new")
+
+    # Funktion zur Aktualisierung der Zoomstufe
+    def update_zoom(value):
+        logger.debug(f"Zoom-Stufe aktualisiert: {value}")
+
+    zoom_control = ctk.CTkSlider(frame_system,
+                                 from_=int(0.5),  # Minimaler Zoomfaktor
+                                 to=int(2.0),  # Maximaler Zoomfaktor
+                                 number_of_steps=15,  # Anzahl der Schritte (optional)
+                                 command=lambda value: update_zoom(round(value, 1)))  # Rundung auf 1 Nachkommastelle
+    zoom_control.grid(row=2, column=1, pady=10, sticky="ew")
+    zoom_control.set(1.0)  # Standard-Zoomfaktor
 
     # Label für Fehlermeldungen
-    info_label = tk.Label(frame_system, text="", background="white")
-    info_label.grid(row=7, pady=10)
+    info_label = tk.Label(frame_system,
+                          text="",
+                          background="white",
+                          font=SETTINGS_BTN_FONT)
+    info_label.grid(row=10, pady=10, column=0)
 
     #LOGGER PRINT
     logger.debug(f"Complete loading of the 'System' settings page. {['image']}")

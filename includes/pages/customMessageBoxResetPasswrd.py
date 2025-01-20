@@ -24,7 +24,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
 
     # Fensterbreite und -höhe definieren
     window_width = 300
-    window_height = 330
+    window_height = 360
 
     # Berechne die Position, um das Fenster in der Mitte des Bildschirms zu platzieren
     center_x = int(screen_width / 2 - window_width / 2)

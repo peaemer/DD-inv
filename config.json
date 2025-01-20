@@ -5,9 +5,9 @@
         "grossbuchstaben":false,
         "kleinbuchstaben":false,
         "laenge":0
-    },
-    "fenster groesse":{
-        "breite": 1000000,
-        "hoehe": 1000000000
-    }
+
+  "fenster groesse": {
+    "hoehe": 3840,
+    "breite": 2160
+  }
 }
