@@ -6,6 +6,7 @@ from ._avatarManager import resource_path
 from .customMessageBoxDelete import *
 from includes.util.Logging import Logger
 from ..sec_data_info import UserSecurity
+from ._sort_tree import sort_column
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -190,13 +191,15 @@ class userDetailsWindow(tk.Frame):
         self.tree_details_window.tag_configure("oddrow", background="#f7f7f7")
         self.tree_details_window.tag_configure("evenrow", background="white")
 
-        ### listbox for directories
-        self.tree_details_window.column("# 1", anchor=CENTER, width=180)
-        self.tree_details_window.heading("# 1", text="Name", )
-        self.tree_details_window.column("# 2", anchor=CENTER, width=200)
-        self.tree_details_window.heading("# 2", text="ServiceTag/ID")
-        self.tree_details_window.column("# 3", anchor=CENTER, width=220)
-        self.tree_details_window.heading("# 3", text="Ausgeliehen am")
+        user_details_window_columns = [
+            ("# 1", "Name", 180),
+            ("# 2", "ServiceTag/ID", 200),
+            ("# 3", "Ausgeliehen am", 220),
+        ]
+        for col_id, col_name, col_width in user_details_window_columns:
+            self.tree_details_window.column(col_id, anchor=tk.CENTER, width=col_width)
+            self.tree_details_window.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(self.tree_details_window, c, False))
+
         self.tree_details_window.grid(row=1, column=0)
         self.tree_details_window.tkraise()
 
