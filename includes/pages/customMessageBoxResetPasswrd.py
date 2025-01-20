@@ -1,12 +1,16 @@
-from ..sec_data_info.UserSecurity import set_password
+from typing import Callable
+
+from ..sec_data_info.UserSecurity import set_password, check_password_requirements
 from .settingsWindow import *
 import cache
 from ._styles import *
 
+import tkinter
+
 logger:Logger = Logger('customMessageBoxResetPasswrd')
 
 
-def customMessageBoxResetPasswrd(parent, title, message, calb = None):
+def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb:Callable = None):
     passwrd_msg_box = tk.Toplevel(parent)
     passwrd_msg_box.title(title)
     passwrd_msg_box.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
@@ -53,13 +57,11 @@ def customMessageBoxResetPasswrd(parent, title, message, calb = None):
         """
         Zeigt die Einstellungs-Popup-Funktionalität an und erlaubt es dem Benutzer, sich auszuloggen.
 
-        :param widget parent: Das Eltern-Widget, das als Basis für das Popup-Fenster dient.
-        :type parent: widget
-        :param controller: Der Controller, der für die Navigation und Zustandsverwaltung der Anwendung verantwortlich ist.
-        :type controller: Controller-Klasse
         """
         try:
-            if msg_passwrd_first.get() and len(msg_passwrd_first.get()) >= 8:
+            if msg_passwrd_first.get() != msg_passwrd_second.get():
+                return (info_label.config(text='die Passworter sind nicht identisch\n'),)
+            if not check_password_requirements(msg_passwrd_first.get()):
                 logger.debug(cache.user_name)
                 set_password(cache.user_name, msg_passwrd_first.get(),msg_passwrd_second.get())
                 from includes.pages import logInWindow
@@ -69,10 +71,10 @@ def customMessageBoxResetPasswrd(parent, title, message, calb = None):
                 passwrd_msg_box.destroy()
                 calb()
             else:
-                return (info_label.config(text="Das Passwort muss mind. 8 Zeichen lang sein!"),)
+                return (info_label.config(text=check_password_requirements(msg_passwrd_first.get())),)
 
-        except Exception as e:
-            logger.error(f"Error during logout by the user. {e}")
+        except Exception as ex:
+            logger.error(f"Error during logout by the user. {ex}")
 
     passwrd_msg = tk.Frame(passwrd_msg_box, background="white")
     passwrd_msg.grid(row=0,
