@@ -50,27 +50,10 @@ class mainPage(tk.Frame):
         self.configure(background="white")
 
         def show_settings_window():
-            """
-            Repräsentiert die Hauptseite der Anwendung, die als Frame innerhalb einer
-            tkinter-Anwendung konzipiert ist. Diese Klasse dient als Hauptcontainer für
-            Inhalte und verwaltet die Navigation zu anderen Fenstern oder Frames.
-
-            :cvar parent: Der übergeordnete tkinter-Widget, in dem die Hauptseite angezeigt wird.
-            :cvar controller: Der Controller, der die Navigation zwischen den Seiten steuert.
-            """
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
         def show_admin_window():
-            """
-            Diese Klasse repräsentiert die Hauptrahmenseite der Anwendung und erbt von
-            `tk.Frame`. Sie dient als Grundlage für die GUI-Komponente und ermöglicht
-            die Navigation zwischen verschiedenen Seiten oder Fenstern durch den
-            Controller.
-
-            Der Hauptfokus dieser Klasse ist die Integration der Administrations-
-            Fensteransicht durch die Methode `show_admin_window`.
-            """
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
             adminUserWindow.update_treeview_with_data()
@@ -79,23 +62,12 @@ class mainPage(tk.Frame):
         self.show_admin_window = show_admin_window
 
         def log_out():
-            """
-            Eine Klasse, die das Hauptseiten-Frame darstellt und verwendet wird, um
-            den Benutzer zwischen verschiedenen Ansichten zu navigieren. Diese Klasse
-            enthält die Hauptlogik für den Vorgang beim Ausloggen.
-
-            :ivar parent: Die Elternkomponente, auf der dieses Frame basiert.
-            :ivar controller: Der Controller, der die Navigation zwischen verschiedenen Frames verwaltet.
-            """
             from .logInWindow import logInWindow
             cache.user_group = ""  # Benutzergruppe zurücksetzen
             cache.user_name = ""
             controller.show_frame(logInWindow)
 
         def search(search_term:str) -> None:
-            """
-
-            """
             search_entries = []
             for entry in sqlapi.fetch_hardware():
                 for value in entry:
@@ -107,21 +79,8 @@ class mainPage(tk.Frame):
 
         def add_item():
             """
-            Eine Klasse, die die Hauptseite einer Anwendung darstellt und eine entsprechende grafische Benutzeroberfläche
-            bereitstellt. Die Klasse erbt von `tk.Frame` und wird innerhalb eines tkinter-Anwendungsrahmens verwendet.
-
-            Die Klasse enthält eine Methode zur Initialisierung des Layouts und eine Hilfsmethode, um ein Popup-Fenster
-            zum Hinzufügen eines Eintrags anzuzeigen.
-
-            Attributes:
-                parent: Das übergeordnete tkinter-Widget, innerhalb dessen der Rahmen liegt.
-                controller: Eine Controller-Instanz, die die Navigation oder Steuerung zwischen
-                            verschiedenen Anwendungsseiten ermöglicht.
-
-            Methoden:
-                add_item:
-                    Ruft eine Funktion auf, um ein Dialog-Popup für das Hinzufügen eines Eintrags
-                    zu erstellen.
+            Ruft eine Funktion auf, um ein Dialog-Popup für das Hinzufügen eines Eintrags
+            zu erstellen.
 
             :param parent: Das Eltern-Widget für den tkinter-Rahmen.
             :type parent: tk.Widget
@@ -169,6 +128,7 @@ class mainPage(tk.Frame):
                                    image=self.log_out_btn,
                                    command=log_out,
                                    bd=0,
+                                   cursor="hand2",
                                    relief=tk.FLAT,
                                    bg="#DF4807",
                                    activebackground="#DF4807")
@@ -184,6 +144,7 @@ class mainPage(tk.Frame):
                                    command=show_settings_window,
                                    bd=0,
                                    relief=tk.FLAT,
+                                   cursor="hand2",
                                    bg="#DF4807",
                                    activebackground="#DF4807")
         main_page_options_button.grid(row=0, column=3, sticky=tk.E, padx=20)
@@ -210,7 +171,7 @@ class mainPage(tk.Frame):
 
         # Treeview erstellen
         global side_tree
-        side_tree = ttk.Treeview(grey_frame_side, show="tree", style="Treeview_side")
+        side_tree = ttk.Treeview(grey_frame_side, show="tree", style="Treeview_side",cursor="hand2")
 
 
         # Scrollbar erstellen
@@ -244,19 +205,9 @@ class mainPage(tk.Frame):
         # Dbug Info Anzeige der Fenstergroesse
         def show_size(event):
             """
-            Diese Klasse mainPage stellt ein GUI-Frame dar, das in einer tkinter-Anwendung
-            verwendet wird. Es dient als Rahmen für Widgets und enthält Methoden, um auf
-            Ereignisse zu reagieren, wie zum Beispiel Änderungen der Fenstergröße.
-
-            :param parent: Der übergeordnete Widget-Container, zu dem dieses Frame gehört.
-            :type parent: tk.Widget
-            :param controller: Ein Objekt, das als Controller für Navigation oder
-                               Steuerungslogik dient.
-            :type controller: Objekt
-
-            :method show_size: Eine Methode zur Handhabung von Ereignissen, bei denen die
-                               Größe des Fensters geändert wird. Sie gibt die neuen
-                               Breiten- und Höhenwerte des Ereignisses aus.
+            Eine Methode zur Handhabung von Ereignissen, bei denen die
+            Größe des Fensters geändert wird. Sie gibt die neuen
+            Breiten- und Höhenwerte des Ereignisses aus.
             :param event: Das Ereignisobjekt, das von tkinter übergeben wird und
                           Informationen über das Größenänderungsereignis enthält.
             :type event: tk.Event
@@ -269,12 +220,12 @@ class mainPage(tk.Frame):
 
         #erstelle den hinufügen-button im auf dem search frame
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Erstellen.png"))
-        self.add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=add_item)
+        self.add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white", command=add_item)
 
         ##Button Alternative## self.add_button = ctk.CTkButton(search_frame,text="Erstellen",font=("Arial", 25),text_color="white", border_width=border,corner_radius=corner, fg_color=srhOrange, hover_color=srhOrangeHover, command=add_item)
 
         self.search_btn = tk.PhotoImage(file=resource_path("./includes/assets/SearchButton.png"))
-        search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white", activebackground="white",command=lambda:search_entry.finish_search(cache.user_name))
+        search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white",command=lambda:search_entry.finish_search(cache.user_name))
 
         #erstelle den hinufügen-button im auf dem search frame
         dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame, font=("Arial", 20), text_color='black', bg_color="white",border_color=srhGrey, corner_radius=10, scrollbar_fg_color="white", scrollbar_button_color='white', scrollbar_button_hover_color='white')
@@ -326,7 +277,7 @@ class mainPage(tk.Frame):
         tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         # Treeview erstellen
-        tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"),style="Treeview", show="headings")
+        tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"),style="Treeview",cursor="hand2", show="headings")
 
         # Scrollbar erstellen
         scroll = ctk.CTkScrollbar(
@@ -369,12 +320,6 @@ class mainPage(tk.Frame):
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
-            """
-            Hauptseite eines GUI-Frameworks basierend auf tkinter.
-
-            Diese Klasse stellt die Hauptseite dar, die eine Benutzeroberfläche für die
-            Navigation und Anzeige spezifischer Detailinformationen bereitstellt.
-            """
 
             try:
                 selected_item = tree.focus()
@@ -388,17 +333,6 @@ class mainPage(tk.Frame):
 
         def on_side_tree_select(event):
             """
-            Hauptseite für die Anwendung. Diese Klasse erstellt die Hauptansicht für das
-            Programm und erlaubt Benutzern, durch die Auswahl eines Elements aus dem
-            Baum (side_tree) entsprechende Daten in der Hauptansicht (treeview) anzuzeigen.
-
-            :Attributes:
-                parent: Die Elterninstanz oder der übergeordnete Container, in dem diese
-                    Seite eingebettet ist.
-                controller: Der zentrale Steuerungsmechanismus, der zwischen den
-                    verschiedenen Seiten der Anwendung vermittelt.
-
-            :Methode:
                 on_side_tree_select(event):
                     Wird ausgelöst, wenn ein Element im side_tree ausgewählt wird. Diese
                     Methodik ermöglicht:
@@ -552,6 +486,7 @@ class mainPage(tk.Frame):
                     image=self.admin_btn,
                     command=self.show_admin_window,  # Funktion für Admin-Button
                     bd=0,
+                    cursor="hand2",
                     relief=tk.FLAT,
                     bg="#DF4807",
                     activebackground="#DF4807"

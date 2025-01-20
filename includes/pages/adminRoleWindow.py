@@ -217,7 +217,7 @@ class adminRoleWindow(tk.Frame):
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=border, relief=tk.FLAT, bg=srhBlue,
+        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=border,cursor="hand2", relief=tk.FLAT, bg=srhBlue,
                                  activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
@@ -228,6 +228,7 @@ class adminRoleWindow(tk.Frame):
                                    image=self.admin_role_window_avatar,
                                    command=show_settings_window_admin_window,
                                    bd=border,
+                                   cursor="hand2",
                                    relief=tk.FLAT,
                                    bg=srhBlue,
                                    activebackground=srhBlue)
@@ -246,15 +247,15 @@ class adminRoleWindow(tk.Frame):
         navi.grid_columnconfigure(2, weight=1)
 
 
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, command=change_to_user, corner_radius=corner, fg_color="#C5C5C5",
+        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, command=change_to_user,cursor="hand2", corner_radius=corner, fg_color="#C5C5C5",
                                  text_color="black", font=("Arial", 20), hover_color="darkgray")
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",
+        room_nav = ctk.CTkButton(navi, text="Räume", border_width=border, corner_radius=corner,cursor="hand2" ,fg_color="#C5C5C5",
                                  text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",
+        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner,cursor="hand2",fg_color="#C5C5C5",
                                  text_color="black", font=("Arial", 20), hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
@@ -277,7 +278,7 @@ class adminRoleWindow(tk.Frame):
 
         global group_add_button
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
-        group_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white",
+        group_add_button = tk.Button(search_frame, image=self.add_btn, bd=border,cursor="hand2", relief=tk.FLAT, bg="white",
                                     activebackground="white", command=add_role)
         group_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
@@ -286,6 +287,7 @@ class adminRoleWindow(tk.Frame):
                                  image=self.searchBtn,
                                  bd=border,
                                  relief=tk.FLAT,
+                                  cursor="hand2",
                                  bg="white",
                                  activebackground="white",
                                  command=search)
@@ -312,7 +314,7 @@ class adminRoleWindow(tk.Frame):
         role_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global role_tree
-        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16"), show="headings")
+        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16"),cursor="hand2", show="headings")
 
         # Scrollbar erstellen
         role_tree_scroll = ctk.CTkScrollbar(

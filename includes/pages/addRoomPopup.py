@@ -100,20 +100,6 @@ def add_room_popup(parent):
 
     # Buttons (anpassung benötigt)
     def submit_entry():
-        """
-        Fügt ein Popup-Fenster hinzu, mit dem ein Benutzer Räume in einer Anwendung anlegen
-        oder bearbeiten kann. Diese Funktion überprüft die Eingaben des Benutzers und erstellt
-        einen neuen Benutzer in der Datenbank mit einem generierten Passwort, falls die
-        Eingaben korrekt sind. Zeigt bei Erfolg eine Meldung an und aktualisiert die
-        Daten in der Adminansicht.
-
-        :parameter parent: Referenz auf das Eltern-Widget.
-        :type parent: tkinter Widget
-
-        :raises None: Keine spezifischen Ausnahmen werden behandelt.
-
-        :return: Gibt keinen Wert zurück.
-        """
         if not room_entry_add_room_popup.get() or room_entry_add_room_popup.get() == "" or not location_entry_add_room_popup.get() or location_entry_add_room_popup.get() == "":
             error_label.configure(text="Bitte fülle alle Felder aus.")
         else:
@@ -125,17 +111,6 @@ def add_room_popup(parent):
             add_popup.destroy()
 
     def exit_entry():
-        """
-        Öffnet ein Popup-Fenster, um einem Eltern-Widget einen neuen Raum hinzuzufügen.
-        Diese Funktion dient zur benutzerfreundlichen Eingabe und Überprüfung von Raumdaten
-        innerhalb der Anwendung.
-
-        :param parent: Das Eltern-Widget, auf dem das Popup erstellt wird. Wird verwendet,
-                       um sicherzustellen, dass das Popup korrekt in der GUI-Hierarchie
-                       platziert wird.
-        :type parent: Widget
-        :return: Gibt nichts zurück.
-        """
         add_popup.destroy()
 
     from ._avatarManager import resource_path
@@ -149,13 +124,13 @@ def add_room_popup(parent):
 
     exit_button_add_item_popup = tk.Button(
         button_frame_add_item_popup, image=parent.exit_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=exit_entry
+        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=exit_entry
     )
     exit_button_add_item_popup.grid(row=0, column=0, padx=10, pady=10, sticky=tk.E)
 
     submit_button_add_item_popup = tk.Button(
         button_frame_add_item_popup, image=parent.add_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white", command=submit_entry
+        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=submit_entry
     )
     submit_button_add_item_popup.grid(row=0, column=1, padx=10, pady=10, sticky=tk.W)
 

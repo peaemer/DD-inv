@@ -99,102 +99,34 @@ class adminUserWindow(tk.Frame):
             add_user_popup(self)
 
         def on_entry_click(event):
-            """
-            Diese Klasse repräsentiert ein Administrationsfenster für Benutzer in einer
-            GUI-Anwendung, die mithilfe des tkinter-Frameworks erstellt wurde. Sie
-            ermöglicht Funktionen wie die Suche nach Benutzern und die Verwaltung von
-            Benutzerkonten innerhalb der Benutzeroberfläche.
-
-            Die Klasse erbt von ``tk.Frame`` und wird in einem Eltern-Widget integriert.
-            """
             if user_search_entry.get() == 'Suche':
                 user_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
                 user_search_entry.configure(text_color='black')  # Setze Textfarbe auf schwarz
 
         def on_focus_out(event):
-            """
-            Eine GUI-Klasse, die ein Admin-Panel zur Verfügung stellt, um Benutzerdaten zu verwalten und nach Benutzern
-            zu suchen. Die Klasse erbt von `tk.Frame` und verwendet verschiedene UI-Komponenten, um Suchfunktionen und
-            Benutzerinteraktionen zu ermöglichen.
-
-            :param parent: Referenz auf das übergeordnete Widget
-            :type parent: tk.Widget
-            :param controller: Die Steuermechanik, die die Navigation zwischen Frames behandelt
-            :type controller: object
-            """
             if user_search_entry.get() == '':
                 user_search_entry.insert(0, 'Suche')  # Platzhalter zurücksetzen
                 user_search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
 
         def on_key_press(event):
-            """
-            Eine Klasse, die ein Administrator-Benutzerfenster in einer tkinter-Umgebung definiert.
-
-            Diese Klasse liefert grundlegende Funktionalitäten für ein Administrator-Benutzerfenster,
-            indem sie die Eigenschaften und Ereignisse für ihre Darstellung und Bedienung implementiert.
-
-            Attributes
-            ----------
-            parent :
-                Das übergeordnete tkinter-Widget, zu dem dieses Frame hinzugefügt wird.
-            controller :
-                Die Steuerungskomponente, die verwendet wird, um diverse Fenster und Zustände
-                innerhalb der Anwendung zu steuern.
-
-            Methods
-            -------
-            Keine Methodenbeschreibung in der Klassen-Dokumentation.
-
-            """
             typed_key = event.char  # The character of the typed key
 
         def change_to_room():
             """
-            adminUserWindow ist eine Unterklasse von tk.Frame und stellt
-            ein Frame zur Verfügung, das spezifisch für die Benutzeroberfläche
-            eines Admin-Benutzers entwickelt wurde. Diese Klasse ermöglicht
+            Diese Methode ermöglicht
             es dem Benutzer, die Ansicht zu einer Raum-Administrationsansicht
             zu wechseln.
-
-            :param parent: Das übergeordnete Widget, zu dem dieses Frame gehört
-            :type parent: widget
-            :param controller: Referenz auf den Controller, der die Navigation zwischen
-                               den Frames verwaltet
-            :type controller: Controller-Objekt
             """
             from .adminRoomWindow import adminRoomWindow
             controller.show_frame(adminRoomWindow)
             adminRoomWindow.update_treeview_with_data()
 
         def change_to_roles():
-            """
-            Eine Klasse, die ein Benutzeroberflächenfenster für Admin-Benutzer implementiert,
-            das auf einer tkinter-Frame-Komponente basiert. Diese Klasse stellt eine Möglichkeit
-            dar, zwischen verschiedenen Ansichten innerhalb eines Controllers zu wechseln.
-
-            :ivar parent: Der übergeordnete Widget-Container.
-            :ivar controller: Eine Steuerung, die für das Management der verschiedenen Fenster
-                innerhalb der grafischen Benutzeroberfläche verantwortlich ist.
-            """
             from .adminRoleWindow import adminRoleWindow
             controller.show_frame(adminRoleWindow)
             adminRoleWindow.update_treeview_with_data()
 
         def add_user():
-            """
-            Eine Unterklasse von `tk.Frame`, die ein Fenster für die Verwaltung von Admin-Benutzern
-            darstellt.
-
-            Diese Klasse enthält Funktionen zur Verwaltung von Benutzern, einschließlich der
-            Ergänzung eines neuen Benutzers. Die Klasse sollte in einem tkinter-Projekt verwendet
-            werden und erfordert einen `parent` und einen `controller`, die die Benutzeroberflächenelemente
-            organisieren und verwalten.
-
-            :param parent: Das übergeordnete tkinter-Objekt für dieses Fenster.
-            :type parent: tk.Tk oder tk.Frame
-            :param controller: Eine Referenz auf den Controller, der mehrere Fenster verwaltet.
-            :type controller: object
-            """
             from .addUserPopup import add_user_popup
             add_user_popup(self)
 
@@ -229,7 +161,7 @@ class adminUserWindow(tk.Frame):
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=border, relief=tk.FLAT, bg=srhBlue,
+        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window,cursor="hand2", bd=border, relief=tk.FLAT, bg=srhBlue,
                                  activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
@@ -240,6 +172,7 @@ class adminUserWindow(tk.Frame):
                                    image=self.admin_user_window_avatar,
                                    command=show_settings_window_admin_window,
                                    bd=border,
+                                   cursor="hand2",
                                    relief=tk.FLAT,
                                    bg=srhBlue,
                                    activebackground=srhBlue)
@@ -258,13 +191,13 @@ class adminUserWindow(tk.Frame):
         navi.grid_columnconfigure(2, weight=1)
 
 
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",text_color="black", font=("Arial", 20), hover_color="darkgray")
+        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",cursor="hand2",text_color="black", font=("Arial", 20), hover_color="darkgray")
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
+        room_nav = ctk.CTkButton(navi, text="Räume", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",cursor="hand2",text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",text_color="black", command=change_to_roles, font=("Arial", 20), hover_color="darkgray")
+        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",cursor="hand2",text_color="black", command=change_to_roles, font=("Arial", 20), hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
 
@@ -286,7 +219,7 @@ class adminUserWindow(tk.Frame):
 
         global user_add_button
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
-        user_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white",
+        user_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT,cursor="hand2", bg="white",
                                     activebackground="white", command=add_user)
         user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
@@ -295,6 +228,7 @@ class adminUserWindow(tk.Frame):
                                  image=self.searchBtn,
                                  bd=border,
                                  relief=tk.FLAT,
+                                 cursor="hand2",
                                  bg="white",
                                  activebackground="white",
                                  command=search)
@@ -313,7 +247,7 @@ class adminUserWindow(tk.Frame):
         user_search_entry.bind("<Key>", on_key_press)
         user_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-        user_tree_frame = tk.Frame(middle_frame, background="white")
+        user_tree_frame = tk.Frame(middle_frame, background="white",cursor="hand2")
         user_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         # Spaltenkonfiguration für das TreeFrame
@@ -322,7 +256,7 @@ class adminUserWindow(tk.Frame):
         user_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global user_tree
-        user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5"), show="headings")
+        user_tree = ttk.Treeview(user_tree_frame, column=("c1", "c2", "c3", "c4", "c5"), show="headings",cursor="hand2")
 
         # Scrollbar erstellen
         user_tree_scroll = ctk.CTkScrollbar(
@@ -363,17 +297,9 @@ class adminUserWindow(tk.Frame):
         def on_item_selected(event):
             """
             Eine GUI-Komponente für die Verwaltung von Benutzerfenstern in
-            einer Tkinter-Anwendung. Diese Klasse erbt von ``tk.Frame`` und
-            dient als Grundaufbau für Benutzerinteraktionen, wie beispielsweise
+            einer Tkinter-Anwendung.
+            Dient als Grundaufbau für Benutzerinteraktionen, wie beispielsweise
             die Auswahl von Benutzerdetails im Interface.
-
-            :param parent: Oberkomponente, in der der Rahmen eingeordnet wird.
-            :type parent: tk.Widget
-
-            :param controller: Controller-Objekt, das für die Navigation und
-                               Steuerung zwischen verschiedenen Fenstern
-                               verantwortlich ist.
-            :type controller: object
             """
             try:
                 selected_user = user_tree.focus()

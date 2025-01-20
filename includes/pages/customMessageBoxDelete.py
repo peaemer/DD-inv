@@ -92,6 +92,7 @@ def customMessageBoxDelete(parent, controller, title, message, type):
                            text="Löschen",
                            border_width=0,
                            fg_color=srhOrange,
+                           cursor="hand2",
                            text_color="white",
                            command=selectType)
     delete.grid(row=1, column=0, padx=0, pady=10)
@@ -100,6 +101,7 @@ def customMessageBoxDelete(parent, controller, title, message, type):
                            text="Abbrechen",
                            border_width=0,
                            fg_color=srhGrey,
+                           cursor="hand2",
                            text_color="black",
                            command=delete_msg_box.destroy)
     cancel.grid(row=1, column=1, padx=0, pady=10)
