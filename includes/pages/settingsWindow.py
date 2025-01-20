@@ -1,15 +1,20 @@
 import tkinter as tk
-import webbrowser
-from tkinter import ttk
+
 import customtkinter as ctk
-from includes.util.Logging import Logger, DEBUG_MODE_NORMAL, DEBUG_MODE_ALL
+from tkinter import ttk
+
 from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
-from ._styles import *
+
+import webbrowser
+from includes.util.Logging import Logger, DEBUG_MODE_NORMAL, DEBUG_MODE_ALL
 from includes.sec_data_info import sqlite3api as db
+from ._styles import *
 import cache
+
 import os
-import json
 import sys
+import json
+
 
 
 CONFIG_PATH = "user_config.json"
@@ -187,7 +192,7 @@ def pop_up_settings(parent, controller):
     parent.settings_img_label = tk.Label(frame_profile,
                                          image=parent.avatar,
                                          background="white")
-    parent.settings_img_label.grid(row=1, column=0, pady=0, rowspan=2, columnspan=1, sticky="ns")
+    parent.settings_img_label.grid(row=1, column=0, padx=20, pady=5, rowspan=2, columnspan=1, sticky="nws")
 
     # Feld für eigene Bio
     own_bio = ctk.CTkEntry(frame_profile,
@@ -199,21 +204,21 @@ def pop_up_settings(parent, controller):
                            border_color=srhGrey,  #pip3 install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org customtkinter --upgrade
                            font=SETTINGS_FONT,
                            width=250)
-    own_bio.grid(row=3, column=0, rowspan=1, pady=5, sticky="ns")
+    own_bio.grid(row=3, column=0, rowspan=1, padx=20, pady=5, sticky="nws")
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
                                  text="Eingeloggt als\n" + cache.user_name,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=4, column=0, pady=5, rowspan=1, sticky="new")
+    profile_btn_label.grid(row=4, column=0, padx=20, pady=5, rowspan=1, sticky="nws")
 
     # Schriftzug Rechte in der Gruppe
     profile_btn_label = tk.Label(frame_profile,
                                  text="Rechte des Users\n" + cache.user_group,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=5, column=0, pady=5, sticky="new")
+    profile_btn_label.grid(row=5, column=0, padx=20, pady=5, sticky="nws")
 
     def load_user_email(nutzername):
         """
@@ -238,14 +243,14 @@ def pop_up_settings(parent, controller):
                                  text="E-Mail-Adressse\n" + load_user_email(cache.user_name),
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=6, column=0, pady=5, sticky="new")
+    profile_btn_label.grid(row=6, column=0, padx=20, pady=5, sticky="nws")
 
     # Eingabe für die Profilbild-URL
     profile_image_url_label = tk.Label(frame_profile,
                                        text="Profilbild-URL / Base64 eingeben",
                                        font=SETTINGS_BTN_FONT,
                                        bg="white")
-    profile_image_url_label.grid(row=1, column=1, pady=5, sticky="esw")
+    profile_image_url_label.grid(row=1, column=1, pady=5, sticky="n")
 
     profile_image_url = ctk.CTkEntry(frame_profile,
                                      border_width=border,
@@ -254,7 +259,7 @@ def pop_up_settings(parent, controller):
                                      fg_color=srhGrey,
                                      font=SETTINGS_FONT,
                                      width=250)
-    profile_image_url.grid(row=2, column=1, columnspan=1, pady=5)
+    profile_image_url.grid(row=2, column=1, columnspan=1, pady=5, sticky="ns")
 
     # Importieren der Funktion URL
     from ._avatarManager import loadImage
@@ -288,7 +293,7 @@ def pop_up_settings(parent, controller):
                                     borderwidth=0,
                                     cursor="hand2",
                                     command=lambda: setAvatar())
-    update_image_button.grid(row=3, column=1, pady=10, sticky="new")
+    update_image_button.grid(row=3, column=1, pady=10, sticky="ns")
 
 
     # def zum Abmelden des Benutzers
@@ -313,24 +318,6 @@ def pop_up_settings(parent, controller):
         except Exception as e:
             print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error during logout by the user. {e}")
 
-    global cotr
-    contr: controller = controller
-    # def zum Abmelden des Benutzers
-    def log_out_settings(controller_):
-        """
-        Zeigt die Login-Popup-Funktionalität an und logt den Benutzer aus.
-
-        :param controller_: Der Controller, der für die Navigation und Zustandsverwaltung der Anwendung verantwortlich ist.
-        """
-        try:
-            from .logInWindow import logInWindow
-            cache.user_group = None  # Benutzergruppe zurücksetzen
-            controller_.show_frame(logInWindow)
-            popup.destroy()
-
-        except Exception as e:
-            print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error during logout by the user. {e}")
-
     # Laden des Bildes auf dem Passwort Btn
     parent.btn_image_password = tk.PhotoImage(file=resource_path("./includes/assets/ResetPasswordSettings.png"))
 
@@ -349,7 +336,7 @@ def pop_up_settings(parent, controller):
                                   cursor="hand2",
                                   image=parent.btn_image_password,
                                   borderwidth=0)
-    profile_btn_label.grid(row=5, column=1, pady=10, sticky="new")
+    profile_btn_label.grid(row=5, column=1, pady=10, sticky="ns")
 
     # PNG-Bild für Btn
     def load_button_images_profile():
@@ -378,7 +365,7 @@ def pop_up_settings(parent, controller):
                                   cursor="hand2",
                                   image=parent.btn_image_logout,
                                   borderwidth=0)
-    profile_btn_label.grid(row=6, column=1, pady=10, sticky="new")
+    profile_btn_label.grid(row=6, column=1, pady=10, sticky="ns")
 
     #LOGGER PRINT
     logger.debug(f"Complete loading of the 'Profile' settings page. {['image']}")
@@ -473,32 +460,44 @@ def pop_up_settings(parent, controller):
                                command=lambda: fenster_groesse_aendern(parent))
     aendern_button.grid(row=6, pady=5, column=0)
 
-    # Schriftzug DEBUG-Modus aktivieren / deaktivieren
-    zoom_label = tk.Label(frame_system,
-                          text="DEBUG-Modus aktivieren / deaktivieren",
-                          background="white",
-                          font=SETTINGS_BTN_FONT)
-    zoom_label.grid(row=7, column=0, pady=10, sticky="new")
-
-    # Checkbox DEBUG NORMAL
-    debug_normal_label = tk.Label(frame_system,
-                                  text="DEBUG-Normal",
+    # DBUG-Modus als Einstellung für Admins
+    def DBUG_for_Admin(parent):
+        if cache.user_group_data['ADMIN_FEATURE'] == "True":
+            # Schriftzug DEBUG-Modus aktivieren / deaktivieren
+            zoom_label = tk.Label(frame_system,
+                                  text="DEBUG-Modus aktivieren / deaktivieren",
                                   background="white",
                                   font=SETTINGS_BTN_FONT)
-    debug_normal_label.grid(row=8, column=0, pady=10, sticky="new")
+            zoom_label.grid(row=7, column=0, pady=10, sticky="new")
 
-    parent.debug_normel = ctk.CTkCheckBox(frame_system, text_color="white")
-    parent.debug_normel.grid(column=1, row=8)
+            # Checkbox DEBUG NORMAL
+            debug_normal_label = tk.Label(frame_system,
+                                          text="DEBUG-Normal",
+                                          background="white",
+                                          font=SETTINGS_BTN_FONT)
+            debug_normal_label.grid(row=8, column=0, pady=10, sticky="new")
 
-    # Checkbox DEBUG ALL
-    debug_all_label = tk.Label(frame_system,
-                                  text="DEBUG-Alle",
-                                  background="white",
-                                  font=SETTINGS_BTN_FONT)
-    debug_all_label.grid(row=9, column=0, pady=10, sticky="new")
+            def on_debug_normal_click():
+                DEBUG_MODE_NORMAL = False
 
-    parent.debug_normel = ctk.CTkCheckBox(frame_system, text_color="white")
-    parent.debug_normel.grid(column=1, row=9)
+            parent.debug_normel = ctk.CTkCheckBox(frame_system, text_color="white", command=lambda: on_debug_normal_click)
+            parent.debug_normel.grid(column=1, row=8)
+
+            # Checkbox DEBUG ALL
+            debug_all_label = tk.Label(frame_system,
+                                          text="DEBUG-Alle",
+                                          background="white",
+                                          font=SETTINGS_BTN_FONT)
+            debug_all_label.grid(row=9, column=0, pady=10, sticky="new")
+
+            def on_debug_all_click():
+                DEBUG_MODE_ALL = False
+
+            parent.debug_normel = ctk.CTkCheckBox(frame_system, text_color="white", command=lambda: on_debug_all_click)
+            parent.debug_normel.grid(column=1, row=9)
+        else:
+            logger.debug("Einstellungen nur für Administrator Verfügbar.")
+    DBUG_for_Admin(frame_system)
 
     # Label für die Zoomstufe
     zoom_label = tk.Label(frame_system,

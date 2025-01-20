@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-
 from customtkinter import CTkEntry
-
 from includes.sec_data_info import sqlite3api as sqlapi
 from .Searchbar import SearchbarLogic as sb
 from .Searchbar.Searchbar2 import Searchbar2
@@ -13,7 +11,9 @@ import customtkinter as ctk
 import json
 from .ctk_listbox import *
 
+
 logger:Logger = Logger('MainPage')
+
 
 # Hauptseite (zweites Fenster)
 class mainPage(tk.Frame):

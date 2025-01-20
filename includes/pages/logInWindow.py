@@ -2,8 +2,6 @@ import tkinter as tk
 import webbrowser
 from tkinter import *
 from tkinter import ttk
-
-import cache
 from .customMessageBoxDelete import *
 from ._avatarManager import check_internet_connection, loadImage
 import customtkinter as ctk

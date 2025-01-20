@@ -1,11 +1,13 @@
 from typing import Callable
 
+import tkinter
+
 from ..sec_data_info.UserSecurity import set_password, check_password_requirements
 from .settingsWindow import *
 import cache
 from ._styles import *
 
-import tkinter
+from includes.util.Logging import Logger
 
 logger:Logger = Logger('customMessageBoxResetPasswrd')
 
