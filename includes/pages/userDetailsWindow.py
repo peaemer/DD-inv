@@ -7,6 +7,7 @@ from ._avatarManager import resource_path
 import random, string
 from .customMessageBoxDelete import *
 from.Searchbar.Logging import Logger
+from ..sec_data_info import UserSecurity
 from ..sec_data_info.UserSecurity import hash_password
 
 LARGEFONT = ("Arial", 35)
@@ -106,12 +107,12 @@ class userDetailsWindow(tk.Frame):
                 Rahmenrouting steuert.
             :type controller: Any
             """
-            pw = str(''.join(random.choices(string.ascii_letters, k=7)))
-            db.update_benutzer(self.name.get(), neues_passwort=hash_password(pw))
-            messagebox.showinfo(title="Reseted User Password", message="New password: " + pw)
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
+            pw = UserSecurity.set_password(self.name.get(), None, None, randomize_password=True)
+            if pw:
+                messagebox.showinfo(title="Reseted User Password", message="New password: " + pw)
+                from .adminUserWindow import adminUserWindow
+                adminUserWindow.update_treeview_with_data()
+                controller.show_frame(adminUserWindow)
 
         def customMessageBoxCall():
             customMessageBoxDelete(self,

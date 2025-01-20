@@ -18,7 +18,6 @@ MAX_REPEATED_USES: Final[int] = 5
 fallback_username: Final[str] = '1234'
 
 search_is_running = False
-cancel_dropdown_updates: int = 0
 cancel_key_press_updates: int = 0
 last_searchbar_text_length: int = 0
 
@@ -64,21 +63,18 @@ def __update_dropdown(dropdown: CTkListbox, search_term: str) -> None:
     """
     global cancel_dropdown_updates, loaded_history
     logger_:Logger = Logger.from_logger(logger,'update_dropdown')
-    if cancel_dropdown_updates > 0:
-        cancel_dropdown_updates -= 1
-        logger_.debug(f"canceling dropdown update")
-        return
     logger_.debug_e(f"updating dropdown")
     logger_.debug_e(f"""setting grid of dropdown""")
     try:
         dropdown.grid(padx=5, pady=5, row=0, column=0, sticky=tk.W + tk.E)
     except Exception as e:
-        logger_.debug(f"""[EXCEPTION]failed to set grid of dropdown menu because of {e}""")
+        logger_.error(f"""failed to set grid of dropdown menu because of {e}""")
     logger_.debug_e(f"""successfully set grid of dropdown""")
     new_items: list[dict[str, str]] = []
     for new_item in sorted(loaded_history, key=lambda x: float(x['weight']), reverse=True):
         if new_item['text'].startswith(search_term.lower()):
             new_items.append(new_item)
+            logger_.debug_e(f"""items from database are:{new_item}""")
     if dropdown:
         while dropdown.size() > 0:
             dropdown.delete(0, 0)
@@ -97,7 +93,7 @@ def __update_dropdown(dropdown: CTkListbox, search_term: str) -> None:
                 if i >= 3:
                     break
         except Exception as e:
-            logger_.debug(f"""[EXCEPTION]failed to add item to dropdown menu because of {e}""")
+            logger_.error(f"""failed to add item to dropdown menu because of {e}""")
             return
     else:
         logger_.debug(f"""dropdown was null""")

@@ -36,10 +36,10 @@ class ddINV(tk.Tk):
             try:
                 with open('config.json', 'r') as openfile:
                     # Reading from json file
-                    json_object = json.load(openfile)
+                    json_object:dict[str,dict[str,str]] = json.load(openfile)
                     print(json_object)
-                height = json_object["hoehe"]
-                width = json_object["breite"]
+                height = json_object['fenster groesse']["hoehe"]
+                width = json_object['fenster groesse']["breite"]
                 return height, width
             except (FileNotFoundError, json.JSONDecodeError):
                 return 1920, 1080  # Standard-Auflösung zurückgeben, falls nichts gefunden wird

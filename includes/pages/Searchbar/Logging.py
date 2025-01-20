@@ -1,4 +1,3 @@
-from copy import copy
 from typing import Final
 
 message_type_style:Final[str] = '\033[1;32m'

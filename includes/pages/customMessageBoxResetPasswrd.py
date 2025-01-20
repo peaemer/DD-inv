@@ -53,10 +53,9 @@ def customMessageBoxResetPasswrd(parent, title, message, calb = None):
         """
         Zeigt die Einstellungs-Popup-Funktionalität an und erlaubt es dem Benutzer, sich auszuloggen.
 
-        :param parent: Das Eltern-Widget, das als Basis für das Popup-Fenster dient.
+        :param widget parent: Das Eltern-Widget, das als Basis für das Popup-Fenster dient.
         :type parent: widget
-        :param controller: Der Controller, der für die Navigation und Zustandsverwaltung der Anwendung
-                            verantwortlich ist.
+        :param controller: Der Controller, der für die Navigation und Zustandsverwaltung der Anwendung verantwortlich ist.
         :type controller: Controller-Klasse
         """
         try:

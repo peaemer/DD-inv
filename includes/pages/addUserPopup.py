@@ -132,7 +132,7 @@ def add_user_popup(parent):
         if not username_entry_add_user_popup.get() or username_entry_add_user_popup.get() == "" or not role_combobox_add_user_popup.get() or role_combobox_add_user_popup.get() == "Rolle auswählen":
             error_label.configure(text="Bitte fülle alle Felder aus (Nutzername)")
         else:
-            db.create_benutzer(username_entry_add_user_popup.get(), pw, email_entry_add_user_popup.get(), role_combobox_add_user_popup.get())
+            db.create_benutzer(username_entry_add_user_popup.get(), pw, email_entry_add_user_popup.get())
             messagebox.showinfo(title="Added User", message="Nutzername: "+username_entry_add_user_popup.get()+"\nNew password: " + pw)
             from .adminUserWindow import adminUserWindow
             adminUserWindow.update_treeview_with_data()
