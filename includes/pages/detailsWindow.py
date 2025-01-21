@@ -4,6 +4,7 @@ from tkinter import *
 from ..CTkScrollableDropdown import *
 from .customMessageBoxDelete import *
 from ._sort_tree import sort_column
+import includes.sec_data_info.sqlite3api as db
 
 logger:Logger = Logger('DetailsWindow')
 
