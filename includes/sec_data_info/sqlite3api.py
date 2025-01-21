@@ -4,7 +4,7 @@ from .UserSecurity import *
 # Pfad zur Datenbankdatei
 path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __use__fallback_path: bool = True
-__fallback_path: str = os.path.dirname(__file__) + './DD-invBeispielDatenbank.sqlite3'
+__fallback_path: str = os.path.dirname(__file__) + './DD-invBeispielDatenbank_test.sqlite3'
 
 
 def init_connection() -> sqlite3.Connection:
@@ -24,6 +24,101 @@ def init_connection() -> sqlite3.Connection:
     con = sqlite3.connect(path)
     con.row_factory = sqlite3.Row
     return con
+
+
+###############################################################
+# T A B E L L E N - B E A R B E I T U N G S - E N D P U N K T #
+###############################################################
+
+def add_column(table_name:str, column_name:str, data_type:str = 'TEXT') -> str:
+    """
+        Fügt eine neue spalte zu einer Tabelle hinzu.
+
+        :param str table_name: der name der Tabelle, in die die Spalte eingefügt werden soll.
+        :param str column_name: der name der Tabellenspalte, die hizugefügt werden soll.
+        :param str data_type: der Datentyp den die Einträge der neuen Spalte haben sollen.
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
+            cur.execute(
+                f'ALTER TABLE {table_name} ADD COLUMN {column_name} {data_type}'
+            )
+            con.commit()
+        return f'Tabellenspalte {column_name}  wurde hizugefügt.'
+    except sqlite3.Error as e:
+        # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
+        return f"Fehler beim Hinzufügen der Tabellenspalte: {e.args[0]}"
+
+
+def remove_column(table_name:str, column_name:str) -> str:
+    """
+        Fügt eine neue spalte zu einer Tabelle hinzu.
+
+        :param str table_name: der name der Tabelle, in die die Spalte eingefügt werden soll.
+        :param str column_name: der name der Tabellenspalte, die hizugefügt werden soll.
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
+    """
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
+            cur.execute(
+                f'ALTER TABLE {table_name} DROP COLUMN {column_name}'
+            )
+            con.commit()
+        return f'Tabellenspalte {column_name} wurde entfernt.'
+    except sqlite3.Error as e:
+        # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
+        return f"Fehler beim Entfernen der Tabellenspalte: {e.args[0]}"
+
+
+def add_table(table_name:str, new_columns:list[tuple[str, str | None]]) -> str:
+    """
+        Fügt eine neue Tabelle zur Datenbank hinzu.
+
+        :param str table_name: der name der Tabelle, die hizugefügt werden soll.
+        :param list[Tuple(str, str|None)] new_columns: alle Spalten die Die Datenbank am Anfang besitzen soll.
+            der erste Eintrag in jedem Tuple giebt den Namen der Neuen Spalte an und der zweite den Datentyp.
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung.
+    """
+    sql_stmt:str = f'CREATE TABLE {table_name}'
+    sql_stmt += ' ('
+    if new_columns:
+        for single_new_column in new_columns:
+            sql_stmt += f'{single_new_column[0]}'
+            sql_stmt += f' {single_new_column[1]}'  if single_new_column[1] else ' TEXT'
+            sql_stmt += ', '
+    sql_stmt = sql_stmt[:-2]
+    sql_stmt += ')'
+    print(sql_stmt)
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
+            cur.execute(sql_stmt)
+            con.commit()
+        return f'Tabelle {table_name} wurde hinzugefügt.'
+    except sqlite3.Error as e:
+        # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
+        return f"Fehler Erstellen der Tabelle: {e.args[0]}"
+
+def remove_table(table_name:str) -> str:
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
+            cur.execute(f'DROP TABLE {table_name}')
+            con.commit()
+        return f'Tabelle {table_name} wurde entfernt.'
+    except sqlite3.Error as e:
+        # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
+        return f"Fehler Entfernen der Tabelle: {e.args[0]}"
 
 
 #####################################
