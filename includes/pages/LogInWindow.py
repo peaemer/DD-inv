@@ -194,8 +194,8 @@ class LogInWindow(tk.Frame):
         def open_VersionBuild(url):
             webbrowser.open(url)
 
-        logo_image = PhotoImage(file=resource_path("./includes/assets/DD-Inv_Logo.png"))
+        parent.logo_image = PhotoImage(file=resource_path("./includes/assets/DD-Inv_Logo.png"))
         btn_links_label = ttk.Label(bottom_frame, background="white", text="VersionBuild   V. 0.2 BETA", cursor="hand1", font=("Arial", 12))
         btn_links_label.grid(row=18, column=0, pady=2, sticky="new")
-        btn_links_label.configure(width=30, anchor='center', image=logo_image, compound="left")
+        btn_links_label.configure(width=30, anchor='center', image=parent.logo_image, compound="left")
         btn_links_label.bind("<Button-1>", lambda e: open_VersionBuild("https://github.com/peaemer/DD-inv/releases/latest"))
