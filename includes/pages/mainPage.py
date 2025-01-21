@@ -385,20 +385,37 @@ class mainPage(tk.Frame):
         # Binde die Ereignisfunktion an die Treeview
         tree.bind("<Double-1>", on_item_selected)
 
-    def update_sidetree_with_data(self = None, rooms = None):
-        logger.debug("update_sidetree_with_data aufgerufen.") # Debug
+    def update_sidetree_with_data(self=None, rooms=None):
+        logger.debug("update_sidetree_with_data aufgerufen.")  # Debug
+
+        # Treeview leeren
         side_tree.delete(*side_tree.get_children())
         side_tree.insert("", tk.END, text="Alle Räume")
+
+        # Räume abrufen, wenn keine übergeben wurden
         if rooms is None:
             rooms = sqlapi.fetch_all_rooms()
+
+        # Räume sortieren (alphabetisch nach 'Raum')
+        rooms = sorted(rooms, key=lambda r: r['Raum'])
+
         for room in rooms:
+            # Kategorienliste für den aktuellen Raum
             cats = []
+
+            # Raum hinzufügen
             tree_parent = side_tree.insert("", tk.END, text=room['Raum'])
+
+            # Hardware abrufen und nach Raum filtern
             for hw in sqlapi.fetch_hardware():
                 if hw['Raum'] and hw['Raum'].startswith(room['Raum']):
-                    if not hw['Geraetetype'] in cats:
+                    # Kategorie hinzufügen, falls nicht vorhanden
+                    if hw['Geraetetype'] not in cats:
                         cats.append(hw['Geraetetype'])
-                        side_tree.insert(tree_parent, tk.END, text=hw['Geraetetype'])
+
+            # Kategorien sortieren und hinzufügen
+            for category in sorted(cats):
+                side_tree.insert(tree_parent, tk.END, text=category)
 
     def update_profile_picture(self=None):
         main_page_avatar = cache.user_avatar
