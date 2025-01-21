@@ -20,13 +20,13 @@ def show_user_details(selected_user, tree, controller):
     data = tree.item(selected_user, "values")
     Logger('UserDetailsWindow').debug(f"Data of the selected user: {data}")
     cache.selected_ID = data[1]
-    controller.show_frame(userDetailsWindow)  # Zeige die Details-Seite
+    controller.show_frame(UserDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
-    details = controller.frames[userDetailsWindow]
-    details.update_data(data)  # Methode in detailsWindow aufrufen
+    details = controller.frames[UserDetailsWindow]
+    details.update_data(data)  # Methode in DetailsWindow aufrufen
 
 
-class userDetailsWindow(tk.Frame):
+class UserDetailsWindow(tk.Frame):
     """
     Repräsentiert ein Fenster für Benutzerdetails innerhalb einer Tkinter-Anwendung.
 
@@ -56,8 +56,8 @@ class userDetailsWindow(tk.Frame):
         self.configure(background="white")
 
         def go_back_details_window():
-            from .adminUserWindow import adminUserWindow
-            controller.show_frame(adminUserWindow)
+            from .AdminUserWindow import AdminUserWindow
+            controller.show_frame(AdminUserWindow)
 
         def show_settings_window_details_window():
             print("Show settings window details window")
@@ -69,9 +69,9 @@ class userDetailsWindow(tk.Frame):
             pw = UserSecurity.set_password(self.name.get(), None, None, randomize_password=True)
             if pw:
                 messagebox.showinfo(title="Reseted User Password", message="New password: " + pw)
-                from .adminUserWindow import adminUserWindow
-                adminUserWindow.update_treeview_with_data()
-                controller.show_frame(adminUserWindow)
+                from .AdminUserWindow import AdminUserWindow
+                AdminUserWindow.update_treeview_with_data()
+                controller.show_frame(AdminUserWindow)
 
         def customMessageBoxCall():
             customMessageBoxDelete(self,
@@ -221,9 +221,9 @@ class userDetailsWindow(tk.Frame):
         def refresh_entry():
             #update
             db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
+            from .AdminUserWindow import AdminUserWindow
+            AdminUserWindow.update_treeview_with_data()
+            controller.show_frame(AdminUserWindow)
 
         def delete_entry():
             """
@@ -232,9 +232,9 @@ class userDetailsWindow(tk.Frame):
                 Benutzeransicht.
             """
             db.delete_benutzer(self.name.get())
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
-            controller.show_frame(adminUserWindow)
+            from .AdminUserWindow import AdminUserWindow
+            AdminUserWindow.update_treeview_with_data()
+            controller.show_frame(AdminUserWindow)
 
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
         self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))

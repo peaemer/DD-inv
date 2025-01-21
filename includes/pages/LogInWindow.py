@@ -2,13 +2,14 @@ import tkinter as tk
 import webbrowser
 from tkinter import *
 from tkinter import ttk
+import customtkinter as ctk
+
 from .customMessageBoxDelete import *
 from ._avatarManager import check_internet_connection, loadImage
-import customtkinter as ctk
 from includes.sec_data_info import sqlite3api as db
 
 
-class logInWindow(tk.Frame):
+class LogInWindow(tk.Frame):
     """
     Eine Klasse, die ein Login-Fenster für die Anwendung darstellt.
 
@@ -71,9 +72,9 @@ class logInWindow(tk.Frame):
                 password_entry.delete(0, 'end')
                 username_entry.delete(0, 'end')
                 # Zeige die MainPage an
-                from .mainPage import mainPage
+                from .MainPage import MainPage
                 cache.controller = controller
-                controller.show_frame(mainPage)
+                controller.show_frame(MainPage)
 
             else:
                 # Zeige Fehlermeldung bei falschem Login

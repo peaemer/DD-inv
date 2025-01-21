@@ -2,8 +2,9 @@ import json
 import tkinter as tk
 import json
 from tkinter import font
+
 from includes.util.Logging import Logger
-from includes.pages import (logInWindow)
+from includes.pages import (LogInWindow)
 
 
 logger: Logger = Logger('main')
@@ -57,7 +58,7 @@ class ddINV(tk.Tk):
         self.frames = {}
 
         # Login-Fenster zuerst laden
-        self.show_frame(logInWindow)
+        self.show_frame(LogInWindow)
 
     def update_zoom(self, value):
         """Aktualisiert die Zoomstufe basierend auf dem Wert des Schiebereglers."""

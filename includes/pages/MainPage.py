@@ -17,9 +17,9 @@ logger:Logger = Logger('MainPage')
 
 
 # Hauptseite (zweites Fenster)
-class mainPage(tk.Frame):
+class MainPage(tk.Frame):
     """
-    Die Klasse mainPage repräsentiert die Benutzeroberfläche der Hauptseite der Anwendung.
+    Die Klasse MainPage repräsentiert die Benutzeroberfläche der Hauptseite der Anwendung.
 
     Die Hauptseite dient als zentrale Übersicht für die Inventur. Sie enthält mehrere
     wichtige Funktionen wie die Möglichkeit, nach Elementen zu suchen, neue Elemente hinzuzufügen,
@@ -34,8 +34,6 @@ class mainPage(tk.Frame):
     :type srh_head: tk.PhotoImage
     :ivar log_out_btn: Bildobjekt für den Log-Out-Button.
     :type log_out_btn: tk.PhotoImage
-    :ivar opt_btn: Bildobjekt für den Button, um die Einstellungen zu öffnen.
-    :type opt_btn: tk.PhotoImage
     :ivar admin_btn: Bildobjekt für den Button, um den Admin-Bereich zu öffnen.
     :type admin_btn: tk.PhotoImage
     :ivar add_btn: Bildobjekt für den Button, um ein neues Element hinzuzufügen.
@@ -52,18 +50,18 @@ class mainPage(tk.Frame):
             pop_up_settings(self, controller)
 
         def show_admin_window():
-            from .adminUserWindow import adminUserWindow
-            controller.show_frame(adminUserWindow)
-            adminUserWindow.update_treeview_with_data()
+            from .AdminUserWindow import AdminUserWindow
+            controller.show_frame(AdminUserWindow)
+            AdminUserWindow.update_treeview_with_data()
 
         # Speichere die Funktion als Attribut, um später darauf zuzugreifen
         self.show_admin_window = show_admin_window
 
         def log_out():
-            from .logInWindow import logInWindow
+            from .LogInWindow import LogInWindow
             cache.user_group = ""  # Benutzergruppe zurücksetzen
             cache.user_name = ""
-            controller.show_frame(logInWindow)
+            controller.show_frame(LogInWindow)
 
         def search(search_term:str) -> None:
             search_entries = []
@@ -325,7 +323,7 @@ class mainPage(tk.Frame):
                 selected_item = tree.focus()
                 logger.debug(f"Selected Item: {selected_item}")
                 if selected_item:
-                    from .detailsWindow import detailsWindow, show_details
+                    from .DetailsWindow import DetailsWindow, show_details
                     show_details(selected_item, tree, controller)
             except Exception as e:
                 logger.debug(f"Error during selection: {e}") #Debug

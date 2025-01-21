@@ -9,11 +9,11 @@ import customtkinter as ctk
 
 
 # Hauptseite (zweites Fenster)
-class adminRoomWindow(tk.Frame):
+class AdminRoomWindow(tk.Frame):
     """
     Beschreibt die Klasse und ihre Funktionalität.
 
-    Die Klasse `adminRoomWindow` repräsentiert das Fenster für die Raumverwaltung in einer
+    Die Klasse `AdminRoomWindow` repräsentiert das Fenster für die Raumverwaltung in einer
     Tkinter basierten GUI-Anwendung. Sie stellt die visuelle und funktionale Basis für
     das Verwalten von Räumen bereit, einschließlich Navigation, Suche, Hinzufügen neuer
     Räume sowie die Integration eines Tabellenbaums mit Rauminformationen.
@@ -37,8 +37,8 @@ class adminRoomWindow(tk.Frame):
             """
            Enthält Navigation zur Hauptseite.
             """
-            from .mainPage import mainPage
-            controller.show_frame(mainPage)
+            from .MainPage import MainPage
+            controller.show_frame(MainPage)
 
         def show_settings_window_admin_window():
             print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: show settings window admin window") # Debug
@@ -73,19 +73,19 @@ class adminRoomWindow(tk.Frame):
 
 
         def change_to_user():
-            from .adminUserWindow import adminUserWindow
-            controller.show_frame(adminUserWindow)
-            adminUserWindow.update_treeview_with_data()
+            from .AdminUserWindow import AdminUserWindow
+            controller.show_frame(AdminUserWindow)
+            AdminUserWindow.update_treeview_with_data()
 
         def change_to_roles():
-            from .adminRoleWindow import adminRoleWindow
-            controller.show_frame(adminRoleWindow)
-            adminRoleWindow.update_treeview_with_data()
+            from .AdminRoleWindow import AdminRoleWindow
+            controller.show_frame(AdminRoleWindow)
+            AdminRoleWindow.update_treeview_with_data()
 
 
         global tree
 
-        # Konfiguriere das Grid-Layout für das adminRoomWindow
+        # Konfiguriere das Grid-Layout für das AdminRoomWindow
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
@@ -256,7 +256,7 @@ class adminRoomWindow(tk.Frame):
                 selected_room = room_tree.focus()
                 print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Ausgewählter Raum: {selected_room}")  # Debug
                 if selected_room:
-                    from .roomDetailsWindow import roomDetailsWindow, show_room_details
+                    from .RoomDetailsWindow import RoomDetailsWindow, show_room_details
                     show_room_details(selected_room, room_tree, controller)
             except Exception as e:
                 print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Fehler bei der Auswahl: {e}")

@@ -278,8 +278,8 @@ def pop_up_settings(parent, controller):
             parent.avatar = cache.user_avatar
             db.upsert_avatar(cache.user_name, profile_image_url.get())
             parent.settings_img_label.configure(image=parent.avatar_new)
-            from .mainPage import mainPage
-            mainPage.update_profile_picture()
+            from .MainPage import MainPage
+            MainPage.update_profile_picture()
 
         except Exception as e:
             logger.error(f"Error while applying the profile picture. {button['image']}: {e}")
@@ -312,9 +312,9 @@ def pop_up_settings(parent, controller):
         :type controller: Controller-Klasse
         """
         try:
-            from .logInWindow import logInWindow
+            from .LogInWindow import LogInWindow
             cache.user_group = None  # Benutzergruppe zurücksetzen
-            contr.show_frame(logInWindow)
+            contr.show_frame(LogInWindow)
             popup.destroy()
 
         except Exception as e:

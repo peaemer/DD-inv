@@ -82,9 +82,9 @@ def lend_popup(parent, data, controller: ddINV):
         logger.debug(f"cache.selected_ID:{cache.selected_ID}")
         db.create_ausleih_historie(cache.selected_ID, borrower, lend_date)
         db.update_hardware_by_id(cache.selected_ID, neue_ausgeliehen_von=borrower)
-        from .mainPage import mainPage
-        mainPage.update_treeview_with_data()
-        controller.show_frame(mainPage)
+        from .MainPage import MainPage
+        MainPage.update_treeview_with_data()
+        controller.show_frame(MainPage)
         popup.destroy()  # Schließt das Popup nach Bestätigung
 
 

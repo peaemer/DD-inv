@@ -5,7 +5,7 @@ from includes.sec_data_info import sqlite3api as sqlapi
 from includes.util.Logging import Logger
 from ._styles import *
 
-#from GUI.pages import roomDetailsWindow
+#from GUI.pages import RoomDetailsWindow
 
 
 def add_room_popup(parent):
@@ -103,10 +103,10 @@ def add_room_popup(parent):
             error_label.configure(text="Bitte fülle alle Felder aus.")
         else:
             sqlapi.create_room(room_entry_add_room_popup.get(), location_entry_add_room_popup.get())
-            from .adminRoomWindow import adminRoomWindow
-            adminRoomWindow.update_treeview_with_data()
-            from .mainPage import mainPage
-            mainPage.update_sidetree_with_data()
+            from .AdminRoomWindow import AdminRoomWindow
+            AdminRoomWindow.update_treeview_with_data()
+            from .MainPage import MainPage
+            MainPage.update_sidetree_with_data()
             add_popup.destroy()
 
     def exit_entry():

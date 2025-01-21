@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+
+
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
 from includes.util.Logging import Logger
@@ -11,11 +13,11 @@ from ._sort_tree import sort_column
 logger:Logger = Logger('AdminUserWindow')
 
 # Hauptseite (zweites Fenster)
-class adminUserWindow(tk.Frame):
+class AdminUserWindow(tk.Frame):
     """
     Erstellt eine Benutzerübersichtsoberfläche für Administratoren.
 
-    Das `adminUserWindow` ist eine grafische Benutzeroberfläche, die Administratoren eine Übersicht
+    Das `AdminUserWindow` ist eine grafische Benutzeroberfläche, die Administratoren eine Übersicht
     über Benutzer bietet, zusammen mit Funktionen wie Suchen, Hinzufügen von Benutzern und
     Navigieren zu anderen Ansichtsfenstern. Diese Klasse erweitert den `tk.Frame` und konfiguriert
     ein umfassendes Layout, einschließlich eines Headers, Navigationsmenüs und eines mittleren
@@ -25,8 +27,6 @@ class adminUserWindow(tk.Frame):
     :type srhHead: tk.PhotoImage
     :ivar log_out_btn: Speichert das Bild für den Logout-Button.
     :type log_out_btn: tk.PhotoImage
-    :ivar opt_btn: Speichert das Bild für den Einstellungs-Button.
-    :type opt_btn: tk.PhotoImage
     :ivar add_btn: Speichert das Bild für den "Nutzer hinzufügen"-Button.
     :type add_btn: tk.PhotoImage
     :ivar searchBtn: Speichert das Bild für den Such-Button.
@@ -40,31 +40,13 @@ class adminUserWindow(tk.Frame):
 
         def go_back_admin_window():
             """
-            Eine Frame-Klasse, die ein Fenster für administrative Benutzer darstellt. Diese Klasse
-            erweitert die tkinter Frame-Klasse und integriert einen Controller zur Navigation
-            zwischen verschiedenen Anwendungsfenstern.
-
-            :Attributes:
-                parent (tk.Widget): Der übergeordnete Widget-Container, in dem dieser Frame erstellt wird.
-                controller (object): Der Controller, der für das Management der Fenster-Navigation
-                                     in der Anwendung verantwortlich ist.
-
-            :Methods:
-                go_back_admin_window():
-                    Navigiert zurück zum Hauptfenster der Anwendung für administrative Benutzer.
+            go_back_admin_window():
+                Navigiert zurück zum Hauptfenster der Anwendung für administrative Benutzer.
             """
-            from .mainPage import mainPage
-            controller.show_frame(mainPage)
+            from .MainPage import MainPage
+            controller.show_frame(MainPage)
 
         def show_settings_window_admin_window():
-            """
-            Diese Klasse `adminUserWindow` ist eine Unterklasse von `tk.Frame` und dient als
-            Fensterkomponente für die Verwaltung von Benutzern im Adminbereich. Sie ermöglicht
-            die Anzeige bestimmter Fenster und deren Interaktionen.
-
-            :ivar parent: Der übergeordnete Container dieses Frames.
-            :ivar controller: Kontrollinstanz für die Verwaltung der Frames.
-            """
             logger.debug("show settings window admin window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
@@ -118,14 +100,14 @@ class adminUserWindow(tk.Frame):
             es dem Benutzer, die Ansicht zu einer Raum-Administrationsansicht
             zu wechseln.
             """
-            from .adminRoomWindow import adminRoomWindow
-            controller.show_frame(adminRoomWindow)
-            adminRoomWindow.update_treeview_with_data()
+            from .AdminRoomWindow import AdminRoomWindow
+            controller.show_frame(AdminRoomWindow)
+            AdminRoomWindow.update_treeview_with_data()
 
         def change_to_roles():
-            from .adminRoleWindow import adminRoleWindow
-            controller.show_frame(adminRoleWindow)
-            adminRoleWindow.update_treeview_with_data()
+            from .AdminRoleWindow import AdminRoleWindow
+            controller.show_frame(AdminRoleWindow)
+            AdminRoleWindow.update_treeview_with_data()
 
         def add_user():
             from .addUserPopup import add_user_popup
@@ -133,7 +115,7 @@ class adminUserWindow(tk.Frame):
 
         global tree
 
-        # Konfiguriere das Grid-Layout für das adminUserWindow
+        # Konfiguriere das Grid-Layout für das AdminUserWindow
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
@@ -317,7 +299,7 @@ class adminUserWindow(tk.Frame):
                 selected_user = user_tree.focus()
                 logger.debug(f"Ausgewählter User: {selected_user}")  # Debug
                 if selected_user:
-                    from .userDetailsWindow import userDetailsWindow, show_user_details
+                    from .UserDetailsWindow import UserDetailsWindow, show_user_details
                     show_user_details(selected_user, user_tree, controller)
             except Exception as e:
                 logger.error(f"Fehler bei der Auswahl: {e}")

@@ -66,7 +66,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
             if not check_password_requirements(msg_passwrd_first.get()):
                 logger.debug(cache.user_name)
                 set_password(cache.user_name, msg_passwrd_first.get(),msg_passwrd_second.get())
-                from includes.pages import logInWindow
+                from includes.pages import LogInWindow
                 cache.user_group = None  # Benutzergruppe zurücksetzen
                 cache.user_name = None
                 cache.user = None

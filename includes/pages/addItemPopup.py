@@ -206,9 +206,9 @@ def add_item_popup(parent):
             error_label.configure(text="Bitte fülle alle Felder aus (Typ, Raum, Name)")
         else:
             logger.debug(db.create_hardware(tag,type,name,damage,None,room))
-            from .mainPage import mainPage
-            mainPage.update_treeview_with_data(data=None)
-            mainPage.update_sidetree_with_data()
+            from .MainPage import MainPage
+            MainPage.update_treeview_with_data(data=None)
+            MainPage.update_sidetree_with_data()
             add_popup.destroy()
 
     def exit_entry():

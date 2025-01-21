@@ -245,8 +245,8 @@ def add_role_popup(parent):
                 "USER_ERSTELLEN": create_u
             }
             db.create_rolle(role_name, **rechte)
-            from .adminRoleWindow import adminRoleWindow
-            adminRoleWindow.update_treeview_with_data()
+            from .AdminRoleWindow import AdminRoleWindow
+            AdminRoleWindow.update_treeview_with_data()
             add_popup.destroy()
 
     def exit_entry():

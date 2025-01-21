@@ -134,8 +134,8 @@ def add_user_popup(parent):
         else:
             db.create_benutzer(username_entry_add_user_popup.get(), pw, email_entry_add_user_popup.get())
             messagebox.showinfo(title="Added User", message="Nutzername: "+username_entry_add_user_popup.get()+"\nNew password: " + pw)
-            from .adminUserWindow import adminUserWindow
-            adminUserWindow.update_treeview_with_data()
+            from .AdminUserWindow import AdminUserWindow
+            AdminUserWindow.update_treeview_with_data()
             add_popup.destroy()
 
     def exit_entry():

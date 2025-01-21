@@ -26,14 +26,14 @@ def show_details(selectedItem, tree, controller):
     logger.debug(f"Data of the selected item: {data}")  # Debug
     cache.selected_ID = data[0]
 
-    controller.show_frame(detailsWindow)  # Zeige die Details-Seite
+    controller.show_frame(DetailsWindow)  # Zeige die Details-Seite
 
     # Frame aktualisieren und anzeigen
-    details = controller.frames[detailsWindow]
-    details.update_data(data)  # Methode in detailsWindow aufrufen
+    details = controller.frames[DetailsWindow]
+    details.update_data(data)  # Methode in DetailsWindow aufrufen
 
 
-class detailsWindow(tk.Frame):
+class DetailsWindow(tk.Frame):
     """
     Repräsentiert ein Detailfenster innerhalb einer Tkinter-Applikation.
 
@@ -56,9 +56,9 @@ class detailsWindow(tk.Frame):
         self.configure(background="white")
 
         def go_back_details_window():
-            from .mainPage import mainPage
+            from .MainPage import MainPage
             update_label.configure(text="")
-            controller.show_frame(mainPage)
+            controller.show_frame(MainPage)
 
         def show_settings_window_details_window():
             """
@@ -256,8 +256,8 @@ class detailsWindow(tk.Frame):
                 damage = self.damaged_entry_details_window.get()
             logger.debug(f"damage:{damage}")
             logger.debug(f"db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID, neue_beschaedigung=damage, neue_standort=room, neue_modell=name, neue_geraetetyp=type)}")
-            from .mainPage import mainPage
-            mainPage.update_sidetree_with_data()
+            from .MainPage import MainPage
+            MainPage.update_sidetree_with_data()
             update_label.configure(text="Eintrag wurde aktualisiert")
 
         def lend(data):
@@ -282,17 +282,17 @@ class detailsWindow(tk.Frame):
 
         def return_item(data):
             db.update_hardware_by_id(cache.selected_ID, neue_ausgeliehen_von=" ")
-            from .mainPage import mainPage
-            mainPage.update_treeview_with_data()
-            controller.show_frame(mainPage)
+            from .MainPage import MainPage
+            MainPage.update_treeview_with_data()
+            controller.show_frame(MainPage)
 
         def delete_entry():
             db.delete_hardware_by_id(cache.selected_ID)
-            from .mainPage import mainPage
-            mainPage.update_treeview_with_data()
-            mainPage.update_sidetree_with_data()
+            from .MainPage import MainPage
+            MainPage.update_treeview_with_data()
+            MainPage.update_sidetree_with_data()
             update_label.configure(text="")
-            controller.show_frame(mainPage)
+            controller.show_frame(MainPage)
 
         from ._avatarManager import resource_path
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/Aktualisieren.png"))

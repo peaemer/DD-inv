@@ -31,12 +31,12 @@ def show_roles_details(selected_roles, tree, controller):
 
     # Frame aktualisieren und anzeigen
     details = controller.frames[RolesDetailsWindow]
-    details.update_data(data)  # Methode in detailsWindow aufrufen
+    details.update_data(data)  # Methode in DetailsWindow aufrufen
 
 
 class RolesDetailsWindow(tk.Frame):
     """
-    Die Klasse roomDetailsWindow dient zur Darstellung und Bearbeitung von Raumdetails in einer GUI.
+    Die Klasse RoomDetailsWindow dient zur Darstellung und Bearbeitung von Raumdetails in einer GUI.
 
     Die Klasse ist eine Unterklasse von ``tk.Frame`` und wird zur Anzeige und Bearbeitung von Raumdaten
     in einer GUI verwendet. Sie bietet Interaktionen zum Zurückkehren zu einer Admin-Seite, zum Anzeigen
@@ -59,8 +59,8 @@ class RolesDetailsWindow(tk.Frame):
         self.configure(background="white")
 
         def go_back_roles_window():
-            from .adminRoleWindow import adminRoleWindow
-            controller.show_frame(adminRoleWindow)
+            from .AdminRoleWindow import AdminRoleWindow
+            controller.show_frame(AdminRoleWindow)
 
         def show_settings_window_roles_window():
             logger.debug(f"Show settings window details window")
@@ -316,15 +316,15 @@ class RolesDetailsWindow(tk.Frame):
                 "USER_ERSTELLEN": create_u
             }
             logger.debug(sqlapi.update_role(self.role_name.cget("text"), **rechte))
-            from .adminRoleWindow import adminRoleWindow
-            adminRoleWindow.update_treeview_with_data()
-            controller.show_frame(adminRoleWindow)
+            from .AdminRoleWindow import AdminRoleWindow
+            AdminRoleWindow.update_treeview_with_data()
+            controller.show_frame(AdminRoleWindow)
 
         def delete_entry():
             """
             delete_entry():
                 Löscht Benutzereinträge aus der Datenbank und erneuert die entsprechende
-                Anzeige im adminUserWindow-Frame.
+                Anzeige im AdminUserWindow-Frame.
             """
             state = True
             for user in sqlapi.read_all_benutzer():
@@ -334,9 +334,9 @@ class RolesDetailsWindow(tk.Frame):
                 sqlapi.delete_rolle(self.role_name.cget("text"))
             else:
                 messagebox.showerror("Abgebrochen", "Es befinden sich noch Nutzer in den Gruppen")
-            from .adminRoleWindow import adminRoleWindow
-            adminRoleWindow.update_treeview_with_data()
-            controller.show_frame(adminRoleWindow)
+            from .AdminRoleWindow import AdminRoleWindow
+            AdminRoleWindow.update_treeview_with_data()
+            controller.show_frame(AdminRoleWindow)
 
         def customMessageBoxCall():
             customMessageBoxDelete(self,

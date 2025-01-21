@@ -20,16 +20,16 @@ def show_room_details(selected_room, tree, controller):
     data = tree.item(selected_room, "values")
     print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Data of the selected item: {data}")
     cache.selected_ID = data[0]
-    controller.show_frame(roomDetailsWindow)  # Zeige die Details-Seite
+    controller.show_frame(RoomDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
-    details = controller.frames[roomDetailsWindow]
-    details.update_data(data)  # Methode in detailsWindow aufrufen
+    details = controller.frames[RoomDetailsWindow]
+    details.update_data(data)  # Methode in DetailsWindow aufrufen
 
 
 
-class roomDetailsWindow(tk.Frame):
+class RoomDetailsWindow(tk.Frame):
     """
-    Die Klasse roomDetailsWindow dient zur Darstellung und Bearbeitung von Raumdetails in einer GUI.
+    Die Klasse RoomDetailsWindow dient zur Darstellung und Bearbeitung von Raumdetails in einer GUI.
 
     Die Klasse ist eine Unterklasse von ``tk.Frame`` und wird zur Anzeige und Bearbeitung von Raumdaten
     in einer GUI verwendet. Sie bietet Interaktionen zum Zurückkehren zu einer Admin-Seite, zum Anzeigen
@@ -72,8 +72,8 @@ class roomDetailsWindow(tk.Frame):
                 tkinter-Frames steuert.
             :type controller: object
             """
-            from .adminRoomWindow import adminRoomWindow
-            controller.show_frame(adminRoomWindow)
+            from .AdminRoomWindow import AdminRoomWindow
+            controller.show_frame(AdminRoomWindow)
 
         def show_settings_window_details_window():
             """
@@ -181,11 +181,11 @@ class roomDetailsWindow(tk.Frame):
             """
             #update
             db.update_room(self.room_num_entry.get(), self.room_num_entry.get(), self.place_entry.get())
-            from .adminRoomWindow import adminRoomWindow
-            adminRoomWindow.update_treeview_with_data()
-            from .mainPage import mainPage
-            mainPage.update_sidetree_with_data()
-            controller.show_frame(adminRoomWindow)
+            from .AdminRoomWindow import AdminRoomWindow
+            AdminRoomWindow.update_treeview_with_data()
+            from .MainPage import MainPage
+            MainPage.update_sidetree_with_data()
+            controller.show_frame(AdminRoomWindow)
 
         def delete_entry():
             """
@@ -204,7 +204,7 @@ class roomDetailsWindow(tk.Frame):
             :Methods:
                 delete_entry():
                     Löscht Benutzereinträge aus der Datenbank und erneuert die entsprechende
-                    Anzeige im adminUserWindow-Frame.
+                    Anzeige im AdminUserWindow-Frame.
             """
             state = True
             for item in db.fetch_hardware():
@@ -214,11 +214,11 @@ class roomDetailsWindow(tk.Frame):
                 db.delete_room(self.room_num_entry.get())
             else:
                 messagebox.showerror("Abgebrochen", "Es befinden sich noch sachen in den Räumen")
-            from .adminRoomWindow import adminRoomWindow
-            adminRoomWindow.update_treeview_with_data()
-            from .mainPage import mainPage
-            mainPage.update_sidetree_with_data()
-            controller.show_frame(adminRoomWindow)
+            from .AdminRoomWindow import AdminRoomWindow
+            AdminRoomWindow.update_treeview_with_data()
+            from .MainPage import MainPage
+            MainPage.update_sidetree_with_data()
+            controller.show_frame(AdminRoomWindow)
 
         def customMessageBoxCall():
             if customMessageBoxDelete(self,

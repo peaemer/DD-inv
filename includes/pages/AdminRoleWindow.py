@@ -10,11 +10,11 @@ import customtkinter as ctk  #pip install customtkinter
 logger:Logger = Logger('AdminRoleWindow')
 
 # Hauptseite (zweites Fenster)
-class adminRoleWindow(tk.Frame):
+class AdminRoleWindow(tk.Frame):
     """
     Erstellt eine Benutzerübersichtsoberfläche für Administratoren.
 
-    Das `adminUserWindow` ist eine grafische Benutzeroberfläche, die Administratoren eine Übersicht
+    Das `AdminUserWindow` ist eine grafische Benutzeroberfläche, die Administratoren eine Übersicht
     über Benutzer bietet, zusammen mit Funktionen wie Suchen, Hinzufügen von Benutzern und
     Navigieren zu anderen Ansichtsfenstern. Diese Klasse erweitert den `tk.Frame` und konfiguriert
     ein umfassendes Layout, einschließlich eines Headers, Navigationsmenüs und eines mittleren
@@ -36,8 +36,8 @@ class adminRoleWindow(tk.Frame):
         self.configure(background="white")
 
         def go_back_admin_window():
-            from .mainPage import mainPage
-            controller.show_frame(mainPage)
+            from .MainPage import MainPage
+            controller.show_frame(MainPage)
 
         def show_settings_window_admin_window():
             logger.debug("show settings window admin window")
@@ -73,15 +73,15 @@ class adminRoleWindow(tk.Frame):
             logger.debug(f"Key pressed:{typed_key}")
 
         def change_to_room():
-            from .adminRoomWindow import adminRoomWindow
-            controller.show_frame(adminRoomWindow)
-            adminRoomWindow.update_treeview_with_data()
+            from .AdminRoomWindow import AdminRoomWindow
+            controller.show_frame(AdminRoomWindow)
+            AdminRoomWindow.update_treeview_with_data()
             logger.debug("change_to_role executed")  # Debug
 
         def change_to_user():
-            from .adminUserWindow import adminUserWindow
-            controller.show_frame(adminUserWindow)
-            adminUserWindow.update_treeview_with_data()
+            from .AdminUserWindow import AdminUserWindow
+            controller.show_frame(AdminUserWindow)
+            AdminUserWindow.update_treeview_with_data()
             logger.debug("change_to_user executed")  # Debug
 
         def add_role():
@@ -91,7 +91,7 @@ class adminRoleWindow(tk.Frame):
 
         global tree
 
-        # Konfiguriere das Grid-Layout für das adminUserWindow
+        # Konfiguriere das Grid-Layout für das AdminUserWindow
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
@@ -364,7 +364,7 @@ class adminRoleWindow(tk.Frame):
                 tags=(tag,)
             )
             i += 1
-        logger.debug("adminRoleWindow treeview updated") #Debug
+        logger.debug("AdminRoleWindow treeview updated") #Debug
         if cache.user_group_data['ROLLEN_ERSTELLEN'] == "False":
             group_add_button.grid_forget()
         else:
