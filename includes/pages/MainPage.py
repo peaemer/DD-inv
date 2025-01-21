@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from customtkinter import CTkEntry
+import json
+
 from ._sort_tree import sort_column
 from includes.sec_data_info import sqlite3api as sqlapi
 from .Searchbar import SearchbarLogic as sb
@@ -9,7 +11,6 @@ from includes.util.Logging import Logger
 import cache
 from ._styles import *
 import customtkinter as ctk
-import json
 from .ctk_listbox import *
 import includes.sec_data_info.sqlite3api as db
 
@@ -77,11 +78,6 @@ class MainPage(tk.Frame):
             """
             Ruft eine Funktion auf, um ein Dialog-Popup für das Hinzufügen eines Eintrags
             zu erstellen.
-
-            :param parent: Das Eltern-Widget für den tkinter-Rahmen.
-            :type parent: tk.Widget
-            :param controller: Der Controller für die Navigation und Steuerung.
-            :type controller: object
             """
             from .addItemPopup import add_item_popup
             add_item_popup(self)
@@ -113,7 +109,11 @@ class MainPage(tk.Frame):
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(self.header_frame, background="#DF4807", text="Inventur-Übersicht", font=('Arial', 30), foreground="white")
+        text_header_label = tk.Label(self.header_frame,
+                                     background="#DF4807",
+                                     text="Inventur-Übersicht",
+                                     font=('Arial', 30),
+                                     foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
@@ -196,36 +196,55 @@ class MainPage(tk.Frame):
         middle_frame.columnconfigure(0, weight=1)
         middle_frame.rowconfigure(1, weight=1)
 
-
-
-        # Dbug Info Anzeige der Fenstergroesse
-        def show_size(event):
-            """
-            Eine Methode zur Handhabung von Ereignissen, bei denen die
-            Größe des Fensters geändert wird. Sie gibt die neuen
-            Breiten- und Höhenwerte des Ereignisses aus.
-            :param event: Das Ereignisobjekt, das von tkinter übergeben wird und
-                          Informationen über das Größenänderungsereignis enthält.
-            :type event: tk.Event
-            """
-            logger.debug(f"New size - Width: {event.x} Height: {event.y}") #Debug
-        #print(f"{debug_ANSI_style+"DEBUG"+ANSI_style_END}:", show_size) # Debug
-
         dropdown_overlay_frame: tk.Frame = tk.Frame(middle_frame, background="white")
         search_frame: tk.Frame= tk.Frame(middle_frame, bg="white")
 
         #erstelle den hinufügen-button im auf dem search frame
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Erstellen.png"))
-        self.add_button = tk.Button(search_frame, image=self.add_btn, bd=0, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white", command=add_item)
+        self.add_button = tk.Button(search_frame,
+                                    image=self.add_btn,
+                                    bd=0, relief=tk.FLAT,
+                                    bg="white",cursor="hand2",
+                                    activebackground="white",
+                                    command=add_item)
 
-        ##Button Alternative## self.add_button = ctk.CTkButton(search_frame,text="Erstellen",font=("Arial", 25),text_color="white", border_width=border,corner_radius=corner, fg_color=srhOrange, hover_color=srhOrangeHover, command=add_item)
+        # self.add_button = ctk.CTkButton(search_frame,
+        #                                 text="Erstellen",
+        #                                 font=("Arial", 25),
+        #                                 text_color="white",
+        #                                 border_width=border,
+        #                                 corner_radius=corner,
+        #                                 fg_color=srhOrange,
+        #                                 hover_color=srhOrangeHover,
+        #                                 command=add_item)
 
         self.search_btn = tk.PhotoImage(file=resource_path("./includes/assets/SearchButton.png"))
-        search_button = tk.Button(search_frame, image=self.search_btn, bd=0, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white",command=lambda:search_entry.finish_search(cache.user_name))
+        search_button = tk.Button(search_frame,
+                                  image=self.search_btn,
+                                  bd=0, relief=tk.FLAT,
+                                  bg="white",cursor="hand2",
+                                  activebackground="white",
+                                  command=lambda:search_entry.finish_search(cache.user_name))
 
         #erstelle den hinufügen-button im auf dem search frame
-        dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame, font=("Arial", 20), text_color='black', bg_color="white",border_color=srhGrey, corner_radius=10, scrollbar_fg_color="white", scrollbar_button_color='white', scrollbar_button_hover_color='white')
-        search_entry_oval:CTkEntry = CTkEntry(search_frame, text_color="black", fg_color=srhGrey, bg_color="white", font=("Arial", 26), corner_radius=20, border_width=0, height=25)
+        dropdown: CTkListbox = CTkListbox(dropdown_overlay_frame,
+                                          font=("Arial", 20),
+                                          text_color='black',
+                                          bg_color="white",
+                                          border_color=srhGrey,
+                                          corner_radius=10,
+                                          scrollbar_fg_color="white",
+                                          scrollbar_button_color='white',
+                                          scrollbar_button_hover_color='white')
+
+        search_entry_oval:CTkEntry = CTkEntry(search_frame,
+                                              text_color="black",
+                                              fg_color=srhGrey,
+                                              bg_color="white",
+                                              font=("Arial", 26),
+                                              corner_radius=20,
+                                              border_width=0,
+                                              height=25)
         search_entry:Searchbar2 = Searchbar2(self, search_frame, dropdown, cache.user_name)
 
         #setze die grid layouts für den frame der Suchleiste und den frame des such-dropdowns
