@@ -11,7 +11,7 @@ from ._styles import *
 import customtkinter as ctk
 import json
 from .ctk_listbox import *
-
+import includes.sec_data_info.sqlite3api as db
 
 logger:Logger = Logger('MainPage')
 
