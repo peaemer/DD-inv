@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from .customMessageBoxDelete import *
+import includes.sec_data_info.sqlite3api as db
 
 
 def show_room_details(selected_room, tree, controller):
@@ -220,11 +221,12 @@ class roomDetailsWindow(tk.Frame):
             controller.show_frame(adminRoomWindow)
 
         def customMessageBoxCall():
-            customMessageBoxDelete(self,
+            if customMessageBoxDelete(self,
                                    title="Aktion Bestätigen",
-                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
-                                   controller=controller,
-                                   type="DELETE_ROOM")
+                                   message="Willst du diesen Raum unwiderruflich löschen?",
+                                   buttonText="Raum Löschen",
+                                   blue=True):
+                delete_entry()
 
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
         self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))
