@@ -56,56 +56,16 @@ class userDetailsWindow(tk.Frame):
         self.configure(background="white")
 
         def go_back_details_window():
-            """
-            Repräsentiert ein Fenster innerhalb einer tkinter-Anwendung, das
-            spezifisch für Benutzerdetails gestaltet ist. Dieses Fenster ist ein
-            Unterrahmen (`tk.Frame`) und wird von einem übergeordneten tkinter-
-            Controller genutzt, um eine Navigation zwischen verschiedenen Fenstern
-            zu ermöglichen.
-
-            Attributes:
-                parent (tk.Widget): Der übergeordnete tkinter-Widget, der dieses Frame enthält.
-                controller: Der Controller, der das Fenster-Management und die
-                            Navigation zwischen den Frames steuert.
-
-            Methods:
-                go_back_details_window: Navigiert zurück zum Fenster der Benutzerverwaltung.
-
-            :param parent: Der übergeordnete tkinter-Widget, der dieses Frame enthält.
-            :param controller: Der Controller, der für die Navigation zwischen Frames
-                               verwendet wird.
-            """
             from .adminUserWindow import adminUserWindow
             controller.show_frame(adminUserWindow)
 
         def show_settings_window_details_window():
-            """
-            Eine Klasse, die ein Tkinter-Frame zur Darstellung eines Benutzerdetails-Fensters
-            repräsentiert. Diese Klasse enthält eine Methode, die ein Einstellungsfenster
-            zeigt.
-
-            :ivar parent: Das übergeordnete Tkinter-Widget, zu dem dieses Frame gehört.
-            :ivar controller: Ein Controller, der verwendet wird, um die Navigation oder
-                Steuerung zwischen verschiedenen Frames im Tkinter-Fenster zu ermöglichen.
-            """
             print("Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
 
         def reset_pass():
-            """
-            Eine Benutzeroberfläche zur Anzeige und Verwaltung der Details eines Benutzers.
-            Diese Klasse dient als übergeordneter Rahmen für spezifische Benutzerfunktionen,
-            einschließlich der Möglichkeit, das Passwort eines Benutzers zurückzusetzen. Sie
-            bietet Schnittstellen für die Kommunikation mit anderen Fenstern.
-
-            :ivar name: Name des aktuellen Benutzers, dessen Details angezeigt werden.
-            :type name: tkinter.StringVar
-            :ivar controller: Referenz auf den Hauptcontroller der Anwendung, der das
-                Rahmenrouting steuert.
-            :type controller: Any
-            """
             pw = UserSecurity.set_password(self.name.get(), None, None, randomize_password=True)
             if pw:
                 messagebox.showinfo(title="Reseted User Password", message="New password: " + pw)
@@ -259,24 +219,6 @@ class userDetailsWindow(tk.Frame):
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
-            """
-            Eine Klasse, die ein Benutzerdetails-Fenster darstellt, das in einer tkinter-Anwendung verwendet wird.
-            Diese Klasse erbt von ``tk.Frame`` und implementiert die Logik zur Aktualisierung eines Benutzers in der
-            Datenbank und zur Navigation zu einem anderen Fenster.
-
-            Attribute:
-            ----------
-            parent : tk.Widget
-                Das übergeordnete Widget, zu dem dieses Frame gehört.
-            controller : Any
-                Ein Controller, der zur Verwaltung der Fensterwechsel in der Anwendung verwendet wird.
-            name : tk.StringVar
-                Eine Variable, die den Namen des Benutzers hält und mit dem Eingabefeld verbunden ist.
-            email : tk.StringVar
-                Eine Variable, die die E-Mail-Adresse des Benutzers hält und mit dem Eingabefeld verbunden ist.
-            role_combobox : ttk.Combobox
-                Ein Combobox-Widget, das die Rolle des Benutzers anzeigt und geändert werden kann.
-            """
             #update
             db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
             from .adminUserWindow import adminUserWindow
@@ -285,19 +227,6 @@ class userDetailsWindow(tk.Frame):
 
         def delete_entry():
             """
-            Eine Klasse, die ein Fenster zur Darstellung und Bearbeitung von Benutzerdetails
-            in einer GUI-Anwendung repräsentiert. Die Klasse erbt von `tk.Frame`.
-
-            Attributes
-            ----------
-            parent : tk.Widget
-                Der übergeordnete Rahmen oder das übergeordnete Widget für dieses Frame.
-            controller : Any
-                Eine Steuerungsinstanz, die für den Wechsel von Fenstern in der Anwendung
-                verantwortlich ist.
-
-            Methods
-            -------
             delete_entry()
                 Löscht Benutzereinträge aus der Datenbank und aktualisiert die
                 Benutzeransicht.
