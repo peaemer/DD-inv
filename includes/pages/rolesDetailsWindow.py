@@ -63,37 +63,10 @@ class rolesDetailsWindow(tk.Frame):
         self.configure(background="white")
 
         def go_back_roles_window():
-            """
-            Eine Klasse, die ein Fenster darstellt, um Details von Räumen anzuzeigen. Erbt von
-            `tk.Frame` und dient als GUI-Komponente, die in einer tkinter-Anwendung eingebettet
-            werden kann. Es enthält Funktionalitäten, um zur vorherigen Fensteransicht zurückzukehren.
-
-            :Attributes:
-                Keine Attribute, die in der Klassenbeschreibung vorhanden sind.
-
-            :param parent: Das übergeordnete tk-Widget, in das dieser Frame eingebettet wird.
-            :type parent: tk.Widget
-            :param controller: Ein Objekt, das die Navigation und Verwaltung zwischen verschiedenen
-                tkinter-Frames steuert.
-            :type controller: object
-            """
             from .adminRoleWindow import adminRoleWindow
             controller.show_frame(adminRoleWindow)
 
         def show_settings_window_roles_window():
-            """
-            Eine Klasse, die ein Fenster für Rauminformationen darstellt, das als Unterklasse
-            von tk.Frame implementiert wurde. Diese Klasse dient als grafisches Fenster,
-            das verschiedene Funktionen und Merkmale eines Rauminformationsfensters bereitstellt.
-
-            Attributes
-            ----------
-            parent : Tkinter Widget
-                Das übergeordnete Widget, auf das die aktuelle Instanz aufgesetzt wird.
-            controller : Objekt
-                Ein Steuerelement für die Verwaltung der Fenster- oder Anwendungslogik.
-
-            """
             logger.debug(f"Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
@@ -315,20 +288,6 @@ class rolesDetailsWindow(tk.Frame):
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
-            """
-            Eine Klasse, die ein GUI-Frame-Fenster darstellt und Funktionen zur Darstellung
-            und Aktualisierung von Benutzerinformationen bietet. Die Klasse wird in einem
-            TKinter-Anwendungsrahmen verwendet und bietet Methoden zum Aktualisieren von
-            Benutzerdaten in einer Datenbank und zum Wechseln zwischen Fenstern.
-
-            Attributes:
-                name (tk.StringVar): Der Name des Benutzers, dessen Daten aktualisiert
-                    werden sollen.
-                email (tk.StringVar): Die zu aktualisierende E-Mail-Adresse des Benutzers.
-                role_combobox (ttk.Combobox): Die ComboBox, die die Rolle des Benutzers
-                    enthält und aktualisiert werden kann.
-
-            """
             view = "True" if self.view.get() == 1 else "False"
             delete_rl = "True" if self.delete_rl.get() == 1 else "False"
             feature = "True" if self.feature.get() == 1 else "False"
@@ -368,22 +327,9 @@ class rolesDetailsWindow(tk.Frame):
 
         def delete_entry():
             """
-            Diese Klasse erstellt ein Fenster, das als Frame fungiert und zur Verwaltung von
-            Benutzerdetails in einer Anwendung dient. Die Instanz dieser Klasse kann Teil
-            eines größeren Tkinter-basierten GUI-Systems sein. Sie enthält Methoden, um
-            Einträge zu entfernen und die Anzeige zu aktualisieren.
-
-            :Attributes:
-                parent:
-                    Das Eltern-Widget, in welchem dieses Frame eingebettet wird.
-                controller:
-                    Der übergeordnete Controller, der die Navigation zwischen Frames
-                    innerhalb der Anwendung verwaltet.
-
-            :Methods:
-                delete_entry():
-                    Löscht Benutzereinträge aus der Datenbank und erneuert die entsprechende
-                    Anzeige im adminUserWindow-Frame.
+            delete_entry():
+                Löscht Benutzereinträge aus der Datenbank und erneuert die entsprechende
+                Anzeige im adminUserWindow-Frame.
             """
             state = True
             for user in sqlapi.read_all_benutzer():
