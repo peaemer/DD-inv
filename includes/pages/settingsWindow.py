@@ -532,7 +532,7 @@ def pop_up_settings(parent, controller):
     ###############################
 
     # Dynamischer Frame mit Einstellungsmöglichkeiten
-    frame_ueber = tk.Frame(popup, bg="pink")
+    frame_ueber = tk.Frame(popup, bg="white")
     frame_ueber.grid(row=1, column=1, sticky="nsew")
     frame_ueber.grid_columnconfigure(0, weight=1)
     frame_ueber.grid_columnconfigure(1, weight=1)
