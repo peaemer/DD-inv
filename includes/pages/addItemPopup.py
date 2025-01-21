@@ -7,7 +7,6 @@ from ..CTkScrollableDropdown import *
 from includes.sec_data_info import sqlite3api as db
 
 
-
 def add_item_popup(parent):
     """
     Erstellt ein Popup-Fenster, um ein neues Hardware-Element
@@ -30,7 +29,7 @@ def add_item_popup(parent):
     add_popup = tk.Toplevel(parent)
     add_popup.title("Neuer Eintrag")
     add_popup.transient(parent)  # Popup bleibt im Vordergrund des Hauptfensters
-    add_popup.grab_set()         # Blockiere Interaktionen mit dem Hauptfenster
+    add_popup.grab_set()  # Blockiere Interaktionen mit dem Hauptfenster
     add_popup.attributes('-topmost', 0)
     add_popup.configure(background="white")
 
@@ -59,7 +58,9 @@ def add_item_popup(parent):
         logger.debug(f"Fehler beim Laden des Icons: {e}")
 
     # Erstelle einen Header-Bereich
-    header_frame_add_item_popup = tk.Frame(add_popup, height=10, background="#DF4807")
+    header_frame_add_item_popup = tk.Frame(add_popup,
+                                           height=10,
+                                           background="#DF4807")
     header_frame_add_item_popup.grid(row=0, column=0, columnspan=3, sticky=tk.W + tk.E + tk.N)
 
     # Spaltenkonfiguration für Zentrierung im Frame
@@ -73,8 +74,6 @@ def add_item_popup(parent):
                                            font=("Arial", 40))
     header_label_add_item_popup.grid(row=0, column=0, sticky=tk.NSEW)
 
-    size_add_item_popup = 18
-
     # Label und Eingabefeld hinzufügen
     service_tag_label_add_item_popup = tk.Label(add_popup,
                                                 text="Service Tag",
@@ -86,6 +85,7 @@ def add_item_popup(parent):
                                                     border_width=0,
                                                     text_color="black",
                                                     fg_color=srhGrey,
+                                                    font=("Arial", size_add_item_popup),
                                                     corner_radius=corner)
     service_tag_entry_add_item_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
@@ -97,10 +97,11 @@ def add_item_popup(parent):
     type_label_add_item_popup.grid(row=2, column=0, padx=0, pady=20, sticky=tk.E)
 
     type_entry_add_item_popup = ctk.CTkEntry(add_popup,
-                                                    border_width=0,
-                                                    text_color="black",
-                                                    fg_color=srhGrey,
-                                                    corner_radius=corner)
+                                             border_width=0,
+                                             text_color="black",
+                                             fg_color=srhGrey,
+                                             font=("Arial", size_add_item_popup),
+                                             corner_radius=corner)
     type_entry_add_item_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Raum (Dropdown-Menü)
@@ -123,10 +124,16 @@ def add_item_popup(parent):
                                                    border_width=0,
                                                    state="readonly")
     room_combobox_add_item_popup.grid(row=3, column=1, padx=20, pady=20, sticky="ew")
-    CTkScrollableDropdownFrame(room_combobox_add_item_popup, values=room_values, button_color=srhGrey, #BUGGY
-                          frame_corner_radius=corner, fg_color=srhGrey,
-                          text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
-                          justify="left")
+
+    CTkScrollableDropdownFrame(room_combobox_add_item_popup,
+                               values=room_values,
+                               button_color=srhGrey, #BUGGY
+                               frame_corner_radius=corner,
+                               fg_color=srhGrey,
+                               text_color="black",
+                               frame_border_width=comboborder,
+                               frame_border_color=srhGreyHover,
+                               justify="left")
 
     # Name
     name_label_add_item_popup = tk.Label(add_popup,
@@ -136,10 +143,11 @@ def add_item_popup(parent):
     name_label_add_item_popup.grid(row=4, column=0, padx=0, pady=20, sticky=tk.E)
 
     name_entry_add_item_popup = ctk.CTkEntry(add_popup,
-                                                    border_width=0,
-                                                    text_color="black",
-                                                    fg_color=srhGrey,
-                                                    corner_radius=corner)
+                                             border_width=0,
+                                             text_color="black",
+                                             fg_color=srhGrey,
+                                             font=("Arial", size_add_item_popup),
+                                             corner_radius=corner)
     name_entry_add_item_popup.grid(row=4, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Beschädigung
@@ -150,10 +158,11 @@ def add_item_popup(parent):
     damaged_label_add_item_popup.grid(row=5, column=0, padx=0, pady=20, sticky=tk.E)
 
     damaged_button_add_item_popup = ctk.CTkEntry(add_popup,
-                                                    border_width=0,
-                                                    text_color="black",
-                                                    fg_color=srhGrey,
-                                                    corner_radius=corner)
+                                                 border_width=0,
+                                                 text_color="black",
+                                                 fg_color=srhGrey,
+                                                 font=("Arial", size_add_item_popup),
+                                                 corner_radius=corner)
     damaged_button_add_item_popup.grid(row=5, column=1, padx=20, pady=20, sticky=tk.E + tk.W)
 
     error_label = tk.Label(add_popup,

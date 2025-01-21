@@ -6,7 +6,9 @@ from .customMessageBoxDelete import *
 from ._sort_tree import sort_column
 import includes.sec_data_info.sqlite3api as db
 
+
 logger:Logger = Logger('DetailsWindow')
+
 
 def show_details(selectedItem, tree, controller):
     """
@@ -29,7 +31,6 @@ def show_details(selectedItem, tree, controller):
     # Frame aktualisieren und anzeigen
     details = controller.frames[detailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-
 
 
 class detailsWindow(tk.Frame):
@@ -316,14 +317,16 @@ class detailsWindow(tk.Frame):
             customMessageBoxDelete(self,
                                    title="Aktion Bestätigen",
                                    message="Willst du diesen Eintrag unwiderruflich löschen?",
-                                   controller=controller,
-                                   type="DELETE_ITEM")
+                                   buttonText="Eintrag Löschen")
 
-
-
-        delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,cursor="hand2",
-                                 bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                                 command=customMessageBoxCall)
+        delete_button = tk.Button(button_frame_add_item_popup,
+                                  image=self.delete_btn,
+                                  cursor="hand2",
+                                  bd=0,
+                                  relief=tk.FLAT,
+                                  bg="white",
+                                  activebackground="white",
+                                  command=customMessageBoxCall)
         #delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 

@@ -400,9 +400,9 @@ class rolesDetailsWindow(tk.Frame):
         def customMessageBoxCall():
             customMessageBoxDelete(self,
                                    title="Aktion Bestätigen",
-                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
-                                   controller=controller,
-                                   type="DELETE_ROLE")
+                                   message="Willst du diese Rolle unwiderruflich löschen?",
+                                   buttonText="Rolle Löschen",
+                                   blue=True)
 
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
         self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))
