@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+
 from .customMessageBoxDelete import *
 import includes.sec_data_info.sqlite3api as db
 
@@ -31,7 +32,7 @@ class RoomDetailsWindow(tk.Frame):
     """
     Die Klasse RoomDetailsWindow dient zur Darstellung und Bearbeitung von Raumdetails in einer GUI.
 
-    Die Klasse ist eine Unterklasse von ``tk.Frame`` und wird zur Anzeige und Bearbeitung von Raumdaten
+    Die Klasse ist eine Unterklasse von tk.Frame und wird zur Anzeige und Bearbeitung von Raumdaten
     in einer GUI verwendet. Sie bietet Interaktionen zum Zurückkehren zu einer Admin-Seite, zum Anzeigen
     eines Einstellungs-Popups sowie zum Aktualisieren oder Löschen von Raumeinträgen.
 
@@ -39,8 +40,6 @@ class RoomDetailsWindow(tk.Frame):
     :type controller: tk.Tk
     :ivar go_back_btn_details_window: Bild für den „Zurück“-Button.
     :type go_back_btn_details_window: tk.PhotoImage
-    :ivar opt_btn_details_window: Bild für den „Optionen“-Button.
-    :type opt_btn_details_window: tk.PhotoImage
     :ivar room_num_entry: Eingabefeld für die Raumnummer.
     :type room_num_entry: tk.Entry
     :ivar place_entry: Eingabefeld für den Ort.
@@ -58,37 +57,10 @@ class RoomDetailsWindow(tk.Frame):
         self.configure(background="white")
 
         def go_back_details_window():
-            """
-            Eine Klasse, die ein Fenster darstellt, um Details von Räumen anzuzeigen. Erbt von
-            `tk.Frame` und dient als GUI-Komponente, die in einer tkinter-Anwendung eingebettet
-            werden kann. Es enthält Funktionalitäten, um zur vorherigen Fensteransicht zurückzukehren.
-
-            :Attributes:
-                Keine Attribute, die in der Klassenbeschreibung vorhanden sind.
-
-            :param parent: Das übergeordnete tk-Widget, in das dieser Frame eingebettet wird.
-            :type parent: tk.Widget
-            :param controller: Ein Objekt, das die Navigation und Verwaltung zwischen verschiedenen
-                tkinter-Frames steuert.
-            :type controller: object
-            """
             from .AdminRoomWindow import AdminRoomWindow
             controller.show_frame(AdminRoomWindow)
 
         def show_settings_window_details_window():
-            """
-            Eine Klasse, die ein Fenster für Rauminformationen darstellt, das als Unterklasse
-            von tk.Frame implementiert wurde. Diese Klasse dient als grafisches Fenster,
-            das verschiedene Funktionen und Merkmale eines Rauminformationsfensters bereitstellt.
-
-            Attributes
-            ----------
-            parent : Tkinter Widget
-                Das übergeordnete Widget, auf das die aktuelle Instanz aufgesetzt wird.
-            controller : Objekt
-                Ein Steuerelement für die Verwaltung der Fenster- oder Anwendungslogik.
-
-            """
             print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
@@ -165,20 +137,6 @@ class RoomDetailsWindow(tk.Frame):
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
-            """
-            Eine Klasse, die ein GUI-Frame-Fenster darstellt und Funktionen zur Darstellung
-            und Aktualisierung von Benutzerinformationen bietet. Die Klasse wird in einem
-            TKinter-Anwendungsrahmen verwendet und bietet Methoden zum Aktualisieren von
-            Benutzerdaten in einer Datenbank und zum Wechseln zwischen Fenstern.
-
-            Attributes:
-                name (tk.StringVar): Der Name des Benutzers, dessen Daten aktualisiert
-                    werden sollen.
-                email (tk.StringVar): Die zu aktualisierende E-Mail-Adresse des Benutzers.
-                role_combobox (ttk.Combobox): Die ComboBox, die die Rolle des Benutzers
-                    enthält und aktualisiert werden kann.
-
-            """
             #update
             db.update_room(self.room_num_entry.get(), self.room_num_entry.get(), self.place_entry.get())
             from .AdminRoomWindow import AdminRoomWindow

@@ -24,8 +24,6 @@ class AdminRoleWindow(tk.Frame):
     :type srhHead: tk.PhotoImage
     :ivar log_out_btn: Speichert das Bild für den Logout-Button.
     :type log_out_btn: tk.PhotoImage
-    :ivar opt_btn: Speichert das Bild für den Einstellungs-Button.
-    :type opt_btn: tk.PhotoImage
     :ivar add_btn: Speichert das Bild für den "Nutzer hinzufügen"-Button.
     :type add_btn: tk.PhotoImage
     :ivar searchBtn: Speichert das Bild für den Such-Button.
@@ -299,14 +297,6 @@ class AdminRoleWindow(tk.Frame):
             Diese Methode erbt von ``tk.Frame`` und
             dient als Grundaufbau für Benutzerinteraktionen, wie beispielsweise
             die Auswahl von Benutzerdetails im Interface.
-
-            :param parent: Oberkomponente, in der der Rahmen eingeordnet wird.
-            :type parent: tk.Widget
-
-            :param controller: Controller-Objekt, das für die Navigation und
-                               Steuerung zwischen verschiedenen Fenstern
-                               verantwortlich ist.
-            :type controller: object
             """
             try:
                 selected_user = role_tree.focus()

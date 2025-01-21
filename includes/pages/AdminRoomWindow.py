@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import *
 import includes.sec_data_info.sqlite3api as sqlapi
 import cache
 from ._styles import *
@@ -22,8 +21,6 @@ class AdminRoomWindow(tk.Frame):
     :type srhHead: PhotoImage
     :ivar log_out_btn: Bild für die Logout-Schaltfläche im Header-Bereich.
     :type log_out_btn: PhotoImage
-    :ivar opt_btn: Bild für die Options-Schaltfläche im Header-Bereich.
-    :type opt_btn: PhotoImage
     :ivar add_btn: Bild für die Schaltfläche zum Hinzufügen eines neuen Raums.
     :type add_btn: PhotoImage
     :ivar searchBtn: Bild für die Schaltfläche, um die Suche zu starten.

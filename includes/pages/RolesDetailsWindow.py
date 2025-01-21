@@ -62,11 +62,6 @@ class RolesDetailsWindow(tk.Frame):
             from .AdminRoleWindow import AdminRoleWindow
             controller.show_frame(AdminRoleWindow)
 
-        def show_settings_window_roles_window():
-            logger.debug(f"Show settings window details window")
-            from .settingsWindow import pop_up_settings
-            pop_up_settings(self, controller)
-
         from ._avatarManager import resource_path
         self.go_back_btn_roles_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
