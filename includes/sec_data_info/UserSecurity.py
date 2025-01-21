@@ -1,14 +1,16 @@
-import json
-import string
-from hashlib import sha512
 import sys, os
 from random import Random
+import json
+
+import string
+from typing import Final
+
+from hashlib import sha512
 
 from . import sqlite3api as db
 from includes.util.Logging import Logger
 
 sys.path.append(os.path.dirname(__file__) + r'\..')
-from typing import Final
 
 fallback_username: Final[str] = 'test'
 fallback_password: Final[str] = 'password'

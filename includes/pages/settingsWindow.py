@@ -192,7 +192,7 @@ def pop_up_settings(parent, controller):
     parent.settings_img_label = tk.Label(frame_profile,
                                          image=parent.avatar,
                                          background="white")
-    parent.settings_img_label.grid(row=1, column=0, padx=20, pady=5, rowspan=2, columnspan=1, sticky="nws")
+    parent.settings_img_label.grid(row=1, column=0, padx=90, pady=5, rowspan=2, columnspan=1, sticky="nws")
 
     # Feld für eigene Bio
     own_bio = ctk.CTkEntry(frame_profile,
@@ -201,24 +201,24 @@ def pop_up_settings(parent, controller):
                            placeholder_text="Bio",
                            text_color="black",
                            fg_color="white",
-                           border_color=srhGrey,  #pip3 install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org customtkinter --upgrade
+                           border_color=srhGrey,
                            font=SETTINGS_FONT,
                            width=250)
-    own_bio.grid(row=3, column=0, rowspan=1, padx=20, pady=5, sticky="nws")
+    own_bio.grid(row=3, column=0, rowspan=2, padx=20, pady=5, sticky="nws")
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
                                  text="Eingeloggt als\n" + cache.user_name,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=4, column=0, padx=20, pady=5, rowspan=1, sticky="nws")
+    profile_btn_label.grid(row=5, column=0, padx=20, pady=5, rowspan=1, sticky="nws")
 
     # Schriftzug Rechte in der Gruppe
     profile_btn_label = tk.Label(frame_profile,
                                  text="Rechte des Users\n" + cache.user_group,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=5, column=0, padx=20, pady=5, sticky="nws")
+    profile_btn_label.grid(row=6, column=0, padx=20, pady=5, sticky="nws")
 
     def load_user_email(nutzername):
         """
@@ -242,15 +242,17 @@ def pop_up_settings(parent, controller):
     profile_btn_label = tk.Label(frame_profile,
                                  text="E-Mail-Adressse\n" + load_user_email(cache.user_name),
                                  font=SETTINGS_BTN_FONT,
+                                 anchor=tk.W,
                                  bg="white")
-    profile_btn_label.grid(row=6, column=0, padx=20, pady=5, sticky="nws")
+    profile_btn_label.grid(row=7, column=0, padx=20, pady=5, sticky="nws")
 
     # Eingabe für die Profilbild-URL
     profile_image_url_label = tk.Label(frame_profile,
                                        text="Profilbild-URL / Base64 eingeben",
                                        font=SETTINGS_BTN_FONT,
-                                       bg="white")
-    profile_image_url_label.grid(row=1, column=1, pady=5, sticky="n")
+                                       bg="white",
+                                       anchor="w")
+    profile_image_url_label.grid(row=1, column=1, sticky="n")
 
     profile_image_url = ctk.CTkEntry(frame_profile,
                                      border_width=border,
@@ -259,7 +261,7 @@ def pop_up_settings(parent, controller):
                                      fg_color=srhGrey,
                                      font=SETTINGS_FONT,
                                      width=250)
-    profile_image_url.grid(row=2, column=1, columnspan=1, pady=5, sticky="ns")
+    profile_image_url.grid(row=2, column=1, columnspan=1, pady=5, sticky="n")
 
     # Importieren der Funktion URL
     from ._avatarManager import loadImage
@@ -293,7 +295,7 @@ def pop_up_settings(parent, controller):
                                     borderwidth=0,
                                     cursor="hand2",
                                     command=lambda: setAvatar())
-    update_image_button.grid(row=3, column=1, pady=10, sticky="ns")
+    update_image_button.grid(row=3, column=1, sticky="n")
 
 
     # def zum Abmelden des Benutzers

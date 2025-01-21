@@ -223,7 +223,7 @@ class roomDetailsWindow(tk.Frame):
         def customMessageBoxCall():
             if customMessageBoxDelete(self,
                                    title="Aktion Bestätigen",
-                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
+                                   message="Willst du diesen Raum unwiderruflich löschen?",
                                    buttonText="Raum Löschen",
                                    blue=True):
                 delete_entry()
