@@ -1,10 +1,11 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
+
+from main import ddINV
 from includes.sec_data_info import sqlite3api as sqlapi
 from .customMessageBoxDelete import *
-from main import ddINV
 
-logger:Logger = Logger('rolesDetailsWindow')
+logger:Logger = Logger('RolesDetailsWindow')
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
@@ -17,7 +18,7 @@ def show_roles_details(selected_roles, tree, controller):
     Cache und aktualisiert die Daten des Detailframes. Anschließend wird der Frame
     zum Anzeigen der Details angezeigt.
 
-    :param selected_room: Das ausgewählte Raumelement im Treeview.
+    :param str selected_roles: Das ausgewählte Raumelement im Treeview.
     :param tree: Der Treeview, aus dem die Daten abgerufen werden.
     :param controller: Der Controller, der das Frame-Management übernimmt.
     :return: Es wird kein Wert zurückgegeben.
@@ -26,13 +27,14 @@ def show_roles_details(selected_roles, tree, controller):
     data = tree.item(selected_roles, "values")
     logger.debug(f"Data of the selected item: {data}") # Debug
     cache.selected_ID = data[0]
-    controller.show_frame(rolesDetailsWindow)  # Zeige die Details-Seite
+    controller.show_frame(RolesDetailsWindow)  # Zeige die Details-Seite
+
     # Frame aktualisieren und anzeigen
-    details = controller.frames[rolesDetailsWindow]
+    details = controller.frames[RolesDetailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
 
 
-class rolesDetailsWindow(tk.Frame):
+class RolesDetailsWindow(tk.Frame):
     """
     Die Klasse roomDetailsWindow dient zur Darstellung und Bearbeitung von Raumdetails in einer GUI.
 
@@ -44,16 +46,10 @@ class rolesDetailsWindow(tk.Frame):
     :type controller: tk.Tk
     :ivar go_back_btn_roles_window: Bild für den „Zurück“-Button.
     :type go_back_btn_roles_window: tk.PhotoImage
-    :ivar opt_btn_roles_window: Bild für den „Optionen“-Button.
-    :type opt_btn_roles_window: tk.PhotoImage
-    :ivar room_num_entry: Eingabefeld für die Raumnummer.
-    :type room_num_entry: tk.Entry
-    :ivar place_entry: Eingabefeld für den Ort.
-    :type place_entry: tk.Entry
     :ivar edit_btn: Bild für den „Aktualisieren“-Button.
     :type edit_btn: tk.PhotoImage
     :ivar lend_btn: Bild für den „Ausleihen“-Button.
-    :type lend_btn: tk.PhotoImage
+    :type lend_btn: tk. PhotoImage
     :ivar delete_btn: Bild für den „Löschen“-Button.
     :type delete_btn: tk.PhotoImage
     """
@@ -75,7 +71,9 @@ class rolesDetailsWindow(tk.Frame):
         self.go_back_btn_roles_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Erstelle einen Header-Bereich
-        header_frame_roles_window = tk.Frame(self, height=10, background="#00699a")
+        header_frame_roles_window = tk.Frame(self,
+                                             height=10,
+                                             background="#00699a")
         header_frame_roles_window.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E + tk.N)
 
         # Überschrift mittig zentrieren
@@ -83,15 +81,12 @@ class rolesDetailsWindow(tk.Frame):
         header_frame_roles_window.grid_columnconfigure(1, weight=3)  # Überschrift zentriert (größerer Gewichtungsfaktor)
         header_frame_roles_window.grid_columnconfigure(2, weight=1)  # Option-Button
 
-
         # Zentriere das Label in Spalte 1
-        header_label_roles_window = tk.Label(
-            header_frame_roles_window,
-            text="Rollen Details",
-            background="#00699a",
-            foreground="white",
-            font=("Arial", 60)
-        )
+        header_label_roles_window = tk.Label(header_frame_roles_window,
+                                             text="Rollen Details",
+                                             background="#00699a",
+                                             foreground="white",
+                                             font=("Arial", 60))
         header_label_roles_window.grid(row=0, column=1, pady=40, sticky=tk.W + tk.E)
 
         # Buttons in Spalten 2 und 3 platzieren

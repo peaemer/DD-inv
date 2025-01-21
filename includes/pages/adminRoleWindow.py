@@ -312,7 +312,7 @@ class adminRoleWindow(tk.Frame):
                 selected_user = role_tree.focus()
                 logger.debug(f"Selected user: {selected_user}") # Debug
                 if selected_user:
-                    from .rolesDetailsWindow import rolesDetailsWindow, show_roles_details
+                    from .RolesDetailsWindow import RolesDetailsWindow, show_roles_details
                     show_roles_details(selected_user, role_tree, controller)
             except Exception as e:
                 logger.error(f"Error during selection: {e}") # Debug

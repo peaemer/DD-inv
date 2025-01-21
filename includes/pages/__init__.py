@@ -12,7 +12,7 @@ from .adminRoomWindow import adminRoomWindow
 from .roomDetailsWindow import roomDetailsWindow
 from .addRoomPopup import add_room_popup
 from .adminRoleWindow import adminRoleWindow
-from .rolesDetailsWindow import rolesDetailsWindow
+from .RolesDetailsWindow import RolesDetailsWindow
 from .customMessageBoxDelete import customMessageBoxDelete
 from ._sort_tree import *
 
@@ -27,6 +27,6 @@ __all__ = ["logInWindow",
            "adminRoomWindow",
            "roomDetailsWindow",
            "adminRoleWindow",
-           "rolesDetailsWindow",
+           "RolesDetailsWindow",
            "customMessageBoxDelete",
            ]
