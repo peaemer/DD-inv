@@ -9,6 +9,7 @@ from ..sec_data_info import UserSecurity
 from ._sort_tree import sort_column
 import includes.sec_data_info.sqlite3api as db
 
+
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)
 srhGrey = "#d9d9d9"
@@ -23,7 +24,6 @@ def show_user_details(selected_user, tree, controller):
     # Frame aktualisieren und anzeigen
     details = controller.frames[userDetailsWindow]
     details.update_data(data)  # Methode in detailsWindow aufrufen
-
 
 
 class userDetailsWindow(tk.Frame):
@@ -116,9 +116,9 @@ class userDetailsWindow(tk.Frame):
         def customMessageBoxCall():
             customMessageBoxDelete(self,
                                    title="Aktion Bestätigen",
-                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
-                                   controller=controller,
-                                   type="DELETE_USER")
+                                   message="Willst du diesen Benutzer unwiderruflich löschen?",
+                                   buttonText="Benutzer Löschen",
+                                   blue=True)
 
         self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
