@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import *
+
 from ..CTkScrollableDropdown import *
 from .customMessageBoxDelete import *
 from ._sort_tree import sort_column
@@ -10,7 +10,7 @@ import includes.sec_data_info.sqlite3api as db
 logger:Logger = Logger('DetailsWindow')
 
 
-def show_details(selectedItem, tree, controller):
+def show_details(selectedItem, tree: ttk.Treeview, controller):
     """
     Zeigt die Details eines ausgewählten Elements in einer Benutzeroberfläche an. Diese Funktion ruft die Daten
     des ausgewählten Elements aus einer Baumstruktur ab, speichert die ID des Elements im Cache und zeigt die
@@ -43,7 +43,6 @@ class DetailsWindow(tk.Frame):
 
     :ivar controller: Der Controller der Anwendung, der für die Navigation zwischen Fenstern verwendet wird.
     :ivar go_back_btn_details_window: Bildressource für den Zurück-Button.
-    :ivar opt_btn_details_window: Bildressource für den Optionen-Button.
     :ivar service_tag_entry_details_window: Eingabefeld für den Service Tag.
     :ivar type_entry_details_window: Eingabefeld für den Typ des Objekts.
     :ivar room_combobox_details_window: Eingabefeld für die Rauminformation.
@@ -105,7 +104,8 @@ class DetailsWindow(tk.Frame):
         go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
         # Container für Input- und Tree-Frame
-        container_frame = tk.Frame(self, background="white")
+        container_frame = tk.Frame(self,
+                                   background="white")
         container_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
 
         # Konfiguration der Container-Spalten
@@ -115,7 +115,10 @@ class DetailsWindow(tk.Frame):
         size_details_window = 28
 
         # Ändere die Position des TreeFrames
-        tree_frame_details_window = tk.Frame(container_frame, background="red", width=200, height=400)
+        tree_frame_details_window = tk.Frame(container_frame,
+                                             background="red",
+                                             width=200,
+                                             height=400)
         tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
 
         global tree_details_window
@@ -153,7 +156,8 @@ class DetailsWindow(tk.Frame):
         tree_details_window.tkraise()
 
         # Input-Frame
-        input_frame_details_window = tk.Frame(container_frame, background="white")
+        input_frame_details_window = tk.Frame(container_frame,
+                                              background="white")
         input_frame_details_window.grid(row=0, column=1, pady=20, sticky="nsew")
 
         input_frame_details_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
@@ -161,26 +165,39 @@ class DetailsWindow(tk.Frame):
         input_frame_details_window.grid_columnconfigure(2, weight=1)
 
         # Service Tag
-        service_tag_label_details_window = tk.Label(input_frame_details_window, text="Service Tag",
-                                                    font=("Arial", size_details_window), background="white")
+        service_tag_label_details_window = tk.Label(input_frame_details_window,
+                                                    text="Service Tag",
+                                                    font=("Arial", size_details_window),
+                                                    background="white")
         service_tag_label_details_window.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.service_tag_entry_details_window = ctk.CTkEntry(input_frame_details_window,
                                                              font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
+                                                             corner_radius=corner,
+                                                             fg_color=srhGrey,
+                                                             text_color="black",
+                                                             border_width=border)
         self.service_tag_entry_details_window.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Typ
-        type_label_details_window = tk.Label(input_frame_details_window, text="Typ",
-                                             font=("Arial", size_details_window), background="white")
+        type_label_details_window = tk.Label(input_frame_details_window,
+                                             text="Typ",
+                                             font=("Arial", size_details_window),
+                                             background="white")
         type_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.type_entry_details_window = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
+        self.type_entry_details_window = ctk.CTkEntry(input_frame_details_window,
+                                                      font=("Arial", size_details_window),
+                                                      corner_radius=corner,
+                                                      fg_color=srhGrey,
+                                                      text_color="black",
+                                                      border_width=border)
         self.type_entry_details_window.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Raum (Dropdown-Menü)
-        room_label_details_window = tk.Label(input_frame_details_window, text="Raum", background="white",
+        room_label_details_window = tk.Label(input_frame_details_window,
+                                             text="Raum",
+                                             background="white",
                                              font=("Arial", size_details_window))
         room_label_details_window.grid(row=2, column=0, padx=0, pady=20, sticky=tk.W + tk.E)
 
@@ -191,36 +208,55 @@ class DetailsWindow(tk.Frame):
 
         self.room_combobox_details_window = ctk.CTkComboBox(input_frame_details_window,
                                                             font=("Arial", size_details_window),
-                                                             corner_radius=corner,button_color=srhGrey ,fg_color=srhGrey,
-                                                            text_color="black",border_width=border,
+                                                             corner_radius=corner,
+                                                            button_color=srhGrey ,
+                                                            fg_color=srhGrey,
+                                                            text_color="black",
+                                                            border_width=border,
                                                             state="readonly")
-
-
         self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky="ew")
-        CTkScrollableDropdownFrame(self.room_combobox_details_window, values=room_values,button_color=srhGrey, #BUGGY
-                              frame_corner_radius=corner, autocomplete=True, fg_color=srhGrey,
-                              text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
-                              justify="left")
+
+        CTkScrollableDropdownFrame(self.room_combobox_details_window,
+                                   values=room_values,
+                                   button_color=srhGrey, #BUGGY
+                                   frame_corner_radius=corner,
+                                   autocomplete=True,
+                                   fg_color=srhGrey,
+                                   text_color="black",
+                                   frame_border_width=comboborder,
+                                   frame_border_color=srhGreyHover,
+                                   justify="left")
 
         self.room_combobox_details_window.set("Raum auswählen")  # Platzhalter
 
         # Name
-        name_label_details_window = tk.Label(input_frame_details_window, text="Name",
-                                             font=("Arial", size_details_window), background="white")
+        name_label_details_window = tk.Label(input_frame_details_window,
+                                             text="Name",
+                                             font=("Arial", size_details_window),
+                                             background="white")
         name_label_details_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.name_entry_details_window = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
+        self.name_entry_details_window = ctk.CTkEntry(input_frame_details_window,
+                                                      font=("Arial", size_details_window),
+                                                      corner_radius=corner,
+                                                      fg_color=srhGrey,
+                                                      text_color="black",
+                                                      border_width=border)
         self.name_entry_details_window.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Beschädigung
-        damaged_label_details_window = tk.Label(input_frame_details_window, text="Beschädigung",
-                                                font=("Arial", size_details_window), background="white")
+        damaged_label_details_window = tk.Label(input_frame_details_window,
+                                                text="Beschädigung",
+                                                font=("Arial", size_details_window),
+                                                background="white")
         damaged_label_details_window.grid(column=0, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.damaged_entry_details_window = ctk.CTkEntry(input_frame_details_window,
                                                          font=("Arial", size_details_window),
-                                                             corner_radius=corner,fg_color=srhGrey,text_color="black",border_width=border)
+                                                         corner_radius=corner,
+                                                         fg_color=srhGrey,
+                                                         text_color="black",
+                                                         border_width=border)
         self.damaged_entry_details_window.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         update_label = tk.Label(input_frame_details_window,
@@ -255,27 +291,16 @@ class DetailsWindow(tk.Frame):
             else:
                 damage = self.damaged_entry_details_window.get()
             logger.debug(f"damage:{damage}")
-            logger.debug(f"db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID, neue_beschaedigung=damage, neue_standort=room, neue_modell=name, neue_geraetetyp=type)}")
+            logger.debug(f"db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID, 
+                                                                              neue_beschaedigung=damage, 
+                                                                              neue_standort=room, 
+                                                                              neue_modell=name, 
+                                                                              neue_geraetetyp=type)}")
             from .MainPage import MainPage
             MainPage.update_sidetree_with_data()
             update_label.configure(text="Eintrag wurde aktualisiert")
 
         def lend(data):
-            """
-            Eine Klasse, die die Details-Ansicht als Tkinter-Frame darstellt.
-
-            Diese Klasse ist für die Darstellung und Verwaltung einer spezifischen
-            Detailansicht innerhalb einer GUI-Anwendung verantwortlich. Sie erbt von
-            Tkinter's ``Frame`` und integriert zusätzliche Methoden zur Behandlung
-            spezifischer UI-Aktionen.
-
-            :param parent: Der übergeordnete Tkinter-Container, in den dieser Frame
-                           eingebunden wird.
-            :type parent: tk.Widget
-            :param controller: Ein Controller-Objekt, das die Steuerlogik enthält und
-                               den Zustand der Anwendung verwaltet.
-            :type controller: beliebiger Typ
-            """
             logger.debug(f"Übergebene Daten: {data}")
             from .lendPopup import lend_popup
             lend_popup(self, data, controller)
@@ -305,13 +330,23 @@ class DetailsWindow(tk.Frame):
         button_frame_add_item_popup = tk.Frame(self, background="white")
         button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
-        lend_button = tk.Button(button_frame_add_item_popup, image=self.lend_btn,
-                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2",
+        lend_button = tk.Button(button_frame_add_item_popup,
+                                image=self.lend_btn,
+                                bd=0,
+                                relief=tk.FLAT,
+                                bg="white",
+                                activebackground="white",
+                                cursor="hand2",
                                 command=lambda: lend({"name": self.name_entry_details_window.get()}))
 
-        ret_button = tk.Button(button_frame_add_item_popup, image=self.return_btn,
-                                bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2",
-                                command=lambda: return_item({"name": self.name_entry_details_window.get()}))
+        ret_button = tk.Button(button_frame_add_item_popup,
+                               image=self.return_btn,
+                               bd=0,
+                               relief=tk.FLAT,
+                               bg="white",
+                               activebackground="white",
+                               cursor="hand2",
+                               command=lambda: return_item({"name": self.name_entry_details_window.get()}))
 
         def customMessageBoxCall():
             customMessageBoxDelete(self,
@@ -330,9 +365,14 @@ class DetailsWindow(tk.Frame):
         #delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 
-        edit_button = tk.Button(button_frame_add_item_popup, image=self.edit_btn,cursor="hand2",
-                               bd=0, relief=tk.FLAT, bg="white", activebackground="white",
-                               command=refresh_entry)
+        edit_button = tk.Button(button_frame_add_item_popup,
+                                image=self.edit_btn,
+                                cursor="hand2",
+                                bd=0,
+                                relief=tk.FLAT,
+                                bg="white",
+                                activebackground="white",
+                                command=refresh_entry)
         #edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
 
         self.grid_rowconfigure(0, weight=0)

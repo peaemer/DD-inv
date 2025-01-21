@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+import customtkinter as ctk  #pip install customtkinter
+
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
 from ._styles import *
 from includes.util.Logging import Logger
-import customtkinter as ctk  #pip install customtkinter
+from ._sort_tree import sort_column
+
 
 logger:Logger = Logger('AdminRoleWindow')
 
@@ -94,7 +97,8 @@ class AdminRoleWindow(tk.Frame):
         self.grid_rowconfigure(2, weight=1)
 
         # Erstelle einen Header-Bereich
-        header_frame = tk.Frame(self, background=srhBlue)
+        header_frame = tk.Frame(self,
+                                background=srhBlue)
         header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
@@ -106,11 +110,18 @@ class AdminRoleWindow(tk.Frame):
         self.srhHead = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
 
         # Füge ein zentriertes Label hinzu
-        header_label = tk.Label(header_frame, image=self.srhHead, background=srhBlue, foreground="white")
+        header_label = tk.Label(header_frame,
+                                image=self.srhHead,
+                                background=srhBlue,
+                                foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background=srhBlue, text="Rollen-Übersicht", font=('Arial', 30), foreground="white")
+        text_header_label = tk.Label(header_frame,
+                                     background=srhBlue,
+                                     text="Rollen-Übersicht",
+                                     font=('Arial', 30),
+                                     foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
 
@@ -119,8 +130,14 @@ class AdminRoleWindow(tk.Frame):
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, bd=border,cursor="hand2", relief=tk.FLAT, bg=srhBlue,
-                                 activebackground=srhBlue)
+        log_out_button = tk.Button(header_frame,
+                                   image=self.log_out_btn,
+                                   command=go_back_admin_window,
+                                   bd=border,
+                                   cursor="hand2",
+                                   relief=tk.FLAT,
+                                   bg=srhBlue,
+                                   activebackground=srhBlue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         self.admin_role_window_avatar = cache.user_avatar
@@ -149,16 +166,39 @@ class AdminRoleWindow(tk.Frame):
         navi.grid_columnconfigure(2, weight=1)
 
 
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, command=change_to_user,cursor="hand2", corner_radius=corner, fg_color="#C5C5C5",
-                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
+        user_nav = ctk.CTkButton(navi,
+                                 text="Nutzer",
+                                 border_width=border,
+                                 command=change_to_user,
+                                 cursor="hand2",
+                                 corner_radius=corner,
+                                 fg_color="#C5C5C5",
+                                 text_color="black",
+                                 font=("Arial", 20),
+                                 hover_color="darkgray")
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=border, corner_radius=corner,cursor="hand2" ,fg_color="#C5C5C5",
-                                 text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
+        room_nav = ctk.CTkButton(navi,
+                                 text="Räume",
+                                 border_width=border,
+                                 corner_radius=corner,
+                                 cursor="hand2" ,
+                                 fg_color="#C5C5C5",
+                                 text_color="black",
+                                 command=change_to_room,
+                                 font=("Arial", 20),
+                                 hover_color="darkgray")
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner,cursor="hand2",fg_color="#C5C5C5",
-                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
+        role_nav = ctk.CTkButton(navi,
+                                 text="Rollen",
+                                 border_width=border,
+                                 corner_radius=corner,
+                                 cursor="hand2",
+                                 fg_color="#C5C5C5",
+                                 text_color="black",
+                                 font=("Arial", 20),
+                                 hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
 
@@ -180,8 +220,15 @@ class AdminRoleWindow(tk.Frame):
 
         global group_add_button
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
-        group_add_button = tk.Button(search_frame, image=self.add_btn, bd=border,cursor="hand2", relief=tk.FLAT, bg="white",
-                                    activebackground="white", command=add_role)
+
+        group_add_button = tk.Button(search_frame,
+                                     image=self.add_btn,
+                                     bd=border,
+                                     cursor="hand2",
+                                     relief=tk.FLAT,
+                                     bg="white",
+                                    activebackground="white",
+                                     command=add_role)
         group_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         self.searchBtn = tk.PhotoImage(file=resource_path("./includes/assets/search_button_blue.png"))
@@ -211,7 +258,8 @@ class AdminRoleWindow(tk.Frame):
         role_search_entry.bind("<Key>", on_key_press)
         role_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-        role_tree_frame = tk.Frame(middle_frame, background="white")
+        role_tree_frame = tk.Frame(middle_frame,
+                                   background="white")
         role_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         # Spaltenkonfiguration für das TreeFrame
@@ -220,7 +268,8 @@ class AdminRoleWindow(tk.Frame):
         role_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global role_tree
-        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16"), show="headings")
+        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16", "c17"
+                                                          ), show="headings")
 
         # Scrollbar erstellen
         role_tree_scroll = ctk.CTkScrollbar(
@@ -260,31 +309,29 @@ class AdminRoleWindow(tk.Frame):
         role_tree.tag_configure("evenrow", background="white")
 
         # Spaltennamen und Breiten als Liste
-        columns = [
-            ("ID", 30),
-            ("Rolle", 250),
-            ("Rolle Löschbar", 150),
-            ("Admin Feature", 150),
-            ("Ansehen", 90),
-            ("Löschen", 100),
-            ("Bearbeiten", 110),
-            ("Erstellen", 100),
-            ("Gruppe Löschen", 160),
-            ("Gruppe Erstellen", 160),
-            ("Gruppe Bearbeiten", 190),
-            ("Rollen Erstellen", 170),
-            ("Rollen Bearbeiten", 170),
-            ("Rollen Löschen", 160),
-            ("User Löschen", 160),
-            ("User Bearbeiten", 190),
-            ("User Erstellen", 160)
+        role_columns = [
+            ("# 1","ID", 300),
+            ("# 2","Rolle", 250),
+            ("# 3","Rolle Löschbar", 150),
+            ("# 4","Admin Feature", 150),
+            ("# 5","Ansehen", 90),
+            ("# 6","Löschen", 100),
+            ("# 7","Bearbeiten", 110),
+            ("# 8","Erstellen", 100),
+            ("# 9","Gruppe Löschen", 160),
+            ("# 10","Gruppe Erstellen", 160),
+            ("# 11","Gruppe Bearbeiten", 190),
+            ("# 12","Rollen Erstellen", 170),
+            ("# 13","Rollen Bearbeiten", 170),
+            ("# 14","Rollen Löschen", 160),
+            ("# 15","User Löschen", 160),
+            ("# 16","User Bearbeiten", 190),
+            ("# 17","User Erstellen", 160)
         ]
 
-        # Treeview-Spalten dynamisch erstellen
-        for idx, (col_name, col_width) in enumerate(columns, start=0):
-            col_id = f"# {idx}"  # Spalten-ID
-            role_tree.column(col_id, anchor=CENTER, width=col_width)
-            role_tree.heading(col_id, text=col_name)
+        for col_id, col_name, col_width in role_columns:
+            role_tree.column(col_id, anchor=tk.CENTER, width=col_width)
+            role_tree.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(role_tree, c, True))
 
         # Treeview positionieren
         role_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
