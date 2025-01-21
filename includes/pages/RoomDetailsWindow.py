@@ -27,7 +27,6 @@ def show_room_details(selected_room, tree, controller):
     details.update_data(data)  # Methode in DetailsWindow aufrufen
 
 
-
 class RoomDetailsWindow(tk.Frame):
     """
     Die Klasse RoomDetailsWindow dient zur Darstellung und Bearbeitung von Raumdetails in einer GUI.
@@ -76,7 +75,6 @@ class RoomDetailsWindow(tk.Frame):
         header_frame_details_window.grid_columnconfigure(0, weight=1)  # Platz links
         header_frame_details_window.grid_columnconfigure(1, weight=3)  # Überschrift zentriert (größerer Gewichtungsfaktor)
         header_frame_details_window.grid_columnconfigure(2, weight=1)  # Option-Button
-
 
         # Zentriere das Label in Spalte 1
         header_label_details_window = tk.Label(
@@ -133,7 +131,6 @@ class RoomDetailsWindow(tk.Frame):
         self.place_entry = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
                                     fg_color=srhGrey,text_color="black",corner_radius=corner, border_width=border)
         self.place_entry.grid(column=1, row=2, sticky=tk.EW, padx=20, pady=10)
-
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():

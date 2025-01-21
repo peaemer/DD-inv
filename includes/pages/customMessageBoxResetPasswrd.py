@@ -154,7 +154,6 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
                           command=log_out_box)
     accpt.grid(row=7, column=0, padx=0, pady=10)
 
-
     #Btn zum Abbrechen
     cancel = ctk.CTkButton(passwrd_msg,
                            text="Abbrechen",

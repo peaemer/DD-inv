@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-import customtkinter as ctk  #pip install customtkinter
+import customtkinter as ctk
 
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
@@ -9,8 +9,8 @@ from ._styles import *
 from includes.util.Logging import Logger
 from ._sort_tree import sort_column
 
-
 logger:Logger = Logger('AdminRoleWindow')
+
 
 # Hauptseite (zweites Fenster)
 class AdminRoleWindow(tk.Frame):
@@ -68,7 +68,6 @@ class AdminRoleWindow(tk.Frame):
                 role_search_entry.configure(text_color='grey')  # Textfarbe auf grau ändern
                 logger.debug("Reset Entry") #Debug
 
-
         def on_key_press(event):
             typed_key = event.char  # The character of the typed key
             logger.debug(f"Key pressed:{typed_key}")
@@ -124,7 +123,6 @@ class AdminRoleWindow(tk.Frame):
                                      foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
-
         # Konvertiere das Bild für Tkinter
         from ._avatarManager import resource_path
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
@@ -153,7 +151,6 @@ class AdminRoleWindow(tk.Frame):
                                    activebackground=srhBlue)
         options_button_admin_role_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
-
         #########
         #NAV:BAR#
         #########
@@ -164,7 +161,6 @@ class AdminRoleWindow(tk.Frame):
         navi.grid_columnconfigure(0, weight=1)
         navi.grid_columnconfigure(1, weight=1)
         navi.grid_columnconfigure(2, weight=1)
-
 
         user_nav = ctk.CTkButton(navi,
                                  text="Nutzer",
@@ -200,9 +196,6 @@ class AdminRoleWindow(tk.Frame):
                                  font=("Arial", 20),
                                  hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
-
-
-
 
         middle_frame = tk.Frame(self, background="white")
         middle_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
@@ -299,7 +292,6 @@ class AdminRoleWindow(tk.Frame):
             button_hover_color="#2980b9"
         )
         h_role_tree_scroll.grid(row=2, column=0, sticky=tk.W + tk.E)  # Scrollbar genau neben der Tabelle
-
 
         # Treeview mit Scrollbar verbinden
         role_tree.configure(xscrollcommand=h_role_tree_scroll.set)

@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 
-
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
 from includes.util.Logging import Logger
@@ -11,6 +10,7 @@ import customtkinter as ctk  #pip install customtkinter
 from ._sort_tree import sort_column
 
 logger:Logger = Logger('AdminUserWindow')
+
 
 # Hauptseite (zweites Fenster)
 class AdminUserWindow(tk.Frame):
@@ -36,7 +36,6 @@ class AdminUserWindow(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
-
 
         def go_back_admin_window():
             """
@@ -161,7 +160,6 @@ class AdminUserWindow(tk.Frame):
                                    activebackground=srhBlue)
         options_button_admin_user_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
-
         #########
         #NAV:BAR#
         #########
@@ -173,7 +171,6 @@ class AdminUserWindow(tk.Frame):
         navi.grid_columnconfigure(1, weight=1)
         navi.grid_columnconfigure(2, weight=1)
 
-
         user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",cursor="hand2",text_color="black", font=("Arial", 20), hover_color="darkgray")
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
@@ -182,9 +179,6 @@ class AdminUserWindow(tk.Frame):
 
         role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",cursor="hand2",text_color="black", command=change_to_roles, font=("Arial", 20), hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
-
-
-
 
         middle_frame = tk.Frame(self, background="white")
         middle_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
@@ -216,7 +210,6 @@ class AdminUserWindow(tk.Frame):
                                  activebackground="white",
                                  command=search)
         search_button.grid(padx=10, pady=5, row=0, column=0)
-
 
         # Entry-Feld mit Platzhalter-Text
         user_search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey, text_color="black", font=("Arial", 27),

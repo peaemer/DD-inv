@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+
 import includes.sec_data_info.sqlite3api as sqlapi
 import cache
 from ._styles import *
@@ -68,7 +69,6 @@ class AdminRoomWindow(tk.Frame):
         def on_key_press(event):
             typed_key = event.char  # The character of the typed key
 
-
         def change_to_user():
             from .AdminUserWindow import AdminUserWindow
             controller.show_frame(AdminUserWindow)
@@ -78,7 +78,6 @@ class AdminRoomWindow(tk.Frame):
             from .AdminRoleWindow import AdminRoleWindow
             controller.show_frame(AdminRoleWindow)
             AdminRoleWindow.update_treeview_with_data()
-
 
         global tree
 
@@ -127,7 +126,6 @@ class AdminRoomWindow(tk.Frame):
                                    activebackground=srhBlue)
         options_button_admin_room_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
-
         #########
         #NAV:BAR#
         #########
@@ -168,7 +166,6 @@ class AdminRoomWindow(tk.Frame):
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
-
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/HinzuSmall_blue.png"))
         global room_add_button
         room_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white", command=add_room)
@@ -197,7 +194,6 @@ class AdminRoomWindow(tk.Frame):
         room_search_entry.bind("<Key>", on_key_press)
         room_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-
         # Ändere die Position des TreeFrames auf row=3
         room_tree_frame = tk.Frame(middle_frame, background="white")
         room_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
@@ -206,7 +202,6 @@ class AdminRoomWindow(tk.Frame):
         room_tree_frame.grid_rowconfigure(1, weight=1)
         room_tree_frame.grid_columnconfigure(0, weight=1)  # Spalte für die Tabelle
         room_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
-
 
         global room_tree
         room_tree = ttk.Treeview(room_tree_frame, column=("c1", "c2"),cursor="hand2", show="headings")
@@ -240,8 +235,6 @@ class AdminRoomWindow(tk.Frame):
         for col_id, col_name, col_width in room_columns:
             room_tree.column(col_id, anchor=tk.CENTER, width=col_width)
             room_tree.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(room_tree, c, False))
-
-
 
         room_tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
         room_tree.tkraise()

@@ -1,10 +1,12 @@
 import tkinter as tk
 import customtkinter as ctk
+
 import cache
 from includes.util.Logging import Logger
 from ._styles import *
 
 logger: Logger = Logger('SettingsWindow')
+
 
 def customMessageBoxDelete(parent, title, message, buttonText = None, blue: bool = False) -> bool:
     delete_msg_box = tk.Toplevel(parent)
@@ -89,7 +91,6 @@ def customMessageBoxDelete(parent, title, message, buttonText = None, blue: bool
         cancel.grid(row=1, column=0, padx=0, pady=10, columnspan=2)
 
     delete_msg_box.bind("<Return>", lambda event: cancel.invoke())
-
 
     delete_msg.grid_rowconfigure(0, weight=0)
     delete_msg.grid_rowconfigure(1, weight=0)

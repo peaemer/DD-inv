@@ -25,7 +25,6 @@ def init_connection() -> sqlite3.Connection:
     con.row_factory = sqlite3.Row
     return con
 
-
 ###############################################################
 # T A B E L L E N - B E A R B E I T U N G S - E N D P U N K T #
 ###############################################################
@@ -53,7 +52,6 @@ def add_column(table_name:str, column_name:str, data_type:str = 'TEXT') -> str:
         # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
         return f"Fehler beim Hinzufügen der Tabellenspalte: {e.args[0]}"
 
-
 def remove_column(table_name:str, column_name:str) -> str:
     """
         Fügt eine neue spalte zu einer Tabelle hinzu.
@@ -75,7 +73,6 @@ def remove_column(table_name:str, column_name:str) -> str:
     except sqlite3.Error as e:
         # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
         return f"Fehler beim Entfernen der Tabellenspalte: {e.args[0]}"
-
 
 def add_table(table_name:str, new_columns:list[tuple[str, str | None]]) -> str:
     """
@@ -120,7 +117,6 @@ def remove_table(table_name:str) -> str:
         # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
         return f"Fehler Entfernen der Tabelle: {e.args[0]}"
 
-
 #####################################
 # B E N U T Z E R - E N D P U N K T #
 #####################################
@@ -155,7 +151,6 @@ def create_benutzer(nutzername:str, passwort:str, email:str) -> str:
         # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
         return f"Fehler beim Hinzufügen des Benutzers: {e.args[0]}"
 
-
 def read_all_benutzer() -> list[dict[str, str]]:
     """
         Ruft alle Benutzer aus der Tabelle `Benutzer` ab.
@@ -174,7 +169,6 @@ def read_all_benutzer() -> list[dict[str, str]]:
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Benutzer: {e.args[0]}")
 
-
 def read_benutzer(nutzername:str) -> dict[str,str]:
     """
         Ruft die Daten eines spezifischen Benutzers ab.
@@ -192,7 +186,6 @@ def read_benutzer(nutzername:str) -> dict[str,str]:
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen des Benutzers: {e.args[0]}")
 
-
 def read_benutzer_suchverlauf(nutzername):
     """
        Ruft den Suchverlauf eines spezifischen Benutzers ab.
@@ -209,7 +202,6 @@ def read_benutzer_suchverlauf(nutzername):
             return row["Suchverlauf"] if row else None
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen des Suchverlaufs: {e.args[0]}")
-
 
 def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', neue_rolle:str='', neue_suchverlauf:str=''):
     """
@@ -253,7 +245,6 @@ def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', n
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren des Benutzers: {e.args[0]}"
 
-
 def delete_benutzer(nutzername:str) -> str:
     """
         Löscht einen Benutzer aus der Tabelle `Benutzer.
@@ -268,7 +259,6 @@ def delete_benutzer(nutzername:str) -> str:
         return "Benutzer erfolgreich gelöscht."
     except sqlite3.Error as e:
         return f"Fehler beim Löschen des Benutzers: {e.args[0]}"
-
 
 #####################################
 # H A R D W A R E - E N D P U N K T #
@@ -299,7 +289,6 @@ def create_hardware(service_tag:str, geraetetyp:str, modell:str, beschaedigung, 
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen des Hardware-Eintrags: {e.args[0]}"
 
-
 def fetch_hardware() ->list[dict[str, str]]:
     """
         Ruft alle Hardware-Einträge aus der Tabelle `Hardware` ab.
@@ -312,7 +301,6 @@ def fetch_hardware() ->list[dict[str, str]]:
             return [dict(row) for row in rows]
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Hardware: {e.args[0]}")
-
 
 def fetch_hardware_by_id(id:int):
     """
@@ -329,7 +317,6 @@ def fetch_hardware_by_id(id:int):
             return dict(row) if row else None
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Hardware: {e.args[0]}")
-
 
 def update_hardware_by_id(
             id:int,
@@ -381,7 +368,6 @@ def update_hardware_by_id(
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren der Hardware: {e.args[0]}"
 
-
 def delete_hardware_by_id(id:int) -> str:
     """
         Löscht einen Hardware-Eintrag aus der Tabelle `Hardware.
@@ -398,7 +384,6 @@ def delete_hardware_by_id(id:int) -> str:
         return "Hardware-Eintrag wurde erfolgreich entfernt."
     except sqlite3.Error as e:
         return f"Fehler beim Entfernen des Hardware-Eintrags: {e.args[0]}"
-
 
 ###########################################################
 # N U T Z E R R O L L E N - R E C H T E - E N D P U N K T #
@@ -444,7 +429,6 @@ def read_all_rollen() -> list[dict[str,str]]:
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Rollen: {e.args[0]}")
 
-
 def delete_rolle(rolle:str) -> str:
     """
         Entfernt eine bestimmte Rolle aus der Tabelle `NutzerrollenRechte`.
@@ -461,7 +445,6 @@ def delete_rolle(rolle:str) -> str:
         return "Rolle wurde erfolgreich entfernt."
     except sqlite3.Error as e:
         return f"Fehler beim Entfernen der Rolle: {e.args[0]}"
-
 
 def update_role(rolle: str, **rechte:str) -> str:
     """
@@ -494,7 +477,6 @@ def update_role(rolle: str, **rechte:str) -> str:
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren der Rolle: {e.args[0]}"
 
-
 #######################################################
 # A U S L E I H - H I S T O R I E - E N D P U N K T E #
 #######################################################
@@ -524,7 +506,6 @@ def create_ausleih_historie(hardware_id:str, nutzername:str, ausgeliehen_am:str)
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen des Eintrags: {e}"
 
-
 def fetch_ausleih_historie() -> list[dict[str, str]]|str:
     """
         Ruft alle Einträge aus der Tabelle `Ausleih-Historie` ab.
@@ -540,7 +521,6 @@ def fetch_ausleih_historie() -> list[dict[str, str]]|str:
             return [dict(row) for row in rows]
     except sqlite3.Error as e:
         return f"Fehler beim Abrufen der Historie: {e}"
-
 
 def fetch_ausleih_historie_by_id(id:int) -> dict[str,str]|str|None:
     """
@@ -560,7 +540,6 @@ def fetch_ausleih_historie_by_id(id:int) -> dict[str,str]|str|None:
     except sqlite3.Error as e:
         return f"Fehler beim Abrufen des Eintrags: {e}"
 
-
 def delete_ausleih_historie(id:int) -> str:
     """
          Löscht einen Eintrag aus der Tabelle `Ausleih-Historie` anhand der ID.
@@ -577,7 +556,6 @@ def delete_ausleih_historie(id:int) -> str:
             return "Eintrag erfolgreich gelöscht."
     except sqlite3.Error as e:
         return f"Fehler beim Löschen des Eintrags: {e}"
-
 
 #########################################
 # R O O M _ I N F O - E N D P U N K T E #
@@ -601,7 +579,6 @@ def create_room(raum:str, ort:str)->str:
     except sqlite3.Error as e:
         return f"Fehler beim Erstellen des Raumes: {e}"
 
-
 def fetch_all_rooms() -> list[dict[str,str]] | str:
     """
         Mit der Funktion rufen wir alle bis jetzt erstellten Räume in der Datenbank auf
@@ -618,7 +595,6 @@ def fetch_all_rooms() -> list[dict[str,str]] | str:
     except sqlite3.Error as e:
         return f"Fehler beim Abrufen der Räume: {e}"
 
-
 def search_room(raum:str) -> dict[str,str] | str:
     """
         :param str raum: (Raumname z.B. E220)
@@ -634,7 +610,6 @@ def search_room(raum:str) -> dict[str,str] | str:
             return dict(row) if row else None
     except sqlite3.Error as e:
         return f"Fehler beim Suchen des Raumes: {e}"
-
 
 def update_room(raum:str, neu_raum:str, neu_ort:str) -> str:
     """
@@ -671,7 +646,6 @@ def update_room(raum:str, neu_raum:str, neu_ort:str) -> str:
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren des Raumes: {e}"
 
-
 def delete_room(raum:str)->str:
     """
         Funktion zum entfernen von Räumen, bitte nur verwenden wenn nötig.
@@ -688,7 +662,6 @@ def delete_room(raum:str)->str:
             return "Raum erfolgreich gelöscht."
     except sqlite3.Error as e:
         return f"Fehler beim Löschen des Raumes: {e}"
-
 
 ###########################################################
 # A V A T A R _ I N F O R M A T I O N - E N D P U N K T E #
@@ -720,7 +693,6 @@ def upsert_avatar(nutzername:str, avatar_link:str) -> str:
             return "Avatar erfolgreich erstellt."
     except sqlite3.Error as e:
         return f"Fehler beim erstellen des Avatars: {e}"
-
 
 def get_avatar_info(nutzername:str) -> dict[str, str]|None:
     """

@@ -2,13 +2,13 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from customtkinter import *
 from ..CTkScrollableDropdown import *
+
 from ._avatarManager import resource_path
 from .customMessageBoxDelete import *
 from includes.util.Logging import Logger
 from ..sec_data_info import UserSecurity
 from ._sort_tree import sort_column
 import includes.sec_data_info.sqlite3api as db
-
 
 LARGEFONT = ("Arial", 35)
 LOGINFONT = ("Arial", 40)

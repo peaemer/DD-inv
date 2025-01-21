@@ -128,7 +128,6 @@ class LogInWindow(tk.Frame):
         self.grid_columnconfigure(0, weight=1)  # Spalte 0 kann sich ausdehnen
         self.grid_rowconfigure(1, weight=0)  # Zeile 1 (wo das greyCanvas liegt) kann sich ausdehnen
 
-
         # Login-Formular mit abgerundeten Eingabefeldern
         form_frame = tk.Frame(self, bg="white")
         form_frame.grid(row=2, column=0, sticky="nsew", pady=60)

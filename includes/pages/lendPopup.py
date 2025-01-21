@@ -14,6 +14,7 @@ from main import ddINV
 
 logger:Logger = Logger('LendPopup')
 
+
 def lend_popup(parent, data, controller: ddINV):
     """
     Erstellt ein modales Popup-Fenster zur Verwaltung von Ausleihvorgängen. Das Fenster
@@ -110,10 +111,7 @@ def lend_popup(parent, data, controller: ddINV):
     user_var = tk.StringVar()
     user_var.set(cache.user_name) #funktion zum eifügen des Namens
 
-
-
     # Formularbereich
-
     name_label = tk.Label(popup, text="Name", font=lend_font, bg="white", anchor="w")
     name_label.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
@@ -128,7 +126,6 @@ def lend_popup(parent, data, controller: ddINV):
 
     borrower_label = tk.Label(popup, text="Ausleiher", font=lend_font, bg="white", anchor="w")
     borrower_label.grid(row=2, column=0, padx=20, pady=10, sticky="w")
-
 
     if cache.user_group == "Admin":
         users = []

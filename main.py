@@ -1,11 +1,9 @@
-import json
 import tkinter as tk
 import json
 from tkinter import font
 
 from includes.util.Logging import Logger
 from includes.pages import (LogInWindow)
-
 
 logger: Logger = Logger('main')
 

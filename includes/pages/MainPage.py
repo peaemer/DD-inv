@@ -169,7 +169,6 @@ class MainPage(tk.Frame):
         global side_tree
         side_tree = ttk.Treeview(grey_frame_side, show="tree", style="Treeview_side",cursor="hand2")
 
-
         # Scrollbar erstellen
         side_tree_scroll = ctk.CTkScrollbar(
             grey_frame_side,
@@ -328,12 +327,9 @@ class MainPage(tk.Frame):
             tree.column(col_id, anchor=tk.CENTER, width=col_width)
             tree.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(tree, c, True))
 
-
         tree.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)  # Tabelle vollständig anpassen
         tree.tkraise()
         self.update_treeview_with_data()
-
-
 
         # Funktion für das Ereignis-Binding
         def on_item_selected(event):
@@ -346,7 +342,6 @@ class MainPage(tk.Frame):
                     show_details(selected_item, tree, controller)
             except Exception as e:
                 logger.debug(f"Error during selection: {e}") #Debug
-
 
         def on_side_tree_select(event):
             """
