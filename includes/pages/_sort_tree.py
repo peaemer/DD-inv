@@ -1,5 +1,6 @@
 from tkinter import ttk
 
+
 def sort_column(tree_name: ttk.Treeview, col, reverse=False):
     """
     Sortiert die Einträge einer Spalte in einer `ttk.Treeview`-Tabelle.

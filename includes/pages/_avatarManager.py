@@ -11,6 +11,7 @@ import cache
 
 logger:Logger = Logger('AvatarManager')
 
+
 def check_internet_connection():
     """
     Checks if there is an internet connection by attempting to make a request to a reliable URL.

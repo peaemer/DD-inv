@@ -150,7 +150,6 @@ class AdminRoomWindow(tk.Frame):
                                  hover_color="darkgray")
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
-
         # Erstellen des MiddleFrame
         middle_frame = tk.Frame(self, bg="white")
         middle_frame.grid(row=2, padx=10, pady=10, column=0, sticky="nesw")

@@ -8,6 +8,9 @@ from includes.sec_data_info import sqlite3api as db
 import string, random
 from ._styles import *
 
+logger: Logger = Logger('AddUserPopup')
+
+
 def add_user_popup(parent):
     """
     Erstellt ein Popup-Fenster, mit dem ein neuer Benutzer hinzugefügt werden kann. Das Fenster
@@ -28,8 +31,6 @@ def add_user_popup(parent):
 
     screen_width = parent.winfo_screenwidth()
     screen_height = parent.winfo_screenheight()
-
-    logger:Logger = Logger('AddUserPopup')
 
     window_width = 650
     window_height = 650
@@ -56,8 +57,6 @@ def add_user_popup(parent):
         text="Hinzufügen", foreground="white", font=("Arial", 40)
     )
     header_label_add_item_popup.grid(row=0, column=0, sticky=tk.NSEW)
-
-    size_add_user_popup = 16
 
     # Username
     username_label_add_user_popup = tk.Label(

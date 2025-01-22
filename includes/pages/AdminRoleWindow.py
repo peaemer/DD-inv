@@ -355,8 +355,6 @@ class AdminRoleWindow(tk.Frame):
         löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
         Datenbank ein. Jede Zeile erhält ein Tag, das zu einer alternierenden Darstellung von
         geraden und ungeraden Zeilen verwendet werden kann.
-
-
         """
         role_tree.delete(*role_tree.get_children())
         i = 0

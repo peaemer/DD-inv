@@ -1,7 +1,7 @@
 import tkinter as tk
 import customtkinter as ctk
-from includes.sec_data_info import sqlite3api as sqlapi
 
+from includes.sec_data_info import sqlite3api as sqlapi
 from includes.util.Logging import Logger
 from ._styles import *
 
@@ -63,8 +63,6 @@ def add_room_popup(parent):
     input_frame_add_room_popup.grid_columnconfigure(0, weight=1)
     input_frame_add_room_popup.grid_columnconfigure(1, weight=1)
     input_frame_add_room_popup.grid_columnconfigure(2, weight=1)
-
-    size_add_room_popup = 16
 
     #Raum Bezeichnung
     room_label_add_room_popup = tk.Label(

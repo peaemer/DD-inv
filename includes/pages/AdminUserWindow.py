@@ -32,7 +32,6 @@ class AdminUserWindow(tk.Frame):
     :ivar searchBtn: Speichert das Bild für den Such-Button.
     :type searchBtn: tk.PhotoImage
     """
-
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
