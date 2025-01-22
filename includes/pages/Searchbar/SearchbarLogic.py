@@ -5,6 +5,7 @@ from copy import copy
 from includes.util.Logging import Logger
 
 from includes.pages.ctk_listbox import CTkListbox
+from main import config_manager as cm
 from includes.sec_data_info import sqlite3api as db
 import customtkinter as ctk
 
@@ -14,7 +15,9 @@ import tkinter as tk
 
 logger:Logger = Logger('SearchbarLogic')
 
-MAX_REPEATED_USES: Final[int] = 5
+MAX_REPEATED_USES: Final[int] = int(cm.generate_configuration('Suchleiste').read_parameter('max repeated uses'))
+MAX_HISTORY_ENTRIES: Final[int] = int(cm.generate_configuration('Suchleiste').read_parameter('max history entries'))
+
 fallback_username: Final[str] = '1234'
 
 search_is_running = False
@@ -209,7 +212,7 @@ def finish_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, root: tk.Fram
     if not search_term == "":
         loaded_history = sorted(loaded_history, key=lambda x: x['weight'], reverse=True)
         if not __scale_history_weights(search_term.lower()):
-            while len(loaded_history) >= 30:
+            while len(loaded_history) >= MAX_REPEATED_USES:
                 loaded_history.remove(loaded_history[0])
                 loaded_history.pop()
             logger.debug(f"""loaded history was before "{loaded_history}" """)

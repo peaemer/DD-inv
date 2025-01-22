@@ -1,11 +1,15 @@
+import json
 import tkinter as tk
 import json
 from tkinter import font
+from typing import Tuple
 
+from includes.util.ConfigManager import ConfigManager, Configuration
 from includes.util.Logging import Logger
 from includes.pages import (LogInWindow)
 
 logger: Logger = Logger('main')
+config_manager:ConfigManager = ConfigManager('./DD-inv.config')
 
 
 class ddINV(tk.Tk):
@@ -21,10 +25,17 @@ class ddINV(tk.Tk):
         self.custom_font = font.Font(family="Arial", size=self.default_font_size)
 
         # Set window dimensions and icon
-        def load_resolution():
+        def load_resolution() -> Tuple[int, int]:
             """
             Lädt die gespeicherte Auflösung aus der JSON-Datei.
             """
+
+            size:Configuration = config_manager.generate_configuration('Fenster Aufloesung')
+            return (
+                size.read_parameter('hoee') if size.read_parameter('hoee') else 1920,
+                size.read_parameter('breite') if size.read_parameter('breite') else 1080
+            )
+
             try:
                 with open('config.json', 'r') as openfile:
                     # Reading from json file
@@ -56,7 +67,7 @@ class ddINV(tk.Tk):
         self.frames = {}
 
         # Login-Fenster zuerst laden
-        self.show_frame(LogInWindow)
+        self.show_frame(logInWindow)
 
     def update_zoom(self, value):
         """Aktualisiert die Zoomstufe basierend auf dem Wert des Schiebereglers."""
