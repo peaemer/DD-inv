@@ -32,17 +32,6 @@ def save_settings(dictionary: dict):
     with open("config.json", "w") as outfile:
         outfile.write(jobj)
 
-# setezen der neuen Aufloesung
-def load_settings():
-    """
-    Lädt Benutzereinstellungen aus einer JSON-Datei.
-    Gibt Standardwerte zurück, wenn die Datei nicht existiert.
-    """
-    if os.path.exists(CONFIG_PATH):
-        with open(CONFIG_PATH, "r") as file:
-            return json.load(file)
-    return {"resolution": {"width": 1920, "height": 1080}}  # Standardwerte
-
 # neustarten der Anwendung
 def close_app():
     """
@@ -382,7 +371,7 @@ def pop_up_settings(parent, controller):
                                  text="System",
                                  font=SETTINGS_FONT,
                                  bg="white")
-    radiobutton_label.grid(row=0, column=0, pady=0, columnspan=1, sticky="new")
+    radiobutton_label.grid(row=0, column=0, pady=0, columnspan=3, sticky="new")
 
     # Überschrift Auflösung ändern
     button_bg_label = tk.Label(frame_system,
@@ -464,10 +453,34 @@ def pop_up_settings(parent, controller):
             debug_normal_label.grid(row=8, column=0, columnspan=2, pady=10, sticky="new")
 
             def on_debug_normal_click():
-                DEBUG_MODE_NORMAL = False
+                current_value = parent.debug_normal_value.get()
+                DEBUG_MODE_NORMAL = current_value
+                config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
+                config.write_parameter('Debug Mode Normal', str(current_value))
+                info_label.config(text="Einstellung wird gespeichert und App geschlossen...")
+                logger.debug("DEBUG_NORMAL is now activated.")
+                parent.after(3000, close_app)
 
-            parent.debug_normel = ctk.CTkCheckBox(frame_system, text_color="white", command=lambda: on_debug_normal_click)
-            parent.debug_normel.grid(column=1, row=8, columnspan=2)
+            parent.debug_normal_value = ctk.BooleanVar(value=False)
+
+            def load_debug_mode_normal():
+                config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
+                try:
+                    saved_value = config.read_parameter('Debug Mode Normal')
+                    return saved_value.lower() == "true"
+                except KeyError:
+                    return False
+
+            parent.debug_normal = ctk.CTkCheckBox(
+                frame_system,
+                text_color="white",
+                command=lambda: on_debug_normal_click(),
+                variable=parent.debug_normal_value,
+            )
+            parent.debug_normal.grid(column=1, row=8, columnspan=2)
+
+            normal_saved_value = load_debug_mode_normal()  # Funktion zum Laden des gespeicherten Wertes
+            parent.debug_normal_value.set(normal_saved_value)  # Gespeicherten Wert anwenden
 
             # Checkbox DEBUG ALL
             debug_all_label = tk.Label(frame_system,
@@ -477,21 +490,36 @@ def pop_up_settings(parent, controller):
             debug_all_label.grid(row=9, column=0, columnspan=2, pady=10, sticky="new")
 
             def on_debug_all_click():
-                DEBUG_MODE_ALL = False
-
-            parent.debug_normel = ctk.CTkCheckBox(frame_system, text_color="white", command=lambda: on_debug_all_click)
-            parent.debug_normel.grid(column=1, columnspan=2, row=9)
-
-            if on_debug_normal_click() and on_debug_all_click():
-                config:Configuration = config_manager.generate_configuration('Admin Debug Mode')
-                config.write_parameter('Debug Mode', 'True')
-                config.write_parameter('Debug Mode All', 'True')
+                current_value = parent.debug_all_value.get()
+                DEBUG_MODE_ALL = current_value
+                config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
+                config.write_parameter('Debug Mode All', str(current_value))
                 info_label.config(text="Einstellung wird gespeichert und App geschlossen...")
+                logger.debug("DEBUG_ALL is now activated.")
                 parent.after(3000, close_app)
-            else:
-                logger.debug("Der DEBUG-Modus konnte nicht geladen werden.")
+
+            def load_debug_mode_all():
+                config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
+                try:
+                    saved_value = config.read_parameter('Debug Mode All')
+                    return saved_value.lower() == "true"
+                except KeyError:
+                    return False
+
+            parent.debug_all_value = ctk.BooleanVar(value=False)
+
+            parent.debug_all = ctk.CTkCheckBox(
+                frame_system,
+                text_color="white",
+                command=lambda: on_debug_all_click(),
+                variable=parent.debug_all_value,
+            )
+            parent.debug_all.grid(column=1, columnspan=2, row=9)
+
+            all_saved_value = load_debug_mode_all()  # Funktion zum Laden des gespeicherten Wertes
+            parent.debug_all_value.set(all_saved_value)  # Gespeicherten Wert anwenden
         else:
-            logger.debug("DEBUG-Einstellungen nur für Administrator Verfügbar.")
+            logger.debug("DEBUG settings only available for administrator.")
     DBUG_for_Admin(frame_system)
 
     # Label für die Zoomstufe
@@ -503,7 +531,7 @@ def pop_up_settings(parent, controller):
 
     # Funktion zur Aktualisierung der Zoomstufe
     def update_zoom(value):
-        logger.debug(f"Zoom-Stufe aktualisiert: {value}")
+        logger.debug(f"Zoom level updated: {value}")
 
     zoom_control = ctk.CTkSlider(frame_system,
                                  from_=int(0.5),  # Minimaler Zoomfaktor
@@ -513,12 +541,22 @@ def pop_up_settings(parent, controller):
     zoom_control.grid(row=2, column=1, pady=10, sticky="ew")
     zoom_control.set(1.0)  # Standard-Zoomfaktor
 
+    def save_zoom():
+        if zoom_control:
+            config: Configuration = config_manager.generate_configuration('Zoom indicator')
+            config.write_parameter(update_zoom)
+            info_label.config(text="Einstellung wird gespeichert und App geschlossen...")
+            parent.after(3000, close_app)
+        else:
+            logger.debug("It is not possible to adjust the zoom level.")
+        save_zoom()
+
     # Label für Fehlermeldungen
     info_label = tk.Label(frame_system,
                           text="",
                           background="white",
                           font=SETTINGS_BTN_FONT)
-    info_label.grid(row=10, pady=10, column=0)
+    info_label.grid(row=10, pady=10, column=0, columnspan=3, sticky="sew")
 
     #LOGGER PRINT
     logger.debug(f"Complete loading of the 'System' settings page. {['image']}")
@@ -566,7 +604,7 @@ def pop_up_settings(parent, controller):
         if url:
             webbrowser.open_new_tab(url)
         else:
-            logger.error("Fehler beim Laden der URL")
+            logger.error("Error loading the URL.")
 
     # Eine Liste, um alle Bilder zu speichern, damit sie im Speicher bleiben
     parent.images_credits = []
@@ -592,7 +630,7 @@ def pop_up_settings(parent, controller):
             btn_label.grid(row=index, column=0, pady=1, sticky="nsew")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
-            logger.error('test')
+            logger.error('Error while loading images for Credits.')
 
     # Unterueberschrift Tools
     build_label = tk.Label(frame_ueber,
@@ -628,7 +666,7 @@ def pop_up_settings(parent, controller):
             btn_label.grid(row=index, column=1, pady=1, sticky="nesw")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
-            logger.error(f"Fehler beim Laden des Bildes {button['image']}: {e}")
+            logger.error(f"Error while trying to load the {button['image']}: {e}")
 
     # Unterueberschrift Unterstzütze Uns
     build_label = tk.Label(frame_ueber,
@@ -662,7 +700,7 @@ def pop_up_settings(parent, controller):
                            lambda e,
                                   url=button["url"]: open_url(url))
         except Exception as e:
-            logger.error(f"Fehler beim Laden des Bildes {button['image']}: {e}")
+            logger.error(f"Error while trying to load the {button['image']}: {e}")
 
     # Unterueberschrift Info
     build_label = tk.Label(frame_ueber,
@@ -725,7 +763,7 @@ def pop_up_settings(parent, controller):
 
     # Funktion zum Anzeigen des Frames
     def show_frame_settings(category):
-        logger.debug(f"Aktuell sichtbarer Frame vor Verstecken: {frames}")
+        logger.debug(f"Currently visible frame before hiding: {frames}")
         nonlocal current_frame  # Zugriff auf die äußere Variable
         logger.debug(f"current_frame:{current_frame}")
         if current_frame:  # Falls bereits ein Frame angezeigt wird
