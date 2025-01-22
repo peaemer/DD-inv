@@ -8,7 +8,9 @@ from typing import Final
 from hashlib import sha512
 
 from . import sqlite3api as db
+from main import config_manager as cm
 from includes.util.Logging import Logger
+from ..util.ConfigManager import Configuration
 
 sys.path.append(os.path.dirname(__file__) + r'\..')
 
@@ -94,26 +96,21 @@ def check_password_requirements(new_password:str) -> str|None:
 
         :return: an error message why the password doesn't follow the rules
     """
-    with (open('./config.json', 'r', encoding='utf-8') as file_handle):
-        rules:dict[str,str] = dict[str,dict[str,str]](json.loads(file_handle.read()))['passwort']
-        if bool(rules['sonderzeichen']):
-            if not __contains(SPECIAL_CHARACTERS, new_password):
-                return 'Das Passwort muss mindestens\nein Sonderzeichen enthalten!'
-
-        if bool(rules['zahlen']):
-            if not __contains(NUMBERS, new_password):
-                return 'Das Passwort muss mindestens\neine Ziffer enthalten!'
-
-        if bool(rules['grossbuchstaben']):
-            if not __contains(CAPITAL_LETTERS, new_password):
-                return 'Das Passwort muss mindestens\neinen Großbuchstaben enthalten!'
-
-        if bool(rules['kleinbuchstaben']):
-            if not __contains(LOWER_LETTERS, new_password):
-                return 'Das Passwort muss mindestens\neinen Kleinbuchstaben enthalten!'
-
-        if len(new_password) < int(rules['laenge']):
-            return f'Das Passwort muss mindestensmindestens {int(rules['laenge'])} Zeichen lang sein!'
+    config:Configuration = cm.generate_configuration('Regeln fuer neue Passwoerter')
+    if bool(config.read_parameter('Sonderzeichen')):
+        if not __contains(SPECIAL_CHARACTERS, new_password):
+            return 'Das Passwort muss mindestens\nein Sonderzeichen enthalten!'
+    if bool(config.read_parameter('Zahlen')):
+        if not __contains(NUMBERS, new_password):
+            return 'Das Passwort muss mindestens\neine Ziffer enthalten!'
+    if bool(config.read_parameter('Grossbuchstaben')):
+        if not __contains(CAPITAL_LETTERS, new_password):
+            return 'Das Passwort muss mindestens\neinen Großbuchstaben enthalten!'
+    if bool(config.read_parameter('Kleinbuchstaben')):
+        if not __contains(LOWER_LETTERS, new_password):
+            return 'Das Passwort muss mindestens\neinen Kleinbuchstaben enthalten!'
+    if not len(new_password) >= int(config.read_parameter('Laenge')):
+        return f'Das Passwort muss mindestens {int(config.read_parameter('Laenge'))} Zeichen lang sein!'
     return None
 
 

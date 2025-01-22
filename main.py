@@ -32,8 +32,8 @@ class ddINV(tk.Tk):
 
             size:Configuration = config_manager.generate_configuration('Fenster Aufloesung')
             return (
-                size.read_parameter('breite') if size.read_parameter('breite') else 1080,
-                size.read_parameter('hoee') if size.read_parameter('hoee') else 1920
+                size.read_parameter('breite') if size.read_parameter('breite') != 'null' else 1080,
+                size.read_parameter('hoehe') if size.read_parameter('hoehe')  != 'null' else 1920
             )
 
         screen_height, screen_width = load_resolution()  # Variablen anders benennen
