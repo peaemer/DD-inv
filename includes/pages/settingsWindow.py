@@ -583,7 +583,7 @@ def pop_up_settings(parent, controller):
     # Unterüberschrift erstellen Credits
     credits_label = tk.Label(frame_ueber,
                              text="Credits",
-                             font=SETTINGS_BTN_FONT,
+                             font=SETTINGS_FONT,
                              bg="white")
     credits_label.grid(row=1, column=0, pady=5, sticky="nsew")
 
@@ -635,7 +635,7 @@ def pop_up_settings(parent, controller):
     # Unterueberschrift Tools
     build_label = tk.Label(frame_ueber,
                            text="Tools",
-                           font=SETTINGS_BTN_FONT,
+                           font=SETTINGS_FONT,
                            bg="white")
     build_label.grid(row=1, column=1, pady=5, sticky="nesw")
 
@@ -671,7 +671,7 @@ def pop_up_settings(parent, controller):
     # Unterueberschrift Unterstzütze Uns
     build_label = tk.Label(frame_ueber,
                            text="Unterstütze Uns",
-                           font=SETTINGS_BTN_FONT,
+                           font=SETTINGS_FONT,
                            bg="white")
     build_label.grid(row=1, column=2, pady=5, sticky="nesw")
 
@@ -705,9 +705,9 @@ def pop_up_settings(parent, controller):
     # Unterueberschrift Info
     build_label = tk.Label(frame_ueber,
                            text="Info",
-                           font=SETTINGS_BTN_FONT,
+                           font=SETTINGS_FONT,
                            bg="white")
-    build_label.grid(row=5, column=2, pady=5, sticky="nesw")
+    build_label.grid(row=4, column=2, sticky="nesw")
 
     # Liste mit den Namenm, URL, Bild fuer Info
     buttons_data_info = [
@@ -719,7 +719,7 @@ def pop_up_settings(parent, controller):
     parent.images_info = []
 
     # Erstellen der Buttons mit einer Schleife
-    for index, button in enumerate(buttons_data_info, start=6):
+    for index, button in enumerate(buttons_data_info, start=5):
         try:
             button_image = tk.PhotoImage(file=button["image"])
             parent.images_support.append(button_image)  # Das Bild in der Liste speichern
