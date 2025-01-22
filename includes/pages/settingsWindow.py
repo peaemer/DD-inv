@@ -4,14 +4,16 @@ from tkinter import ttk
 import webbrowser
 import os
 import sys
+import json
 
 from main import config_manager as cm
 from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
+from includes.util.ConfigManager import ConfigManager,Configuration
 from includes.util.Logging import Logger, DEBUG_MODE_NORMAL, DEBUG_MODE_ALL
 from includes.sec_data_info import sqlite3api as db
 from ._styles import *
 import cache
-import json
+from main import config_manager
 
 CONFIG_PATH = "user_config.json"
 logger: Logger = Logger('SettingsWindow')
@@ -393,9 +395,9 @@ def pop_up_settings(parent, controller):
         breite = breite_entry.get()
         hoehe = hoehe_entry.get()
         if breite.isdigit() and hoehe.isdigit():  # Überprüfen, ob die Eingaben Zahlen sind
-            dicti = {"breite": int(breite),
-                     "hoehe": int(hoehe)}
-            save_settings(dicti)  # Auflösung speichern
+            config:Configuration = config_manager.generate_configuration('Fenster Aufloesung')
+            config.write_parameter('hoehe', hoehe)
+            config.write_parameter('breite', breite)
             info_label.config(text="Einstellung wird gespeichert und App geschlossen...")
             parent.after(3000, close_app)  # Verzögerung von 3 Sekunden und dann Neustart
         else:
@@ -481,9 +483,9 @@ def pop_up_settings(parent, controller):
             parent.debug_normel.grid(column=1, columnspan=2, row=9)
 
             if on_debug_normal_click() and on_debug_all_click():
-                dicti = {"breite": True,
-                         "hoehe": True}
-                save_settings(dicti)
+                config:Configuration = config_manager.generate_configuration('Admin Debug Mode')
+                config.write_parameter('Debug Mode', 'True')
+                config.write_parameter('Debug Mode All', 'True')
                 info_label.config(text="Einstellung wird gespeichert und App geschlossen...")
                 parent.after(3000, close_app)
             else:
