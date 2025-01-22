@@ -1,11 +1,4 @@
-
-``````````````````````````````````````
- ____   ____         ___              
-|  _ \ |  _ \       |_ _| _ __ __   __
-| | | || | | | _____ | | | '_ \\ \ / /
-| |_| || |_| ||_____|| | | | | |\ V / 
-|____/ |____/       |___||_| |_| \_/
-````````````````````````````````````````
+![ascii-text-art (1)](https://github.com/user-attachments/assets/c3df8ca1-05db-4ed7-9f8a-a14b05e971b8)
 
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)![PyCharm](https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green)![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)![Windows XP](https://img.shields.io/badge/Windows%20xp-003399?style=for-the-badge&logo=windowsxp&logoColor=white)<a href="https://ko-fi.com/dd_inv" target="_blank">
   <img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-Fi"></a>
