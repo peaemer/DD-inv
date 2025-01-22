@@ -507,7 +507,7 @@ class MainPage(tk.Frame):
         else:
             self.add_button.grid_forget()
         if cache.user_group_data['ADMIN_FEATURE'] == "True":
-            logger.debug("Admin")
+            logger.debug("User logged in as Admin")
             # Überprüfe, ob der Admin-Button bereits existiert
             if not hasattr(self, "admin_button"):
                 # Erstelle den Admin-Button, wenn er noch nicht existiert
