@@ -1,21 +1,17 @@
 import tkinter as tk
-
 import customtkinter as ctk
 from tkinter import ttk
-
-from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
-
 import webbrowser
+import os
+import sys
+
+from main import config_manager as cm
+from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 from includes.util.Logging import Logger, DEBUG_MODE_NORMAL, DEBUG_MODE_ALL
 from includes.sec_data_info import sqlite3api as db
 from ._styles import *
 import cache
-
-import os
-import sys
 import json
-
-
 
 CONFIG_PATH = "user_config.json"
 logger: Logger = Logger('SettingsWindow')
@@ -142,7 +138,7 @@ def pop_up_settings(parent, controller):
     default_icon = tk.PhotoImage(file=resource_path("./includes/assets/ProfileSettingsIcon.png"))
     category_icons: dict = {"Profil": tk.PhotoImage(file=resource_path("./includes/assets/ProfileSettingsIcon.png")),
                             "System": tk.PhotoImage(file=resource_path("./includes/assets/SystemSettingsIcon.png")),
-                            "Über DD-Inv": tk.PhotoImage(file=resource_path("./includes/assets/Tool.png"))}
+                            "Über-DD-Inv": tk.PhotoImage(file=resource_path("./includes/assets/Tool.png"))}
 
     # Standard-Header-Icon
     popup.optionsHead = default_icon
@@ -199,14 +195,14 @@ def pop_up_settings(parent, controller):
                                  text="Eingeloggt als\n" + cache.user_name,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=5, column=0, padx=20, pady=5, rowspan=1, sticky="nesw")
+    profile_btn_label.grid(row=3, column=0, padx=20, pady=5, rowspan=1, sticky="nesw")
 
     # Schriftzug Rechte in der Gruppe
     profile_btn_label = tk.Label(frame_profile,
                                  text="Rechte des Users\n" + cache.user_group,
                                  font=SETTINGS_BTN_FONT,
                                  bg="white")
-    profile_btn_label.grid(row=6, column=0, padx=20, pady=5, sticky="nesw")
+    profile_btn_label.grid(row=4, column=0, padx=20, pady=5, sticky="nesw")
 
     def load_user_email(nutzername):
         """
@@ -230,9 +226,8 @@ def pop_up_settings(parent, controller):
     profile_btn_label = tk.Label(frame_profile,
                                  text="E-Mail-Adressse\n" + load_user_email(cache.user_name),
                                  font=SETTINGS_BTN_FONT,
-                                 anchor=tk.W,
                                  bg="white")
-    profile_btn_label.grid(row=7, column=0, padx=20, pady=5, sticky="nesw")
+    profile_btn_label.grid(row=5, column=0, padx=20, pady=5, sticky="nesw")
 
     # Eingabe für die Profilbild-URL
     profile_image_url_label = tk.Label(frame_profile,
@@ -285,7 +280,6 @@ def pop_up_settings(parent, controller):
                                     command=lambda: setAvatar())
     update_image_button.grid(row=3, column=1, sticky="nesw")
 
-
     # def zum Abmelden des Benutzers
     global cotr
     contr: controller = controller
@@ -326,7 +320,7 @@ def pop_up_settings(parent, controller):
                                   cursor="hand2",
                                   image=parent.btn_image_password,
                                   borderwidth=0)
-    profile_btn_label.grid(row=5, column=1, pady=35, sticky="nesw")
+    profile_btn_label.grid(row=4, column=1, pady=35, sticky="nesw")
 
     # PNG-Bild für Btn
     def load_button_images_profile():
@@ -355,7 +349,7 @@ def pop_up_settings(parent, controller):
                                   cursor="hand2",
                                   image=parent.btn_image_logout,
                                   borderwidth=0)
-    profile_btn_label.grid(row=6, column=1, sticky="nesw")
+    profile_btn_label.grid(row=5, column=1, sticky="nesw")
 
     #LOGGER PRINT
     logger.debug(f"Complete loading of the 'Profile' settings page. {['image']}")
@@ -706,21 +700,21 @@ def pop_up_settings(parent, controller):
     # LOGGER PRINT
     logger.debug(f"Complete loading of the 'About-Us' settings page. {['image']}")
 
-    ###############################
-    # # F R A M E : S W I T C H # #
-    ###############################
+    ###########################
+    # F R A M E : S W I T C H #
+    ###########################
 
     # Kategorien in der Seitenleiste
     categories = ["Profil",
                   "System",
-                  "Über DD-Inv"]
+                  "Über-DD-Inv"]
 
     category_labels_settings = []
 
     # Zuordnung der Frames zu den Kategorien
     frames = {"Profil": frame_profile,
               "System": frame_system,
-              "Über DD-Inv": frame_ueber}
+              "Über-DD-Inv": frame_ueber}
 
     current_frame = frames["Profil"]  # Halte den aktuell sichtbaren Frame
     current_frame.grid(row=1, column=1, rowspan=1, columnspan=1, sticky="nsew")

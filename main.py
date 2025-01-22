@@ -32,20 +32,9 @@ class ddINV(tk.Tk):
 
             size:Configuration = config_manager.generate_configuration('Fenster Aufloesung')
             return (
-                size.read_parameter('hoee') if size.read_parameter('hoee') else 1920,
-                size.read_parameter('breite') if size.read_parameter('breite') else 1080
+                size.read_parameter('breite') if size.read_parameter('breite') else 1080,
+                size.read_parameter('hoee') if size.read_parameter('hoee') else 1920
             )
-
-            try:
-                with open('config.json', 'r') as openfile:
-                    # Reading from json file
-                    json_object:dict[str,dict[str,str]] = json.load(openfile)
-                    print(json_object)
-                height = json_object['fenster groesse']["hoehe"]
-                width = json_object['fenster groesse']["breite"]
-                return height, width
-            except (FileNotFoundError, json.JSONDecodeError):
-                return 1920, 1080  # Standard-Auflösung zurückgeben, falls nichts gefunden wird
 
         screen_height, screen_width = load_resolution()  # Variablen anders benennen
         print(screen_width, screen_height)
@@ -67,7 +56,7 @@ class ddINV(tk.Tk):
         self.frames = {}
 
         # Login-Fenster zuerst laden
-        self.show_frame(logInWindow)
+        self.show_frame(LogInWindow)
 
     def update_zoom(self, value):
         """Aktualisiert die Zoomstufe basierend auf dem Wert des Schiebereglers."""
