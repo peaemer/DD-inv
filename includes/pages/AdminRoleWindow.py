@@ -261,7 +261,7 @@ class AdminRoleWindow(tk.Frame):
         role_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global role_tree
-        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16", "c17"), show="headings")
+        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16"), show="headings")
 
         # Scrollbar erstellen
         role_tree_scroll = ctk.CTkScrollbar(
@@ -301,23 +301,22 @@ class AdminRoleWindow(tk.Frame):
 
         # Spaltennamen und Breiten als Liste
         role_columns = [
-            ("# 1","ID", 300),
-            ("# 2","Rolle", 250),
-            ("# 3","Rolle Löschbar", 150),
-            ("# 4","Admin Feature", 150),
-            ("# 5","Ansehen", 90),
-            ("# 6","Löschen", 100),
-            ("# 7","Bearbeiten", 110),
-            ("# 8","Erstellen", 100),
-            ("# 9","Gruppe Löschen", 160),
-            ("# 10","Gruppe Erstellen", 160),
-            ("# 11","Gruppe Bearbeiten", 190),
-            ("# 12","Rollen Erstellen", 170),
-            ("# 13","Rollen Bearbeiten", 170),
-            ("# 14","Rollen Löschen", 160),
-            ("# 15","User Löschen", 160),
-            ("# 16","User Bearbeiten", 190),
-            ("# 17","User Erstellen", 160)
+            ("# 1","Rolle", 250),
+            ("# 2","Rolle Löschbar", 150),
+            ("# 3","Admin Feature", 150),
+            ("# 4","Ansehen", 90),
+            ("# 5","Löschen", 100),
+            ("# 6","Bearbeiten", 110),
+            ("# 7","Erstellen", 100),
+            ("# 8","Gruppe Löschen", 160),
+            ("# 9","Gruppe Erstellen", 160),
+            ("# 10","Gruppe Bearbeiten", 190),
+            ("# 11","Rollen Erstellen", 170),
+            ("# 12","Rollen Bearbeiten", 170),
+            ("# 13","Rollen Löschen", 160),
+            ("# 14","User Löschen", 160),
+            ("# 15","User Bearbeiten", 190),
+            ("# 16","User Erstellen", 160)
         ]
 
         for col_id, col_name, col_width in role_columns:
