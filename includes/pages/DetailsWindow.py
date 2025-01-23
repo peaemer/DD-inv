@@ -71,7 +71,9 @@ class DetailsWindow(tk.Frame):
         self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Erstelle einen Header-Bereich
-        header_frame_details_window = tk.Frame(self, height=10, background="#DF4807")
+        header_frame_details_window = tk.Frame(self,
+                                               height=10,
+                                               background="#DF4807")
         header_frame_details_window.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E + tk.N)
 
         # Überschrift mittig zentrieren
@@ -121,7 +123,10 @@ class DetailsWindow(tk.Frame):
         tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
 
         global tree_details_window
-        tree_details_window = ttk.Treeview(tree_frame_details_window, column=("c1", "c2"), show="headings", height=30)
+        tree_details_window = ttk.Treeview(tree_frame_details_window,
+                                           column=("c1", "c2"),
+                                           show="headings",
+                                           height=30)
 
         scroll_details_window = tk.Scrollbar(
             tree_frame_details_window,
@@ -148,8 +153,12 @@ class DetailsWindow(tk.Frame):
         ]
 
         for col_id, col_name, col_width in details_window_columns:
-            tree_details_window.column(col_id, anchor=tk.CENTER, width=col_width)
-            tree_details_window.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(tree_details_window, c, False))
+            tree_details_window.column(col_id,
+                                       anchor=tk.CENTER,
+                                       width=col_width)
+            tree_details_window.heading(col_id,
+                                        text=col_name,
+                                        command=lambda c=col_id: sort_column(tree_details_window, c, False))
 
         tree_details_window.tkraise()
         tree_details_window.grid(row=1, column=0)

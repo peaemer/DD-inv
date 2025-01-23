@@ -252,7 +252,10 @@ class AdminRoomWindow(tk.Frame):
         room_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global room_tree
-        room_tree = ttk.Treeview(room_tree_frame, column=("c1", "c2"),cursor="hand2", show="headings")
+        room_tree = ttk.Treeview(room_tree_frame,
+                                 column=("c1", "c2"),
+                                 cursor="hand2",
+                                 show="headings")
 
         # Scrollbar erstellen
         room_tree_scroll = ctk.CTkScrollbar(

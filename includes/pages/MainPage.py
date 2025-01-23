@@ -93,7 +93,8 @@ class MainPage(tk.Frame):
         self.grid_columnconfigure(1, weight=1)
 
         # Erstelle einen Header-Bereich
-        self.header_frame = tk.Frame(self, background="#DF4807")
+        self.header_frame = tk.Frame(self,
+                                     background="#DF4807")
         self.header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
@@ -105,7 +106,10 @@ class MainPage(tk.Frame):
         self.srh_head = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
 
         # Füge ein zentriertes Label hinzu
-        header_label = tk.Label(self.header_frame, image=self.srh_head, background="#DF4807", foreground="white")
+        header_label = tk.Label(self.header_frame,
+                                image=self.srh_head,
+                                background="#DF4807",
+                                foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.W)
 
         # Erstellen eines Schriftzuges im Header
@@ -150,7 +154,8 @@ class MainPage(tk.Frame):
         self.admin_btn = tk.PhotoImage(file=resource_path("./includes/assets/Key.png"))
 
         # Erstellen des Grayframes für linke Seite
-        grey_frame_side = tk.Frame(self, background=srh_grey)
+        grey_frame_side = tk.Frame(self,
+                                   background=srh_grey)
         grey_frame_side.grid(row=1, column=0, sticky="nsw")
         grey_frame_side.grid_rowconfigure(0, weight=1)
         grey_frame_side.grid_columnconfigure(0, weight=1)
@@ -189,13 +194,15 @@ class MainPage(tk.Frame):
         side_tree.grid(row=0, column=0, sticky=tk.W + tk.N + tk.S)
 
         # Erstellen des MiddleFrame
-        middle_frame = tk.Frame(self, bg="white")
+        middle_frame = tk.Frame(self,
+                                bg="white")
         middle_frame.grid(row=1, padx=10, pady=10, column=1, sticky="nesw")
 
         middle_frame.columnconfigure(0, weight=1)
         middle_frame.rowconfigure(1, weight=1)
 
-        dropdown_overlay_frame: tk.Frame = tk.Frame(middle_frame, background="white")
+        dropdown_overlay_frame: tk.Frame = tk.Frame(middle_frame,
+                                                    background="white")
         search_frame: tk.Frame= tk.Frame(middle_frame, bg="white")
 
         #erstelle den hinufügen-button im auf dem search frame
@@ -207,7 +214,7 @@ class MainPage(tk.Frame):
                                     activebackground="white",
                                     command=add_item)
 
-        # self.add_button = ctk.CTkButton(search_frame,
+        # self.add_button = ctk.CTkButton(search_frame,                      #Alternativ Button
         #                                 text="Erstellen",
         #                                 font=("Arial", 25),
         #                                 text_color="white",
@@ -256,7 +263,7 @@ class MainPage(tk.Frame):
         search_frame.grid_columnconfigure(1, weight=1)
         search_frame.grid_columnconfigure(2, weight=0)
 
-        # setze die grid Layaouts der buttons und der Suchleiste im search-frame
+        # setze die grid Layouts der buttons und der Suchleiste im search-frame
         search_button.grid(padx=5, pady=5, row=0, column=0)
         self.add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
         search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=22, pady=10)
@@ -291,7 +298,11 @@ class MainPage(tk.Frame):
         tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         # Treeview erstellen
-        tree = ttk.Treeview(tree_frame, column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"),style="Treeview",cursor="hand2", show="headings")
+        tree = ttk.Treeview(tree_frame,
+                            column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"),
+                            style="Treeview",
+                            cursor="hand2",
+                            show="headings")
 
         # Scrollbar erstellen
         scroll = ctk.CTkScrollbar(

@@ -261,7 +261,9 @@ class AdminRoleWindow(tk.Frame):
         role_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global role_tree
-        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16"), show="headings")
+        role_tree = ttk.Treeview(role_tree_frame,
+                                 column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16"),
+                                 show="headings")
 
         # Scrollbar erstellen
         role_tree_scroll = ctk.CTkScrollbar(
