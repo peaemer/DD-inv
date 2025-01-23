@@ -342,10 +342,10 @@ class CTkListbox(customtkinter.CTkScrollableFrame):
             self.text_color = kwargs.pop("text_color")
             for i in self.buttons.values():
                 i.configure(text_color=self.text_color)
-        if "font" in kwargs:
-            self.font = kwargs.pop("font")
-            for i in self.buttons.values():
-                i.configure(font=self.font)
+        #if "font" in kwargs:
+            #self.font = kwargs.pop("font")
+            #for i in self.buttons.values():
+                #i.configure(font=self.font)
         if "command" in kwargs:
             self.command = kwargs.pop("command")
         if "hover" in kwargs:
@@ -367,7 +367,7 @@ class CTkListbox(customtkinter.CTkScrollableFrame):
         if "multiple_selection" in kwargs:
             self.multiple = kwargs.pop("multiple_selection")
         
-        super().configure(**kwargs)
+        #super().configure(**kwargs)
 
     def cget(self, param):
         if param=="hover_color":

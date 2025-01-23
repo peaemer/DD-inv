@@ -1,4 +1,4 @@
-import tkinter as tk
+import tkinter as ttk
 from tkinter import ttk
 from ..CTkScrollableDropdown import *
 
@@ -10,21 +10,9 @@ logger:Logger = Logger('DetailsWindow')
 
 
 def show_details(selectedItem, tree: ttk.Treeview, controller):
-    """
-    Zeigt die Details eines ausgewählten Elements in einer Benutzeroberfläche an. Diese Funktion ruft die Daten
-    des ausgewählten Elements aus einer Baumstruktur ab, speichert die ID des Elements im Cache und zeigt die
-    Details-Seite mit den aktualisierten Informationen an.
-
-    :param selectedItem: Das aktuell ausgewählte Baum-Element.
-    :param tree: Die Baumstruktur, welche die zugehörigen Daten enthält.
-    :param controller: Der Controller, der für die Navigation und Verwaltung der Frames zuständig ist.
-    :return: Gibt keinen Wert zurück.
-    """
-    # Daten aus der ausgewählten Zeile
     data = tree.item(selectedItem, "values")
-    logger.debug(f"Data of the selected item: {data}")  # Debug
+    logger.debug(f"Data of the selected item: {data}")
     cache.selected_ID = data[0]
-
     controller.show_frame(DetailsWindow)  # Zeige die Details-Seite
 
     # Frame aktualisieren und anzeigen
@@ -32,26 +20,11 @@ def show_details(selectedItem, tree: ttk.Treeview, controller):
     details.update_data(data)  # Methode in DetailsWindow aufrufen
 
 
-class DetailsWindow(tk.Frame):
-    """
-    Repräsentiert ein Detailfenster innerhalb einer Tkinter-Applikation.
-
-    Das Detailfenster bietet Funktionen zur Anzeige von Details eines Objekts, Eingabefeldern
-    für verschiedene Eigenschaften und eine Baumansicht für datengestützte Tabellendarstellungen.
-    Es ermöglicht die Navigation zu anderen Ansichten und konfiguriert eine intuitive Benutzerschnittstelle.
-
-    :ivar controller: Der Controller der Anwendung, der für die Navigation zwischen Fenstern verwendet wird.
-    :ivar go_back_btn_details_window: Bildressource für den Zurück-Button.
-    :ivar service_tag_entry_details_window: Eingabefeld für den Service Tag.
-    :ivar type_entry_details_window: Eingabefeld für den Typ des Objekts.
-    :ivar room_combobox_details_window: Eingabefeld für die Rauminformation.
-    :ivar name_entry_details_window: Eingabefeld für den Namen.
-    :ivar damaged_entry_details_window: Eingabefeld für Informationen über Schäden.
-    """
+class DetailsWindow(ctk.CTkFrame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        super().__init__(parent)
         self.controller = controller
-        self.configure(background="white")
+        self.configure(fg_color="white")
 
         def go_back_details_window():
             from .MainPage import MainPage
@@ -59,10 +32,6 @@ class DetailsWindow(tk.Frame):
             controller.show_frame(MainPage)
 
         def show_settings_window_details_window():
-            """
-            show_settings_window_details_window()
-                Öffnet das Einstellungs-Pop-Up-Fenster im Detailfenster.
-            """
             logger.debug("Show settings window details window")
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
@@ -71,73 +40,58 @@ class DetailsWindow(tk.Frame):
         self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Erstelle einen Header-Bereich
-        header_frame_details_window = tk.Frame(self,
-                                               height=10,
-                                               background="#DF4807")
-        header_frame_details_window.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E + tk.N)
+        header_frame_details_window = ctk.CTkFrame(self, fg_color="#DF4807")
+        header_frame_details_window.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
         # Überschrift mittig zentrieren
         header_frame_details_window.grid_columnconfigure(0, weight=1)  # Platz links
         header_frame_details_window.grid_columnconfigure(1, weight=3)  # Überschrift zentriert
         header_frame_details_window.grid_columnconfigure(2, weight=1)  # Option-Button
 
-
         # Zentriere das Label in Spalte 1
-        header_label_details_window = tk.Label(
+        header_label_details_window = ctk.CTkLabel(
             header_frame_details_window,
             text="Details",
-            background="#DF4807",
-            foreground="white",
+            fg_color="#DF4807",
+            text_color="white",
             font=("Arial", 60)
         )
         header_label_details_window.grid(row=0, column=1, pady=40, sticky=tk.W + tk.E)
 
         # Buttons in Spalten 2 und 3 platzieren
-        go_back_button_details_window = tk.Button(
+        go_back_button_details_window = ctk.CTkButton(
             header_frame_details_window,
-            image=self.go_back_btn_details_window,
-            command=go_back_details_window,
-            bd=0,
-            relief=tk.FLAT,
-            bg="#DF4807",
-            activebackground="#DF4807"
+            text="return",
+            command=lambda: go_back_details_window(),
+            fg_color="#DF4807",
+            hover_color="#DF4807",
         )
-        go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
+        go_back_button_details_window.grid(row=0, column=0, sticky="w", padx=20)
 
         # Container für Input- und Tree-Frame
-        container_frame = tk.Frame(self,
-                                   background="white")
+        container_frame = ctk.CTkFrame(self, fg_color="white")
         container_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
 
         # Konfiguration der Container-Spalten
         container_frame.grid_columnconfigure(0, weight=1)  # Baumansicht
         container_frame.grid_columnconfigure(1, weight=1)  # Eingabefelder
 
-        size_details_window = 28
-
         # Ändere die Position des TreeFrames
-        tree_frame_details_window = tk.Frame(container_frame,
-                                             background="red",
-                                             width=200,
-                                             height=400)
+        tree_frame_details_window = ctk.CTkFrame(container_frame, fg_color="red")
         tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
 
         global tree_details_window
-        tree_details_window = ttk.Treeview(tree_frame_details_window,
-                                           columns=("c1", "c2"),
-                                           show="headings",
-                                           height=30)
-
-        scroll_details_window = tk.Scrollbar(
+        tree_details_window = ttk.Treeview(
             tree_frame_details_window,
-            orient="vertical",
-            command=tree_details_window.yview,
-            bg="black",
-            activebackground="darkblue",
-            troughcolor="grey",
-            highlightcolor="black",
-            width=15,
-            borderwidth=1
+            columns=("c1", "c2"),
+            show="headings",
+            height=30
+        )
+
+        scroll_details_window = ctk.CTkScrollbar(
+            tree_frame_details_window,
+            orientation="vertical",
+            command=tree_details_window.yview
         )
         scroll_details_window.grid(row=1, column=1, sticky="ns")
         tree_details_window.configure(yscrollcommand=scroll_details_window.set)
@@ -153,20 +107,15 @@ class DetailsWindow(tk.Frame):
         ]
 
         for col_id, col_name, col_width in details_window_columns:
-            tree_details_window.column(col_id,
-                                       anchor=tk.CENTER,
-                                       width=col_width)
-            tree_details_window.heading(col_id,
-                                        text=col_name,
+            tree_details_window.column(col_id, anchor="center", width=col_width)
+            tree_details_window.heading(col_id, text=col_name,
                                         command=lambda c=col_id: sort_column(tree_details_window, c, False))
 
         tree_details_window.tkraise()
         tree_details_window.grid(row=1, column=0)
 
-
         # Input-Frame
-        input_frame_details_window = tk.Frame(container_frame,
-                                              background="white")
+        input_frame_details_window = ctk.CTkFrame(container_frame, fg_color="white")
         input_frame_details_window.grid(row=0, column=1, pady=20, sticky="nsew")
 
         input_frame_details_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
@@ -174,56 +123,54 @@ class DetailsWindow(tk.Frame):
         input_frame_details_window.grid_columnconfigure(2, weight=1)
 
         # Service Tag
-        service_tag_label_details_window = tk.Label(input_frame_details_window,
-                                                    text="Service Tag",
-                                                    font=("Arial", size_details_window),
-                                                    background="white")
-        service_tag_label_details_window.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
+        service_tag_label_details_window = ctk.CTkLabel(
+            input_frame_details_window,
+            text="Service Tag",
+            font=("Arial", size_details_window)
+        )
+        service_tag_label_details_window.grid(column=0, row=0, sticky="ew", padx=20, pady=10)
 
-        self.service_tag_entry_details_window = ctk.CTkEntry(input_frame_details_window,
-                                                             font=("Arial", size_details_window),
-                                                             corner_radius=corner,
-                                                             fg_color=srh_grey,
-                                                             text_color="black",
-                                                             border_width=border)
-        self.service_tag_entry_details_window.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
+        self.service_tag_entry_details_window = ctk.CTkEntry(
+            input_frame_details_window,
+            font=("Arial", size_details_window)
+        )
+        self.service_tag_entry_details_window.grid(column=1, row=0, sticky="ew", padx=20, pady=10)
 
         # Typ
-        type_label_details_window = tk.Label(input_frame_details_window,
-                                             text="Typ",
-                                             font=("Arial", size_details_window),
-                                             background="white")
-        type_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
+        type_label_details_window = ctk.CTkLabel(
+            input_frame_details_window,
+            text="Typ",
+            font=("Arial", size_details_window)
+        )
+        type_label_details_window.grid(column=0, row=1, sticky="ew", padx=20, pady=10)
 
-        self.type_entry_details_window = ctk.CTkEntry(input_frame_details_window,
-                                                      font=("Arial", size_details_window),
-                                                      corner_radius=corner,
-                                                      fg_color=srh_grey,
-                                                      text_color="black",
-                                                      border_width=border)
-        self.type_entry_details_window.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
+        self.type_entry_details_window = ctk.CTkEntry(
+            input_frame_details_window,
+            font=("Arial", size_details_window)
+        )
+        self.type_entry_details_window.grid(column=1, row=1, sticky="ew", padx=20, pady=10)
 
         # Raum (Dropdown-Menü)
-        room_label_details_window = tk.Label(input_frame_details_window,
-                                             text="Raum",
-                                             background="white",
-                                             font=("Arial", size_details_window))
-        room_label_details_window.grid(row=2, column=0, padx=0, pady=20, sticky=tk.W + tk.E)
+        room_label_details_window = ctk.CTkLabel(
+            input_frame_details_window,
+            text="Raum",
+            font=("Arial", size_details_window)
+        )
+        room_label_details_window.grid(row=2, column=0, padx=0, pady=20, sticky="ew")
 
         # CTkComboBox statt ttk.Combobox
         room_values = []
         for room in db.fetch_all_rooms():
             room_values.append(room['Raum'])
 
-        self.room_combobox_details_window = ctk.CTkComboBox(input_frame_details_window,
-                                                            font=("Arial", size_details_window),
-                                                            corner_radius=corner,
-                                                            button_color=srh_grey,
-                                                            fg_color=srh_grey,
-                                                            text_color="black",
-                                                            border_width=border,
-                                                            state="readonly")
+        self.room_combobox_details_window = ctk.CTkComboBox(
+            input_frame_details_window,
+            values=room_values,
+            font=("Arial", size_details_window),
+            state="readonly"
+        )
         self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky="ew")
+        self.room_combobox_details_window.set("Raum auswählen")
 
         CTkScrollableDropdownFrame(self.room_combobox_details_window,
                                    values=room_values,
