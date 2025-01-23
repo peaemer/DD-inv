@@ -117,8 +117,7 @@ def pop_up_settings(parent:tk, controller):
             logger.error(f"Error when loading or changing the icon in the heading area. {button['image']}: {e}")
 
     # Header-Bereich erstellen
-    header_frame_settings = tk.Frame(popup,
-                                     background=srh_grey)
+    header_frame_settings = tk.Frame(popup, background=srh_grey)
     header_frame_settings.grid(row=0, column=1, columnspan=1, sticky="new")
 
     # Konfiguration für Header
@@ -128,21 +127,24 @@ def pop_up_settings(parent:tk, controller):
     # Icons laden
     default_icon = tk.PhotoImage(file=resource_path("./includes/assets/ProfileSettingsIcon.png"))
     category_icons: dict = {"Profil": tk.PhotoImage(file=resource_path("./includes/assets/ProfileSettingsIcon.png")),
-                            "System": tk.PhotoImage(file=resource_path("./includes/assets/SystemSettingsIcon.png")),
-                            "Über-DD-Inv": tk.PhotoImage(file=resource_path("./includes/assets/Tool.png"))}
+        "System": tk.PhotoImage(file=resource_path("./includes/assets/SystemSettingsIcon.png")),
+        "Über-DD-Inv": tk.PhotoImage(file=resource_path("./includes/assets/Tool.png"))
+    }
 
     # Standard-Header-Icon
     popup.optionsHead = default_icon
     header_label = tk.Label(header_frame_settings,
-                            image=popup.optionsHead,
-                            foreground="white",
-                            background=srh_grey)
+        image=popup.optionsHead,
+        foreground="white",
+        background=srh_grey
+    )
     header_label.grid(row=1, column=0, padx=0, pady=10, sticky="nsew")
 
     # Seitenleiste
     side_settings = tk.Frame(popup,
-                             width=200,
-                             bg=srh_orange)
+        width=200,
+        bg=srh_orange
+    )
     side_settings.grid(row=0, column=0, rowspan=2, sticky="nsw")
     side_settings.grid_columnconfigure(0, weight=1)
 
@@ -150,8 +152,9 @@ def pop_up_settings(parent:tk, controller):
     from ._avatarManager import resource_path
     popup.srh_logo = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
     srh_logo_label = tk.Label(side_settings,
-                              image=popup.srh_logo,
-                              bg=srh_orange)
+        image=popup.srh_logo,
+        bg=srh_orange
+    )
     srh_logo_label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
     #LOGGER PRINT
@@ -169,30 +172,33 @@ def pop_up_settings(parent:tk, controller):
 
     # Überschrift Dein Profil
     profile_btn_label = tk.Label(frame_profile,
-                                 text="Dein Profil",
-                                 font=SETTINGS_FONT,
-                                 bg="white")
+        text="Dein Profil",
+        font=SETTINGS_FONT,
+        bg="white"
+    )
     profile_btn_label.grid(row=0, column=0, pady=0, columnspan=3, sticky="new")
 
     # Profilbild zum Laden importieren
     parent.avatar = cache.user_avatarx128
     parent.settings_img_label = tk.Label(frame_profile,
-                                         image=parent.avatar,
-                                         background="white")
+        image=parent.avatar,
+        background="white")
     parent.settings_img_label.grid(row=1, column=0, pady=5, rowspan=2, columnspan=1, sticky="nesw")
 
     # Schriftzug Eingeloggt als
     profile_btn_label = tk.Label(frame_profile,
-                                 text="Eingeloggt als\n" + cache.user_name,
-                                 font=SETTINGS_BTN_FONT,
-                                 bg="white")
+        text="Eingeloggt als\n" + cache.user_name,
+        font=SETTINGS_BTN_FONT,
+        bg="white"
+    )
     profile_btn_label.grid(row=3, column=0, padx=20, pady=5, rowspan=1, sticky="nesw")
 
     # Schriftzug Rechte in der Gruppe
     profile_btn_label = tk.Label(frame_profile,
-                                 text="Rechte des Users\n" + cache.user_group,
-                                 font=SETTINGS_BTN_FONT,
-                                 bg="white")
+        text="Rechte des Users\n" + cache.user_group,
+        font=SETTINGS_BTN_FONT,
+        bg="white"
+    )
     profile_btn_label.grid(row=4, column=0, padx=20, pady=5, sticky="nesw")
 
     def load_user_email(nutzername):
@@ -215,26 +221,29 @@ def pop_up_settings(parent:tk, controller):
 
     # Schriftzug E-Mail-Adresse
     profile_btn_label = tk.Label(frame_profile,
-                                 text="E-Mail-Adressse\n" + load_user_email(cache.user_name),
-                                 font=SETTINGS_BTN_FONT,
-                                 bg="white")
+        text="E-Mail-Adressse\n" + load_user_email(cache.user_name),
+        font=SETTINGS_BTN_FONT,
+        bg="white"
+    )
     profile_btn_label.grid(row=5, column=0, padx=20, pady=5, sticky="nesw")
 
     # Eingabe für die Profilbild-URL
     profile_image_url_label = tk.Label(frame_profile,
-                                       text="Profilbild-URL / Base64 eingeben",
-                                       font=SETTINGS_BTN_FONT,
-                                       bg="white",
-                                       anchor="w")
+        text="Profilbild-URL / Base64 eingeben",
+        font=SETTINGS_BTN_FONT,
+        bg="white",
+        anchor="w"
+    )
     profile_image_url_label.grid(row=1, column=1, sticky="n")
 
     profile_image_url = ctk.CTkEntry(frame_profile,
-                                     border_width=border,
-                                     corner_radius=corner,
-                                     text_color="black",
-                                     fg_color=srh_grey,
-                                     font=SETTINGS_FONT,
-                                     width=250)
+        border_width=border,
+        corner_radius=corner,
+        text_color="black",
+        fg_color=srh_grey,
+        font=SETTINGS_FONT,
+        width=250
+    )
     profile_image_url.grid(row=2, column=1, columnspan=1, pady=5, sticky="n")
 
     # Importieren der Funktion URL
@@ -243,6 +252,14 @@ def pop_up_settings(parent:tk, controller):
     # Laden des Bildes für Profile Btn
     parent.btn_image_set_profile_picture_settings = tk.PhotoImage(
         file=resource_path("./includes/assets/SetProfileSettings.png"))
+
+    # Label für Fehlermeldungen
+    info_label_profile = tk.Label(frame_profile,
+        text="",
+        background="white",
+        font=error_red
+    )
+    info_label_profile.grid(row=2, pady=10, column=1, sticky="sew")
 
     def setAvatar():
         try:
@@ -257,18 +274,19 @@ def pop_up_settings(parent:tk, controller):
 
         except Exception as e:
             logger.error(f"Error while applying the profile picture. {button['image']}: {e}")
-            info_label.config(text="Bitte eine valide URL oder Base64 eingeben.")
-            info_label.config(text="Eingabe ungültig.")
+            info_label_profile.config(text="Bitte eine valide URL oder Base64 eingeben.")
+            info_label_profile.config(text="Eingabe ungültig.")
 
     # Button zum Aktualisieren des Profilbilds
     update_image_button = tk.Button(frame_profile,
-                                    text="Profilbild setzen",
-                                    image=parent.btn_image_set_profile_picture_settings,
-                                    bg="white",
-                                    activebackground="white",
-                                    borderwidth=0,
-                                    cursor="hand2",
-                                    command=lambda: setAvatar())
+        text="Profilbild setzen",
+        image=parent.btn_image_set_profile_picture_settings,
+        bg="white",
+        activebackground="white",
+        borderwidth=0,
+        cursor="hand2",
+        command=lambda: setAvatar()
+    )
     update_image_button.grid(row=3, column=1, sticky="nesw")
 
     # def zum Abmelden des Benutzers
@@ -299,18 +317,19 @@ def pop_up_settings(parent:tk, controller):
     # Schriftzug Passwort ändern
     cache.controller = controller
     profile_btn_label = tk.Button(frame_profile,
-                                  command=lambda: customMessageBoxResetPasswrd(parent=parent,
-                                                                               title="Passwort ändern",
-                                                                               message="Bitte ändere das Passwort \n "
-                                                                                       "in den nachfolgenden Feldern.",
-                                                                               calb= lambda :log_out_settings(controller)),
-                                  text="Passwort ändern",
-                                  font=SETTINGS_BTN_FONT,
-                                  bg="white",
-                                  activebackground="white",
-                                  cursor="hand2",
-                                  image=parent.btn_image_password,
-                                  borderwidth=0)
+        command=lambda: customMessageBoxResetPasswrd(parent=parent,
+            title="Passwort ändern",
+            message="Bitte ändere das Passwort \n "
+                "in den nachfolgenden Feldern.",
+            calb=lambda :log_out_settings(controller)),
+        text="Passwort ändern",
+        font=SETTINGS_BTN_FONT,
+        bg="white",
+        activebackground="white",
+        cursor="hand2",
+        image=parent.btn_image_password,
+        borderwidth=0
+    )
     profile_btn_label.grid(row=4, column=1, pady=35, sticky="nesw")
 
     # PNG-Bild für Btn
@@ -332,14 +351,15 @@ def pop_up_settings(parent:tk, controller):
 
     # Schriftzug Benutzer Abmelden
     profile_btn_label = tk.Button(frame_profile,
-                                  command=lambda: log_out_settings(controller),
-                                  text="Benutzer Abmelden",
-                                  font=SETTINGS_BTN_FONT,
-                                  bg="white",
-                                  activebackground="white",
-                                  cursor="hand2",
-                                  image=parent.btn_image_logout,
-                                  borderwidth=0)
+        command=lambda: log_out_settings(controller),
+        text="Benutzer Abmelden",
+        font=SETTINGS_BTN_FONT,
+        bg="white",
+        activebackground="white",
+        cursor="hand2",
+        image=parent.btn_image_logout,
+        borderwidth=0
+    )
     profile_btn_label.grid(row=5, column=1, sticky="nesw")
 
     #LOGGER PRINT
@@ -368,16 +388,18 @@ def pop_up_settings(parent:tk, controller):
 
     # Überschrift System erstellen
     radiobutton_label = tk.Label(frame_system,
-                                 text="System",
-                                 font=SETTINGS_FONT,
-                                 bg="white")
+        text="System",
+        font=SETTINGS_FONT,
+        bg="white"
+    )
     radiobutton_label.grid(row=0, column=0, pady=0, columnspan=3, sticky="new")
 
     # Überschrift Auflösung ändern
     button_bg_label = tk.Label(frame_system,
-                               text="Auflösung anpassen",
-                               font=SETTINGS_BTN_FONT,
-                               bg="white")
+        text="Auflösung anpassen",
+        font=SETTINGS_BTN_FONT,
+        bg="white"
+    )
     button_bg_label.grid(row=1, column=0, pady=10, sticky="new")
 
     def fenster_groesse_aendern(parent):
@@ -387,52 +409,57 @@ def pop_up_settings(parent:tk, controller):
             config:Configuration = config_manager.generate_configuration('Fenster Aufloesung')
             config.write_parameter('hoehe', hoehe)
             config.write_parameter('breite', breite)
-            info_label.config(text="Einstellung wird gespeichert und App geschlossen...")
+            info_label_system.config(text="Einstellung wird gespeichert und App geschlossen...")
             parent.after(3000, close_app)  # Verzögerung von 3 Sekunden und dann Neustart
         else:
-            info_label.config(text="Bitte gültige Zahlen eingeben.")
+            info_label_system.config(text="Bitte gültige Zahlen eingeben.")
 
     # Eingabefelder fuer Breite
     breite_label = tk.Label(frame_system,
-                            text="Breite",
-                            background="white",
-                            font=SETTINGS_BTN_FONT)
+        text="Breite",
+        background="white",
+        font=SETTINGS_BTN_FONT
+    )
     breite_label.grid(row=2, column=0, pady=3)
 
     breite_entry = ctk.CTkEntry(frame_system,
-                                corner_radius=20,
-                                fg_color=srh_grey,
-                                text_color="black",
-                                font=SETTINGS_BTN_FONT,
-                                placeholder_text="z.B. 1920",
-                                border_width=0)
+        corner_radius=20,
+        fg_color=srh_grey,
+        text_color="black",
+        font=SETTINGS_BTN_FONT,
+        placeholder_text="z.B. 1920",
+        border_width=0
+    )
     breite_entry.grid(row=3, column=0, pady=3)
 
     # Eingabefeld fuer Hoehe
     hoehe_label = tk.Label(frame_system,
-                           text="Höhe",
-                           background="white",
-                           font=SETTINGS_BTN_FONT)
+        text="Höhe",
+        background="white",
+        font=SETTINGS_BTN_FONT
+    )
     hoehe_label.grid(row=4, column=0, pady=3)
 
     hoehe_entry = ctk.CTkEntry(frame_system,
-                               corner_radius=20,
-                               fg_color=srh_grey,
-                               text_color="black",
-                               font=SETTINGS_BTN_FONT,
-                               placeholder_text="z.B. 1080",
-                               border_width=0)
+        corner_radius=20,
+        fg_color=srh_grey,
+        text_color="black",
+        font=SETTINGS_BTN_FONT,
+        placeholder_text="z.B. 1080",
+        border_width=0
+    )
     hoehe_entry.grid(row=5, column=0, pady=7)
 
     # Button zur Bestätigung
     parent.set_res_btn = tk.PhotoImage(file=resource_path("./includes/assets/SetResSettings.png"))
     aendern_button = tk.Button(frame_system,
-                               image=parent.set_res_btn,
-                               borderwidth=0,
-                               cursor="hand2",
-                               activebackground="white",
-                               background="white",
-                               command=lambda: fenster_groesse_aendern(parent))
+        image=parent.set_res_btn,
+        borderwidth=0,
+        cursor="hand2",
+        activebackground="white",
+        background="white",
+        command=lambda: fenster_groesse_aendern(parent)
+    )
     aendern_button.grid(row=6, pady=5, column=0)
 
     # DBUG-Modus als Einstellung für Admins
@@ -440,16 +467,17 @@ def pop_up_settings(parent:tk, controller):
         if cache.user_group_data['ADMIN_FEATURE'] == "True":
             # Schriftzug DEBUG-Modus aktivieren / deaktivieren
             zoom_label = tk.Label(frame_system,
-                                  text="DEBUG-Modus aktivieren / deaktivieren",
-                                  background="white",
-                                  font=SETTINGS_BTN_FONT)
+                text="DEBUG-Modus aktivieren / deaktivieren",
+                background="white",
+                font=SETTINGS_BTN_FONT
+            )
             zoom_label.grid(row=7, column=0, columnspan=2, pady=10, sticky="ew")
 
             # Checkbox DEBUG NORMAL
             debug_normal_label = tk.Label(frame_system,
-                                          text="DEBUG-Normal",
-                                          background="white",
-                                          font=SETTINGS_BTN_FONT)
+                text="DEBUG-Normal",
+                background="white",
+                font=SETTINGS_BTN_FONT)
             debug_normal_label.grid(row=8, column=0, columnspan=2, pady=10, sticky="new")
 
             def on_debug_normal_click():
@@ -457,7 +485,7 @@ def pop_up_settings(parent:tk, controller):
                 DEBUG_MODE_NORMAL = current_value
                 config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
                 config.write_parameter('Debug Mode Normal', str(current_value))
-                info_label.config(text="Einstellung wird gespeichert und App geschlossen...")
+                info_label_system.config(text="Einstellung wird gespeichert und App geschlossen...")
                 logger.debug("DEBUG_NORMAL is now activated.")
                 parent.after(3000, close_app)
 
@@ -484,9 +512,10 @@ def pop_up_settings(parent:tk, controller):
 
             # Checkbox DEBUG ALL
             debug_all_label = tk.Label(frame_system,
-                                          text="DEBUG-Alle",
-                                          background="white",
-                                          font=SETTINGS_BTN_FONT)
+                text="DEBUG-Alle",
+                background="white",
+                font=SETTINGS_BTN_FONT
+            )
             debug_all_label.grid(row=9, column=0, columnspan=2, pady=10, sticky="new")
 
             def on_debug_all_click():
@@ -494,7 +523,7 @@ def pop_up_settings(parent:tk, controller):
                 DEBUG_MODE_ALL = current_value
                 config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
                 config.write_parameter('Debug Mode All', str(current_value))
-                info_label.config(text="Einstellung wird gespeichert und App geschlossen...")
+                info_label_system.config(text="Einstellung wird gespeichert und App geschlossen...")
                 logger.debug("DEBUG_ALL is now activated.")
                 parent.after(3000, close_app)
 
@@ -524,9 +553,10 @@ def pop_up_settings(parent:tk, controller):
 
     # Label für die Zoomstufe
     zoom_label = tk.Label(frame_system,
-                          text="Anpassen der Zoomstufe",
-                          background="white",
-                          font=SETTINGS_BTN_FONT)
+        text="Anpassen der Zoomstufe",
+        background="white",
+        font=SETTINGS_BTN_FONT
+    )
     zoom_label.grid(row=1, column=1, pady=10, sticky="new")
 
     # Funktion zur Aktualisierung der Zoomstufe
@@ -534,10 +564,11 @@ def pop_up_settings(parent:tk, controller):
         logger.debug(f"Zoom level updated: {value}")
 
     zoom_control = ctk.CTkSlider(frame_system,
-                                 from_=int(0.5),  # Minimaler Zoomfaktor
-                                 to=int(2.0),  # Maximaler Zoomfaktor
-                                 number_of_steps=15,  # Anzahl der Schritte (optional)
-                                 command=lambda value: update_zoom(round(value, 1)))  # Rundung auf 1 Nachkommastelle
+        from_=int(0.5),  # Minimaler Zoomfaktor
+        to=int(2.0),  # Maximaler Zoomfaktor
+        number_of_steps=15,  # Anzahl der Schritte (optional)
+        command=lambda value: update_zoom(round(value, 1))  # Rundung auf 1 Nachkommastelle
+    )
     zoom_control.grid(row=2, column=1, pady=10, sticky="ew")
     zoom_control.set(1.0)  # Standard-Zoomfaktor
 
@@ -545,18 +576,19 @@ def pop_up_settings(parent:tk, controller):
         if zoom_control:
             config: Configuration = config_manager.generate_configuration('Zoom indicator')
             config.write_parameter(update_zoom)
-            info_label.config(text="Einstellung wird gespeichert und App geschlossen...")
+            info_label_system.config(text="Einstellung wird gespeichert und App geschlossen...")
             parent.after(3000, close_app)
         else:
             logger.debug("It is not possible to adjust the zoom level.")
         save_zoom()
 
     # Label für Fehlermeldungen
-    info_label = tk.Label(frame_system,
-                          text="",
-                          background="white",
-                          font=SETTINGS_BTN_FONT)
-    info_label.grid(row=10, pady=10, column=0, columnspan=3, sticky="sew")
+    info_label_system = tk.Label(frame_system,
+        text="",
+        background="white",
+        font=error_red
+    )
+    info_label_system.grid(row=10, pady=10, column=0, columnspan=3, sticky="sew")
 
     #LOGGER PRINT
     logger.debug(f"Complete loading of the 'System' settings page. {['image']}")
@@ -575,30 +607,29 @@ def pop_up_settings(parent:tk, controller):
 
     # Ueberschrift erstellen Über das DD-Inv Tool
     ueber_label = tk.Label(frame_ueber,
-                           text="Über das DD-Inv Tool",
-                           font=SETTINGS_FONT,
-                           bg="white")
+        text="Über das DD-Inv Tool",
+        font=SETTINGS_FONT,
+        bg="white"
+    )
     ueber_label.grid(row=0, column=0, columnspan=3, sticky="new")
 
     # Unterüberschrift erstellen Credits
     credits_label = tk.Label(frame_ueber,
-                             text="Credits",
-                             font=SETTINGS_FONT,
-                             bg="white")
+        text="Credits",
+        font=SETTINGS_FONT,
+        bg="white"
+    )
     credits_label.grid(row=1, column=0, pady=5, sticky="nsew")
 
     # Liste mit den Namen, URL, Bild fuer Credits
-    buttons_data_credits = [{"name": "Peaemer (Jack)", "url": "https://github.com/peaemer/",
-                             "image": "https://avatars.githubusercontent.com/u/148626202?v=4"},
-                            {"name": "Alex5X5 (Alex)", "url": "https://github.com/Alex5X5",
-                             "image": "https://avatars.githubusercontent.com/u/75848461?v=4"},
-                            {"name": "GitSchwan (Fabian)", "url": "https://github.com/GitSchwan",
-                             "image": "https://avatars.githubusercontent.com/u/173039634?v=4"},
-                            {"name": "Chauto (Anakin)", "url": "https://github.com/Chautoo",
-                             "image": "https://avatars.githubusercontent.com/u/89986856?v=4"},
-                            {"name": "FemRene (Rene)", "url": "https://github.com/FemRene",
-                             "image": "https://avatars.githubusercontent.com/u/110292225?v=4"},
-                            {"name": "Tam", "url": "", "image": ""}]
+    buttons_data_credits = [
+        {"name": "Peaemer (Jack)", "url": "https://github.com/peaemer/", "image": "https://avatars.githubusercontent.com/u/148626202?v=4"},
+        {"name": "Alex5X5 (Alex)", "url": "https://github.com/Alex5X5", "image": "https://avatars.githubusercontent.com/u/75848461?v=4"},
+        {"name": "GitSchwan (Fabian)", "url": "https://github.com/GitSchwan", "image": "https://avatars.githubusercontent.com/u/173039634?v=4"},
+        {"name": "Chauto (Anakin)", "url": "https://github.com/Chautoo", "image": "https://avatars.githubusercontent.com/u/89986856?v=4"},
+        {"name": "FemRene (Rene)", "url": "https://github.com/FemRene", "image": "https://avatars.githubusercontent.com/u/110292225?v=4"},
+        {"name": "Tam", "url": "", "image": ""}
+    ]
 
     def open_url(url):
         if url:
@@ -614,19 +645,21 @@ def pop_up_settings(parent:tk, controller):
         try:
             if button["image"]:
                 button_image = loadImage(parent=parent, image=button["image"],
-                                         defult_image=resource_path("includes/assets/GitHubSettings.png"), width=48,
-                                         height=48)
+                    defult_image=resource_path("includes/assets/GitHubSettings.png"), width=48,
+                    height=48
+                )
             else:
                 # Optional: Ein Standardbild verwenden, wenn kein Bild angegeben ist
                 button_image = tk.PhotoImage(file=resource_path("includes/assets/GitHubSettings.png"))
             parent.images_credits.append(button_image)  # Das Bild in der Liste speichern
             btn_label = tk.Label(frame_ueber,
-                                  text=button["name"],
-                                  cursor="hand2",
-                                  image=button_image,
-                                  compound="top",
-                                  font=SETTINGS_ABOUT_FONT,
-                                  background="white")
+                text=button["name"],
+                cursor="hand2",
+                image=button_image,
+                compound="top",
+                font=SETTINGS_ABOUT_FONT,
+                background="white"
+            )
             btn_label.grid(row=index, column=0, pady=1, sticky="nsew")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
@@ -634,9 +667,10 @@ def pop_up_settings(parent:tk, controller):
 
     # Unterueberschrift Tools
     build_label = tk.Label(frame_ueber,
-                           text="Tools",
-                           font=SETTINGS_FONT,
-                           bg="white")
+        text="Tools",
+        font=SETTINGS_FONT,
+        bg="white"
+    )
     build_label.grid(row=1, column=1, pady=5, sticky="nesw")
 
     # Liste mit den Namenm, URL, Bild fuer genutzte Tools
@@ -648,7 +682,8 @@ def pop_up_settings(parent:tk, controller):
         {"name": "Python", "url": "https://www.python.org/",
          "image": resource_path("includes/assets/PythonSettings.png")},
         {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07",
-         "image": resource_path("includes/assets/WindowsXPSettings.png")}]
+         "image": resource_path("includes/assets/WindowsXPSettings.png")}
+    ]
 
     parent.images_tools = []
 
@@ -657,12 +692,13 @@ def pop_up_settings(parent:tk, controller):
             button_image = tk.PhotoImage(file=button["image"])
             parent.images_tools.append(button_image)  # Das Bild in der Liste speichern
             btn_label = tk.Label(frame_ueber,
-                                  text=button["name"],
-                                  cursor="hand2",
-                                  image=button_image,
-                                  font=SETTINGS_ABOUT_FONT,
-                                  compound="top",
-                                  background="white")
+                text=button["name"],
+                cursor="hand2",
+                image=button_image,
+                font=SETTINGS_ABOUT_FONT,
+                compound="top",
+                background="white"
+            )
             btn_label.grid(row=index, column=1, pady=1, sticky="nesw")
             btn_label.bind("<Button-1>", lambda e, url=button["url"]: open_url(url))
         except Exception as e:
@@ -670,16 +706,17 @@ def pop_up_settings(parent:tk, controller):
 
     # Unterueberschrift Unterstzütze Uns
     build_label = tk.Label(frame_ueber,
-                           text="Unterstütze Uns",
-                           font=SETTINGS_FONT,
-                           bg="white")
+        text="Unterstütze Uns",
+        font=SETTINGS_FONT,
+        bg="white"
+    )
     build_label.grid(row=1, column=2, pady=5, sticky="nesw")
 
     # Liste mit den Namenm, URL, Bild fuer Projekt Unterstuetzen
-    buttons_data_support = [{"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv",
-                             "image": resource_path("includes/assets/KoFiSettings.png")},
-                            {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de",
-                             "image": resource_path("includes/assets/FeedbackSettings.png")}]
+    buttons_data_support = [
+        {"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": resource_path("includes/assets/KoFiSettings.png")},
+        {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de", "image": resource_path("includes/assets/FeedbackSettings.png")}
+    ]
 
     parent.images_support = []
 
@@ -689,24 +726,27 @@ def pop_up_settings(parent:tk, controller):
             button_image = tk.PhotoImage(file=button["image"])
             parent.images_support.append(button_image)  # Das Bild in der Liste speichern
             btn_label = tk.Label(frame_ueber,
-                                  text=button["name"],
-                                  cursor="hand2",
-                                  image=button_image,
-                                  font=SETTINGS_ABOUT_FONT,
-                                  compound="top",
-                                  background="white")
+                text=button["name"],
+                cursor="hand2",
+                image=button_image,
+                font=SETTINGS_ABOUT_FONT,
+                compound="top",
+                background="white"
+            )
             btn_label.grid(row=index, column=2, pady=1, sticky="nesw")
             btn_label.bind("<Button-1>",
-                           lambda e,
-                                  url=button["url"]: open_url(url))
+                lambda e,
+                    url=button["url"]: open_url(url)
+            )
         except Exception as e:
             logger.error(f"Error while trying to load the {button['image']}: {e}")
 
     # Unterueberschrift Info
     build_label = tk.Label(frame_ueber,
-                           text="Info",
-                           font=SETTINGS_FONT,
-                           bg="white")
+        text="Info",
+        font=SETTINGS_FONT,
+        bg="white"
+    )
     build_label.grid(row=4, column=2, sticky="nesw")
 
     # Liste mit den Namenm, URL, Bild fuer Info
@@ -714,7 +754,8 @@ def pop_up_settings(parent:tk, controller):
         {"name": "VersionBuild   V. 0.2 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest",
          "image": resource_path("includes/assets/DD-Inv_Logo.png")},
         {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv",
-         "image": resource_path("includes/assets/GitHubSettings.png")}]
+         "image": resource_path("includes/assets/GitHubSettings.png")}
+    ]
 
     parent.images_info = []
 
@@ -724,16 +765,18 @@ def pop_up_settings(parent:tk, controller):
             button_image = tk.PhotoImage(file=button["image"])
             parent.images_support.append(button_image)  # Das Bild in der Liste speichern
             btn_label = tk.Label(frame_ueber,
-                                  text=button["name"],
-                                  cursor="hand2",
-                                  image=button_image,
-                                  font=SETTINGS_ABOUT_FONT,
-                                  compound="top",
-                                  background="white")
+                text=button["name"],
+                cursor="hand2",
+                image=button_image,
+                font=SETTINGS_ABOUT_FONT,
+                compound="top",
+                background="white"
+            )
             btn_label.grid(row=index, column=2, pady=1, sticky="nesw")
             btn_label.bind("<Button-1>",
-                           lambda e,
-                                  url=button["url"]: open_url(url))
+                lambda e,
+                    url=button["url"]: open_url(url)
+            )
         except Exception as e:
             logger.error(f"Error loading the image. {button['image']}: {e}")
 
@@ -745,16 +788,20 @@ def pop_up_settings(parent:tk, controller):
     ###########################
 
     # Kategorien in der Seitenleiste
-    categories = ["Profil",
-                  "System",
-                  "Über-DD-Inv"]
+    categories = [
+        "Profil",
+        "System",
+        "Über-DD-Inv"
+    ]
 
     category_labels_settings = []
 
     # Zuordnung der Frames zu den Kategorien
-    frames = {"Profil": frame_profile,
-              "System": frame_system,
-              "Über-DD-Inv": frame_ueber}
+    frames = {
+        "Profil": frame_profile,
+        "System": frame_system,
+        "Über-DD-Inv": frame_ueber
+    }
 
     current_frame = frames["Profil"]  # Halte den aktuell sichtbaren Frame
     current_frame.grid(row=1, column=1, rowspan=1, columnspan=1, sticky="nsew")
@@ -794,19 +841,21 @@ def pop_up_settings(parent:tk, controller):
     category_labels_settings = []  # Liste für die Label-Referenzen
     for idx, category in enumerate(categories):
         label = tk.Label(side_settings,
-                         text=category,
-                         bd=0,
-                         relief=tk.FLAT,
-                         font=SETTINGS_BTN_FONT,
-                         fg="white",
-                         bg=srh_orange)
+            text=category,
+            bd=0,
+            relief=tk.FLAT,
+            font=SETTINGS_BTN_FONT,
+            fg="white",
+            bg=srh_orange
+        )
         label.grid(padx=10, pady=8, row=idx + 1, column=0, sticky="w")
 
         label.bind("<Button-1>",
-                   lambda event,
-                          lbl=label,
-                          cat=category:
-                   on_category_click_settings(lbl, cat))
+            lambda event,
+                lbl=label,
+                cat=category:
+                on_category_click_settings(lbl, cat)
+        )
         category_labels_settings.append(label)
 
     # Verstecke alle Frames außer dem initialen Profil-Frame
