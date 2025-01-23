@@ -170,23 +170,51 @@ class AdminUserWindow(tk.Frame):
         navi.grid_columnconfigure(1, weight=1)
         navi.grid_columnconfigure(2, weight=1)
 
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",cursor="hand2",text_color="black", font=("Arial", 20), hover_color="darkgray")
+        user_nav = ctk.CTkButton(navi,
+                                 text="Nutzer",
+                                 border_width=border,
+                                 corner_radius=corner ,
+                                 fg_color="#C5C5C5",
+                                 cursor="hand2",
+                                 text_color="black",
+                                 font=("Arial", 20),
+                                 hover_color=nav_bar_hover_color)
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",cursor="hand2",text_color="black",command=change_to_room, font=("Arial", 20), hover_color="darkgray")
+        room_nav = ctk.CTkButton(navi,
+                                 text="Räume",
+                                 border_width=border,
+                                 corner_radius=corner ,
+                                 fg_color="#C5C5C5",
+                                 cursor="hand2",
+                                 text_color="black",
+                                 command=change_to_room,
+                                 font=("Arial", 20),
+                                 hover_color=nav_bar_hover_color)
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner ,fg_color="#C5C5C5",cursor="hand2",text_color="black", command=change_to_roles, font=("Arial", 20), hover_color="darkgray")
+        role_nav = ctk.CTkButton(navi,
+                                 text="Rollen",
+                                 border_width=border,
+                                 corner_radius=corner ,
+                                 fg_color="#C5C5C5",
+                                 cursor="hand2",
+                                 text_color="black",
+                                 command=change_to_roles,
+                                 font=("Arial", 20),
+                                 hover_color=nav_bar_hover_color)
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
-        middle_frame = tk.Frame(self, background="white")
+        middle_frame = tk.Frame(self,
+                                background="white")
         middle_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
 
         middle_frame.columnconfigure(0, weight=1)
         middle_frame.rowconfigure(1, weight=1)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        search_frame = tk.Frame(middle_frame, bg="white")
+        search_frame = tk.Frame(middle_frame,
+                                bg="white")
         search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         search_frame.grid_columnconfigure(0, weight=0)
@@ -195,8 +223,14 @@ class AdminUserWindow(tk.Frame):
 
         global user_add_button
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
-        user_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT,cursor="hand2", bg="white",
-                                    activebackground="white", command=add_user)
+        user_add_button = tk.Button(search_frame,
+                                    image=self.add_btn,
+                                    bd=border,
+                                    relief=tk.FLAT,
+                                    cursor="hand2",
+                                    bg="white",
+                                    activebackground="white",
+                                    command=add_user)
         user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         self.searchBtn = tk.PhotoImage(file=resource_path("./includes/assets/search_button_blue.png"))
@@ -211,8 +245,12 @@ class AdminUserWindow(tk.Frame):
         search_button.grid(padx=10, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
-        user_search_entry = ctk.CTkEntry(search_frame, fg_color=srh_grey, text_color="black", font=("Arial", 27),
-                                         corner_radius=corner, border_width=border)
+        user_search_entry = ctk.CTkEntry(search_frame,
+                                         fg_color=srh_grey,
+                                         text_color="black",
+                                         font=("Arial", 27),
+                                         corner_radius=corner,
+                                         border_width=border)
         user_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -222,7 +260,9 @@ class AdminUserWindow(tk.Frame):
         user_search_entry.bind("<Key>", on_key_press)
         user_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
-        user_tree_frame = tk.Frame(middle_frame, background="white",cursor="hand2")
+        user_tree_frame = tk.Frame(middle_frame,
+                                   background="white",
+                                   cursor="hand2")
         user_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         # Spaltenkonfiguration für das TreeFrame

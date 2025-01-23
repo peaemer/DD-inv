@@ -137,17 +137,39 @@ class AdminRoomWindow(tk.Frame):
         navi.grid_columnconfigure(1, weight=1)
         navi.grid_columnconfigure(2, weight=1)
 
-        user_nav = ctk.CTkButton(navi, text="Nutzer", border_width=border, command=change_to_user,cursor="hand2", corner_radius=corner, fg_color="#C5C5C5",
-                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
+        user_nav = ctk.CTkButton(navi,
+                                 text="Nutzer",
+                                 border_width=border,
+                                 command=change_to_user,
+                                 cursor="hand2",
+                                 corner_radius=corner,
+                                 fg_color="#C5C5C5",
+                                 text_color="black",
+                                 font=("Arial", 20),
+                                 hover_color=nav_bar_hover_color)
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
-        room_nav = ctk.CTkButton(navi, text="Räume", border_width=border, corner_radius=corner,cursor="hand2", fg_color="#C5C5C5",
-                                 text_color="black", font=("Arial", 20), hover_color="darkgray")
+        room_nav = ctk.CTkButton(navi,
+                                 text="Räume",
+                                 border_width=border,
+                                 corner_radius=corner,
+                                 cursor="hand2",
+                                 fg_color="#C5C5C5",
+                                 text_color="black",
+                                 font=("Arial", 20),
+                                 hover_color=nav_bar_hover_color)
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
-        role_nav = ctk.CTkButton(navi, text="Rollen", border_width=border, corner_radius=corner,cursor="hand2", fg_color="#C5C5C5",
-                                 text_color="black", command=change_to_roles, font=("Arial", 20),
-                                 hover_color="darkgray")
+        role_nav = ctk.CTkButton(navi,
+                                 text="Rollen",
+                                 border_width=border,
+                                 corner_radius=corner,
+                                 cursor="hand2",
+                                 fg_color="#C5C5C5",
+                                 text_color="black",
+                                 command=change_to_roles,
+                                 font=("Arial", 20),
+                                 hover_color=nav_bar_hover_color)
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
         # Erstellen des MiddleFrame

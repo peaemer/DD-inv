@@ -171,7 +171,7 @@ class AdminRoleWindow(tk.Frame):
                                  fg_color="#C5C5C5",
                                  text_color="black",
                                  font=("Arial", 20),
-                                 hover_color="darkgray")
+                                 hover_color=nav_bar_hover_color)
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
         room_nav = ctk.CTkButton(navi,
@@ -183,7 +183,7 @@ class AdminRoleWindow(tk.Frame):
                                  text_color="black",
                                  command=change_to_room,
                                  font=("Arial", 20),
-                                 hover_color="darkgray")
+                                 hover_color=nav_bar_hover_color)
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
         role_nav = ctk.CTkButton(navi,
@@ -194,7 +194,7 @@ class AdminRoleWindow(tk.Frame):
                                  fg_color="#C5C5C5",
                                  text_color="black",
                                  font=("Arial", 20),
-                                 hover_color="darkgray")
+                                 hover_color=nav_bar_hover_color)
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
         middle_frame = tk.Frame(self, background="white")
@@ -272,7 +272,7 @@ class AdminRoleWindow(tk.Frame):
             width=20,                                                # <--- +++++side scrollbar visibility+++++ #
             corner_radius=scroll_corner,
             button_color = srh_grey,
-            button_hover_color="#2980b9"
+            button_hover_color=srh_blue
         )
         role_tree_scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
 
@@ -288,7 +288,7 @@ class AdminRoleWindow(tk.Frame):
             width=20,                                                # <--- +++++side scrollbar visibility+++++ #
             corner_radius=scroll_corner,
             button_color = srh_grey,
-            button_hover_color="#2980b9"
+            button_hover_color=srh_blue
         )
         h_role_tree_scroll.grid(row=2, column=0, sticky=tk.W + tk.E)  # Scrollbar genau neben der Tabelle
 

@@ -12,6 +12,7 @@ srh_orange = "#DF4807"
 srh_orange_hover = "#e84c09"
 srh_blue = "#00699a"
 error_red = "darkred"
+nav_bar_hover_color = srh_blue
 corner = 20
 scroll_corner = 10
 border = 0
