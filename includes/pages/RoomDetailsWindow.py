@@ -168,7 +168,10 @@ class RoomDetailsWindow(tk.Frame):
             if state:
                 db.delete_room(self.room_num_entry.get())
             else:
-                messagebox.showerror("Abgebrochen", "Es befinden sich noch sachen in den Räumen")
+                customMessageBoxDelete(self,
+                                       title="Abgebrochen",
+                                       message="Es befinden sich noch sachen in den Räumen",
+                                       blue=True)
             from .AdminRoomWindow import AdminRoomWindow
             AdminRoomWindow.update_treeview_with_data()
             from .MainPage import MainPage

@@ -314,6 +314,7 @@ class DetailsWindow(tk.Frame):
         def delete_entry():
             db.delete_hardware_by_id(cache.selected_ID)
             from .MainPage import MainPage
+            db.delete_hardware_by_id(cache.selected_ID)
             MainPage.update_treeview_with_data()
             MainPage.update_sidetree_with_data()
             update_label.configure(text="")
@@ -349,10 +350,11 @@ class DetailsWindow(tk.Frame):
                                command=lambda: return_item({"name": self.name_entry_details_window.get()}))
 
         def customMessageBoxCall():
-            customMessageBoxDelete(self,
+            if customMessageBoxDelete(self,
                                    title="Aktion Bestätigen",
                                    message="Willst du diesen Eintrag unwiderruflich löschen?",
-                                   buttonText="Eintrag Löschen")
+                                   buttonText="Eintrag Löschen"):
+                delete_entry()
 
         delete_button = tk.Button(button_frame_add_item_popup,
                                   image=self.delete_btn,
