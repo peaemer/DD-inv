@@ -286,7 +286,7 @@ class AdminUserWindow(tk.Frame):
 
         global user_tree
         user_tree = ttk.Treeview(user_tree_frame,
-                                 column=("c1", "c2", "c3", "c4", "c5"),
+                                 columns=("c1", "c2", "c3", "c4", "c5"),
                                  show="headings",
                                  cursor="hand2")
 

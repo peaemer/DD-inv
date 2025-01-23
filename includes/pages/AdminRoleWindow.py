@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import *
 import customtkinter as ctk
 
 from includes.sec_data_info import sqlite3api as sqlapi
@@ -262,7 +261,8 @@ class AdminRoleWindow(tk.Frame):
 
         global role_tree
         role_tree = ttk.Treeview(role_tree_frame,
-                                 column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16"),
+                                 columns=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8",
+                                          "c9", "c10","c11", "c12", "c13", "c14","c15","c16"),
                                  show="headings")
 
         # Scrollbar erstellen

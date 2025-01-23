@@ -253,7 +253,7 @@ class AdminRoomWindow(tk.Frame):
 
         global room_tree
         room_tree = ttk.Treeview(room_tree_frame,
-                                 column=("c1", "c2"),
+                                 columns=("c1", "c2"),
                                  cursor="hand2",
                                  show="headings")
 

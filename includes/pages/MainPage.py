@@ -279,7 +279,8 @@ class MainPage(tk.Frame):
         dropdown.bind("<<ListboxSelect>>", lambda var: tree_frame.tkraise(dropdown_overlay_frame))
 
         cache.loaded_history = json.loads(
-            sqlapi.read_benutzer_suchverlauf(cache.user_name) if sqlapi.read_benutzer(cache.user_name) == "" else """[{}]""")
+            sqlapi.read_benutzer_suchverlauf(cache.user_name)
+            if sqlapi.read_benutzer(cache.user_name) == "" else """[{}]""")
         search_entry.insert(0.0, 'Suche')  # Setze den Platzhalter-Text
 
         # style der Tabelle
@@ -299,7 +300,7 @@ class MainPage(tk.Frame):
 
         # Treeview erstellen
         tree = ttk.Treeview(tree_frame,
-                            column=("c1", "c2", "c3", "c4", "c5", "c6", "c7"),
+                            columns=("c1", "c2", "c3", "c4", "c5", "c6", "c7"),
                             style="Treeview",
                             cursor="hand2",
                             show="headings")

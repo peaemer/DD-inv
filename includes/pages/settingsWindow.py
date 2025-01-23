@@ -45,7 +45,7 @@ def close_app():
 #########################
 
 # Funktion erstellt Popupfenster "Einstellungen"
-def pop_up_settings(parent, controller):
+def pop_up_settings(parent:tk, controller):
     """
     Erstellt ein neues Einstellungsfenster als Pop-up mit verschiedenen
     Funktionen zur Anpassung und Anzeige von Benutzerdaten in einer GUI-Anwendung.

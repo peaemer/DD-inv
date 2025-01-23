@@ -78,7 +78,7 @@ class DetailsWindow(tk.Frame):
 
         # Überschrift mittig zentrieren
         header_frame_details_window.grid_columnconfigure(0, weight=1)  # Platz links
-        header_frame_details_window.grid_columnconfigure(1, weight=3)  # Überschrift zentriert (größerer Gewichtungsfaktor)
+        header_frame_details_window.grid_columnconfigure(1, weight=3)  # Überschrift zentriert
         header_frame_details_window.grid_columnconfigure(2, weight=1)  # Option-Button
 
 
@@ -124,7 +124,7 @@ class DetailsWindow(tk.Frame):
 
         global tree_details_window
         tree_details_window = ttk.Treeview(tree_frame_details_window,
-                                           column=("c1", "c2"),
+                                           columns=("c1", "c2"),
                                            show="headings",
                                            height=30)
 
@@ -433,7 +433,8 @@ class DetailsWindow(tk.Frame):
         else:
             edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
 
-        if db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == "" or db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == " ":
+        if (db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == ""
+                or db.fetch_hardware_by_id(cache.selected_ID)['Ausgeliehen_von'] == " "):
             lend_button.pack_forget()
             ret_button.pack_forget()
             lend_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
