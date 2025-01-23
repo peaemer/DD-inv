@@ -180,7 +180,7 @@ class LogInWindow(tk.Frame):
             activebackground="white",
         )
 
-        login_button.grid(column=3, row=4, pady=20, sticky="ew")
+        login_button.grid(column=3, row=4, pady=50, sticky="ew")
 
         # Bind die Enter-Taste
         username_entry.bind("<Return>", on_enter)
