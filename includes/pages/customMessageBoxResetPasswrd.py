@@ -93,7 +93,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
 
     #1. Feld für das eintragen des Passwortes
     msg_passwrd_first = ctk.CTkLabel(passwrd_msg,
-                                     text="Bitte Passwort eingeben:",
+                                     text="Passwort eingeben:",
                                      text_color="black",
                                      font=("Arial", 20),
                                      justify="center")
@@ -111,7 +111,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
 
     #2. Feld zum wiederholen des Passwortes
     msg_passwrd_second = ctk.CTkLabel(passwrd_msg,
-                                      text="Bitte Passwort wiederholen:",
+                                      text="Passwort wiederholen:",
                                       text_color="black",
                                       font=("Arial", 20),
                                       justify="center")

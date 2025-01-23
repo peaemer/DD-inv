@@ -319,8 +319,7 @@ def pop_up_settings(parent:tk, controller):
     profile_btn_label = tk.Button(frame_profile,
         command=lambda: customMessageBoxResetPasswrd(parent=parent,
             title="Passwort ändern",
-            message="Bitte ändere das Passwort \n "
-                "in den nachfolgenden Feldern.",
+            message="Passwort ändern",
             calb=lambda :log_out_settings(controller)),
         text="Passwort ändern",
         font=SETTINGS_BTN_FONT,
