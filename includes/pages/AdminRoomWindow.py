@@ -86,7 +86,8 @@ class AdminRoomWindow(tk.Frame):
         self.grid_rowconfigure(2, weight=1)
 
         # Erstelle einen Header-Bereich
-        header_frame = tk.Frame(self, background=srh_blue)
+        header_frame = tk.Frame(self,
+                                background=srh_blue)
         header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
@@ -98,18 +99,31 @@ class AdminRoomWindow(tk.Frame):
         self.srhHead = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
 
         # Füge ein zentriertes Label hinzu
-        header_label = tk.Label(header_frame, image=self.srhHead, background=srh_blue, foreground="white")
+        header_label = tk.Label(header_frame,
+                                image=self.srhHead,
+                                background=srh_blue,
+                                foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background=srh_blue, text="Raum-Übersicht", font=('Arial', 30), foreground="white")
+        text_header_label = tk.Label(header_frame,
+                                     background=srh_blue,
+                                     text="Raum-Übersicht",
+                                     font=('Arial', 30),
+                                     foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, cursor="hand2", bd=border, relief=tk.FLAT, bg=srh_blue,
+        log_out_button = tk.Button(header_frame,
+                                   image=self.log_out_btn,
+                                   command=go_back_admin_window,
+                                   cursor="hand2",
+                                   bd=border,
+                                   relief=tk.FLAT,
+                                   bg=srh_blue,
                                    activebackground=srh_blue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
@@ -173,7 +187,8 @@ class AdminRoomWindow(tk.Frame):
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
         # Erstellen des MiddleFrame
-        middle_frame = tk.Frame(self, bg="white")
+        middle_frame = tk.Frame(self,
+                                bg="white")
         middle_frame.grid(row=2, padx=10, pady=10, column=0, sticky="nesw")
 
         middle_frame.columnconfigure(0, weight=1)
@@ -189,7 +204,14 @@ class AdminRoomWindow(tk.Frame):
 
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/HinzuSmall_blue.png"))
         global room_add_button
-        room_add_button = tk.Button(search_frame, image=self.add_btn, bd=border, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white", command=add_room)
+        room_add_button = tk.Button(search_frame,
+                                    image=self.add_btn,
+                                    bd=border,
+                                    relief=tk.FLAT,
+                                    bg="white",
+                                    cursor="hand2",
+                                    activebackground="white",
+                                    command=add_room)
         room_add_button.grid(padx=10, pady=5, row=0, column=2, sticky="w")
 
         self.searchBtn = tk.PhotoImage(file=resource_path("./includes/assets/search_button_blue.png"))
@@ -204,8 +226,12 @@ class AdminRoomWindow(tk.Frame):
         search_button.grid(padx=5, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
-        room_search_entry = ctk.CTkEntry(search_frame, fg_color=srh_grey, text_color="black", font=("Arial", 27),
-                                         corner_radius=corner, border_width=border)
+        room_search_entry = ctk.CTkEntry(search_frame,
+                                         fg_color=srh_grey,
+                                         text_color="black",
+                                         font=("Arial", 27),
+                                         corner_radius=corner,
+                                         border_width=border)
         room_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -216,7 +242,8 @@ class AdminRoomWindow(tk.Frame):
         room_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
         # Ändere die Position des TreeFrames auf row=3
-        room_tree_frame = tk.Frame(middle_frame, background="white")
+        room_tree_frame = tk.Frame(middle_frame,
+                                   background="white")
         room_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         # Spaltenkonfiguration für das TreeFrame
