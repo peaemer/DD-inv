@@ -6,6 +6,7 @@ SETTINGS_ABOUT_FONT = ("Arial", 12)
 lend_font = ("Arial", 20)
 size_add_room_popup = 18
 size_add_user_popup = 16
+size_details_window = 28
 srh_grey = "#d9d9d9"
 srh_grey_hover = "#c9c9c9"
 srh_orange = "#DF4807"

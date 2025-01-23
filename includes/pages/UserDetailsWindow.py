@@ -66,11 +66,12 @@ class UserDetailsWindow(tk.Frame):
                 controller.show_frame(AdminUserWindow)
 
         def customMessageBoxCall():
-            customMessageBoxDelete(self,
-                                   title="Aktion Bestätigen",
-                                   message="Willst du diesen Benutzer unwiderruflich löschen?",
-                                   buttonText="Benutzer Löschen",
-                                   blue=True)
+            if customMessageBoxDelete(self,
+                    title="Aktion Bestätigen",
+                    message="Willst du diesen Benutzer unwiderruflich löschen?",
+                    buttonText="Benutzer Löschen",
+                    blue=True):
+                delete_entry()
 
         self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
@@ -82,7 +83,6 @@ class UserDetailsWindow(tk.Frame):
         header_frame_details_window.grid_columnconfigure(0, weight=1)  # Platz links
         header_frame_details_window.grid_columnconfigure(1, weight=3)  # Überschrift zentriert
         header_frame_details_window.grid_columnconfigure(2, weight=1)  # Option-Button
-
 
         # Zentriere das Label in Spalte 1
         header_label_details_window = tk.Label(
@@ -114,23 +114,19 @@ class UserDetailsWindow(tk.Frame):
         container_frame.grid_columnconfigure(0, weight=1)  # Baumansicht
         container_frame.grid_columnconfigure(1, weight=1)  # Eingabefelder
 
-
-
-        size_details_window = 28
-
-
-
         # Ändere die Position des TreeFrames
         tree_frame_details_window = tk.Frame(container_frame,
-                                             background="red",
-                                             width=200,
-                                             height=400)
+            background="red",
+            width=200,
+            height=400
+        )
         tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
 
         self.tree_details_window = ttk.Treeview(tree_frame_details_window,
-                                                columns=("c1", "c2", "c3"),
-                                                show="headings",
-                                                height=30)
+            columns=("c1", "c2", "c3"),
+            show="headings",
+            height=30
+        )
 
         scroll_details_window = tk.Scrollbar(
             tree_frame_details_window,
@@ -155,22 +151,26 @@ class UserDetailsWindow(tk.Frame):
             ("# 2", "ServiceTag/ID", 200),
             ("# 3", "Ausgeliehen am", 220),
         ]
+
         for col_id, col_name, col_width in user_details_window_columns:
             self.tree_details_window.column(col_id,
-                                            anchor=tk.CENTER,
-                                            width=col_width)
+                anchor=tk.CENTER,
+                width=col_width
+            )
             self.tree_details_window.heading(col_id,
-                                             text=col_name,
-                                             command=lambda c=col_id: sort_column(self.tree_details_window,
-                                                                                  c,
-                                                                                  False))
+                text=col_name,
+                command=lambda c=col_id: sort_column(self.tree_details_window,
+                    c,
+                    False)
+            )
 
         self.tree_details_window.grid(row=1, column=0)
         self.tree_details_window.tkraise()
 
         # Input-Frame
         input_frame_details_window = tk.Frame(container_frame,
-                                              background="white")
+            background="white"
+        )
         input_frame_details_window.grid(row=0, column=1, pady=20, sticky="nsew")
 
         input_frame_details_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
@@ -178,80 +178,91 @@ class UserDetailsWindow(tk.Frame):
         input_frame_details_window.grid_columnconfigure(2, weight=1)
 
         #Nutzername
-        name = tk.Label(input_frame_details_window, text="Nutzername",
-                                                font=("Arial", size_details_window), background="white")
+        name = tk.Label(input_frame_details_window,
+            text="Nutzername",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         name.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.name = ctk.CTkEntry(input_frame_details_window,
-                                 font=("Arial", size_details_window),
-                                 fg_color=srh_grey,
-                                 border_width=border,
-                                 corner_radius=corner,
-                                 text_color="black")
+            font=("Arial", size_details_window),
+            fg_color=srh_grey,
+            border_width=border,
+            corner_radius=corner,
+            text_color="black"
+        )
         self.name.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         #Passwort
         password_label_details_window = tk.Label(input_frame_details_window,
-                                                 text="Passwort",
-                                                 font=("Arial", size_details_window),
-                                                 background="white")
+            text="Passwort",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         password_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.reset_password = ctk.CTkButton(input_frame_details_window,
-                                            font=("Arial", size_details_window),
-                                            text="Passwort zurücksetzen",
-                                            command=reset_pass,
-                                            fg_color=srh_grey,
-                                            border_width=border,
-                                            corner_radius=corner,
-                                            text_color="black")
+            font=("Arial", size_details_window),
+            text="Passwort zurücksetzen",
+            command=reset_pass,
+            fg_color=srh_grey,
+            border_width=border,
+            corner_radius=corner,
+            text_color="black",
+        )
         self.reset_password.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         #Email
         email_label_details_window = tk.Label(input_frame_details_window,
-                                              text="E-Mail",
-                                              font=("Arial", size_details_window),
-                                              background="white")
+            text="E-Mail",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         email_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.email = ctk.CTkEntry(input_frame_details_window,
-                                  font=("Arial", size_details_window),
-                                  fg_color=srh_grey,
-                                  border_width=border,
-                                  corner_radius=corner,
-                                  text_color="black")
+            font=("Arial", size_details_window),
+            fg_color=srh_grey,
+            border_width=border,
+            corner_radius=corner,
+            text_color="black"
+        )
         self.email.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
         #Rolle
         role_label_details_window = tk.Label(input_frame_details_window,
-                                             text="Rolle",
-                                             font=("Arial", size_details_window),
-                                             background="white")
+            text="Rolle",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         role_label_details_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         role_values = []
         for room in db.read_all_rollen():
             role_values.append(room['Rolle'])
         self.role_combobox = ctk.CTkComboBox(input_frame_details_window,
-                                             values=role_values,
-                                             font=("Arial", size_details_window),
-                                             state="readonly",
-                                             fg_color=srh_grey,
-                                             border_width=border,
-                                             button_color=srh_grey,
-                                             corner_radius=corner,
-                                             text_color="black")
+            values=role_values,
+            font=("Arial", size_details_window),
+            state="readonly",
+            fg_color=srh_grey,
+            border_width=border,
+            button_color=srh_grey,
+            corner_radius=corner,
+            text_color="black"
+        )
+
         self.role_combobox.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
         CTkScrollableDropdownFrame(self.role_combobox,
-                                   values=role_values,
-                                   button_color=srh_grey,  #BUGGY
-                                   frame_corner_radius=corner,
-                                   fg_color=srh_grey,
-                                   text_color="black",
-                                   frame_border_width=comboborder,
-                                   frame_border_color=srh_grey_hover,
-                                   justify="left")
-
+            values=role_values,
+            button_color=srh_grey,  #BUGGY
+            frame_corner_radius=corner,
+            fg_color=srh_grey,
+            text_color="black",
+            frame_border_width=comboborder,
+            frame_border_color=srh_grey_hover,
+            justify="left"
+        )
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
@@ -282,15 +293,19 @@ class UserDetailsWindow(tk.Frame):
 
         global delete_button, edit_button
 
-        delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
-                                 bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2",
-                                 command= customMessageBoxCall)
+        delete_button = tk.Button(button_frame_add_item_popup,
+            image=self.delete_btn,
+            bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2",
+            command= customMessageBoxCall
+        )
         delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
-
-        edit_button = tk.Button(button_frame_add_item_popup, image=self.edit_btn,
-                               bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2",
-                               command=refresh_entry)
+        edit_button = tk.Button(button_frame_add_item_popup,
+            image=self.edit_btn,
+            bd=0, relief=tk.FLAT, bg="white",
+            activebackground="white",cursor="hand2",
+            command=refresh_entry
+        )
         edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
 
         self.grid_rowconfigure(0, weight=0)
