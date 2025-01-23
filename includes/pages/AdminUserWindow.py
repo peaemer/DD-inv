@@ -118,7 +118,8 @@ class AdminUserWindow(tk.Frame):
         self.grid_rowconfigure(2, weight=1)
 
         # Erstelle einen Header-Bereich
-        header_frame = tk.Frame(self, background=srh_blue)
+        header_frame = tk.Frame(self,
+                                background=srh_blue)
         header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
@@ -131,18 +132,31 @@ class AdminUserWindow(tk.Frame):
         self.srhHead = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
 
         # Füge ein zentriertes Label hinzu
-        header_label = tk.Label(header_frame, image=self.srhHead, background=srh_blue, foreground="white")
+        header_label = tk.Label(header_frame,
+                                image=self.srhHead,
+                                background=srh_blue,
+                                foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background=srh_blue, text="Nutzer-Übersicht", font=("Arial", 30), foreground="white")
+        text_header_label = tk.Label(header_frame,
+                                     background=srh_blue,
+                                     text="Nutzer-Übersicht",
+                                     font=("Arial", 30),
+                                     foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, cursor="hand2", bd=border, relief=tk.FLAT, bg=srh_blue,
+        log_out_button = tk.Button(header_frame,
+                                   image=self.log_out_btn,
+                                   command=go_back_admin_window,
+                                   cursor="hand2",
+                                   bd=border,
+                                   relief=tk.FLAT,
+                                   bg=srh_blue,
                                    activebackground=srh_blue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
