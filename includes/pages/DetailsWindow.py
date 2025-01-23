@@ -174,7 +174,7 @@ class DetailsWindow(tk.Frame):
         self.service_tag_entry_details_window = ctk.CTkEntry(input_frame_details_window,
                                                              font=("Arial", size_details_window),
                                                              corner_radius=corner,
-                                                             fg_color=srhGrey,
+                                                             fg_color=srh_grey,
                                                              text_color="black",
                                                              border_width=border)
         self.service_tag_entry_details_window.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
@@ -189,7 +189,7 @@ class DetailsWindow(tk.Frame):
         self.type_entry_details_window = ctk.CTkEntry(input_frame_details_window,
                                                       font=("Arial", size_details_window),
                                                       corner_radius=corner,
-                                                      fg_color=srhGrey,
+                                                      fg_color=srh_grey,
                                                       text_color="black",
                                                       border_width=border)
         self.type_entry_details_window.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
@@ -208,9 +208,9 @@ class DetailsWindow(tk.Frame):
 
         self.room_combobox_details_window = ctk.CTkComboBox(input_frame_details_window,
                                                             font=("Arial", size_details_window),
-                                                             corner_radius=corner,
-                                                            button_color=srhGrey ,
-                                                            fg_color=srhGrey,
+                                                            corner_radius=corner,
+                                                            button_color=srh_grey,
+                                                            fg_color=srh_grey,
                                                             text_color="black",
                                                             border_width=border,
                                                             state="readonly")
@@ -218,13 +218,13 @@ class DetailsWindow(tk.Frame):
 
         CTkScrollableDropdownFrame(self.room_combobox_details_window,
                                    values=room_values,
-                                   button_color=srhGrey, #BUGGY
+                                   button_color=srh_grey,  #BUGGY
                                    frame_corner_radius=corner,
                                    autocomplete=True,
-                                   fg_color=srhGrey,
+                                   fg_color=srh_grey,
                                    text_color="black",
                                    frame_border_width=comboborder,
-                                   frame_border_color=srhGreyHover,
+                                   frame_border_color=srh_grey_hover,
                                    justify="left")
 
         self.room_combobox_details_window.set("Raum auswählen")  # Platzhalter
@@ -239,7 +239,7 @@ class DetailsWindow(tk.Frame):
         self.name_entry_details_window = ctk.CTkEntry(input_frame_details_window,
                                                       font=("Arial", size_details_window),
                                                       corner_radius=corner,
-                                                      fg_color=srhGrey,
+                                                      fg_color=srh_grey,
                                                       text_color="black",
                                                       border_width=border)
         self.name_entry_details_window.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
@@ -254,7 +254,7 @@ class DetailsWindow(tk.Frame):
         self.damaged_entry_details_window = ctk.CTkEntry(input_frame_details_window,
                                                          font=("Arial", size_details_window),
                                                          corner_radius=corner,
-                                                         fg_color=srhGrey,
+                                                         fg_color=srh_grey,
                                                          text_color="black",
                                                          border_width=border)
         self.damaged_entry_details_window.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)

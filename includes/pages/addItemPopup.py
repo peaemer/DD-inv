@@ -84,7 +84,7 @@ def add_item_popup(parent):
     service_tag_entry_add_item_popup = ctk.CTkEntry(add_popup,
                                                     border_width=0,
                                                     text_color="black",
-                                                    fg_color=srhGrey,
+                                                    fg_color=srh_grey,
                                                     font=("Arial", size_add_item_popup),
                                                     corner_radius=corner)
     service_tag_entry_add_item_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
@@ -99,7 +99,7 @@ def add_item_popup(parent):
     type_entry_add_item_popup = ctk.CTkEntry(add_popup,
                                              border_width=0,
                                              text_color="black",
-                                             fg_color=srhGrey,
+                                             fg_color=srh_grey,
                                              font=("Arial", size_add_item_popup),
                                              corner_radius=corner)
     type_entry_add_item_popup.grid(row=2, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
@@ -117,9 +117,9 @@ def add_item_popup(parent):
     room_combobox_add_item_popup = ctk.CTkComboBox(add_popup,
                                                    values=room_values,
                                                    font=("Arial", size_add_item_popup),
-                                                   fg_color=srhGrey,
+                                                   fg_color=srh_grey,
                                                    text_color="black",
-                                                   button_color=srhGrey,
+                                                   button_color=srh_grey,
                                                    corner_radius=corner,
                                                    border_width=0,
                                                    state="readonly")
@@ -127,12 +127,12 @@ def add_item_popup(parent):
 
     CTkScrollableDropdownFrame(room_combobox_add_item_popup,
                                values=room_values,
-                               button_color=srhGrey, #BUGGY
+                               button_color=srh_grey,  #BUGGY
                                frame_corner_radius=corner,
-                               fg_color=srhGrey,
+                               fg_color=srh_grey,
                                text_color="black",
                                frame_border_width=comboborder,
-                               frame_border_color=srhGreyHover,
+                               frame_border_color=srh_grey_hover,
                                justify="left")
 
     # Name
@@ -145,7 +145,7 @@ def add_item_popup(parent):
     name_entry_add_item_popup = ctk.CTkEntry(add_popup,
                                              border_width=0,
                                              text_color="black",
-                                             fg_color=srhGrey,
+                                             fg_color=srh_grey,
                                              font=("Arial", size_add_item_popup),
                                              corner_radius=corner)
     name_entry_add_item_popup.grid(row=4, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
@@ -160,7 +160,7 @@ def add_item_popup(parent):
     damaged_button_add_item_popup = ctk.CTkEntry(add_popup,
                                                  border_width=0,
                                                  text_color="black",
-                                                 fg_color=srhGrey,
+                                                 fg_color=srh_grey,
                                                  font=("Arial", size_add_item_popup),
                                                  corner_radius=corner)
     damaged_button_add_item_popup.grid(row=5, column=1, padx=20, pady=20, sticky=tk.E + tk.W)

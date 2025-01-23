@@ -97,11 +97,11 @@ def add_user_popup(parent):
         role_values.append(room['Rolle'])
     role_combobox_add_user_popup = ctk.CTkComboBox(
         add_popup,
-        font=("Arial", size_add_user_popup),text_color="black", corner_radius=corner,button_color=srhGrey ,fg_color=srhGrey,border_width=border,
+        font=("Arial", size_add_user_popup),text_color="black", corner_radius=corner,button_color=srh_grey ,fg_color=srh_grey,border_width=border,
         state="readonly")
-    CTkScrollableDropdownFrame(role_combobox_add_user_popup, values=role_values, button_color=srhGrey,  # BUGGY
-                               frame_corner_radius=corner, fg_color=srhGrey,
-                               text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
+    CTkScrollableDropdownFrame(role_combobox_add_user_popup, values=role_values, button_color=srh_grey,  # BUGGY
+                               frame_corner_radius=corner, fg_color=srh_grey,
+                               text_color="black", frame_border_width=comboborder, frame_border_color=srh_grey_hover,
                                justify="left")
 
     role_combobox_add_user_popup.grid(row=3, column=1, padx=20, pady=0, sticky=tk.W + tk.E)

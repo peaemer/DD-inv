@@ -118,7 +118,7 @@ def pop_up_settings(parent, controller):
 
     # Header-Bereich erstellen
     header_frame_settings = tk.Frame(popup,
-                                     background=srhGrey)
+                                     background=srh_grey)
     header_frame_settings.grid(row=0, column=1, columnspan=1, sticky="new")
 
     # Konfiguration für Header
@@ -136,13 +136,13 @@ def pop_up_settings(parent, controller):
     header_label = tk.Label(header_frame_settings,
                             image=popup.optionsHead,
                             foreground="white",
-                            background=srhGrey)
+                            background=srh_grey)
     header_label.grid(row=1, column=0, padx=0, pady=10, sticky="nsew")
 
     # Seitenleiste
     side_settings = tk.Frame(popup,
                              width=200,
-                             bg=srhOrange)
+                             bg=srh_orange)
     side_settings.grid(row=0, column=0, rowspan=2, sticky="nsw")
     side_settings.grid_columnconfigure(0, weight=1)
 
@@ -151,7 +151,7 @@ def pop_up_settings(parent, controller):
     popup.srh_logo = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
     srh_logo_label = tk.Label(side_settings,
                               image=popup.srh_logo,
-                              bg=srhOrange)
+                              bg=srh_orange)
     srh_logo_label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
 
     #LOGGER PRINT
@@ -232,7 +232,7 @@ def pop_up_settings(parent, controller):
                                      border_width=border,
                                      corner_radius=corner,
                                      text_color="black",
-                                     fg_color=srhGrey,
+                                     fg_color=srh_grey,
                                      font=SETTINGS_FONT,
                                      width=250)
     profile_image_url.grid(row=2, column=1, columnspan=1, pady=5, sticky="n")
@@ -401,7 +401,7 @@ def pop_up_settings(parent, controller):
 
     breite_entry = ctk.CTkEntry(frame_system,
                                 corner_radius=20,
-                                fg_color=srhGrey,
+                                fg_color=srh_grey,
                                 text_color="black",
                                 font=SETTINGS_BTN_FONT,
                                 placeholder_text="z.B. 1920",
@@ -417,7 +417,7 @@ def pop_up_settings(parent, controller):
 
     hoehe_entry = ctk.CTkEntry(frame_system,
                                corner_radius=20,
-                               fg_color=srhGrey,
+                               fg_color=srh_grey,
                                text_color="black",
                                font=SETTINGS_BTN_FONT,
                                placeholder_text="z.B. 1080",
@@ -799,7 +799,7 @@ def pop_up_settings(parent, controller):
                          relief=tk.FLAT,
                          font=SETTINGS_BTN_FONT,
                          fg="white",
-                         bg=srhOrange)
+                         bg=srh_orange)
         label.grid(padx=10, pady=8, row=idx + 1, column=0, sticky="w")
 
         label.bind("<Button-1>",

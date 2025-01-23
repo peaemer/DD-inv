@@ -97,7 +97,7 @@ class AdminRoleWindow(tk.Frame):
 
         # Erstelle einen Header-Bereich
         header_frame = tk.Frame(self,
-                                background=srhBlue)
+                                background=srh_blue)
         header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
@@ -111,13 +111,13 @@ class AdminRoleWindow(tk.Frame):
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(header_frame,
                                 image=self.srhHead,
-                                background=srhBlue,
+                                background=srh_blue,
                                 foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
         text_header_label = tk.Label(header_frame,
-                                     background=srhBlue,
+                                     background=srh_blue,
                                      text="Rollen-Übersicht",
                                      font=('Arial', 30),
                                      foreground="white")
@@ -134,28 +134,28 @@ class AdminRoleWindow(tk.Frame):
                                    bd=border,
                                    cursor="hand2",
                                    relief=tk.FLAT,
-                                   bg=srhBlue,
-                                   activebackground=srhBlue)
+                                   bg=srh_blue,
+                                   activebackground=srh_blue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         self.admin_role_window_avatar = cache.user_avatar
 
         # Füge einen Button mit dem Bild hinzu
         options_button_admin_role_window = tk.Button(header_frame,
-                                   image=self.admin_role_window_avatar,
-                                   command=show_settings_window_admin_window,
-                                   bd=border,
-                                   cursor="hand2",
-                                   relief=tk.FLAT,
-                                   bg=srhBlue,
-                                   activebackground=srhBlue)
+                                                     image=self.admin_role_window_avatar,
+                                                     command=show_settings_window_admin_window,
+                                                     bd=border,
+                                                     cursor="hand2",
+                                                     relief=tk.FLAT,
+                                                     bg=srh_blue,
+                                                     activebackground=srh_blue)
         options_button_admin_role_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
         #########
         #NAV:BAR#
         #########
 
-        navi = tk.Frame(self, background=srhGrey)
+        navi = tk.Frame(self, background=srh_grey)
         navi.grid(row=1, column=0, sticky="nesw")
 
         navi.grid_columnconfigure(0, weight=1)
@@ -237,7 +237,7 @@ class AdminRoleWindow(tk.Frame):
 
         # Entry-Feld mit Platzhalter-Text
         role_search_entry = ctk.CTkEntry(search_frame,
-                                         fg_color=srhGrey,
+                                         fg_color=srh_grey,
                                          text_color="black",
                                          font=("Arial", 27),
                                          corner_radius=corner,
@@ -261,8 +261,7 @@ class AdminRoleWindow(tk.Frame):
         role_tree_frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
 
         global role_tree
-        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16", "c17"
-                                                          ), show="headings")
+        role_tree = ttk.Treeview(role_tree_frame, column=("c1", "c2", "c3", "c4", "c5","c6", "c7", "c8", "c9", "c10","c11", "c12", "c13", "c14","c15","c16", "c17"), show="headings")
 
         # Scrollbar erstellen
         role_tree_scroll = ctk.CTkScrollbar(
@@ -272,7 +271,7 @@ class AdminRoleWindow(tk.Frame):
             fg_color="white",
             width=20,                                                # <--- +++++side scrollbar visibility+++++ #
             corner_radius=scroll_corner,
-            button_color = srhGrey,
+            button_color = srh_grey,
             button_hover_color="#2980b9"
         )
         role_tree_scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
@@ -288,7 +287,7 @@ class AdminRoleWindow(tk.Frame):
             fg_color="white",
             width=20,                                                # <--- +++++side scrollbar visibility+++++ #
             corner_radius=scroll_corner,
-            button_color = srhGrey,
+            button_color = srh_grey,
             button_hover_color="#2980b9"
         )
         h_role_tree_scroll.grid(row=2, column=0, sticky=tk.W + tk.E)  # Scrollbar genau neben der Tabelle

@@ -120,7 +120,7 @@ class RoomDetailsWindow(tk.Frame):
         room_num.grid(column=0, row=0, sticky=tk.EW, padx=20, pady=10)
 
         self.room_num_entry = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                                       fg_color=srhGrey,text_color="black",corner_radius=corner, border_width=border)
+                                           fg_color=srh_grey, text_color="black", corner_radius=corner, border_width=border)
         self.room_num_entry.grid(column=1, row=0, sticky=tk.EW, padx=20, pady=10)
 
         # Ort
@@ -129,7 +129,7 @@ class RoomDetailsWindow(tk.Frame):
         place_label_details_window.grid(column=0, row=2, sticky=tk.EW, padx=20, pady=10)
 
         self.place_entry = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                                    fg_color=srhGrey,text_color="black",corner_radius=corner, border_width=border)
+                                        fg_color=srh_grey, text_color="black", corner_radius=corner, border_width=border)
         self.place_entry.grid(column=1, row=2, sticky=tk.EW, padx=20, pady=10)
 
         # Funktion zum Eintrag hinzufügen

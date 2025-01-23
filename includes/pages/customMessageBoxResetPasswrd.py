@@ -100,7 +100,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
     msg_passwrd_first.grid(row=1, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     msg_passwrd_first = ctk.CTkEntry(passwrd_msg,
-                                     fg_color=srhGrey,
+                                     fg_color=srh_grey,
                                      border_width=0,
                                      text_color="black",
                                      show="•",
@@ -118,7 +118,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
     msg_passwrd_second.grid(row=3, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     msg_passwrd_second = ctk.CTkEntry(passwrd_msg,
-                                      fg_color=srhGrey,
+                                      fg_color=srh_grey,
                                       border_width=0,
                                       corner_radius=corner,
                                       show="•",
@@ -131,7 +131,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
     toggle_button = ctk.CTkButton(passwrd_msg,
                                   text="Passwort anzeigen",
                                   border_width=0,
-                                  fg_color=srhGrey,
+                                  fg_color=srh_grey,
                                   cursor="hand2",
                                   text_color="black",
                                   command=toggle_password)
@@ -148,7 +148,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
     accpt = ctk.CTkButton(passwrd_msg,
                           text="Bestätigen",
                           border_width=0,
-                          fg_color=srhOrange,
+                          fg_color=srh_orange,
                           cursor="hand2",
                           text_color="white",
                           command=log_out_box)
@@ -158,7 +158,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
     cancel = ctk.CTkButton(passwrd_msg,
                            text="Abbrechen",
                            border_width=0,
-                           fg_color=srhGrey,
+                           fg_color=srh_grey,
                            cursor="hand2",
                            text_color="black",
                            command=passwrd_msg_box.destroy)

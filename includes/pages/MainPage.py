@@ -150,7 +150,7 @@ class MainPage(tk.Frame):
         self.admin_btn = tk.PhotoImage(file=resource_path("./includes/assets/Key.png"))
 
         # Erstellen des Grayframes für linke Seite
-        grey_frame_side = tk.Frame(self, background=srhGrey)
+        grey_frame_side = tk.Frame(self, background=srh_grey)
         grey_frame_side.grid(row=1, column=0, sticky="nsw")
         grey_frame_side.grid_rowconfigure(0, weight=1)
         grey_frame_side.grid_columnconfigure(0, weight=1)
@@ -158,7 +158,7 @@ class MainPage(tk.Frame):
         tree_style_side_tree = ttk.Style()
         tree_style_side_tree.theme_use("default")
         tree_style_side_tree.configure("Treeview_side",
-                                       background=srhGrey,
+                                       background=srh_grey,
                                        font=("Arial", 20),
                                        rowheight=40,  # Zeilenhöhe für größere Abstände
                                        selectbackground="blue",  # Markierungshintergrund
@@ -177,7 +177,7 @@ class MainPage(tk.Frame):
             fg_color="white",
             width=0,                                                # <--- +++++side scrollbar visibility+++++ #
             corner_radius=10,
-            button_color = srhGrey,
+            button_color = srh_grey,
             button_hover_color="#2980b9"
         )
         side_tree_scroll.grid(row=0, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
@@ -213,8 +213,8 @@ class MainPage(tk.Frame):
         #                                 text_color="white",
         #                                 border_width=border,
         #                                 corner_radius=corner,
-        #                                 fg_color=srhOrange,
-        #                                 hover_color=srhOrangeHover,
+        #                                 fg_color=srh_orange,
+        #                                 hover_color=srh_orange_hover,
         #                                 command=add_item)
 
         self.search_btn = tk.PhotoImage(file=resource_path("./includes/assets/SearchButton.png"))
@@ -230,7 +230,7 @@ class MainPage(tk.Frame):
                                           font=("Arial", 20),
                                           text_color='black',
                                           bg_color="white",
-                                          border_color=srhGrey,
+                                          border_color=srh_grey,
                                           corner_radius=10,
                                           scrollbar_fg_color="white",
                                           scrollbar_button_color='white',
@@ -238,7 +238,7 @@ class MainPage(tk.Frame):
 
         search_entry_oval:CTkEntry = CTkEntry(search_frame,
                                               text_color="black",
-                                              fg_color=srhGrey,
+                                              fg_color=srh_grey,
                                               bg_color="white",
                                               font=("Arial", 26),
                                               corner_radius=20,
@@ -301,8 +301,8 @@ class MainPage(tk.Frame):
             fg_color="white",
             width=20,
             corner_radius=10,
-            button_color = srhGrey,
-            button_hover_color=srhOrange
+            button_color = srh_grey,
+            button_hover_color=srh_orange
         )
         scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
 

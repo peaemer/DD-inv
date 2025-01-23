@@ -86,7 +86,7 @@ class AdminRoomWindow(tk.Frame):
         self.grid_rowconfigure(2, weight=1)
 
         # Erstelle einen Header-Bereich
-        header_frame = tk.Frame(self, background=srhBlue)
+        header_frame = tk.Frame(self, background=srh_blue)
         header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
@@ -98,39 +98,39 @@ class AdminRoomWindow(tk.Frame):
         self.srhHead = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
 
         # Füge ein zentriertes Label hinzu
-        header_label = tk.Label(header_frame, image=self.srhHead, background=srhBlue, foreground="white")
+        header_label = tk.Label(header_frame, image=self.srhHead, background=srh_blue, foreground="white")
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
-        text_header_label = tk.Label(header_frame, background=srhBlue, text="Raum-Übersicht", font=('Arial', 30), foreground="white")
+        text_header_label = tk.Label(header_frame, background=srh_blue, text="Raum-Übersicht", font=('Arial', 30), foreground="white")
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
-        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window,cursor="hand2", bd=border, relief=tk.FLAT, bg=srhBlue,
-                                 activebackground=srhBlue)
+        log_out_button = tk.Button(header_frame, image=self.log_out_btn, command=go_back_admin_window, cursor="hand2", bd=border, relief=tk.FLAT, bg=srh_blue,
+                                   activebackground=srh_blue)
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         self.admin_room_window_avatar = cache.user_avatar
 
         # Füge einen Button mit dem Bild hinzu
         options_button_admin_room_window = tk.Button(header_frame,
-                                   image=self.admin_room_window_avatar,
-                                   command=show_settings_window_admin_window,
-                                   bd=0,
-                                   cursor="hand2",
-                                   relief=tk.FLAT,
-                                   bg=srhBlue,
-                                   activebackground=srhBlue)
+                                                     image=self.admin_room_window_avatar,
+                                                     command=show_settings_window_admin_window,
+                                                     bd=0,
+                                                     cursor="hand2",
+                                                     relief=tk.FLAT,
+                                                     bg=srh_blue,
+                                                     activebackground=srh_blue)
         options_button_admin_room_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
         #########
         #NAV:BAR#
         #########
 
-        navi = tk.Frame(self, background=srhGrey)
+        navi = tk.Frame(self, background=srh_grey)
         navi.grid(row=1, column=0, sticky="nesw")
 
         navi.grid_columnconfigure(0, weight=1)
@@ -182,8 +182,8 @@ class AdminRoomWindow(tk.Frame):
         search_button.grid(padx=5, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
-        room_search_entry = ctk.CTkEntry(search_frame, fg_color=srhGrey, text_color="black", font=("Arial", 27),
-                                    corner_radius=corner, border_width=border)
+        room_search_entry = ctk.CTkEntry(search_frame, fg_color=srh_grey, text_color="black", font=("Arial", 27),
+                                         corner_radius=corner, border_width=border)
         room_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -213,7 +213,7 @@ class AdminRoomWindow(tk.Frame):
             fg_color="white",
             width=20,                                                # <--- +++++side scrollbar visibility+++++ #
             corner_radius=scroll_corner,
-            button_color = srhGrey,
+            button_color = srh_grey,
             button_hover_color="#2980b9"
         )
 

@@ -115,13 +115,13 @@ def lend_popup(parent, data, controller: ddINV):
     name_label = tk.Label(popup, text="Name", font=lend_font, bg="white", anchor="w")
     name_label.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
-    name_entry = ctk.CTkEntry(popup,font=lend_font,
-                                    corner_radius=corner,
-                                    fg_color=srhGrey,
-                                    border_width=border,
-                                    text_color="black",
+    name_entry = ctk.CTkEntry(popup, font=lend_font,
+                              corner_radius=corner,
+                              fg_color=srh_grey,
+                              border_width=border,
+                              text_color="black",
 
-                                    justify="left")
+                              justify="left")
     name_entry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
 
     borrower_label = tk.Label(popup, text="Ausleiher", font=lend_font, bg="white", anchor="w")
@@ -133,27 +133,27 @@ def lend_popup(parent, data, controller: ddINV):
             users.append(user['Nutzername'])
         entry = ctk.CTkComboBox(
             popup,
-            fg_color=srhGrey,
+            fg_color=srh_grey,
             text_color="black",
             border_width=border,
-            dropdown_fg_color=srhGrey,
+            dropdown_fg_color=srh_grey,
             dropdown_text_color="black",
-            button_color=srhGrey,
+            button_color=srh_grey,
             font=lend_font,
             corner_radius=corner
         )
         entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
-        CTkScrollableDropdownFrame(entry,values=users, button_color=srhGrey, #BUGGY
-                              frame_corner_radius=corner, fg_color=srhGrey,
-                              text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
-                              justify="left")
+        CTkScrollableDropdownFrame(entry, values=users, button_color=srh_grey,  #BUGGY
+                                   frame_corner_radius=corner, fg_color=srh_grey,
+                                   text_color="black", frame_border_width=comboborder, frame_border_color=srh_grey_hover,
+                                   justify="left")
 
 
         entry.set(cache.user_name)
     else:
         entry_var = tk.StringVar()
         entry_var.set(cache.user_name)
-        entry = tk.Entry(popup, font=lend_font, bg=srhGrey, relief=tk.FLAT, textvariable=entry_var, state="disabled")
+        entry = tk.Entry(popup, font=lend_font, bg=srh_grey, relief=tk.FLAT, textvariable=entry_var, state="disabled")
         entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
 
     label = tk.Label(popup, text="Ausleihdatum", font=lend_font, bg="white", anchor="w")
@@ -162,7 +162,7 @@ def lend_popup(parent, data, controller: ddINV):
     time_entry = ctk.CTkEntry(
         popup,
         font=lend_font,  # Specify the font
-        fg_color=srhGrey,  # Set background color
+        fg_color=srh_grey,  # Set background color
         border_width=border,
         corner_radius=corner,
         text_color="black"
@@ -195,7 +195,7 @@ def lend_popup(parent, data, controller: ddINV):
     confirm_btn.grid(row=0, column=1, padx=10)
 
     cancel_btn = ctk.CTkButton(
-        button_frame, text="Abbrechen",corner_radius=corner, font=LOGINFONT, fg_color=srhGrey,text_color="black", hover_color="#B0B0B0",
+        button_frame, text="Abbrechen",corner_radius=corner, font=LOGINFONT, fg_color=srh_grey,text_color="black", hover_color="#B0B0B0",
         command=popup.destroy
     )
     cancel_btn.grid(row=0, column=0, padx=10)

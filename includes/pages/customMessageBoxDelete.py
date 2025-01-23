@@ -63,28 +63,28 @@ def customMessageBoxDelete(parent, title, message, buttonText = None, blue: bool
 
     if buttonText is not None:
         delete = ctk.CTkButton(delete_msg,
-                           text=buttonText,
-                           border_width=0,
-                           fg_color=srhBlue if blue else srhOrange,
-                           hover_color=srhBlue if blue else srhOrangeHover,
-                           cursor="hand2",
-                           text_color="white",
-                           command=lambda: handle_yes_action())
+                               text=buttonText,
+                               border_width=0,
+                               fg_color=srh_blue if blue else srh_orange,
+                               hover_color=srh_blue if blue else srh_orange_hover,
+                               cursor="hand2",
+                               text_color="white",
+                               command=lambda: handle_yes_action())
         delete.grid(row=1, column=0, padx=0, pady=10)
 
         cancel = ctk.CTkButton(delete_msg,
-                           text="Abbrechen",
-                           border_width=0,
-                           fg_color=srhGrey,
-                           cursor="hand2",
-                           text_color="black",
-                           command=lambda: handle_no_action())
+                               text="Abbrechen",
+                               border_width=0,
+                               fg_color=srh_grey,
+                               cursor="hand2",
+                               text_color="black",
+                               command=lambda: handle_no_action())
         cancel.grid(row=1, column=1, padx=0, pady=10)
     else:
         cancel = ctk.CTkButton(delete_msg,
                                text="OK",
                                border_width=0,
-                               fg_color=srhGrey,
+                               fg_color=srh_grey,
                                cursor="hand2",
                                text_color="black",
                                command=lambda: handle_no_action())

@@ -103,14 +103,14 @@ class LogInWindow(tk.Frame):
         self.grid_columnconfigure(1, weight=0)
 
         # Header
-        header_frame = tk.Frame(self, height=10, background=srhOrange)
+        header_frame = tk.Frame(self, height=10, background=srh_orange)
         header_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
         from ._avatarManager import resource_path
         self.srh_head = tk.PhotoImage(file=resource_path("./includes/assets/srhHeader.png"))
-        srh_header = tk.Label(header_frame, image=self.srh_head, bd=0, bg=srhOrange)
+        srh_header = tk.Label(header_frame, image=self.srh_head, bd=0, bg=srh_orange)
         srh_header.grid(padx=10, pady=10, row=0, column=0, sticky=tk.W + tk.N + tk.E)
 
-        grey_frame = tk.Frame(self, height=10, background=srhGrey)
+        grey_frame = tk.Frame(self, height=10, background=srh_grey)
         grey_frame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Text im GreyFrame
@@ -118,7 +118,7 @@ class LogInWindow(tk.Frame):
             grey_frame,
             text="Willkommen bei DD-Inv",
             font=LARGEFONT,
-            bg=srhGrey,
+            bg=srh_grey,
             fg="black",
             anchor="center"
         )
@@ -145,12 +145,12 @@ class LogInWindow(tk.Frame):
             form_frame, text="Benutzername", font=LARGEFONT, bg="white"
         ).grid(column=3, row=0, pady=10)
 
-        username_entry = ctk.CTkEntry(form_frame,font=LOGINFONT,
-                                    corner_radius=corner,
-                                    fg_color=srhGrey,
-                                    border_width=border,
-                                    text_color="black",
-                                    justify="center")
+        username_entry = ctk.CTkEntry(form_frame, font=LOGINFONT,
+                                      corner_radius=corner,
+                                      fg_color=srh_grey,
+                                      border_width=border,
+                                      text_color="black",
+                                      justify="center")
         username_entry.grid(column=3, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Passwort
@@ -158,13 +158,13 @@ class LogInWindow(tk.Frame):
             form_frame, text="Passwort", font=LARGEFONT, bg="white"
         ).grid(column=3, row=2, pady=10)
 
-        password_entry = ctk.CTkEntry(form_frame,font=LOGINFONT,
-                                    corner_radius=corner,
-                                    fg_color=srhGrey,
-                                    border_width=border,
-                                    text_color="black",
-                                    show="•",
-                                    justify="center")
+        password_entry = ctk.CTkEntry(form_frame, font=LOGINFONT,
+                                      corner_radius=corner,
+                                      fg_color=srh_grey,
+                                      border_width=border,
+                                      text_color="black",
+                                      show="•",
+                                      justify="center")
         password_entry.grid(column=3, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Login-Button

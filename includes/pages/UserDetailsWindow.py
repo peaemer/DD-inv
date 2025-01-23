@@ -178,7 +178,7 @@ class UserDetailsWindow(tk.Frame):
         name.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.name = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                             fg_color=srhGrey, border_width=border, corner_radius=corner, text_color="black")
+                                 fg_color=srh_grey, border_width=border, corner_radius=corner, text_color="black")
         self.name.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         #Passwort
@@ -186,8 +186,8 @@ class UserDetailsWindow(tk.Frame):
                                           font=("Arial", size_details_window), background="white")
         password_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
-        self.reset_password = ctk.CTkButton(input_frame_details_window, font=("Arial", size_details_window),text="Passwort zurücksetzen" ,command=reset_pass,
-                                                  fg_color=srhGrey, border_width=border, corner_radius=corner, text_color="black")
+        self.reset_password = ctk.CTkButton(input_frame_details_window, font=("Arial", size_details_window), text="Passwort zurücksetzen", command=reset_pass,
+                                            fg_color=srh_grey, border_width=border, corner_radius=corner, text_color="black")
         self.reset_password.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         #Email
@@ -196,7 +196,7 @@ class UserDetailsWindow(tk.Frame):
         email_label_details_window.grid(column=0, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.email = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                              fg_color=srhGrey, border_width=border, corner_radius=corner, text_color="black")
+                                  fg_color=srh_grey, border_width=border, corner_radius=corner, text_color="black")
         self.email.grid(column=1, row=2, sticky=tk.W + tk.E, padx=20, pady=10)
 
         #Rolle
@@ -208,13 +208,13 @@ class UserDetailsWindow(tk.Frame):
         for room in db.read_all_rollen():
             role_values.append(room['Rolle'])
         self.role_combobox = ctk.CTkComboBox(input_frame_details_window, values=role_values,
-                                          font=("Arial", size_details_window),
-                                          state="readonly", fg_color=srhGrey, border_width=border,button_color=srhGrey, corner_radius=corner, text_color="black")
+                                             font=("Arial", size_details_window),
+                                             state="readonly", fg_color=srh_grey, border_width=border, button_color=srh_grey, corner_radius=corner, text_color="black")
         self.role_combobox.grid(row=3, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
-        CTkScrollableDropdownFrame(self.role_combobox,values=role_values, button_color=srhGrey, #BUGGY
-                              frame_corner_radius=corner, fg_color=srhGrey,
-                              text_color="black", frame_border_width=comboborder, frame_border_color=srhGreyHover,
-                              justify="left")
+        CTkScrollableDropdownFrame(self.role_combobox, values=role_values, button_color=srh_grey,  #BUGGY
+                                   frame_corner_radius=corner, fg_color=srh_grey,
+                                   text_color="black", frame_border_width=comboborder, frame_border_color=srh_grey_hover,
+                                   justify="left")
 
 
         # Funktion zum Eintrag hinzufügen

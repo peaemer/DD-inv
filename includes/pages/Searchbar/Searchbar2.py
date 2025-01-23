@@ -5,7 +5,7 @@ from customtkinter import CTkTextbox
 import tkinter as tk
 
 from includes.util.Logging import Logger
-from .._styles import srhGrey
+from .._styles import srh_grey
 from includes.pages.ctk_listbox import CTkListbox
 from .SearchbarLogic import start_search, update_search, finish_search, get_most_suggested_term
 
@@ -355,14 +355,14 @@ class Searchbar2(CTkTextbox):
         self.__on_finish_commands.append(event)
 
     def __init__(self, _root: tk.Frame, _parent: tk.Frame, _dropdown: CTkListbox, username: str):
-        CTkTextbox.__init__(self, _parent, text_color="black", fg_color=srhGrey, bg_color="white", font=("Arial", 25),
+        CTkTextbox.__init__(self, _parent, text_color="black", fg_color=srh_grey, bg_color="white", font=("Arial", 25),
                             corner_radius=0, border_width=0, height=0, border_spacing=0)
         self.root = _root
         self.parent = _parent
         self.dropdown = _dropdown
         self.tag_config('hint', foreground='blue', background='#c2e1ed')
         self.tag_config('edit', foreground='blue', background='#c2e1ed')
-        self.tag_config('normal', foreground='black', background=srhGrey)
+        self.tag_config('normal', foreground='black', background=srh_grey)
 
         self.bind('<FocusIn>', lambda _: self.__on_focus_in(self.dropdown, username))
         self.bind("<Key>", lambda event: self.__on_key_press(event, username))
