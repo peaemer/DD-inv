@@ -52,8 +52,11 @@ def add_room_popup(parent):
     header_frame_add_room_popup.grid_columnconfigure(0, weight=1)
 
     header_label_add_room_popup = tk.Label(
-        header_frame_add_room_popup, background="#00699a",
-        text="Hinzufügen", foreground="white", font=("Arial", 40)
+        header_frame_add_room_popup,
+        background="#00699a",
+        text="Hinzufügen",
+        foreground="white",
+        font=("Arial", 40)
     )
     header_label_add_room_popup.grid(row=0, column=0, sticky=tk.NSEW)
 
@@ -66,7 +69,9 @@ def add_room_popup(parent):
 
     #Raum Bezeichnung
     room_label_add_room_popup = tk.Label(
-        input_frame_add_room_popup, text="Raum Bezeichnung", background="white",
+        input_frame_add_room_popup,
+        text="Raum Bezeichnung",
+        background="white",
         font=("Arial", size_add_room_popup)
     )
     room_label_add_room_popup.grid(row=0, column=0, padx=10, pady=20, sticky=tk.E)
@@ -82,7 +87,9 @@ def add_room_popup(parent):
 
     #Ort
     location_add_room_popup = tk.Label(
-        input_frame_add_room_popup, text="Ort", background="white",
+        input_frame_add_room_popup,
+        text="Ort",
+        background="white",
         font=("Arial", size_add_room_popup)
     )
     location_add_room_popup.grid(row=1, column=0, padx=10, pady=20, sticky=tk.E)
@@ -96,7 +103,11 @@ def add_room_popup(parent):
     )
     location_entry_add_room_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
-    error_label = tk.Label(input_frame_add_room_popup, text="", background="white", fg="darkred", font=("Arial", 14))
+    error_label = tk.Label(input_frame_add_room_popup,
+                           text="",
+                           background="white",
+                           fg="darkred",
+                           font=("Arial", 14))
     error_label.grid(row=5, column=0, columnspan=2, padx=0, pady=20, sticky=tk.E)
 
     # Buttons (anpassung benötigt)
@@ -125,14 +136,26 @@ def add_room_popup(parent):
     button_frame_add_item_popup.grid_columnconfigure(1, weight=1)
 
     exit_button_add_item_popup = tk.Button(
-        button_frame_add_item_popup, image=parent.exit_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=exit_entry
+        button_frame_add_item_popup,
+        image=parent.exit_btn_add_item_popup,
+        bd=0,
+        relief=tk.FLAT,
+        bg="white",
+        activebackground="white",
+        cursor="hand2",
+        command=exit_entry
     )
     exit_button_add_item_popup.grid(row=0, column=0, padx=10, pady=10, sticky=tk.E)
 
     submit_button_add_item_popup = tk.Button(
-        button_frame_add_item_popup, image=parent.add_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=submit_entry
+        button_frame_add_item_popup,
+        image=parent.add_btn_add_item_popup,
+        bd=0,
+        relief=tk.FLAT,
+        bg="white",
+        activebackground="white",
+        cursor="hand2",
+        command=submit_entry
     )
     submit_button_add_item_popup.grid(row=0, column=1, padx=10, pady=10, sticky=tk.W)
 
