@@ -182,7 +182,8 @@ def pop_up_settings(parent:tk, controller):
     parent.avatar = cache.user_avatarx128
     parent.settings_img_label = tk.Label(frame_profile,
         image=parent.avatar,
-        background="white")
+        background="white"
+    )
     parent.settings_img_label.grid(row=1, column=0, pady=5, rowspan=2, columnspan=1, sticky="nesw")
 
     # Schriftzug Eingeloggt als
@@ -476,7 +477,8 @@ def pop_up_settings(parent:tk, controller):
             debug_normal_label = tk.Label(frame_system,
                 text="DEBUG-Normal",
                 background="white",
-                font=SETTINGS_BTN_FONT)
+                font=SETTINGS_BTN_FONT
+            )
             debug_normal_label.grid(row=8, column=0, columnspan=2, pady=10, sticky="new")
 
             def on_debug_normal_click():
@@ -498,8 +500,7 @@ def pop_up_settings(parent:tk, controller):
                 except KeyError:
                     return False
 
-            parent.debug_normal = ctk.CTkCheckBox(
-                frame_system,
+            parent.debug_normal = ctk.CTkCheckBox(frame_system,
                 text_color="white",
                 command=lambda: on_debug_normal_click(),
                 variable=parent.debug_normal_value,
@@ -536,8 +537,7 @@ def pop_up_settings(parent:tk, controller):
 
             parent.debug_all_value = ctk.BooleanVar(value=False)
 
-            parent.debug_all = ctk.CTkCheckBox(
-                frame_system,
+            parent.debug_all = ctk.CTkCheckBox(frame_system,
                 text_color="white",
                 command=lambda: on_debug_all_click(),
                 variable=parent.debug_all_value,
@@ -584,11 +584,12 @@ def pop_up_settings(parent:tk, controller):
     zoom_control.set(get_zoom_parameter())  # Standard-Zoomfaktor
 
     confirm_button = ctk.CTkButton(frame_system,
-                                   text="Speichern und Beenden",
-                                   border_width=border,
-                                   corner_radius=corner,
-                                   fg_color=srh_orange,
-                                   command=lambda : save_zoom(zoom_control.get()))
+        text="Speichern und Beenden",
+        border_width=border,
+        corner_radius=corner,
+        fg_color=srh_orange,
+        command=lambda : save_zoom(zoom_control.get())
+    )
     confirm_button.grid(row=4, column=1, pady=10, sticky="")
 
     def save_zoom(value):

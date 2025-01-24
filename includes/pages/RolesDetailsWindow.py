@@ -351,8 +351,7 @@ class RolesDetailsWindow(tk.Frame):
                 title="Aktion Bestätigen",
                 message="Willst du diese Rolle unwiderruflich löschen?",
                 buttonText="Rolle Löschen",
-                blue=True
-            ):
+                blue=True):
                 delete_entry()
 
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))

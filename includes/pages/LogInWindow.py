@@ -79,8 +79,9 @@ class LogInWindow(tk.Frame):
             else:
                 # Zeige Fehlermeldung bei falschem Login
                 customMessageBoxDelete(self,
-                                       title="Nutzername oder Passwort falsch",
-                                       message="Nutzername und Passwort stimmen nicht überein.\n Bitte versuchen Sie es erneut.")
+                    title="Nutzername oder Passwort falsch",
+                    message="Nutzername und Passwort stimmen nicht überein.\n Bitte versuchen Sie es erneut."
+                )
 
         def on_enter(event):
             """
