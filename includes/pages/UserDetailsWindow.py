@@ -9,6 +9,7 @@ from ._sort_tree import sort_column
 from ._styles import *
 import includes.sec_data_info.sqlite3api as db
 
+
 def show_user_details(selected_user, tree, controller):
     # Daten aus der ausgewählten Zeile
     data = tree.item(selected_user, "values")
@@ -56,7 +57,6 @@ class UserDetailsWindow(tk.Frame):
             from .settingsWindow import pop_up_settings
             pop_up_settings(self, controller)
 
-
         def reset_pass():
             pw = UserSecurity.set_password(self.name.get(), None, None, randomize_password=True)
             if pw:
@@ -76,7 +76,10 @@ class UserDetailsWindow(tk.Frame):
         self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
 
         # Erstelle einen Header-Bereich
-        header_frame_details_window = tk.Frame(self, height=10, background="#00699a")
+        header_frame_details_window = tk.Frame(self,
+            height=10,
+            background="#00699a"
+        )
         header_frame_details_window.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E + tk.N)
 
         # Überschrift mittig zentrieren
@@ -128,8 +131,7 @@ class UserDetailsWindow(tk.Frame):
             height=30
         )
 
-        scroll_details_window = tk.Scrollbar(
-            tree_frame_details_window,
+        scroll_details_window = tk.Scrollbar(tree_frame_details_window,
             orient="vertical",
             command=self.tree_details_window.yview,
             bg="black",
@@ -267,7 +269,7 @@ class UserDetailsWindow(tk.Frame):
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
             #update
-            db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get())
+            print(db.update_benutzer(self.name.get(), neues_email=self.email.get(), neue_rolle=self.role_combobox.get()))
             from .AdminUserWindow import AdminUserWindow
             AdminUserWindow.update_treeview_with_data()
             controller.show_frame(AdminUserWindow)
