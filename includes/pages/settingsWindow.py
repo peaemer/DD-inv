@@ -769,7 +769,7 @@ def pop_up_settings(parent:tk, controller):
 
     # Liste mit den Namenm, URL, Bild fuer Info
     buttons_data_info = [
-        {"name": "VersionBuild   V. 0.2 BETA", "url": "https://github.com/peaemer/DD-inv/releases/latest",
+        {"name": "VersionBuild   V. 1.0 STABLE", "url": "https://github.com/peaemer/DD-inv/releases/latest",
          "image": resource_path("includes/assets/DD-Inv_Logo.png")},
         {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv",
          "image": resource_path("includes/assets/GitHubSettings.png")}
