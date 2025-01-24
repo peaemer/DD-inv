@@ -7,8 +7,6 @@
 
 **DD-inv** (Doomsday-Inventar) ist eine Inventarisierungssoftware, das im Rahmen der Ausbildung der FI24 entwickelt wird. Es soll die Verwaltung und Organisation von Inventargegenständen, wie Peripheriegeräte oder Laptops, erleichtern. Daher bietet das Tool eine intuitive Benutzeroberfläche sowie eine robuste Datenbankanbindung.
 
-Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich durch Funktionen erweitert.. 
-
 ## Funktionen
 
 - [x] **Portable** Die Anwendung kann, ohne installiert werden zu müssen, ausgeführt werden. 
@@ -51,18 +49,19 @@ Das Projekt befindet sich derzeit in der **Entwicklung** und wird kontinuierlich
 ## Geplante Funktionen
 
 - [ ] **Design** Anpssen des Hintergrundes der App sowie der Farbe (Darkmode).<br/>
+- [ ] **Framework** Ggf. wird in Zukufnt das Framework von tk zu ctk geändert.<br/>
 
 ## Projektstatus
 
-> [!WARNING]
-> Diese Projekt wird aktiv durch die **FI24** weiterentwickelt und ist noh nicht komplett ausgereift. Der Aktuelle Build ist eine **BETA**.
+Das Projekt ist vorübergehend beendet, daher gibt es nur noch kleine Änderungen oder Erweiterungen. Die aktulle Version ist die 1.0 STABLE. 
+In Zukunft könnte es die Möglichkeit geben, dass das Projekt vortgeführt wird durch eine andere Gruppe als der **FI24**. 
 
 ## Dokumentationen
 
 - [GUI Dokumentation & Anleitung](https://docs.google.com/document/d/1cw-v-YGeTcAKWmvS_XI-Pzev7BLqxlVeBSGfPffx408/edit?tab=t.0#heading=h.vyzxfk53efur)
 - [Datenbank Dokumentation](https://docs.google.com/document/d/1JMGLcfbs8KzxF_zfKBePersd-7iInHD2hQcOE3sAdLk/edit?tab=t.0#heading=h.nhkrx8i5d2i6)
 - [Backend-Dokumentation](https://docs.google.com/document/d/1rMJOXEmr451v6wGJ2xgywId04x6mYY_t/edit?usp=sharing&ouid=113027422610141400771&rtpof=true&sd=true)
-- [Dokumentation über Sicherheit]()
+- [Dokumentation über Sicherheit](https://docs.google.com/document/d/1-MB4UqDj65UzecfNWrAu0PTTA-Bzxx89sGWgj5ZKcxw/edit?tab=t.0#heading=h.kk4ig0v6talh)
 
 ## FAQ
 
