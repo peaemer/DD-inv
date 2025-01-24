@@ -19,9 +19,20 @@ class ddINV(tk.Tk):
         self.configure(background="white")
         self.state("zoomed")
 
+        def get_zoom_parameter():
+            config: Configuration = config_manager.generate_configuration('Zoom indicator')
+            try:
+                saved_value = config.read_parameter('Zoom indicator')
+                logger.debug(f"Zoom: {saved_value}")
+                return saved_value
+
+            except KeyError as e:
+                logger.error(f"Zoom: {e}")
+                return 1.0
+
         # Standard-Schriftgröße und Zoom-Faktor
         self.default_font_size = 12
-        self.zoom_factor = 1.0
+        self.zoom_factor = get_zoom_parameter()
         self.custom_font = font.Font(family="Arial", size=self.default_font_size)
 
         # Set window dimensions and icon

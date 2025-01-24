@@ -556,11 +556,23 @@ def pop_up_settings(parent:tk, controller):
         background="white",
         font=SETTINGS_BTN_FONT
     )
-    zoom_label.grid(row=1, column=1, pady=10, sticky="new")
+    zoom_label.grid(row=2, column=1, pady=10, sticky="new")
 
     # Funktion zur Aktualisierung der Zoomstufe
     def update_zoom(value):
         logger.debug(f"Zoom level updated: {value}")
+
+    def get_zoom_parameter():
+        config: Configuration = config_manager.generate_configuration('Zoom indicator')
+        try:
+            saved_value = config.read_parameter('Zoom indicator')
+            logger.debug(saved_value)
+            return float(saved_value)
+        except KeyError:
+            return 1.0
+        except TypeError as e:
+            logger.error(f"{e}")
+            return 1.0
 
     zoom_control = ctk.CTkSlider(frame_system,
         from_=int(0.5),  # Minimaler Zoomfaktor
@@ -568,18 +580,25 @@ def pop_up_settings(parent:tk, controller):
         number_of_steps=15,  # Anzahl der Schritte (optional)
         command=lambda value: update_zoom(round(value, 1))  # Rundung auf 1 Nachkommastelle
     )
-    zoom_control.grid(row=2, column=1, pady=10, sticky="ew")
-    zoom_control.set(1.0)  # Standard-Zoomfaktor
+    zoom_control.grid(row=3, column=1, pady=10, sticky="ew")
+    zoom_control.set(get_zoom_parameter())  # Standard-Zoomfaktor
 
-    def save_zoom():
+    confirm_button = ctk.CTkButton(frame_system,
+                                   text="Speichern und Beenden",
+                                   border_width=border,
+                                   corner_radius=corner,
+                                   fg_color=srh_orange,
+                                   command=lambda : save_zoom(zoom_control.get()))
+    confirm_button.grid(row=4, column=1, pady=10, sticky="")
+
+    def save_zoom(value):
         if zoom_control:
             config: Configuration = config_manager.generate_configuration('Zoom indicator')
-            config.write_parameter(update_zoom)
+            config.write_parameter('Zoom indicator',value)
             info_label_system.config(text="Einstellung wird gespeichert und App geschlossen...")
             parent.after(3000, close_app)
         else:
             logger.debug("It is not possible to adjust the zoom level.")
-        save_zoom()
 
     # Label für Fehlermeldungen
     info_label_system = tk.Label(frame_system,
