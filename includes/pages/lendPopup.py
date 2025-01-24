@@ -4,9 +4,6 @@ import customtkinter as ctk
 from includes.util.Logging import Logger
 from ..CTkScrollableDropdown import *
 from datetime import datetime
-
-#from tkcalendar import Calendar, DateEntry
-
 import cache
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
@@ -88,7 +85,6 @@ def lend_popup(parent, data, controller: ddINV):
         controller.show_frame(MainPage)
         popup.destroy()  # Schließt das Popup nach Bestätigung
 
-
     # Grid-Layout konfigurieren
     popup.grid_rowconfigure(0, weight=0)  # Titelzeile
     popup.grid_rowconfigure(1, weight=0)  # Formularzeilen
@@ -97,13 +93,14 @@ def lend_popup(parent, data, controller: ddINV):
     popup.grid_rowconfigure(4, weight=1)  # Buttonzeile
     popup.grid_columnconfigure(1, weight=1)  # Spalte 1 flexibel
 
-
     # Titelbereich
-    title_label = tk.Label(
-        popup, text="Ausleihen", font=("Arial", 35), bg="#DF4807", fg="white"
+    title_label = tk.Label(popup,
+        text="Ausleihen",
+        font=("Arial", 35),
+        bg="#DF4807",
+        fg="white"
     )
     title_label.grid(row=0, column=0, columnspan=2, ipady=10, sticky="new")
-
 
     item_var = tk.StringVar()
     item_var.set("Itemplatzhalter") #funktion zum eifügen des Namens
@@ -112,19 +109,30 @@ def lend_popup(parent, data, controller: ddINV):
     user_var.set(cache.user_name) #funktion zum eifügen des Namens
 
     # Formularbereich
-    name_label = tk.Label(popup, text="Name", font=lend_font, bg="white", anchor="w")
+    name_label = tk.Label(popup,
+        text="Name",
+        font=lend_font,
+        bg="white",
+        anchor="w"
+    )
     name_label.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
-    name_entry = ctk.CTkEntry(popup, font=lend_font,
-                              corner_radius=corner,
-                              fg_color=srh_grey,
-                              border_width=border,
-                              text_color="black",
-
-                              justify="left")
+    name_entry = ctk.CTkEntry(popup,
+        font=lend_font,
+        corner_radius=corner,
+        fg_color=srh_grey,
+        border_width=border,
+        text_color="black",
+        justify="left"
+    )
     name_entry.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
 
-    borrower_label = tk.Label(popup, text="Ausleiher", font=lend_font, bg="white", anchor="w")
+    borrower_label = tk.Label(popup,
+        text="Ausleiher",
+        font=lend_font,
+        bg="white",
+        anchor="w"
+    )
     borrower_label.grid(row=2, column=0, padx=20, pady=10, sticky="w")
 
     if cache.user_group == "Admin":
@@ -143,24 +151,37 @@ def lend_popup(parent, data, controller: ddINV):
             corner_radius=corner
         )
         entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
-        CTkScrollableDropdownFrame(entry, values=users, button_color=srh_grey,  #BUGGY
-                                   frame_corner_radius=corner, fg_color=srh_grey,
-                                   text_color="black", frame_border_width=comboborder, frame_border_color=srh_grey_hover,
-                                   justify="left")
-
+        CTkScrollableDropdownFrame(entry,
+            values=users, button_color=srh_grey,  #BUGGY
+            frame_corner_radius=corner,
+            fg_color=srh_grey,
+            text_color="black",
+            frame_border_width=comboborder,
+            frame_border_color=srh_grey_hover,
+            justify="left"
+        )
 
         entry.set(cache.user_name)
     else:
         entry_var = tk.StringVar()
         entry_var.set(cache.user_name)
-        entry = tk.Entry(popup, font=lend_font, bg=srh_grey, relief=tk.FLAT, textvariable=entry_var, state="disabled")
+        entry = tk.Entry(popup,
+            font=lend_font,
+            bg=srh_grey,
+            relief=tk.FLAT,
+            textvariable=entry_var,
+            state="disabled"
+        )
         entry.grid(row=2, column=1, padx=20, pady=10, sticky="ew")
 
-    label = tk.Label(popup, text="Ausleihdatum", font=lend_font, bg="white", anchor="w")
+    label = tk.Label(popup,
+        text="Ausleihdatum",
+        font=lend_font,
+        bg="white", anchor="w"
+    )
     label.grid(row=3, column=0, padx=20, pady=10, sticky="w")
 
-    time_entry = ctk.CTkEntry(
-        popup,
+    time_entry = ctk.CTkEntry(popup,
         font=lend_font,  # Specify the font
         fg_color=srh_grey,  # Set background color
         border_width=border,
@@ -182,8 +203,7 @@ def lend_popup(parent, data, controller: ddINV):
     button_frame = tk.Frame(popup, bg="white")
     button_frame.grid(row=4, column=0, columnspan=2, pady=20)
 
-    confirm_btn = ctk.CTkButton(
-        button_frame,
+    confirm_btn = ctk.CTkButton(button_frame,
         text="Bestätigen",
         font=LOGINFONT,
         fg_color="#DF4807",  # Button background color
@@ -194,8 +214,13 @@ def lend_popup(parent, data, controller: ddINV):
     )
     confirm_btn.grid(row=0, column=1, padx=10)
 
-    cancel_btn = ctk.CTkButton(
-        button_frame, text="Abbrechen",corner_radius=corner, font=LOGINFONT, fg_color=srh_grey,text_color="black", hover_color="#B0B0B0",
+    cancel_btn = ctk.CTkButton(button_frame,
+        text="Abbrechen",
+        corner_radius=corner,
+        font=LOGINFONT,
+        fg_color=srh_grey,
+        text_color="black",
+        hover_color="#B0B0B0",
         command=popup.destroy
     )
     cancel_btn.grid(row=0, column=0, padx=10)

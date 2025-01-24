@@ -4,6 +4,7 @@ from ..CTkScrollableDropdown import *
 
 from .customMessageBoxDelete import *
 from ._sort_tree import sort_column
+from ._styles import *
 import includes.sec_data_info.sqlite3api as db
 
 logger:Logger = Logger('DetailsWindow')
@@ -72,8 +73,9 @@ class DetailsWindow(tk.Frame):
 
         # Erstelle einen Header-Bereich
         header_frame_details_window = tk.Frame(self,
-                                               height=10,
-                                               background="#DF4807")
+            height=10,
+            background="#DF4807"
+        )
         header_frame_details_window.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E + tk.N)
 
         # Überschrift mittig zentrieren
@@ -81,10 +83,8 @@ class DetailsWindow(tk.Frame):
         header_frame_details_window.grid_columnconfigure(1, weight=3)  # Überschrift zentriert
         header_frame_details_window.grid_columnconfigure(2, weight=1)  # Option-Button
 
-
         # Zentriere das Label in Spalte 1
-        header_label_details_window = tk.Label(
-            header_frame_details_window,
+        header_label_details_window = tk.Label(header_frame_details_window,
             text="Details",
             background="#DF4807",
             foreground="white",
@@ -93,8 +93,7 @@ class DetailsWindow(tk.Frame):
         header_label_details_window.grid(row=0, column=1, pady=40, sticky=tk.W + tk.E)
 
         # Buttons in Spalten 2 und 3 platzieren
-        go_back_button_details_window = tk.Button(
-            header_frame_details_window,
+        go_back_button_details_window = tk.Button(header_frame_details_window,
             image=self.go_back_btn_details_window,
             command=go_back_details_window,
             bd=0,
@@ -105,31 +104,29 @@ class DetailsWindow(tk.Frame):
         go_back_button_details_window.grid(row=0, column=0, sticky=tk.W, padx=20)
 
         # Container für Input- und Tree-Frame
-        container_frame = tk.Frame(self,
-                                   background="white")
+        container_frame = tk.Frame(self, background="white")
         container_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
 
         # Konfiguration der Container-Spalten
         container_frame.grid_columnconfigure(0, weight=1)  # Baumansicht
         container_frame.grid_columnconfigure(1, weight=1)  # Eingabefelder
 
-        size_details_window = 28
-
         # Ändere die Position des TreeFrames
         tree_frame_details_window = tk.Frame(container_frame,
-                                             background="red",
-                                             width=200,
-                                             height=400)
+            background="red",
+            width=200,
+            height=400
+        )
         tree_frame_details_window.grid(row=0, column=0, padx=40, sticky="")
 
         global tree_details_window
         tree_details_window = ttk.Treeview(tree_frame_details_window,
-                                           columns=("c1", "c2"),
-                                           show="headings",
-                                           height=30)
+            columns=("c1", "c2"),
+            show="headings",
+            height=30
+        )
 
-        scroll_details_window = tk.Scrollbar(
-            tree_frame_details_window,
+        scroll_details_window = tk.Scrollbar(tree_frame_details_window,
             orient="vertical",
             command=tree_details_window.yview,
             bg="black",
@@ -154,19 +151,19 @@ class DetailsWindow(tk.Frame):
 
         for col_id, col_name, col_width in details_window_columns:
             tree_details_window.column(col_id,
-                                       anchor=tk.CENTER,
-                                       width=col_width)
+                anchor=tk.CENTER,
+                width=col_width
+            )
             tree_details_window.heading(col_id,
-                                        text=col_name,
-                                        command=lambda c=col_id: sort_column(tree_details_window, c, False))
+                text=col_name,
+                command=lambda c=col_id: sort_column(tree_details_window, c, False)
+            )
 
         tree_details_window.tkraise()
         tree_details_window.grid(row=1, column=0)
 
-
         # Input-Frame
-        input_frame_details_window = tk.Frame(container_frame,
-                                              background="white")
+        input_frame_details_window = tk.Frame(container_frame, background="white")
         input_frame_details_window.grid(row=0, column=1, pady=20, sticky="nsew")
 
         input_frame_details_window.grid_columnconfigure(0, weight=1)  # Zentriere das Input-Frame
@@ -175,39 +172,44 @@ class DetailsWindow(tk.Frame):
 
         # Service Tag
         service_tag_label_details_window = tk.Label(input_frame_details_window,
-                                                    text="Service Tag",
-                                                    font=("Arial", size_details_window),
-                                                    background="white")
+            text="Service Tag",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         service_tag_label_details_window.grid(column=0, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.service_tag_entry_details_window = ctk.CTkEntry(input_frame_details_window,
-                                                             font=("Arial", size_details_window),
-                                                             corner_radius=corner,
-                                                             fg_color=srh_grey,
-                                                             text_color="black",
-                                                             border_width=border)
+            font=("Arial", size_details_window),
+            corner_radius=corner,
+            fg_color=srh_grey,
+            text_color="black",
+            border_width=border
+        )
         self.service_tag_entry_details_window.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Typ
         type_label_details_window = tk.Label(input_frame_details_window,
-                                             text="Typ",
-                                             font=("Arial", size_details_window),
-                                             background="white")
+            text="Typ",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         type_label_details_window.grid(column=0, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.type_entry_details_window = ctk.CTkEntry(input_frame_details_window,
-                                                      font=("Arial", size_details_window),
-                                                      corner_radius=corner,
-                                                      fg_color=srh_grey,
-                                                      text_color="black",
-                                                      border_width=border)
+            font=("Arial", size_details_window),
+            corner_radius=corner,
+            fg_color=srh_grey,
+            text_color="black",
+            border_width=border
+        )
         self.type_entry_details_window.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Raum (Dropdown-Menü)
         room_label_details_window = tk.Label(input_frame_details_window,
-                                             text="Raum",
-                                             background="white",
-                                             font=("Arial", size_details_window))
+            text="Raum",
+            background="white",
+            font=("Arial", size_details_window)
+        )
         room_label_details_window.grid(row=2, column=0, padx=0, pady=20, sticky=tk.W + tk.E)
 
         # CTkComboBox statt ttk.Combobox
@@ -216,64 +218,71 @@ class DetailsWindow(tk.Frame):
             room_values.append(room['Raum'])
 
         self.room_combobox_details_window = ctk.CTkComboBox(input_frame_details_window,
-                                                            font=("Arial", size_details_window),
-                                                            corner_radius=corner,
-                                                            button_color=srh_grey,
-                                                            fg_color=srh_grey,
-                                                            text_color="black",
-                                                            border_width=border,
-                                                            state="readonly")
+            font=("Arial", size_details_window),
+            corner_radius=corner,
+            button_color=srh_grey,
+            fg_color=srh_grey,
+            text_color="black",
+            border_width=border,
+            state="readonly"
+        )
         self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky="ew")
 
         CTkScrollableDropdownFrame(self.room_combobox_details_window,
-                                   values=room_values,
-                                   button_color=srh_grey,  #BUGGY
-                                   frame_corner_radius=corner,
-                                   autocomplete=True,
-                                   fg_color=srh_grey,
-                                   text_color="black",
-                                   frame_border_width=comboborder,
-                                   frame_border_color=srh_grey_hover,
-                                   justify="left")
+            values=room_values,
+            button_color=srh_grey,  #BUGGY
+            frame_corner_radius=corner,
+            autocomplete=True,
+            fg_color=srh_grey,
+            text_color="black",
+            frame_border_width=comboborder,
+            frame_border_color=srh_grey_hover,
+            justify="left"
+        )
 
         self.room_combobox_details_window.set("Raum auswählen")  # Platzhalter
 
         # Name
         name_label_details_window = tk.Label(input_frame_details_window,
-                                             text="Name",
-                                             font=("Arial", size_details_window),
-                                             background="white")
+            text="Name",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         name_label_details_window.grid(column=0, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.name_entry_details_window = ctk.CTkEntry(input_frame_details_window,
-                                                      font=("Arial", size_details_window),
-                                                      corner_radius=corner,
-                                                      fg_color=srh_grey,
-                                                      text_color="black",
-                                                      border_width=border)
+            font=("Arial", size_details_window),
+            corner_radius=corner,
+            fg_color=srh_grey,
+            text_color="black",
+            border_width=border
+        )
         self.name_entry_details_window.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Beschädigung
         damaged_label_details_window = tk.Label(input_frame_details_window,
-                                                text="Beschädigung",
-                                                font=("Arial", size_details_window),
-                                                background="white")
+            text="Beschädigung",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         damaged_label_details_window.grid(column=0, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         self.damaged_entry_details_window = ctk.CTkEntry(input_frame_details_window,
-                                                         font=("Arial", size_details_window),
-                                                         corner_radius=corner,
-                                                         fg_color=srh_grey,
-                                                         text_color="black",
-                                                         border_width=border)
+            font=("Arial", size_details_window),
+            corner_radius=corner,
+            fg_color=srh_grey,
+            text_color="black",
+            border_width=border
+        )
         self.damaged_entry_details_window.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         update_label = tk.Label(input_frame_details_window,
-                               text="",
-                               background="white",
-                               cursor="hand2",
-                               fg="darkred",
-                               font=("Arial", 14))
+            text="",
+            background="white",
+            cursor="hand2",
+            fg="darkred",
+            font=("Arial", 14)
+        )
         update_label.grid(row=5, column=0, columnspan=2, padx=0, pady=20, sticky="ew")
 
         # Funktion zum Eintrag hinzufügen
@@ -301,10 +310,11 @@ class DetailsWindow(tk.Frame):
                 damage = self.damaged_entry_details_window.get()
             logger.debug(f"damage:{damage}")
             logger.debug(f"db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID, 
-                                                                              neue_beschaedigung=damage, 
-                                                                              neue_standort=room, 
-                                                                              neue_modell=name, 
-                                                                              neue_geraetetyp=type)}")
+                neue_beschaedigung=damage, 
+                neue_standort=room, 
+                neue_modell=name, 
+                neue_geraetetyp=type)}"
+            )
             from .MainPage import MainPage
             MainPage.update_sidetree_with_data()
             update_label.configure(text="Eintrag wurde aktualisiert")
@@ -341,50 +351,48 @@ class DetailsWindow(tk.Frame):
         button_frame_add_item_popup.grid(row=2, column=0, pady=20)
 
         lend_button = tk.Button(button_frame_add_item_popup,
-                                image=self.lend_btn,
-                                bd=0,
-                                relief=tk.FLAT,
-                                bg="white",
-                                activebackground="white",
-                                cursor="hand2",
-                                command=lambda: lend({"name": self.name_entry_details_window.get()}))
+            image=self.lend_btn,
+            bd=0,
+            relief=tk.FLAT,
+            bg="white",
+            activebackground="white",
+            cursor="hand2",
+            command=lambda: lend({"name": self.name_entry_details_window.get()}))
 
         ret_button = tk.Button(button_frame_add_item_popup,
-                               image=self.return_btn,
-                               bd=0,
-                               relief=tk.FLAT,
-                               bg="white",
-                               activebackground="white",
-                               cursor="hand2",
-                               command=lambda: return_item({"name": self.name_entry_details_window.get()}))
+            image=self.return_btn,
+            bd=0,
+            relief=tk.FLAT,
+            bg="white",
+            activebackground="white",
+            cursor="hand2",
+            command=lambda: return_item({"name": self.name_entry_details_window.get()}))
 
         def customMessageBoxCall():
             if customMessageBoxDelete(self,
-                                   title="Aktion Bestätigen",
-                                   message="Willst du diesen Eintrag unwiderruflich löschen?",
-                                   buttonText="Eintrag Löschen"):
+                title="Aktion Bestätigen",
+                message="Willst du diesen Eintrag unwiderruflich löschen?",
+                buttonText="Eintrag Löschen"):
                 delete_entry()
 
         delete_button = tk.Button(button_frame_add_item_popup,
-                                  image=self.delete_btn,
-                                  cursor="hand2",
-                                  bd=0,
-                                  relief=tk.FLAT,
-                                  bg="white",
-                                  activebackground="white",
-                                  command=customMessageBoxCall)
-        #delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
-
+            image=self.delete_btn,
+            cursor="hand2",
+            bd=0,
+            relief=tk.FLAT,
+            bg="white",
+            activebackground="white",
+            command=customMessageBoxCall)
 
         edit_button = tk.Button(button_frame_add_item_popup,
-                                image=self.edit_btn,
-                                cursor="hand2",
-                                bd=0,
-                                relief=tk.FLAT,
-                                bg="white",
-                                activebackground="white",
-                                command=refresh_entry)
-        #edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
+            image=self.edit_btn,
+            cursor="hand2",
+            bd=0,
+            relief=tk.FLAT,
+            bg="white",
+            activebackground="white",
+            command=refresh_entry
+        )
 
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)

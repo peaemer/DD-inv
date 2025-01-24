@@ -118,8 +118,7 @@ class AdminUserWindow(tk.Frame):
         self.grid_rowconfigure(2, weight=1)
 
         # Erstelle einen Header-Bereich
-        header_frame = tk.Frame(self,
-                                background=srh_blue)
+        header_frame = tk.Frame(self, background=srh_blue)
         header_frame.grid(row=0, column=0,columnspan=2, sticky=tk.W + tk.E)
 
         # Konfiguriere die Spalten für den Header
@@ -133,17 +132,19 @@ class AdminUserWindow(tk.Frame):
 
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(header_frame,
-                                image=self.srhHead,
-                                background=srh_blue,
-                                foreground="white")
+            image=self.srhHead,
+            background=srh_blue,
+            foreground="white"
+        )
         header_label.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.W)
 
         # Erstellen eines Schriftzuges im Header
         text_header_label = tk.Label(header_frame,
-                                     background=srh_blue,
-                                     text="Nutzer-Übersicht",
-                                     font=("Arial", 30),
-                                     foreground="white")
+            background=srh_blue,
+            text="Nutzer-Übersicht",
+            font=("Arial", 30),
+            foreground="white"
+        )
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
@@ -151,26 +152,28 @@ class AdminUserWindow(tk.Frame):
 
         # Füge einen Button mit dem Bild hinzu
         log_out_button = tk.Button(header_frame,
-                                   image=self.log_out_btn,
-                                   command=go_back_admin_window,
-                                   cursor="hand2",
-                                   bd=border,
-                                   relief=tk.FLAT,
-                                   bg=srh_blue,
-                                   activebackground=srh_blue)
+            image=self.log_out_btn,
+            command=go_back_admin_window,
+            cursor="hand2",
+            bd=border,
+            relief=tk.FLAT,
+            bg=srh_blue,
+            activebackground=srh_blue
+        )
         log_out_button.grid(row=0, column=3, sticky=tk.E, padx=20)
 
         self.admin_user_window_avatar = cache.user_avatar
 
         # Füge einen Button mit dem Bild hinzu
         options_button_admin_user_window = tk.Button(header_frame,
-                                                     image=self.admin_user_window_avatar,
-                                                     command=show_settings_window_admin_window,
-                                                     bd=border,
-                                                     cursor="hand2",
-                                                     relief=tk.FLAT,
-                                                     bg=srh_blue,
-                                                     activebackground=srh_blue)
+            image=self.admin_user_window_avatar,
+            command=show_settings_window_admin_window,
+            bd=border,
+            cursor="hand2",
+            relief=tk.FLAT,
+            bg=srh_blue,
+            activebackground=srh_blue
+        )
         options_button_admin_user_window.grid(row=0, column=2, sticky=tk.E, padx=20)
 
         #########
@@ -185,38 +188,41 @@ class AdminUserWindow(tk.Frame):
         navi.grid_columnconfigure(2, weight=1)
 
         user_nav = ctk.CTkButton(navi,
-                                 text="Nutzer",
-                                 border_width=border,
-                                 corner_radius=corner ,
-                                 fg_color="#C5C5C5",
-                                 cursor="hand2",
-                                 text_color="black",
-                                 font=("Arial", 20),
-                                 hover_color=nav_bar_hover_color)
+            text="Nutzer",
+            border_width=border,
+            corner_radius=corner ,
+            fg_color="#C5C5C5",
+            cursor="hand2",
+            text_color="black",
+            font=("Arial", 20),
+            hover_color=nav_bar_hover_color
+        )
         user_nav.grid(padx=40, pady=15, row=0, column=0, sticky=tk.W + tk.E)
 
         room_nav = ctk.CTkButton(navi,
-                                 text="Räume",
-                                 border_width=border,
-                                 corner_radius=corner ,
-                                 fg_color="#C5C5C5",
-                                 cursor="hand2",
-                                 text_color="black",
-                                 command=change_to_room,
-                                 font=("Arial", 20),
-                                 hover_color=nav_bar_hover_color)
+            text="Räume",
+            border_width=border,
+            corner_radius=corner ,
+            fg_color="#C5C5C5",
+            cursor="hand2",
+            text_color="black",
+            command=change_to_room,
+            font=("Arial", 20),
+            hover_color=nav_bar_hover_color
+        )
         room_nav.grid(padx=40, pady=5, row=0, column=1, sticky=tk.W + tk.E)
 
         role_nav = ctk.CTkButton(navi,
-                                 text="Rollen",
-                                 border_width=border,
-                                 corner_radius=corner ,
-                                 fg_color="#C5C5C5",
-                                 cursor="hand2",
-                                 text_color="black",
-                                 command=change_to_roles,
-                                 font=("Arial", 20),
-                                 hover_color=nav_bar_hover_color)
+            text="Rollen",
+            border_width=border,
+            corner_radius=corner ,
+            fg_color="#C5C5C5",
+            cursor="hand2",
+            text_color="black",
+            command=change_to_roles,
+            font=("Arial", 20),
+            hover_color=nav_bar_hover_color
+        )
         role_nav.grid(padx=40, pady=5, row=0, column=2, sticky=tk.W + tk.E)
 
         middle_frame = tk.Frame(self,
@@ -227,8 +233,7 @@ class AdminUserWindow(tk.Frame):
         middle_frame.rowconfigure(1, weight=1)
 
         # Verschiebe den SearchFrame nach oben, indem du seine Zeile anpasst
-        search_frame = tk.Frame(middle_frame,
-                                bg="white")
+        search_frame = tk.Frame(middle_frame, bg="white")
         search_frame.grid(pady=5, padx=5, row=0, column=0, sticky=tk.W + tk.E + tk.N)
 
         search_frame.grid_columnconfigure(0, weight=0)
@@ -238,33 +243,36 @@ class AdminUserWindow(tk.Frame):
         global user_add_button
         self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
         user_add_button = tk.Button(search_frame,
-                                    image=self.add_btn,
-                                    bd=border,
-                                    relief=tk.FLAT,
-                                    cursor="hand2",
-                                    bg="white",
-                                    activebackground="white",
-                                    command=add_user)
+            image=self.add_btn,
+            bd=border,
+            relief=tk.FLAT,
+            cursor="hand2",
+            bg="white",
+            activebackground="white",
+            command=add_user
+        )
         user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
 
         self.searchBtn = tk.PhotoImage(file=resource_path("./includes/assets/search_button_blue.png"))
         search_button = tk.Button(search_frame,
-                                 image=self.searchBtn,
-                                 bd=border,
-                                 relief=tk.FLAT,
-                                 cursor="hand2",
-                                 bg="white",
-                                 activebackground="white",
-                                 command=search)
+            image=self.searchBtn,
+            bd=border,
+            relief=tk.FLAT,
+            cursor="hand2",
+            bg="white",
+            activebackground="white",
+            command=search
+        )
         search_button.grid(padx=10, pady=5, row=0, column=0)
 
         # Entry-Feld mit Platzhalter-Text
         user_search_entry = ctk.CTkEntry(search_frame,
-                                         fg_color=srh_grey,
-                                         text_color="black",
-                                         font=("Arial", 27),
-                                         corner_radius=corner,
-                                         border_width=border)
+            fg_color=srh_grey,
+            text_color="black",
+            font=("Arial", 27),
+            corner_radius=corner,
+            border_width=border
+        )
         user_search_entry.insert(0, 'Suche')  # Setze den Platzhalter-Text
 
         # Events für Klick und Fokusverlust hinzufügen
@@ -275,8 +283,9 @@ class AdminUserWindow(tk.Frame):
         user_search_entry.grid(column=1, row=0, columnspan=1, sticky=tk.W + tk.E, padx=5, pady=5)
 
         user_tree_frame = tk.Frame(middle_frame,
-                                   background="white",
-                                   cursor="hand2")
+            background="white",
+            cursor="hand2"
+        )
         user_tree_frame.grid(row=1, column=0, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
         # Spaltenkonfiguration für das TreeFrame
@@ -286,13 +295,13 @@ class AdminUserWindow(tk.Frame):
 
         global user_tree
         user_tree = ttk.Treeview(user_tree_frame,
-                                 columns=("c1", "c2", "c3", "c4", "c5"),
-                                 show="headings",
-                                 cursor="hand2")
+            columns=("c1", "c2", "c3", "c4", "c5"),
+            show="headings",
+            cursor="hand2"
+        )
 
         # Scrollbar erstellen
-        user_tree_scroll = ctk.CTkScrollbar(
-            user_tree_frame,
+        user_tree_scroll = ctk.CTkScrollbar(user_tree_frame,
             orientation="vertical",
             command=user_tree.yview,
             fg_color="white",

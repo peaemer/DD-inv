@@ -5,8 +5,6 @@ from includes.sec_data_info import sqlite3api as sqlapi
 from includes.util.Logging import Logger
 from ._styles import *
 
-#from GUI.pages import RoomDetailsWindow
-
 
 def add_room_popup(parent):
     """
@@ -51,8 +49,7 @@ def add_room_popup(parent):
     header_frame_add_room_popup.grid(row=0, column=0, sticky="new")
     header_frame_add_room_popup.grid_columnconfigure(0, weight=1)
 
-    header_label_add_room_popup = tk.Label(
-        header_frame_add_room_popup,
+    header_label_add_room_popup = tk.Label(header_frame_add_room_popup,
         background="#00699a",
         text="Hinzufügen",
         foreground="white",
@@ -68,8 +65,7 @@ def add_room_popup(parent):
     input_frame_add_room_popup.grid_columnconfigure(2, weight=1)
 
     #Raum Bezeichnung
-    room_label_add_room_popup = tk.Label(
-        input_frame_add_room_popup,
+    room_label_add_room_popup = tk.Label(input_frame_add_room_popup,
         text="Raum Bezeichnung",
         background="white",
         font=("Arial", size_add_room_popup)
@@ -80,14 +76,13 @@ def add_room_popup(parent):
         fg_color="#d9d9d9",
         text_color="black",
         border_width=border,
-        font=("Arial", size_add_user_popup),
+        font=("Arial", size_add_room_popup),
         corner_radius=corner
     )
     room_entry_add_room_popup.grid(row=0, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     #Ort
-    location_add_room_popup = tk.Label(
-        input_frame_add_room_popup,
+    location_add_room_popup = tk.Label(input_frame_add_room_popup,
         text="Ort",
         background="white",
         font=("Arial", size_add_room_popup)
@@ -98,16 +93,17 @@ def add_room_popup(parent):
         fg_color="#d9d9d9",
         text_color="black",
         border_width=border,
-        font=("Arial", size_add_user_popup),
+        font=("Arial", size_add_room_popup),
         corner_radius=corner
     )
     location_entry_add_room_popup.grid(row=1, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     error_label = tk.Label(input_frame_add_room_popup,
-                           text="",
-                           background="white",
-                           fg="darkred",
-                           font=("Arial", 14))
+        text="",
+        background="white",
+        fg="darkred",
+        font=("Arial", 14)
+    )
     error_label.grid(row=5, column=0, columnspan=2, padx=0, pady=20, sticky=tk.E)
 
     # Buttons (anpassung benötigt)
@@ -135,8 +131,7 @@ def add_room_popup(parent):
     button_frame_add_item_popup.grid_columnconfigure(0, weight=1)
     button_frame_add_item_popup.grid_columnconfigure(1, weight=1)
 
-    exit_button_add_item_popup = tk.Button(
-        button_frame_add_item_popup,
+    exit_button_add_item_popup = tk.Button(button_frame_add_item_popup,
         image=parent.exit_btn_add_item_popup,
         bd=0,
         relief=tk.FLAT,
@@ -147,8 +142,7 @@ def add_room_popup(parent):
     )
     exit_button_add_item_popup.grid(row=0, column=0, padx=10, pady=10, sticky=tk.E)
 
-    submit_button_add_item_popup = tk.Button(
-        button_frame_add_item_popup,
+    submit_button_add_item_popup = tk.Button(button_frame_add_item_popup,
         image=parent.add_btn_add_item_popup,
         bd=0,
         relief=tk.FLAT,

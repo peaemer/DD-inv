@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 
 from .customMessageBoxDelete import *
 import includes.sec_data_info.sqlite3api as db
+from ._styles import *
 
 
 def show_room_details(selected_room, tree, controller):
@@ -77,8 +78,7 @@ class RoomDetailsWindow(tk.Frame):
         header_frame_details_window.grid_columnconfigure(2, weight=1)  # Option-Button
 
         # Zentriere das Label in Spalte 1
-        header_label_details_window = tk.Label(
-            header_frame_details_window,
+        header_label_details_window = tk.Label(header_frame_details_window,
             text="Raum Details",
             background="#00699a",
             foreground="white",
@@ -87,8 +87,7 @@ class RoomDetailsWindow(tk.Frame):
         header_label_details_window.grid(row=0, column=1, pady=40, sticky=tk.W + tk.E)
 
         # Buttons in Spalten 2 und 3 platzieren
-        go_back_button_details_window = tk.Button(
-            header_frame_details_window,
+        go_back_button_details_window = tk.Button(header_frame_details_window,
             image=self.go_back_btn_details_window,
             command=go_back_details_window,
             bd=0,
@@ -105,8 +104,6 @@ class RoomDetailsWindow(tk.Frame):
         # Konfiguration der Container-Spalten
         container_frame.grid_columnconfigure(0, weight=1)
 
-        size_details_window = 28
-
         # Input-Frame
         input_frame_details_window = tk.Frame(container_frame, background="white")
         input_frame_details_window.grid(row=0, column=0, pady=20, padx=20, sticky="nsew")
@@ -115,21 +112,34 @@ class RoomDetailsWindow(tk.Frame):
         input_frame_details_window.grid_columnconfigure(1, weight=1)
 
         # Raum
-        room_num = tk.Label(input_frame_details_window, text="Raum",
-                            font=("Arial", size_details_window), background="white")
+        room_num = tk.Label(input_frame_details_window,
+            text="Raum",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         room_num.grid(column=0, row=0, sticky=tk.EW, padx=20, pady=10)
 
-        self.room_num_entry = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                                           fg_color=srh_grey, text_color="black", corner_radius=corner, border_width=border)
+        self.room_num_entry = ctk.CTkEntry(input_frame_details_window,
+            font=("Arial", size_details_window),
+            fg_color=srh_grey, text_color="black",
+            corner_radius=corner, border_width=border
+        )
         self.room_num_entry.grid(column=1, row=0, sticky=tk.EW, padx=20, pady=10)
 
         # Ort
-        place_label_details_window = tk.Label(input_frame_details_window, text="Ort",
-                                              font=("Arial", size_details_window), background="white")
+        place_label_details_window = tk.Label(input_frame_details_window,
+            text="Ort",
+            font=("Arial", size_details_window),
+            background="white"
+        )
         place_label_details_window.grid(column=0, row=2, sticky=tk.EW, padx=20, pady=10)
 
-        self.place_entry = ctk.CTkEntry(input_frame_details_window, font=("Arial", size_details_window),
-                                        fg_color=srh_grey, text_color="black", corner_radius=corner, border_width=border)
+        self.place_entry = ctk.CTkEntry(input_frame_details_window,
+            font=("Arial", size_details_window),
+            fg_color=srh_grey, text_color="black",
+            corner_radius=corner,
+            border_width=border
+        )
         self.place_entry.grid(column=1, row=2, sticky=tk.EW, padx=20, pady=10)
 
         # Funktion zum Eintrag hinzufügen
@@ -169,9 +179,10 @@ class RoomDetailsWindow(tk.Frame):
                 db.delete_room(self.room_num_entry.get())
             else:
                 customMessageBoxDelete(self,
-                                       title="Abgebrochen",
-                                       message="Es befinden sich noch sachen in den Räumen",
-                                       blue=True)
+                    title="Abgebrochen",
+                    message="Es befinden sich noch sachen in den Räumen",
+                    blue=True
+                )
             from .AdminRoomWindow import AdminRoomWindow
             AdminRoomWindow.update_treeview_with_data()
             from .MainPage import MainPage
@@ -180,10 +191,10 @@ class RoomDetailsWindow(tk.Frame):
 
         def customMessageBoxCall():
             if customMessageBoxDelete(self,
-                                   title="Aktion Bestätigen",
-                                   message="Willst du diesen Raum unwiderruflich löschen?",
-                                   buttonText="Raum Löschen",
-                                   blue=True):
+                title="Aktion Bestätigen",
+                message="Willst du diesen Raum unwiderruflich löschen?",
+                buttonText="Raum Löschen",
+                blue=True):
                 delete_entry()
 
         self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
@@ -196,15 +207,26 @@ class RoomDetailsWindow(tk.Frame):
 
         global delete_button, edit_button
 
-        delete_button = tk.Button(button_frame_add_item_popup, image=self.delete_btn,
-                                 bd=0, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white",
-                                 command=customMessageBoxCall)
+        delete_button = tk.Button(button_frame_add_item_popup,
+            image=self.delete_btn,
+            bd=0,
+            relief=tk.FLAT,
+            bg="white",
+            cursor="hand2",
+            activebackground="white",
+            command=customMessageBoxCall
+        )
         delete_button.pack(side=tk.LEFT, padx=20)  # Neben Exit-Button platzieren
 
 
-        edit_button = tk.Button(button_frame_add_item_popup, image=self.edit_btn,
-                               bd=0, relief=tk.FLAT, bg="white",cursor="hand2", activebackground="white",
-                               command=refresh_entry)
+        edit_button = tk.Button(button_frame_add_item_popup,
+            image=self.edit_btn,
+            bd=0, relief=tk.FLAT,
+            bg="white",
+            cursor="hand2",
+            activebackground="white",
+            command=refresh_entry
+        )
         edit_button.pack(side=tk.LEFT, padx=20)  # Links platzieren
 
         self.grid_rowconfigure(0, weight=0)

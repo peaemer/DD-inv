@@ -55,39 +55,42 @@ def customMessageBoxDelete(parent, title, message, buttonText = None, blue: bool
     delete_msg.grid(row=0, column=0, columnspan=1, sticky="nesw")
 
     msg = ctk.CTkLabel(delete_msg,
-                       text=message,
-                       text_color="black",
-                       font=("Arial", 20),
-                       justify="center")
+        text=message,
+        text_color="black",
+        font=("Arial", 20),
+        justify="center"
+    )
     msg.grid(row=0, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     if buttonText is not None:
         delete = ctk.CTkButton(delete_msg,
-                               text=buttonText,
-                               border_width=0,
-                               fg_color=srh_blue if blue else srh_orange,
-                               hover_color=srh_blue if blue else srh_orange_hover,
-                               cursor="hand2",
-                               text_color="white",
-                               command=lambda: handle_yes_action())
+            text=buttonText,
+            border_width=0,
+            fg_color=srh_blue if blue else srh_orange,
+            hover_color=srh_blue if blue else srh_orange_hover,
+            cursor="hand2",
+            text_color="white",
+            command=lambda: handle_yes_action()
+        )
         delete.grid(row=1, column=0, padx=0, pady=10)
 
         cancel = ctk.CTkButton(delete_msg,
-                               text="Abbrechen",
-                               border_width=0,
-                               fg_color=srh_grey,
-                               cursor="hand2",
-                               text_color="black",
-                               command=lambda: handle_no_action())
+            text="Abbrechen",
+            border_width=0,
+            fg_color=srh_grey,
+            cursor="hand2",
+            text_color="black",
+            command=lambda: handle_no_action())
         cancel.grid(row=1, column=1, padx=0, pady=10)
     else:
         cancel = ctk.CTkButton(delete_msg,
-                               text="OK",
-                               border_width=0,
-                               fg_color=srh_grey,
-                               cursor="hand2",
-                               text_color="black",
-                               command=lambda: handle_no_action())
+            text="OK",
+            border_width=0,
+            fg_color=srh_grey,
+            cursor="hand2",
+            text_color="black",
+            command=lambda: handle_no_action()
+        )
         cancel.grid(row=1, column=0, padx=0, pady=10, columnspan=2)
 
     delete_msg_box.bind("<Return>", lambda event: cancel.invoke())
