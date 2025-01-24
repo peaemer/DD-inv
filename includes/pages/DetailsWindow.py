@@ -149,7 +149,7 @@ class DetailsWindow(tk.Frame):
         # Spaltenüberschriften und Konfiguration
         details_window_columns = [
             ("# 1", "ID", 200),
-            ("# 2", "Service Tag", 200),
+            ("# 2", "Name", 200),
         ]
 
         for col_id, col_name, col_width in details_window_columns:
