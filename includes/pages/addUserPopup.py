@@ -52,42 +52,52 @@ def add_user_popup(parent):
     header_frame_add_item_popup.grid(row=0, column=0,columnspan=3, sticky="new")
     header_frame_add_item_popup.grid_columnconfigure(0, weight=1)
 
-    header_label_add_item_popup = tk.Label(
-        header_frame_add_item_popup, background="#00699a",
-        text="Hinzufügen", foreground="white", font=("Arial", 40)
+    header_label_add_item_popup = tk.Label(header_frame_add_item_popup,
+        background="#00699a",
+        text="Hinzufügen",
+        foreground="white",
+        font=("Arial", 40)
     )
     header_label_add_item_popup.grid(row=0, column=0, sticky=tk.NSEW)
 
     # Username
-    username_label_add_user_popup = tk.Label(
-        add_popup, text="Username", background="white",
+    username_label_add_user_popup = tk.Label(add_popup,
+        text="Username",
+        background="white",
         font=("Arial", size_add_user_popup)
     )
     username_label_add_user_popup.grid(row=1, column=0, padx=10, pady=0, sticky=tk.E)
 
     username_entry_add_user_popup = ctk.CTkEntry(add_popup,
-                                             fg_color="#d9d9d9",
-                                             text_color="black",
-                                             border_width=border,
-                                             corner_radius=corner)
+        fg_color="#d9d9d9",
+        text_color="black",
+        border_width=border,
+        corner_radius=corner,
+        font=("Arial", size_add_user_popup)
+    )
     username_entry_add_user_popup.grid(row=1, column=1, padx=20, pady=0, sticky=tk.W + tk.E)
 
     # Email
     email_add_user_popup = tk.Label(add_popup,
-                                    text="E-Mail", background="white",
-                                    font=("Arial", size_add_user_popup))
+        text="E-Mail",
+        background="white",
+        font=("Arial", size_add_user_popup)
+    )
     email_add_user_popup.grid(row=2, column=0, padx=10, pady=0, sticky=tk.E)
 
     email_entry_add_user_popup = ctk.CTkEntry(add_popup,
-                                             fg_color="#d9d9d9",
-                                             text_color="black",
-                                             border_width=border,
-                                             corner_radius=corner)
+        fg_color="#d9d9d9",
+        text_color="black",
+        border_width=border,
+        corner_radius=corner,
+        font=("Arial", size_add_user_popup)
+    )
     email_entry_add_user_popup.grid(row=2, column=1, padx=20, pady=0, sticky=tk.W + tk.E)
 
     # Rolle
-    role_label_add_user_popup = tk.Label(
-        add_popup, text="Rolle", background="white",
+    role_label_add_user_popup = tk.Label(add_popup,
+        text="Rolle",
+        background="white",
         font=("Arial", size_add_user_popup)
     )
     role_label_add_user_popup.grid(row=3, column=0, padx=10, pady=0, sticky=tk.E)
@@ -99,17 +109,33 @@ def add_user_popup(parent):
         add_popup,
         font=("Arial", size_add_user_popup),text_color="black", corner_radius=corner,button_color=srh_grey ,fg_color=srh_grey,border_width=border,
         state="readonly")
-    CTkScrollableDropdownFrame(role_combobox_add_user_popup, values=role_values, button_color=srh_grey,  # BUGGY
-                               frame_corner_radius=corner, fg_color=srh_grey,
-                               text_color="black", frame_border_width=comboborder, frame_border_color=srh_grey_hover,
-                               justify="left")
+    CTkScrollableDropdownFrame(role_combobox_add_user_popup,
+        values=role_values,
+        button_color=srh_grey,  # BUGGY
+        frame_corner_radius=corner,
+        fg_color=srh_grey,
+        text_color="black",
+        frame_border_width=comboborder,
+        frame_border_color=srh_grey_hover,
+        justify="left"
+    )
 
     role_combobox_add_user_popup.grid(row=3, column=1, padx=20, pady=0, sticky=tk.W + tk.E)
     role_combobox_add_user_popup.set("Rolle auswählen")
 
-
-    error_label = tk.Label(add_popup, text="", background="white",fg="darkred",font=("Arial", 14))
+    error_label = tk.Label(add_popup,
+        text="",
+        background="white",
+        fg="darkred",font=("Arial", 14)
+    )
     error_label.grid(row=4, column=0,columnspan=3, padx=0, pady=0)
+
+    #def customMessageBoxCall():
+    #    customMessageBoxDelete(add_popup,
+    #        title="Aktion Bestätigen",
+    #        message="Willst du diese Rolle unwiderruflich löschen?",
+    #        buttonText="OK",
+    #        blue=True)
 
     # Buttons
     def submit_entry():
@@ -156,15 +182,25 @@ def add_user_popup(parent):
     button_frame_add_item_popup.grid_columnconfigure(0, weight=1)
     button_frame_add_item_popup.grid_columnconfigure(1, weight=1)
 
-    exit_button_add_item_popup = tk.Button(
-        button_frame_add_item_popup, image=parent.exit_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=exit_entry
+    exit_button_add_item_popup = tk.Button(button_frame_add_item_popup,
+        image=parent.exit_btn_add_item_popup,
+        bd=0,
+        relief=tk.FLAT,
+        bg="white",
+        activebackground="white",
+        cursor="hand2",
+        command=exit_entry
     )
     exit_button_add_item_popup.grid(row=0, column=0, padx=10, pady=10, sticky=tk.E)
 
-    submit_button_add_item_popup = tk.Button(
-        button_frame_add_item_popup, image=parent.add_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=submit_entry
+    submit_button_add_item_popup = tk.Button(button_frame_add_item_popup,
+        image=parent.add_btn_add_item_popup,
+        bd=0,
+        relief=tk.FLAT,
+        bg="white",
+        activebackground="white",
+        cursor="hand2",
+        command=submit_entry
     )
     submit_button_add_item_popup.grid(row=0, column=1, padx=10, pady=10, sticky=tk.W)
 

@@ -1,12 +1,10 @@
 from typing import Callable
-
 import tkinter
 
 from ..sec_data_info.UserSecurity import set_password, check_password_requirements
 from .settingsWindow import *
 import cache
 from ._styles import *
-
 from includes.util.Logging import Logger
 
 logger:Logger = Logger('customMessageBoxResetPasswrd')
@@ -79,89 +77,95 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
             logger.error(f"Error during logout by the user. {ex}")
 
     passwrd_msg = tk.Frame(passwrd_msg_box, background="white")
-    passwrd_msg.grid(row=0,
-                     column=0,
-                     columnspan=1,
-                     sticky="nesw")
+    passwrd_msg.grid(row=0 ,column=0, columnspan=1, sticky="nesw")
 
     msg = ctk.CTkLabel(passwrd_msg,
-                       text=message,
-                       text_color="black",
-                       font=("Arial", 20),
-                       justify="center")
+        text=message,
+        text_color="black",
+        font=("Arial", 20),
+        justify="center"
+    )
     msg.grid(row=0, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     #1. Feld für das eintragen des Passwortes
     msg_passwrd_first = ctk.CTkLabel(passwrd_msg,
-                                     text="Passwort eingeben:",
-                                     text_color="black",
-                                     font=("Arial", 20),
-                                     justify="center")
+        text="Passwort eingeben:",
+        text_color="black",
+        font=("Arial", 20),
+        justify="center"
+    )
     msg_passwrd_first.grid(row=1, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     msg_passwrd_first = ctk.CTkEntry(passwrd_msg,
-                                     fg_color=srh_grey,
-                                     border_width=0,
-                                     text_color="black",
-                                     show="•",
-                                     corner_radius=corner,
-                                     font=("Arial", 20),
-                                     justify="center")
+        fg_color=srh_grey,
+        border_width=0,
+        text_color="black",
+        show="•",
+        corner_radius=corner,
+        font=("Arial", 20),
+        justify="center"
+    )
     msg_passwrd_first.grid(row=2, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     #2. Feld zum wiederholen des Passwortes
     msg_passwrd_second = ctk.CTkLabel(passwrd_msg,
-                                      text="Passwort wiederholen:",
-                                      text_color="black",
-                                      font=("Arial", 20),
-                                      justify="center")
+        text="Passwort wiederholen:",
+        text_color="black",
+        font=("Arial", 20),
+        justify="center"
+    )
     msg_passwrd_second.grid(row=3, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     msg_passwrd_second = ctk.CTkEntry(passwrd_msg,
-                                      fg_color=srh_grey,
-                                      border_width=0,
-                                      corner_radius=corner,
-                                      show="•",
-                                      text_color="black",
-                                      font=("Arial", 20),
-                                      justify="center")
+        fg_color=srh_grey,
+        border_width=0,
+        corner_radius=corner,
+        show="•",
+        text_color="black",
+        font=("Arial", 20),
+        justify="center"
+    )
     msg_passwrd_second.grid(row=4, column=0, padx=15, pady=5, sticky="nesw", columnspan=2)
 
     #Btn zum Aufdecken des Passwortes
     toggle_button = ctk.CTkButton(passwrd_msg,
-                                  text="Passwort anzeigen",
-                                  border_width=0,
-                                  fg_color=srh_grey,
-                                  cursor="hand2",
-                                  text_color="black",
-                                  command=toggle_password)
+        text="Passwort anzeigen",
+        border_width=0,
+        fg_color=srh_grey,
+        cursor="hand2",
+        text_color="black",
+        command=toggle_password
+    )
     toggle_button.grid(row=5, column=0, padx=30, pady=10, sticky="ew", columnspan=2)
 
     # Label für Fehlermeldungen
     info_label = tk.Label(passwrd_msg,
-                          text="",
-                          background="white",
-                          font=("Arial", 10))
+        text="",
+        background="white",
+        font=("Arial", 10)
+    )
     info_label.grid(row=6, pady=5, sticky="ew", columnspan=2)
 
     #Btn zum Bestätigen
     accpt = ctk.CTkButton(passwrd_msg,
-                          text="Bestätigen",
-                          border_width=0,
-                          fg_color=srh_orange,
-                          cursor="hand2",
-                          text_color="white",
-                          command=log_out_box)
+        text="Bestätigen",
+        border_width=0,
+        fg_color=srh_orange,
+        cursor="hand2",
+        text_color="white",
+        command=log_out_box
+    )
     accpt.grid(row=7, column=0, padx=0, pady=10)
 
     #Btn zum Abbrechen
     cancel = ctk.CTkButton(passwrd_msg,
-                           text="Abbrechen",
-                           border_width=0,
-                           fg_color=srh_grey,
-                           cursor="hand2",
-                           text_color="black",
-                           command=passwrd_msg_box.destroy)
+        text="Abbrechen",
+        border_width=0,
+        fg_color=srh_grey,
+        cursor="hand2",
+        text_color="black",
+        command=passwrd_msg_box.destroy
+    )
     cancel.grid(row=7, column=1, padx=0, pady=10)
 
     passwrd_msg.grid_rowconfigure(0, weight=1)

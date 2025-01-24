@@ -46,9 +46,10 @@ def add_role_popup(parent):
     header_frame_add_role_popup.grid(row=0, column=0, sticky="new")
     header_frame_add_role_popup.grid_columnconfigure(0, weight=1)
 
-    header_label_add_role_popup = tk.Label(
-        header_frame_add_role_popup, background="#00699a",
-        text="Hinzufügen", foreground="white", font=("Arial", 40)
+    header_label_add_role_popup = tk.Label(header_frame_add_role_popup,
+        background="#00699a",
+        text="Hinzufügen", foreground="white",
+        font=("Arial", 40)
     )
     header_label_add_role_popup.grid(row=0, column=0, sticky=tk.NSEW)
 
@@ -57,8 +58,6 @@ def add_role_popup(parent):
     input_frame_add_role_popup.grid(row=1, column=0, pady=20, sticky=tk.NSEW)
     input_frame_add_role_popup.grid_columnconfigure(0, weight=1)
     input_frame_add_role_popup.grid_columnconfigure(1, weight=1)
-
-    size_add_role_popup = 14
 
     # Admin
     admin = tk.Label(input_frame_add_role_popup,
@@ -119,7 +118,8 @@ def add_role_popup(parent):
     parent.delete.grid(column=1, row=4, sticky=tk.W + tk.E, pady=10)
 
     # Bearbeiten
-    edit_label_roles_window = tk.Label(input_frame_add_role_popup, text="Bearbeiten",
+    edit_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="Bearbeiten",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -129,7 +129,8 @@ def add_role_popup(parent):
     parent.edit.grid(column=1, row=5, sticky=tk.W + tk.E, pady=10)
 
     # Erstellen
-    create_label_roles_window = tk.Label(input_frame_add_role_popup, text="Erstellen",
+    create_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="Erstellen",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -139,7 +140,8 @@ def add_role_popup(parent):
     parent.create.grid(column=1, row=6, sticky=tk.W + tk.E, pady=10)
 
     # Gruppe Loeschen
-    delete_g_label_roles_window = tk.Label(input_frame_add_role_popup, text="Gruppe Löschen",
+    delete_g_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="Gruppe Löschen",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -149,7 +151,8 @@ def add_role_popup(parent):
     parent.delete_g.grid(column=1, row=7, sticky=tk.W + tk.E, pady=10)
 
     # Gruppe Erstellen
-    create_g_label_roles_window = tk.Label(input_frame_add_role_popup, text="Gruppe Erstellen",
+    create_g_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="Gruppe Erstellen",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -159,7 +162,8 @@ def add_role_popup(parent):
     parent.create_g.grid(column=3, row=1, sticky=tk.W + tk.E)
 
     # Gruppe Bearbeiten
-    edit_g_label_roles_window = tk.Label(input_frame_add_role_popup, text="Gruppe Bearbeiten",
+    edit_g_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="Gruppe Bearbeiten",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -169,7 +173,8 @@ def add_role_popup(parent):
     parent.edit_g.grid(column=3, row=2, sticky=tk.W + tk.E)
 
     # Rollen Erstellen
-    create_r_label_roles_window = tk.Label(input_frame_add_role_popup, text="Rollen Erstellen",
+    create_r_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="Rollen Erstellen",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -179,7 +184,8 @@ def add_role_popup(parent):
     parent.create_r.grid(column=3, row=3, sticky=tk.W + tk.E)
 
     # Rollen Bearbeiten
-    edit_r_label_roles_window = tk.Label(input_frame_add_role_popup, text="Rollen Bearbeiten",
+    edit_r_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="Rollen Bearbeiten",
         font=("Arial", size_add_role_popup),
         background="white"
         )
@@ -189,7 +195,8 @@ def add_role_popup(parent):
     parent.edit_r.grid(column=3, row=4, sticky=tk.W + tk.E)
 
     # Rollen Loeschen
-    delete_r_label_roles_window = tk.Label(input_frame_add_role_popup, text="Rolle Löschen",
+    delete_r_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="Rolle Löschen",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -199,7 +206,8 @@ def add_role_popup(parent):
     parent.delete_r.grid(column=3, row=5, sticky=tk.W + tk.E)
 
     # Benutzer Loeschen
-    delete_u_label_roles_window = tk.Label(input_frame_add_role_popup, text="User Löschen",
+    delete_u_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="User Löschen",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -209,7 +217,8 @@ def add_role_popup(parent):
     parent.delete_u.grid(column=3, row=6, sticky=tk.W + tk.E)
 
     # Benutzer Bearbeiten
-    edit_u_label_roles_window = tk.Label(input_frame_add_role_popup, text="User Bearbeiten",
+    edit_u_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="User Bearbeiten",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -219,7 +228,8 @@ def add_role_popup(parent):
     parent.edit_u.grid(column=3, row=7, sticky=tk.W + tk.E)
 
     # Benuzter Erstellen
-    create_u_label_roles_window = tk.Label(input_frame_add_role_popup, text="User Erstellen",
+    create_u_label_roles_window = tk.Label(input_frame_add_role_popup,
+        text="User Erstellen",
         font=("Arial", size_add_role_popup),
         background="white"
     )
@@ -302,15 +312,25 @@ def add_role_popup(parent):
     button_frame_add_item_popup.grid_columnconfigure(0, weight=1)
     button_frame_add_item_popup.grid_columnconfigure(1, weight=1)
 
-    exit_button_add_item_popup = tk.Button(
-        button_frame_add_item_popup, image=parent.exit_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=exit_entry
+    exit_button_add_item_popup = tk.Button(button_frame_add_item_popup,
+        image=parent.exit_btn_add_item_popup,
+        bd=0,
+        relief=tk.FLAT,
+        bg="white",
+        activebackground="white",
+        cursor="hand2",
+        command=exit_entry
     )
     exit_button_add_item_popup.grid(row=0, column=0, padx=10, pady=10, sticky=tk.E)
 
-    submit_button_add_item_popup = tk.Button(
-        button_frame_add_item_popup, image=parent.add_btn_add_item_popup,
-        bd=0, relief=tk.FLAT, bg="white", activebackground="white",cursor="hand2", command=submit_entry
+    submit_button_add_item_popup = tk.Button(button_frame_add_item_popup,
+        image=parent.add_btn_add_item_popup,
+        bd=0,
+        relief=tk.FLAT,
+        bg="white",
+        activebackground="white",
+        cursor="hand2",
+        command=submit_entry
     )
     submit_button_add_item_popup.grid(row=0, column=1, padx=10, pady=10, sticky=tk.W)
 
@@ -321,5 +341,10 @@ def add_role_popup(parent):
     add_popup.grid_columnconfigure(0, weight=1)  # Zentriere alle Inhalte
 
     # Fehleranzeige
-    error_label = tk.Label(button_frame_add_item_popup, text="", background="white",fg="darkred",font=("Arial", 14))
+    error_label = tk.Label(button_frame_add_item_popup,
+        text="",
+        background="white",
+        fg="darkred",
+        font=("Arial", 14)
+    )
     error_label.grid(row=0, column=0,columnspan=2, padx=0, pady=20)

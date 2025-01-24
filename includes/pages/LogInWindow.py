@@ -103,19 +103,29 @@ class LogInWindow(tk.Frame):
         self.grid_columnconfigure(1, weight=0)
 
         # Header
-        header_frame = tk.Frame(self, height=10, background=srh_orange)
+        header_frame = tk.Frame(self,
+            height=10,
+            background=srh_orange
+        )
         header_frame.grid(row=0, column=0, sticky=tk.W + tk.E + tk.N)
+
         from ._avatarManager import resource_path
         self.srh_head = tk.PhotoImage(file=resource_path("./includes/assets/srhHeader.png"))
-        srh_header = tk.Label(header_frame, image=self.srh_head, bd=0, bg=srh_orange)
+        srh_header = tk.Label(header_frame,
+            image=self.srh_head,
+            bd=0,
+            bg=srh_orange
+        )
         srh_header.grid(padx=10, pady=10, row=0, column=0, sticky=tk.W + tk.N + tk.E)
 
-        grey_frame = tk.Frame(self, height=10, background=srh_grey)
+        grey_frame = tk.Frame(self,
+            height=10,
+            background=srh_grey
+        )
         grey_frame.grid(row=1, column=0, sticky=tk.W + tk.E + tk.N)
 
         # Text im GreyFrame
-        grey_label = tk.Label(
-            grey_frame,
+        grey_label = tk.Label(grey_frame,
             text="Willkommen bei DD-Inv",
             font=LARGEFONT,
             bg=srh_grey,
@@ -141,36 +151,43 @@ class LogInWindow(tk.Frame):
         form_frame.grid_columnconfigure(6, weight=1)
 
         # Username
-        tk.Label(
-            form_frame, text="Benutzername", font=LARGEFONT, bg="white"
+        tk.Label(form_frame,
+            text="Benutzername",
+            font=LARGEFONT,
+            bg="white"
         ).grid(column=3, row=0, pady=10)
 
-        username_entry = ctk.CTkEntry(form_frame, font=LOGINFONT,
-                                      corner_radius=corner,
-                                      fg_color=srh_grey,
-                                      border_width=border,
-                                      text_color="black",
-                                      justify="center")
+        username_entry = ctk.CTkEntry(form_frame,
+            font=LOGINFONT,
+            corner_radius=corner,
+            fg_color=srh_grey,
+            border_width=border,
+            text_color="black",
+            justify="center"
+        )
         username_entry.grid(column=3, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Passwort
-        tk.Label(
-            form_frame, text="Passwort", font=LARGEFONT, bg="white"
+        tk.Label(form_frame,
+            text="Passwort",
+            font=LARGEFONT,
+            bg="white"
         ).grid(column=3, row=2, pady=10)
 
-        password_entry = ctk.CTkEntry(form_frame, font=LOGINFONT,
-                                      corner_radius=corner,
-                                      fg_color=srh_grey,
-                                      border_width=border,
-                                      text_color="black",
-                                      show="•",
-                                      justify="center")
+        password_entry = ctk.CTkEntry(form_frame,
+            font=LOGINFONT,
+            corner_radius=corner,
+            fg_color=srh_grey,
+            border_width=border,
+            text_color="black",
+            show="•",
+            justify="center"
+        )
         password_entry.grid(column=3, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Login-Button
         self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/Anmelden.png"))
-        login_button = tk.Button(
-            form_frame,
+        login_button = tk.Button(form_frame,
             image=self.log_out_btn,
             bg="white",
             cursor="hand2",
