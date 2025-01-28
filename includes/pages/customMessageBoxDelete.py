@@ -1,4 +1,5 @@
 import tkinter as tk
+from multiprocessing.connection import answer_challenge
 import customtkinter as ctk
 
 import cache
@@ -52,7 +53,7 @@ def customMessageBoxDelete(parent, title, message, buttonText = None, blue: bool
         delete_msg_box.destroy()
 
     delete_msg = tk.Frame(delete_msg_box, background="white")
-    delete_msg.grid(row=0, column=0, columnspan=1, sticky="nesw")
+    delete_msg.grid(row=0, column=0, columnspan=1, sticky=tk.NSEW)
 
     msg = ctk.CTkLabel(delete_msg,
         text=message,
@@ -70,6 +71,7 @@ def customMessageBoxDelete(parent, title, message, buttonText = None, blue: bool
             hover_color=srh_blue if blue else srh_orange_hover,
             cursor="hand2",
             text_color="white",
+            anchor="center",
             command=lambda: handle_yes_action()
         )
         delete.grid(row=1, column=0, padx=0, pady=10)
@@ -80,6 +82,7 @@ def customMessageBoxDelete(parent, title, message, buttonText = None, blue: bool
             fg_color=srh_grey,
             cursor="hand2",
             text_color="black",
+            anchor="center",
             command=lambda: handle_no_action())
         cancel.grid(row=1, column=1, padx=0, pady=10)
     else:
@@ -89,6 +92,7 @@ def customMessageBoxDelete(parent, title, message, buttonText = None, blue: bool
             fg_color=srh_grey,
             cursor="hand2",
             text_color="black",
+            anchor="center",
             command=lambda: handle_no_action()
         )
         cancel.grid(row=1, column=0, padx=0, pady=10, columnspan=2)
