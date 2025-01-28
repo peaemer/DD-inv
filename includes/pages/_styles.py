@@ -1,4 +1,4 @@
-###################
+#################
 # # F O N T S # #
 #################
 
@@ -9,7 +9,7 @@ SETTINGS_BTN_FONT = ("Arial", 15)
 SETTINGS_ABOUT_FONT = ("Arial", 12)
 lend_font = ("Arial", 20)
 
-#################
+################
  # # S I Z E # #
 ################
 
@@ -32,7 +32,7 @@ srh_blue = "#00699a"
 error_red = "darkred"
 nav_bar_hover_color = srh_blue
 
-##############
+#############
 # # C T K # #
 #############
 
