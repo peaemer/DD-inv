@@ -58,23 +58,22 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
         Zeigt die Einstellungs-Popup-Funktionalität an und erlaubt es dem Benutzer, sich auszuloggen.
 
         """
-        try:
-            if msg_passwrd_first.get() != msg_passwrd_second.get():
-                return (info_label.config(text='die Passworter sind nicht identisch\n'),)
-            if not check_password_requirements(msg_passwrd_first.get()):
-                logger.debug(cache.user_name)
-                set_password(cache.user_name, msg_passwrd_first.get(),msg_passwrd_second.get())
-                from includes.pages import LogInWindow
-                cache.user_group = None  # Benutzergruppe zurücksetzen
-                cache.user_name = None
-                cache.user = None
-                passwrd_msg_box.destroy()
-                calb()
-            else:
-                return (info_label.config(text=check_password_requirements(msg_passwrd_first.get())),)
-
-        except Exception as ex:
-            logger.error(f"Error during logout by the user. {ex}")
+        #try:
+        if msg_passwrd_first.get() != msg_passwrd_second.get():
+            return (info_label.config(text='die Passworter sind nicht identisch\n'),)
+        if not check_password_requirements(msg_passwrd_first.get()):
+            logger.debug(cache.user_name)
+            set_password(cache.user_name, msg_passwrd_first.get(),msg_passwrd_second.get())
+            from includes.pages import LogInWindow
+            cache.user_group = None  # Benutzergruppe zurücksetzen
+            cache.user_name = None
+            cache.user = None
+            passwrd_msg_box.destroy()
+            calb()
+        else:
+            return (info_label.config(text=check_password_requirements(msg_passwrd_first.get())),)
+        #except Exception as ex:
+        #    logger.error(f"Error during logout by the user. {ex}")
 
     passwrd_msg = tk.Frame(passwrd_msg_box, background="white")
     passwrd_msg.grid(row=0 ,column=0, columnspan=1, sticky="nesw")

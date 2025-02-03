@@ -1,5 +1,6 @@
 import math
 import os.path
+from math import trunc
 from typing import TextIO, Tuple, Final
 
 from includes.util.Logging import Logger
@@ -13,9 +14,11 @@ class Configuration:
         :var ConfigManager manager:
     """
 
-    def read_parameter(self, parameter_name: str) -> str:
+    def read_parameter(self, parameter_name: str, generate_if_missing:bool = False, gen_initial_value:str = 'null') -> str:
         """
             :param str parameter_name: the name of the property
+            :param bool generate_if_missing: whether to generate the new parameter inside
+                the configuration file, if it is not present
         """
         lines: list[str] = self.manager.get_lines()
         i: int = self.offset + 2
@@ -25,16 +28,19 @@ class Configuration:
             if lines[i].startswith(parameter_name):
                 return lines[i].split(':')[1].strip().strip('\n')
             i += 1
-        return 'null'
+        if generate_if_missing:
 
-    def write_parameter(self, parameter_name: str, value: object, append_new: bool = True) -> None:
+            self.write_parameter(parameter_name, gen_initial_value)
+        return gen_initial_value
+
+    def write_parameter(self, parameter_name: str, value: object, append_if_missing: bool = True) -> None:
         """
             converts an object to a string and replaces the former value of the property inside the config
             file with the new value.
 
             :param str parameter_name:the name of the property.
             :param object value:the value of the property.
-            :param bool append_new:whether to create a new property for the configuration in case the property doesn't exist already.
+            :param bool append_if_missing:whether to create a new property for the configuration in case the property doesn't exist already.
         """
         lines: list[str] = self.manager.get_lines()
         i: int = self.offset + 1
@@ -47,7 +53,7 @@ class Configuration:
                     lines[i] = f'{parameter_name}:{str(value)}\n'
                     break
                 if lines[i].startswith('##') or i == len(lines) - 1:
-                    if append_new:
+                    if append_if_missing:
                         lines.insert(i - 1, f'#description\n{parameter_name}:{str(value)}\n\n')
                         break
                     else:
@@ -78,7 +84,7 @@ class ConfigManager:
         """
             opens a TextIO stream to the config file at the file path of this ConfigManager
 
-            :param bool readonly: whether to create a new, empty config file, in case there is none.
+            :param bool readonly: if true, create a new empty config file, in case there is none.
         """
         if not os.path.isfile(self.file_path):
             open(self.file_path, 'w').close()
@@ -185,5 +191,13 @@ class ConfigManager:
         self.overwrite_config_file(buffer)
         return self.get_configuration_by_name(configuration_name)
 
-    def __init__(self, file_path_: str = os.path.dirname(__file__) + '/main.config'):
+    def __init__(self, file_path_: str = os.path.dirname(__file__) + '/main.config', initial_fields:list[str] = None):
+
+        """
+
+            :param list[str] initial_fields:
+        """
         self.file_path: str = file_path_
+        if initial_fields and len(initial_fields) > 0:
+            for field in initial_fields:
+                self.generate_configuration(field)

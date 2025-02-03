@@ -494,7 +494,7 @@ def pop_up_settings(parent:tk, controller):
             def load_debug_mode_normal():
                 config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
                 try:
-                    saved_value = config.read_parameter('Debug Mode Normal')
+                    saved_value = config.read_parameter('Debug Mode Normal', generate_if_missing=True, gen_initial_value='False')
                     return saved_value.lower() == "true"
                 except KeyError:
                     return False
@@ -529,7 +529,7 @@ def pop_up_settings(parent:tk, controller):
             def load_debug_mode_all():
                 config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
                 try:
-                    saved_value = config.read_parameter('Debug Mode All')
+                    saved_value = config.read_parameter('Debug Mode All', generate_if_missing=True, gen_initial_value='False')
                     return saved_value.lower() == "true"
                 except KeyError:
                     return False
@@ -564,7 +564,7 @@ def pop_up_settings(parent:tk, controller):
     def get_zoom_parameter():
         config: Configuration = config_manager.generate_configuration('Zoom indicator')
         try:
-            saved_value = config.read_parameter('Zoom indicator')
+            saved_value = config.read_parameter('Zoom indicator', generate_if_missing=True, gen_initial_value='1')
             logger.debug(saved_value)
             return float(saved_value)
         except KeyError:

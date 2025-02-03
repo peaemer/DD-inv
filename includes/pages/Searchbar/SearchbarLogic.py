@@ -15,8 +15,8 @@ import tkinter as tk
 
 logger:Logger = Logger('SearchbarLogic')
 
-MAX_REPEATED_USES: Final[int] = int(cm.generate_configuration('Suchleiste').read_parameter('max repeated uses'))
-MAX_HISTORY_ENTRIES: Final[int] = int(cm.generate_configuration('Suchleiste').read_parameter('max history entries'))
+MAX_REPEATED_USES: Final[int] = int(cm.generate_configuration('Suchleiste').read_parameter('max repeated uses', generate_if_missing=True, gen_initial_value='3'))
+MAX_HISTORY_ENTRIES: Final[int] = int(cm.generate_configuration('Suchleiste').read_parameter('max history entries', generate_if_missing=True, gen_initial_value='30'))
 
 fallback_username: Final[str] = '1234'
 
@@ -55,6 +55,18 @@ def __match_entries(search_term: str) -> list[dict[str, str]]:
             if i >= 3:
                 break
     return result
+
+def __is_valid_entry(entry: dict[str, str]) -> bool:
+    try:
+        if not entry['text']:
+            return False
+        if not entry['repeated_uses']:
+            return False
+        if not entry['weight']:
+            return False
+    except KeyError:
+        return False
+    return True
 
 
 def __update_dropdown(dropdown: CTkListbox, search_term: str) -> None:
@@ -135,13 +147,15 @@ def __scale_history_weights(search_term: str) -> bool:
                 (3800 * a) / (a * math.sqrt(6400 * math.pow(y, 2) - 3040 * y + 608361) - 80 * a * y + 19 * (a + 4)) -
                 (a * math.sqrt(6400 * math.pow(y, 2) - 3040 * y + 608361) - 80 * a * y - 19 * (a - 4)) / (160 * a)
         )
-
     if len(loaded_history) == 0:
         return False
     term_existed: bool = False
     for entry in loaded_history:
+        if not __is_valid_entry(entry):
+            loaded_history.remove(entry)
+            continue
         weight: float = float(entry['weight']) if entry['weight'] else 0
-        repeated_uses: float = float(entry['repeated_uses']) if entry['repeated_uses'] else 0
+        repeated_uses: float = float(entry['repeated_uses']) if entry['repeated_uses'] else 0.0
         text: str = entry['text'] if entry['text'] else ''
         logger_.debug_e(f"""processing "{text}" """)
 
@@ -256,7 +270,7 @@ def start_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, search_term: s
         update_search(dropdown, search_term, username)
     search_is_running = True
     logger_.debug(f"""starting search for user "{username}" with searchbar text "{search_term}" """)
-    history_str: str = db.read_benutzer_suchverlauf(username)
+    history_str: str = db.read_benutzer_suchverlauf(username, )
     temp_history = json.loads(history_str if history_str else '[]')
     temp_history = sorted(temp_history, key=lambda x: float(x['weight']))
     logger_.debug(f"""loaded "{temp_history}" for "{username}" from database""")
