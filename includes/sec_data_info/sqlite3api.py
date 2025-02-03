@@ -1,5 +1,8 @@
 import sqlite3
-from .UserSecurity import *
+import os
+import json
+
+from .UserSecurity import hash_password
 
 # Pfad zur Datenbankdatei
 path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
@@ -11,7 +14,7 @@ def init_connection() -> sqlite3.Connection:
     """
         Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
         - Überprüft, ob die Datenbankdatei existiert
-        - falls die Datenbank nicht existiert, wird entweder die Fallback Datenbankt oder eine Exception geworfen.
+        - falls die Datenbank nicht existiert, wird entweder die Fallback Datenbank oder eine Exception geworfen.
         - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
     """
     if not os.path.exists(path):
@@ -124,8 +127,8 @@ def remove_table(table_name:str) -> str:
 def create_benutzer(nutzername:str, passwort:str, email:str) -> str:
     """
         Fügt einen neuen Benutzer zur Tabelle `Benutzer` hinzu.
-        Passwort_hashed_value wird genutzt um Plain_Passwörter in ein Hash wert zu ändern
-        {e.args} werden genutzt um genauere Fehlermeldungen zurück zu bekommen
+        Passwort_hashed_value wird genutzt, um Plain_Passwörter in ein Hash wert zu ändern
+        {e.args} werden genutzt, um genauere Fehlermeldungen zurück zu bekommen
 
         :param str nutzername: z.B. LukasFa
         :param str passwort: z.B. #Lukas1234 (Wird ihn ein Hashwert umgewandelt)
@@ -155,7 +158,7 @@ def read_all_benutzer() -> list[dict[str, str]]:
     """
         Ruft alle Benutzer aus der Tabelle `Benutzer` ab.
         Fetchall um jeden einzelnen Eintrag zu bekommen
-        RuntimeError ist dafür da um fehler bei der Dictionary vorzubeugen
+        RuntimeError ist dafür da, um fehler bei der Dictionary vorzubeugen
 
         :return: eine Liste aus den daten aller Benutzer. Die Nutzerdaten werden in jeweils einem dictionary ausgegeben.
     """
@@ -203,15 +206,16 @@ def read_benutzer_suchverlauf(nutzername):
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen des Suchverlaufs: {e.args[0]}")
 
-def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', neue_rolle:str='', neue_suchverlauf:str=''):
+def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', neue_rolle:str='', neue_suchverlauf:str='', neue_anwendungseinstellungen:str = '') -> str:
     """
-        Aktualisiert die Daten eines Benutzers (Passwort, Email, Rolle, Suchverlauf).
+        Aktualisiert die Daten eines Benutzers (Passwort, Email, Rolle, Suchverlauf, Anwendungseinstellungen).
 
         :param str nutzername: der name des zu lesenden Benutzers.
         :param str neues_passwort:(falls kein neues, leer lassen und neues Komma setzten)
         :param str neues_email:(falls kein neues, leer lassen und neues Komma setzten)
         :param str neue_rolle:(falls kein neues, leer lassen und neues Komma setzten)
         :param str neue_suchverlauf:(falls kein neues, leer lassen und neues Komma setzten)
+        :param str neue_anwendungseinstellungen:(falls kein neues, leer lassen und neues Komma setzten)
 
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
@@ -233,6 +237,9 @@ def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', n
             if neue_suchverlauf:
                 update_fields.append("Suchverlauf = ?")
                 parameters.append(neue_suchverlauf)
+            if neue_suchverlauf:
+                update_fields.append("Application_Data = ?")
+                parameters.append(neue_anwendungseinstellungen)
 
             if not update_fields:
                 return "Keine Aktualisierungsdaten vorhanden."
@@ -372,7 +379,7 @@ def delete_hardware_by_id(id:int) -> str:
     """
         Löscht einen Hardware-Eintrag aus der Tabelle `Hardware.
 
-        :param int id: eine Konstante zum idenzifizieren des Datensatzes
+        :param int id: eine Konstante zum Identifizieren des Datensatzes
 
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
@@ -719,3 +726,70 @@ def get_avatar_info(nutzername:str) -> dict[str, str]|None:
                 return None
     except sqlite3.Error:
         return None
+
+######################################################
+# A N W E N D U N G S - D A T E N - E N D P U N K T  #
+######################################################
+
+def __is_valid_application_data_entry(entry: dict[str, str]) -> bool:
+    try:
+        if not entry['']:
+            return False
+        if not entry[' ']:
+            return False
+    except KeyError:
+        return False
+    return True
+
+
+def update_application_data(nutzername:str, property_name:str, value:str='') -> str:
+    """
+        :param str nutzername: Der Name des Nutzers.
+        :param str property_name: Der Name der Einstellung.
+        :param value:
+
+        :return: Erfolgsmeldung oder Fehlerbeschreibung
+    """
+    data:dict[str,str]
+    try:
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("SELECT Application_Data FROM Benutzer WHERE Nutzername = ?", (nutzername,))
+            row: dict[str, str] = dict[str, str](cur.fetchone())
+            try:
+                data = json.loads(row['Application_Data'])
+                data[property_name] = value
+                cur.execute(f"""UPDATE Benutzer SET Application_Data = ? WHERE Nutzername = ?""",(json.dumps(data),nutzername,))
+            except KeyError as e:
+                print(e)
+                return f"Fehler beim aktualisieren der Daten: {e}"
+    except sqlite3.Error as e:
+        print(e)
+        return f"Fehler beim aktualisieren der Daten: {e}"
+    return 'Daten erfolgreich aktualisiert.'
+
+
+def get_application_data(nutzername:str, property_name:str) -> str | None:
+    """
+        :param str nutzername: Der Name des Nutzers.
+        :param str property_name: Der Name der Einstellung.
+
+        :return: Der in der Datenbank gespeicherte Wert
+    """
+    try:
+        data: dict[str,str]
+        with init_connection() as con:
+            cur = con.cursor()
+            cur.execute("SELECT Application_Data FROM Benutzer WHERE Nutzername = ?", (nutzername,))
+            row: dict[str, str] = dict[str, str](cur.fetchone())
+            try:
+                print(row['Application_Data'])
+                # print(dict[str,str](row["Application_Data"]))
+                data = json.loads(row['Application_Data'])
+            except KeyError as e:
+                print(e)
+                return f"Fehler beim aktualisieren der Daten: {e}"
+        return data[property_name]
+    except sqlite3.Error as e:
+        print(e)
+        return f"Fehler beim aktualisieren der Daten: {e}"

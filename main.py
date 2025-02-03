@@ -8,7 +8,7 @@ from includes.util.Logging import Logger
 from includes.pages import (LogInWindow)
 
 logger: Logger = Logger('main')
-config_manager:ConfigManager = ConfigManager('./DD-inv.config')
+config_manager:ConfigManager = ConfigManager('./DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
 
 
 class ddINV(tk.Tk):
@@ -21,7 +21,7 @@ class ddINV(tk.Tk):
         def get_zoom_parameter():
             config: Configuration = config_manager.generate_configuration('Zoom indicator')
             try:
-                saved_value = config.read_parameter('Zoom indicator')
+                saved_value = config.read_parameter('Zoom indicator', generate_if_missing=True, gen_initial_value='1')
                 logger.debug(f"Zoom parameter got from JSON-File {saved_value}")  # Debug-Ausgabe
                 # Falls der geladene Wert 0.0 oder ungültig ist, auf den Standardwert 1.0 setzen
                 zoom_value = float(saved_value) if saved_value and float(saved_value) > 0 else 1.0
@@ -43,8 +43,8 @@ class ddINV(tk.Tk):
             """
             size:Configuration = config_manager.generate_configuration('Fenster Aufloesung')
             return (
-                size.read_parameter('breite') if size.read_parameter('breite') != 'null' else 1080,
-                size.read_parameter('hoehe') if size.read_parameter('hoehe')  != 'null' else 1920
+                int(size.read_parameter('breite', generate_if_missing=True, gen_initial_value='1080')),
+                int(size.read_parameter('hoehe', generate_if_missing=True, gen_initial_value='1920'))
             )
 
         screen_height, screen_width = load_resolution()

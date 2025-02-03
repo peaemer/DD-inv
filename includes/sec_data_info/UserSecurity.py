@@ -7,10 +7,12 @@ from typing import Final
 
 from hashlib import sha512
 
+import main
+from main import config_manager
 from . import sqlite3api as db
-from main import config_manager as cm
+#from main import config_manager as cm
 from includes.util.Logging import Logger
-from ..util.ConfigManager import Configuration
+from ..util.ConfigManager import Configuration, ConfigManager
 
 sys.path.append(os.path.dirname(__file__) + r'\..')
 
@@ -37,7 +39,7 @@ def __hash_password(plain_password: str) -> bytes:
     """
         hashes a plain password into a byte array using sha512 encryption
 
-        :param str plain_password: the plain password that hasto be hashed
+        :param str plain_password: the plain password that has to be hashed
     """
     return sha512(plain_password.encode('utf-8')).digest()
 
@@ -96,21 +98,23 @@ def check_password_requirements(new_password:str) -> str|None:
 
         :return: an error message why the password doesn't follow the rules
     """
-    config:Configuration = cm.generate_configuration('Regeln fuer neue Passwoerter')
-    if bool(config.read_parameter('Sonderzeichen')):
+
+    #config:Configuration = cm.generate_configuration('Regeln fuer neue Passwoerter')
+    config = config_manager.generate_configuration('Regeln fuer neue Passwoerter')
+    if bool(config.read_parameter('Sonderzeichen', generate_if_missing = True, gen_initial_value = 'True')):
         if not __contains(SPECIAL_CHARACTERS, new_password):
             return 'Das Passwort muss mindestens\nein Sonderzeichen enthalten!'
-    if bool(config.read_parameter('Zahlen')):
+    if bool(config.read_parameter('Zahlen', generate_if_missing = True, gen_initial_value = 'True')):
         if not __contains(NUMBERS, new_password):
             return 'Das Passwort muss mindestens\neine Ziffer enthalten!'
-    if bool(config.read_parameter('Grossbuchstaben')):
+    if bool(config.read_parameter('Grossbuchstaben', generate_if_missing = True, gen_initial_value = 'True')):
         if not __contains(CAPITAL_LETTERS, new_password):
             return 'Das Passwort muss mindestens\neinen Großbuchstaben enthalten!'
-    if bool(config.read_parameter('Kleinbuchstaben')):
+    if bool(config.read_parameter('Kleinbuchstaben', generate_if_missing = True, gen_initial_value = 'True')):
         if not __contains(LOWER_LETTERS, new_password):
             return 'Das Passwort muss mindestens\neinen Kleinbuchstaben enthalten!'
-    if not len(new_password) >= int(config.read_parameter('Laenge')):
-        return f'Das Passwort muss mindestens {int(config.read_parameter('Laenge'))} Zeichen lang sein!'
+    if not len(new_password) >= int(config.read_parameter('Laenge', generate_if_missing = True, gen_initial_value = '4')):
+        return f'Das Passwort muss mindestens {int(config.read_parameter('Laenge', generate_if_missing = True, gen_initial_value = '4'))} Zeichen lang sein!'
     return None
 
 
@@ -172,7 +176,7 @@ def set_password(username:str, new_password:str|None, confirm_password:str|None,
             logger.error(f"""password "{new_password}" is an invalid password""")
             return None
         if __is_invalid_name(confirm_password):
-            logger.error(f"""confimation password "{confirm_password}" is an invalid password""")
+            logger.error(f"""confirmation password "{confirm_password}" is an invalid password""")
             return None
         if new_password != confirm_password:
             logger.error(f"""passwords "{str(__hash_password(new_password))}" and "{str(__hash_password(confirm_password))}" don't match""")
