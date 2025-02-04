@@ -15,8 +15,8 @@ def gen_paths():
     real_path = os.path.dirname(os.path.realpath(__file__))
     root_path = str(pathlib.Path.cwd())+'\\'
     bundled_app_files_path = os.path.join(sys._MEIPASS if getattr(sys, 'frozen', False) else os.path.dirname(os.path.abspath(__file__))[:-4])
-    if not bundled_app_files_path.endswith('includes\\'):
-        bundled_app_files_path += 'includes\\'
+    if not bundled_app_files_path.endswith('\\includes\\'):
+        bundled_app_files_path += '\\includes\\'
     app_files_path = root_path + 'DD-Inv-Files\\'
 
     if not pathlib.Path(app_files_path).exists():
