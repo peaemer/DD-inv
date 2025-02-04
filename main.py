@@ -1,6 +1,5 @@
 import json
 import tkinter as tk
-import json
 from tkinter import font
 from typing import Tuple
 
@@ -9,7 +8,7 @@ from includes.util.Logging import Logger
 from includes.pages import (LogInWindow)
 
 logger: Logger = Logger('main')
-config_manager:ConfigManager = ConfigManager('./DD-inv.config')
+config_manager:ConfigManager = ConfigManager('./DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
 
 
 class ddINV(tk.Tk):
@@ -22,17 +21,19 @@ class ddINV(tk.Tk):
         def get_zoom_parameter():
             config: Configuration = config_manager.generate_configuration('Zoom indicator')
             try:
-                saved_value = config.read_parameter('Zoom indicator')
-                logger.debug(f"Zoom: {saved_value}")
-                return saved_value
-
+                saved_value = config.read_parameter('Zoom indicator', generate_if_missing=True, gen_initial_value='1')
+                logger.debug(f"Zoom parameter got from JSON-File {saved_value}")  # Debug-Ausgabe
+                # Falls der geladene Wert 0.0 oder ungültig ist, auf den Standardwert 1.0 setzen
+                zoom_value = float(saved_value) if saved_value and float(saved_value) > 0 else 1.0
+                return zoom_value
             except KeyError as e:
-                logger.error(f"Zoom: {e}")
-                return 1.0
+                logger.error(f"Zoom KeyError: {e}")
+                return 1.0  # Standardwert
 
         # Standard-Schriftgröße und Zoom-Faktor
-        self.default_font_size = 12
+        self.default_font_size = 16
         self.zoom_factor = get_zoom_parameter()
+        logger.debug(f"Zoom factor initialized with: {self.zoom_factor}")
         self.custom_font = font.Font(family="Arial", size=self.default_font_size)
 
         # Set window dimensions and icon
@@ -40,16 +41,16 @@ class ddINV(tk.Tk):
             """
             Lädt die gespeicherte Auflösung aus der JSON-Datei.
             """
-
             size:Configuration = config_manager.generate_configuration('Fenster Aufloesung')
             return (
-                size.read_parameter('breite') if size.read_parameter('breite') != 'null' else 1080,
-                size.read_parameter('hoehe') if size.read_parameter('hoehe')  != 'null' else 1920
+                int(size.read_parameter('breite', generate_if_missing=True, gen_initial_value='1080')),
+                int(size.read_parameter('hoehe', generate_if_missing=True, gen_initial_value='1920'))
             )
 
-        screen_height, screen_width = load_resolution()  # Variablen anders benennen
+        screen_height, screen_width = load_resolution()
         print(screen_width, screen_height)
-        self.geometry(f'{screen_width}x{screen_height}+0+0')  # Korrigierter Aufruf
+        self.geometry(f'{screen_width}x{screen_height}+0+0')
+
         from includes.pages._avatarManager import resource_path
         self.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
 
@@ -71,9 +72,10 @@ class ddINV(tk.Tk):
 
     def update_zoom(self, value):
         """Aktualisiert die Zoomstufe basierend auf dem Wert des Schiebereglers."""
-        self.zoom_factor = float(value)
-        new_font_size = int(self.default_font_size * self.zoom_factor)
-        self.custom_font.configure(size=new_font_size)
+        self.zoom_factor = float(value)  # Setze den neuen Zoom-Faktor
+        logger.debug(f"Neue Zoom-Stufe: {self.zoom_factor}")  # Debug-Ausgabe
+        new_font_size = int(self.default_font_size * self.zoom_factor)  # Berechne die neue Schriftgröße
+        self.custom_font.configure(size=new_font_size)  # Ändere die Schriftgröße
 
         # Alle Frames aktualisieren
         for frame in self.frames.values():
@@ -82,8 +84,12 @@ class ddINV(tk.Tk):
     def update_frame_widgets(self, frame):
         """Passt alle Widgets im gegebenen Frame an die aktuelle Zoomstufe an."""
         for widget in frame.winfo_children():
+            # Überprüfe, ob das Widget eines der Ziel-Widgets ist (Label, Button, Entry, Text)
             if isinstance(widget, (tk.Label, tk.Button, tk.Entry, tk.Text)):
-                widget.configure(font=self.custom_font)
+                widget.configure(font=self.custom_font)  # Setze die Schriftart des Widgets
+
+        # Aktualisiere das Layout und die Widgets im Frame, um sicherzustellen, dass alle Änderungen angewendet werden
+        frame.update_idletasks()  # Stellt sicher, dass Layout und Widgets neu berechnet werden
 
     def show_frame(self, cont):
         if cont not in self.frames:

@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import messagebox
 import customtkinter as ctk
 
 from includes.util.Logging import Logger
@@ -156,7 +155,6 @@ def add_user_popup(parent):
             customMessageBoxDelete(add_popup,
                 title="Benutzer Erstellt",
                 message="Nutzername: " + username_entry_add_user_popup.get() + "\nNew password: " + pw,
-                buttonText="OK",
                 blue=True)
             from .AdminUserWindow import AdminUserWindow
             AdminUserWindow.update_treeview_with_data()

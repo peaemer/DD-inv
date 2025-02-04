@@ -6,7 +6,6 @@ import os
 import sys
 import json
 
-from main import config_manager as cm
 from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 from includes.util.ConfigManager import ConfigManager,Configuration
 from includes.util.Logging import Logger, DEBUG_MODE_NORMAL, DEBUG_MODE_ALL
@@ -495,7 +494,7 @@ def pop_up_settings(parent:tk, controller):
             def load_debug_mode_normal():
                 config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
                 try:
-                    saved_value = config.read_parameter('Debug Mode Normal')
+                    saved_value = config.read_parameter('Debug Mode Normal', generate_if_missing=True, gen_initial_value='False')
                     return saved_value.lower() == "true"
                 except KeyError:
                     return False
@@ -530,7 +529,7 @@ def pop_up_settings(parent:tk, controller):
             def load_debug_mode_all():
                 config: Configuration = config_manager.generate_configuration('Admin Debug Mode')
                 try:
-                    saved_value = config.read_parameter('Debug Mode All')
+                    saved_value = config.read_parameter('Debug Mode All', generate_if_missing=True, gen_initial_value='False')
                     return saved_value.lower() == "true"
                 except KeyError:
                     return False
@@ -565,7 +564,7 @@ def pop_up_settings(parent:tk, controller):
     def get_zoom_parameter():
         config: Configuration = config_manager.generate_configuration('Zoom indicator')
         try:
-            saved_value = config.read_parameter('Zoom indicator')
+            saved_value = config.read_parameter('Zoom indicator', generate_if_missing=True, gen_initial_value='1')
             logger.debug(saved_value)
             return float(saved_value)
         except KeyError:
@@ -576,8 +575,8 @@ def pop_up_settings(parent:tk, controller):
 
     zoom_control = ctk.CTkSlider(frame_system,
         from_=int(0.5),  # Minimaler Zoomfaktor
-        to=int(2.0),  # Maximaler Zoomfaktor
-        number_of_steps=15,  # Anzahl der Schritte (optional)
+        to=int(3.0),  # Maximaler Zoomfaktor
+        number_of_steps=20,  # Anzahl der Schritte (optional)
         command=lambda value: update_zoom(round(value, 1))  # Rundung auf 1 Nachkommastelle
     )
     zoom_control.grid(row=3, column=1, pady=10, sticky="ew")
@@ -597,7 +596,7 @@ def pop_up_settings(parent:tk, controller):
             config: Configuration = config_manager.generate_configuration('Zoom indicator')
             config.write_parameter('Zoom indicator',value)
             info_label_system.config(text="Einstellung wird gespeichert und App geschlossen...")
-            parent.after(3000, close_app)
+            parent.after(2000, close_app)
         else:
             logger.debug("It is not possible to adjust the zoom level.")
 

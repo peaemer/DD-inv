@@ -113,7 +113,7 @@ class DetailsWindow(tk.Frame):
 
         # Ändere die Position des TreeFrames
         tree_frame_details_window = tk.Frame(container_frame,
-            background="red",
+            background="white",
             width=200,
             height=400
         )
