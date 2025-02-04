@@ -224,7 +224,7 @@ def finish_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, root: tk.Fram
         return
     logger.debug(f"""running finishing search for user {username} with searchbar text "{search_term}" and loaded history "{loaded_history}" """)
     if not search_term == "":
-        loaded_history = sorted(loaded_history, key=lambda x: x['weight'], reverse=True)
+        loaded_history = sorted(loaded_history, key=lambda x: float(x['weight']), reverse=True)
         if not __scale_history_weights(search_term.lower()):
             while len(loaded_history) >= MAX_REPEATED_USES:
                 loaded_history.remove(loaded_history[0])
