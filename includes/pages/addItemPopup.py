@@ -219,7 +219,7 @@ def add_item_popup(parent):
         if type == "" or room == "Raum auswählen" or name == "":
             error_label.configure(text="Bitte fülle alle Felder aus (Typ, Raum, Name)")
         else:
-            logger.debug(db.create_hardware(tag,type,name,damage,None,room))
+            logger.debug(db.create_hardware(tag,type,name,damage,"",room))
             from .MainPage import MainPage
             MainPage.update_treeview_with_data(data=None)
             MainPage.update_sidetree_with_data()

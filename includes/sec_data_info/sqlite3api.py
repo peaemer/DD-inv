@@ -8,7 +8,7 @@ from .UserSecurity import hash_password
 from ..util.Logging import Logger
 
 # Pfad zur Datenbankdatei
-path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
+path: str = r'M:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __use__fallback_path: bool = True
 __fallback_path: str = app_files_path+'DD-invBeispielDatenbank.sqlite3'
 
