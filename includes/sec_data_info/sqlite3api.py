@@ -264,7 +264,7 @@ def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', n
             if neue_suchverlauf:
                 update_fields.append("Suchverlauf = ?")
                 parameters.append(neue_suchverlauf)
-            if neue_suchverlauf:
+            if neue_anwendungseinstellungen:
                 update_fields.append("Application_Data = ?")
                 parameters.append(neue_anwendungseinstellungen)
 
