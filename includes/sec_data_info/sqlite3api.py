@@ -2,13 +2,15 @@ import sqlite3
 import os
 import json
 
+import main
+from includes.util.Paths import app_files_path
 from .UserSecurity import hash_password
+from ..util.Logging import Logger
 
 # Pfad zur Datenbankdatei
 path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __use__fallback_path: bool = True
-__fallback_path: str = os.path.dirname(__file__) + './DD-invBeispielDatenbank_test.sqlite3'
-
+__fallback_path: str = app_files_path+'DD-invBeispielDatenbank.sqlite3'
 
 def init_connection() -> sqlite3.Connection:
     """
@@ -24,6 +26,7 @@ def init_connection() -> sqlite3.Connection:
             return con
         else:
             raise FileNotFoundError(f"Datenbankdatei nicht gefunden: {path}")
+    Logger.from_logger(main.logger,'sqlite3api').debug(f'using path{path}')
     con = sqlite3.connect(path)
     con.row_factory = sqlite3.Row
     return con
@@ -42,6 +45,7 @@ def add_column(table_name:str, column_name:str, data_type:str = 'TEXT') -> str:
 
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
+    con:sqlite3.Connection
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -64,6 +68,7 @@ def remove_column(table_name:str, column_name:str) -> str:
 
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
+    con: sqlite3.Connection
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -139,6 +144,7 @@ def create_benutzer(nutzername:str, passwort:str, email:str) -> str:
     try:
         passwort_hashed_value = hash_password(passwort)
         # wird benutzt um das Passwort in ein Hashwert zu ändern
+        con:sqlite3.Connection
         with init_connection() as con:
             cur = con.cursor()
             # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
@@ -153,6 +159,9 @@ def create_benutzer(nutzername:str, passwort:str, email:str) -> str:
     except sqlite3.Error as e:
         # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
         return f"Fehler beim Hinzufügen des Benutzers: {e.args[0]}"
+    finally:
+        if con:
+            con.close()
 
 def read_all_benutzer() -> list[dict[str, str]]:
     """
@@ -162,6 +171,7 @@ def read_all_benutzer() -> list[dict[str, str]]:
 
         :return: eine Liste aus den daten aller Benutzer. Die Nutzerdaten werden in jeweils einem dictionary ausgegeben.
     """
+    con: sqlite3.Connection
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -171,6 +181,9 @@ def read_all_benutzer() -> list[dict[str, str]]:
             return [dict(row) for row in rows]
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Benutzer: {e.args[0]}")
+    finally:
+        if con:
+            con.close()
 
 def read_benutzer(nutzername:str) -> dict[str,str]:
     """
@@ -180,6 +193,7 @@ def read_benutzer(nutzername:str) -> dict[str,str]:
 
         :return: die Daten des nutzers in form eines dictionaries
     """
+    con:sqlite3.Connection = None
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -188,6 +202,9 @@ def read_benutzer(nutzername:str) -> dict[str,str]:
             return dict(row) if row else None
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen des Benutzers: {e.args[0]}")
+    finally:
+        if con:
+            con.close()
 
 def read_benutzer_suchverlauf(nutzername):
     """
@@ -197,6 +214,7 @@ def read_benutzer_suchverlauf(nutzername):
 
        :return: Der Suchverlauf des Benutzers oder None, falls keiner vorhanden ist.
    """
+    con: sqlite3.Connection
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -205,6 +223,9 @@ def read_benutzer_suchverlauf(nutzername):
             return row["Suchverlauf"] if row else None
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen des Suchverlaufs: {e.args[0]}")
+    finally:
+        if con:
+            con.close()
 
 def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', neue_rolle:str='', neue_suchverlauf:str='', neue_anwendungseinstellungen:str = '') -> str:
     """
@@ -219,6 +240,7 @@ def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', n
 
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
+    con: sqlite3.Connection
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -251,6 +273,9 @@ def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', n
         return "Benutzer erfolgreich aktualisiert."
     except sqlite3.Error as e:
         return f"Fehler beim Aktualisieren des Benutzers: {e.args[0]}"
+    finally:
+        if con:
+            con.close()
 
 def delete_benutzer(nutzername:str) -> str:
     """

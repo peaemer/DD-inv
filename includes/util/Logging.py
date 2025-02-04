@@ -28,8 +28,8 @@ class Logger:
     def __debug(self, message:str):
         levels: str = ''
         for level in self.levels:
-            levels = levels + f'[{level}]'
-        print(f'{message_type_style if color_mode == True else ''}[Debug]{class_style if color_mode == True else ''}{levels}:{reset_style if color_mode == True else ''}' + message)
+            levels += f'[{level}]'
+        print(f"{message_type_style if color_mode == True else ''}[Debug]{class_style if color_mode == True else ''}{levels}:{reset_style if color_mode == True else ''}" + message)
 
     def debug(self, message:str):
         if DEBUG_MODE_NORMAL|DEBUG_MODE_ALL:
@@ -43,4 +43,4 @@ class Logger:
         levels: str = ''
         for level in self.levels:
             levels = levels + f'[{level}]'
-        print(f'{error_style if color_mode == True else ''}[Error]{class_style if color_mode == True else ''}{levels}:{error_style if color_mode == True else ''}' + message)
+        print(f"{error_style if color_mode == True else ''}[Error]{class_style if color_mode == True else ''}{levels}:{error_style if color_mode == True else ''}" + message)

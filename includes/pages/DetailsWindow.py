@@ -309,11 +309,11 @@ class DetailsWindow(tk.Frame):
             else:
                 damage = self.damaged_entry_details_window.get()
             logger.debug(f"damage:{damage}")
-            logger.debug(f"db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID, 
+            logger.debug(f"""db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID, 
                 neue_beschaedigung=damage, 
                 neue_standort=room, 
                 neue_modell=name, 
-                neue_geraetetyp=type)}"
+                neue_geraetetyp=type)}"""
             )
             from .MainPage import MainPage
             MainPage.update_sidetree_with_data()

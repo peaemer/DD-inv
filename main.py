@@ -1,14 +1,25 @@
 import json
+import os
+import sys
+from shutil import copyfile
+import pathlib
 import tkinter as tk
 from tkinter import font
 from typing import Tuple
 
+from includes.util import Paths
+from includes.util.Paths import *
 from includes.util.ConfigManager import ConfigManager, Configuration
 from includes.util.Logging import Logger
 from includes.pages import (LogInWindow)
 
+
 logger: Logger = Logger('main')
-config_manager:ConfigManager = ConfigManager('./DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
+
+gen_paths()
+gen_app_files()
+
+config_manager:ConfigManager = ConfigManager(Paths.app_files_path+r'\DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
 
 
 class ddINV(tk.Tk):
