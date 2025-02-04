@@ -236,7 +236,7 @@ def finish_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, root: tk.Fram
             logger.debug(f"""adding "{new_entry}" to search history as it didn't exist in the database""")
             logger.debug(f"""loaded history is now "{loaded_history}" """)
         logger.debug(f"""writing "{json.dumps(loaded_history)}" to database """)
-        db.update_benutzer(username, neue_suchverlauf=json.dumps(loaded_history))
+        logger.debug(db.update_benutzer(username, neue_suchverlauf=json.dumps(loaded_history)))
     searchbar.delete(0.0, 'end-1c')
     dropdown.grid_forget()
     cancel_key_press_updates = 0

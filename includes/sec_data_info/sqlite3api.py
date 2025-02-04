@@ -7,8 +7,10 @@ from includes.util.Paths import app_files_path
 from .UserSecurity import hash_password
 from ..util.Logging import Logger
 
+logger:Logger = Logger('sqlite3api')
+
 # Pfad zur Datenbankdatei
-path: str = r'M:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
+path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __use__fallback_path: bool = True
 __fallback_path: str = app_files_path+'DD-invBeispielDatenbank.sqlite3'
 
@@ -21,12 +23,15 @@ def init_connection() -> sqlite3.Connection:
     """
     if not os.path.exists(path):
         if __use__fallback_path:
+            if not os.path.exists(__fallback_path):
+                raise FileNotFoundError(f"fallback Datenbankdatei nicht gefunden: {__fallback_path}")
+            logger.debug_e(f"using fallback path: {__fallback_path}")
             con = sqlite3.connect(__fallback_path)
             con.row_factory = sqlite3.Row
             return con
         else:
             raise FileNotFoundError(f"Datenbankdatei nicht gefunden: {path}")
-    Logger.from_logger(main.logger,'sqlite3api').debug(f'using path{path}')
+    logger.debug_e(f"using default path: {path}")
     con = sqlite3.connect(path)
     con.row_factory = sqlite3.Row
     return con
