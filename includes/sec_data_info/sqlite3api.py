@@ -10,9 +10,9 @@ from ..util.Logging import Logger
 logger:Logger = Logger('sqlite3api')
 
 # Pfad zur Datenbankdatei
-path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
+path: str = r'M:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __use__fallback_path: bool = True
-__fallback_path1:str = r'M:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
+__fallback_path1:str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __fallback_path2: str = app_files_path + 'DD-invBeispielDatenbank.sqlite3'
 
 def init_connection() -> sqlite3.Connection:
