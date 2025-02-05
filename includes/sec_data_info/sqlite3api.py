@@ -358,19 +358,20 @@ def fetch_hardware_by_id(id:int):
 def update_hardware_by_id(
             id:int,
             neue_ausgeliehen_von:str = None,
-            neue_modell:str = None,
-            neue_geraetetyp:str = None,
+            neuer_service_tag:str = None,
+            neues_modell:str = None,
+            neuer_geraetetyp:str = None,
             neue_beschaedigung:str = None,
-            neue_standort:str = None):
+            neuer_standort:str = None):
     """
         Aktualisiert bestimmte Felder einer Hardware basierend auf dem `Service_Tag`.
 
-        :param int id: zum identifizieren des Datensatzes
-        :param str neue_modell:
-        :param str neue_geraetetyp:
+        :param int id: zum Identifizieren des Datensatzes
+        :param str neues_modell:
+        :param str neuer_geraetetyp:
         :param str neue_ausgeliehen_von: falls kein neues, leer lassen und neues Komma setzten
         :param str neue_beschaedigung: (falls kein neues, leer lassen und neues Komma setzten)
-        :param str neue_standort: (falls kein neues, leer lassen und neues Komma setzten)
+        :param str neuer_standort: (falls kein neues, leer lassen und neues Komma setzten)
     """
     try:
         with init_connection() as con:
@@ -381,24 +382,27 @@ def update_hardware_by_id(
             if neue_ausgeliehen_von:
                 update_fields.append("Ausgeliehen_von = ?")
                 parameters.append(neue_ausgeliehen_von)
+            if neuer_service_tag:
+                update_fields.append("Service_Tag = ?")
+                parameters.append(neuer_service_tag)
             if neue_beschaedigung:
                 update_fields.append("Beschaedigung = ?")
                 parameters.append(neue_beschaedigung)
-            if neue_standort:
+            if neuer_standort:
                 update_fields.append("Raum = ?")
-                parameters.append(neue_standort)
-            if neue_modell:
+                parameters.append(neuer_standort)
+            if neues_modell:
                 update_fields.append("Modell = ?")
-                parameters.append(neue_modell)
-            if neue_geraetetyp:
+                parameters.append(neues_modell)
+            if neuer_geraetetyp:
                 update_fields.append("Geraetetype = ?")
-                parameters.append(neue_geraetetyp)
-
+                parameters.append(neuer_geraetetyp)
             if not update_fields:
                 return "Keine Aktualisierungsdaten vorhanden."
 
             sql_query = f"UPDATE Hardware SET {', '.join(update_fields)} WHERE ID = ?"
             parameters.append(id)
+            print(sql_query)
             cur.execute(sql_query, parameters)
             con.commit()
         return "Hardware erfolgreich aktualisiert."

@@ -304,16 +304,19 @@ class DetailsWindow(tk.Frame):
             type = self.type_entry_details_window.get() if self.type_entry_details_window.get() != "" else "None"
             room = self.room_combobox_details_window.get() if self.room_combobox_details_window.get() != "" else "None"
             name = self.name_entry_details_window.get() if self.name_entry_details_window.get() != "" else "None"
+            service_tag = self.service_tag_entry_details_window.get() if self.service_tag_entry_details_window.get() != "" else "None"
             if not self.damaged_entry_details_window.get() or self.damaged_entry_details_window.get() == "":
                 damage = "None"
             else:
                 damage = self.damaged_entry_details_window.get()
             logger.debug(f"damage:{damage}")
-            logger.debug(f"""db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID, 
-                neue_beschaedigung=damage, 
-                neue_standort=room, 
-                neue_modell=name, 
-                neue_geraetetyp=type)}"""
+            logger.debug(f"""db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID,
+                                                                                neue_beschaedigung=damage,
+                                                                                neuer_standort=room,
+                                                                                neuer_service_tag=service_tag,
+                                                                                neues_modell=name,
+                                                                                neuer_geraetetyp=type)
+                }"""
             )
             from .MainPage import MainPage
             MainPage.update_sidetree_with_data()
