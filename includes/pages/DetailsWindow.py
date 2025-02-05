@@ -306,26 +306,11 @@ class DetailsWindow(tk.Frame):
             """
             #update
 
-            type:str = self.type_entry_details_window.get() if self.type_entry_details_window.get() != initial_entry['Geraetetype'] else initial_entry['Geraetetype']
-            print('v:' +self.type_entry_details_window.get())
-            print('i:'+ initial_entry['Geraetetype'])
-            print('b:'+ str(not self.type_entry_details_window.get() == initial_entry['Geraetetype']))
-            print('r:'+type)
-            room:str = self.room_combobox_details_window.get() if self.room_combobox_details_window.get() != initial_entry['Raum'] else initial_entry['Raum']
-            print('v:' + self.room_combobox_details_window.get())
-            print('i:' + initial_entry['Raum'])
-            print('b:' + str(not self.room_combobox_details_window.get() == initial_entry['Raum']))
-            print('r:' + room)
-            name:str = self.name_entry_details_window.get() if self.name_entry_details_window.get() != initial_entry['Modell'] else initial_entry['Modell']
-            print('v:' + self.name_entry_details_window.get())
-            print('i:' + initial_entry['Modell'])
-            print('b:' + str( not self.name_entry_details_window.get() == initial_entry['Modell']))
-            print('r:' + name)
+
+            type:str = self.type_entry_details_window.get() if self.type_entry_details_window.get() not in [None, '', ' ', initial_entry['Geraetetype']] else initial_entry['Geraetetype']
+            room:str = self.room_combobox_details_window.get() if self.room_combobox_details_window.get() not in [None, '', ' ', initial_entry['Raum']] else initial_entry['Raum']
+            name:str = self.name_entry_details_window.get() if self.name_entry_details_window.get() not in [None, '', ' ', initial_entry['Modell']] else initial_entry['Modell']
             service_tag:str = self.service_tag_entry_details_window.get() if self.service_tag_entry_details_window.get() != initial_entry['Service_Tag'] else initial_entry['Service_Tag']
-            print('v:' + self.service_tag_entry_details_window.get())
-            print('i:' + initial_entry['Service_Tag'])
-            print('b:' + str( not self.service_tag_entry_details_window.get() == initial_entry['Service_Tag']))
-            print('r:' + service_tag)
             damage:str = self.damaged_entry_details_window.get() if self.damaged_entry_details_window.get() != initial_entry['Beschaedigung'] else initial_entry['Beschaedigung']
 
             #logger.debug(f"damage:{damage}")
@@ -349,7 +334,7 @@ class DetailsWindow(tk.Frame):
             lend_popup(self, data, controller)
 
         def return_item(data):
-            db.update_hardware_by_id(cache.selected_ID, neue_ausgeliehen_von=" ")
+            db.update_hardware_by_id(cache.selected_ID, neue_ausgeliehen_von="")
             from .MainPage import MainPage
             MainPage.update_treeview_with_data()
             controller.show_frame(MainPage)
