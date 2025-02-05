@@ -1,7 +1,9 @@
+import json
 import tkinter as tk
 
 from includes.util.Logging import Logger
 from ._styles import *
+import cache
 import customtkinter as ctk
 from ..CTkScrollableDropdown import *
 from includes.sec_data_info import sqlite3api as db
@@ -216,10 +218,11 @@ def add_item_popup(parent):
         room = room_combobox_add_item_popup.get() if room_combobox_add_item_popup.get() else ""
         name = name_entry_add_item_popup.get() if name_entry_add_item_popup.get() else ""
         damage = damaged_button_add_item_popup.get() if damaged_button_add_item_popup.get() else ""
+        metadata:str = json.dumps(list[dict[str,str]]([{"erstellt von":cache.user_name}]))
         if type == "" or room == "Raum auswählen" or name == "":
             error_label.configure(text="Bitte fülle alle Felder aus (Typ, Raum, Name)")
         else:
-            logger.debug(db.create_hardware(tag,type,name,damage,"",room))
+            logger.debug(db.create_hardware(tag,type,name,damage,"",room, metadata))
             from .MainPage import MainPage
             MainPage.update_treeview_with_data(data=None)
             MainPage.update_sidetree_with_data()

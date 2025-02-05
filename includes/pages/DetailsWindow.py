@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+
+import cache
 from ..CTkScrollableDropdown import *
 
 from .customMessageBoxDelete import *
@@ -10,19 +12,19 @@ import includes.sec_data_info.sqlite3api as db
 logger:Logger = Logger('DetailsWindow')
 
 
-def show_details(selectedItem, tree: ttk.Treeview, controller):
+def show_details(selected_item, tree: ttk.Treeview, controller):
     """
     Zeigt die Details eines ausgewählten Elements in einer Benutzeroberfläche an. Diese Funktion ruft die Daten
     des ausgewählten Elements aus einer Baumstruktur ab, speichert die ID des Elements im Cache und zeigt die
     Details-Seite mit den aktualisierten Informationen an.
 
-    :param selectedItem: Das aktuell ausgewählte Baum-Element.
+    :param selected_item: Das aktuell ausgewählte Baum-Element.
     :param tree: Die Baumstruktur, welche die zugehörigen Daten enthält.
     :param controller: Der Controller, der für die Navigation und Verwaltung der Frames zuständig ist.
     :return: Gibt keinen Wert zurück.
     """
     # Daten aus der ausgewählten Zeile
-    data = tree.item(selectedItem, "values")
+    data = tree.item(selected_item, "values")
     logger.debug(f"Data of the selected item: {data}")  # Debug
     cache.selected_ID = data[0]
 
@@ -70,6 +72,8 @@ class DetailsWindow(tk.Frame):
 
         from ._avatarManager import resource_path
         self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
+
+        initial_entry: dict[str, str] = db.fetch_hardware_by_id(cache.selected_ID)
 
         # Erstelle einen Header-Bereich
         header_frame_details_window = tk.Frame(self,
@@ -183,8 +187,10 @@ class DetailsWindow(tk.Frame):
             corner_radius=corner,
             fg_color=srh_grey,
             text_color="black",
-            border_width=border
+            border_width=border,
         )
+        self.service_tag_entry_details_window.delete(0, tk.END)
+        self.service_tag_entry_details_window.insert(0, initial_entry['Service_Tag'])
         self.service_tag_entry_details_window.grid(column=1, row=0, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Typ
@@ -202,6 +208,8 @@ class DetailsWindow(tk.Frame):
             text_color="black",
             border_width=border
         )
+        self.type_entry_details_window.delete(0, tk.END)
+        self.type_entry_details_window.insert(0, initial_entry['Geraetetype'])
         self.type_entry_details_window.grid(column=1, row=1, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Raum (Dropdown-Menü)
@@ -226,6 +234,7 @@ class DetailsWindow(tk.Frame):
             border_width=border,
             state="readonly"
         )
+        self.room_combobox_details_window.set(initial_entry['Raum'])
         self.room_combobox_details_window.grid(row=2, column=1, padx=20, pady=20, sticky="ew")
 
         CTkScrollableDropdownFrame(self.room_combobox_details_window,
@@ -257,6 +266,8 @@ class DetailsWindow(tk.Frame):
             text_color="black",
             border_width=border
         )
+        self.name_entry_details_window.delete(0, tk.END)
+        self.name_entry_details_window.insert(0, initial_entry['Modell'])
         self.name_entry_details_window.grid(column=1, row=3, sticky=tk.W + tk.E, padx=20, pady=10)
 
         # Beschädigung
@@ -274,6 +285,8 @@ class DetailsWindow(tk.Frame):
             text_color="black",
             border_width=border
         )
+        self.damaged_entry_details_window.delete(0, tk.END)
+        self.damaged_entry_details_window.insert(0,initial_entry['Beschaedigung'])
         self.damaged_entry_details_window.grid(column=1, row=4, sticky=tk.W + tk.E, padx=20, pady=10)
 
         update_label = tk.Label(input_frame_details_window,
@@ -281,46 +294,54 @@ class DetailsWindow(tk.Frame):
             background="white",
             cursor="hand2",
             fg="darkred",
-            font=("Arial", 14)
+            font=("Arial", 22)
         )
         update_label.grid(row=5, column=0, columnspan=2, padx=0, pady=20, sticky="ew")
 
         # Funktion zum Eintrag hinzufügen
         def refresh_entry():
             """
-            Eine Klasse, die ein Fenster für Details erstellt und die Möglichkeit bietet, bestimmte
-            Einträge zu aktualisieren. Diese Klasse ist von `tk.Frame` abgeleitet und dient als UI-Komponente
-            innerhalb einer größeren Anwendung.
-
-            :Attributes:
-                type_entry_details_window (tk.Entry): Eingabefeld zur Erfassung des Gerätetyps.
-                room_entry_details_window (tk.Entry): Eingabefeld für den Speicherort des Geräts.
-                name_entry_details_window (tk.Entry): Eingabefeld für den Modellnamen des Geräts.
-                damaged_entry_details_window (tk.Entry): Eingabefeld zur Erfassung des Gerätezustands.
-                parent (tk.Widget): Eltern-Widget, zu dem diese Instanz gehört.
-                controller: Steuerungsinstanz, die u.a. Navigation zwischen Fenstern ermöglicht.
+                reads new data out of all the entries if the content of an entry
+                doesn't match the data onside the database, the new data is written to the database
             """
             #update
-            type = self.type_entry_details_window.get() if self.type_entry_details_window.get() != "" else "None"
-            room = self.room_combobox_details_window.get() if self.room_combobox_details_window.get() != "" else "None"
-            name = self.name_entry_details_window.get() if self.name_entry_details_window.get() != "" else "None"
-            service_tag = self.service_tag_entry_details_window.get() if self.service_tag_entry_details_window.get() != "" else "None"
-            if not self.damaged_entry_details_window.get() or self.damaged_entry_details_window.get() == "":
-                damage = "None"
-            else:
-                damage = self.damaged_entry_details_window.get()
-            logger.debug(f"damage:{damage}")
-            logger.debug(f"""db.update_hardware_by_id:{db.update_hardware_by_id(cache.selected_ID,
-                                                                                neue_beschaedigung=damage,
-                                                                                neuer_standort=room,
-                                                                                neuer_service_tag=service_tag,
-                                                                                neues_modell=name,
-                                                                                neuer_geraetetyp=type)
-                }"""
-            )
+
+            type:str = self.type_entry_details_window.get() if self.type_entry_details_window.get() != initial_entry['Geraetetype'] else initial_entry['Geraetetype']
+            print('v:' +self.type_entry_details_window.get())
+            print('i:'+ initial_entry['Geraetetype'])
+            print('b:'+ str(not self.type_entry_details_window.get() == initial_entry['Geraetetype']))
+            print('r:'+type)
+            room:str = self.room_combobox_details_window.get() if self.room_combobox_details_window.get() != initial_entry['Raum'] else initial_entry['Raum']
+            print('v:' + self.room_combobox_details_window.get())
+            print('i:' + initial_entry['Raum'])
+            print('b:' + str(not self.room_combobox_details_window.get() == initial_entry['Raum']))
+            print('r:' + room)
+            name:str = self.name_entry_details_window.get() if self.name_entry_details_window.get() != initial_entry['Modell'] else initial_entry['Modell']
+            print('v:' + self.name_entry_details_window.get())
+            print('i:' + initial_entry['Modell'])
+            print('b:' + str( not self.name_entry_details_window.get() == initial_entry['Modell']))
+            print('r:' + name)
+            service_tag:str = self.service_tag_entry_details_window.get() if self.service_tag_entry_details_window.get() != initial_entry['Service_Tag'] else initial_entry['Service_Tag']
+            print('v:' + self.service_tag_entry_details_window.get())
+            print('i:' + initial_entry['Service_Tag'])
+            print('b:' + str( not self.service_tag_entry_details_window.get() == initial_entry['Service_Tag']))
+            print('r:' + service_tag)
+            damage:str = self.damaged_entry_details_window.get() if self.damaged_entry_details_window.get() != initial_entry['Beschaedigung'] else initial_entry['Beschaedigung']
+
+            #logger.debug(f"damage:{damage}")
+            answer = db.update_hardware_by_id(
+                cache.selected_ID,
+                neue_beschaedigung=damage,
+                neuer_standort=room,
+                neuer_service_tag=service_tag,
+                neues_modell=name,
+                neuer_geraetetyp=type)
+
+            logger.debug(f"""db.update_hardware_by_id:{answer}""")
+
             from .MainPage import MainPage
             MainPage.update_sidetree_with_data()
-            update_label.configure(text="Eintrag wurde aktualisiert")
+            update_label.configure(text=answer)
 
         def lend(data):
             logger.debug(f"Übergebene Daten: {data}")
@@ -418,7 +439,7 @@ class DetailsWindow(tk.Frame):
                      - Index 3: Wert für das Raum-Eingabefeld
                      - Index 4: Wert für das Namens-Eingabefeld
                      - Index 5: Wert für das Beschädigungs-Eingabefeld
-        :return: Es wird kein Wert zurückgegeben.
+        :return: es wird kein Wert zurückgegeben.
         """
         global i
         i = 0

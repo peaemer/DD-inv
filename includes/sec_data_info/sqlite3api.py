@@ -19,8 +19,8 @@ def init_connection() -> sqlite3.Connection:
     """
         Hilfsfunktion zur Herstellung einer Verbindung mit der SQLite-Datenbank.
         - Überprüft, ob die Datenbankdatei existiert
-        - falls die Datenbank nicht existiert, wird entweder die Fallback Datenbank oder eine Exception geworfen.
-        - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
+        - falls die haupt Datenbank nicht existiert, wird nach den beiden fallback-Datenbanken gesucht oder eine Exception geworfen.
+        - das row_factory attribut der connection wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
     """
     path_ = ''
 
@@ -67,14 +67,14 @@ def add_column(table_name:str, column_name:str, data_type:str = 'TEXT') -> str:
     try:
         with init_connection() as con:
             cur = con.cursor()
-            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
+            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zu senden
             cur.execute(
                 f'ALTER TABLE {table_name} ADD COLUMN {column_name} {data_type}'
             )
             con.commit()
         return f'Tabellenspalte {column_name}  wurde hizugefügt.'
     except sqlite3.Error as e:
-        # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
+        # e.args wird benötigt, um detailliertere Information über die Fehler dazustellen
         return f"Fehler beim Hinzufügen der Tabellenspalte: {e.args[0]}"
 
 def remove_column(table_name:str, column_name:str) -> str:
@@ -82,7 +82,7 @@ def remove_column(table_name:str, column_name:str) -> str:
         Fügt eine neue spalte zu einer Tabelle hinzu.
 
         :param str table_name: der name der Tabelle, in die die Spalte eingefügt werden soll.
-        :param str column_name: der name der Tabellenspalte, die hizugefügt werden soll.
+        :param str column_name: der name der Tabellenspalte, die hinzugefügt werden soll.
 
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
@@ -90,14 +90,14 @@ def remove_column(table_name:str, column_name:str) -> str:
     try:
         with init_connection() as con:
             cur = con.cursor()
-            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
+            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zu senden
             cur.execute(
                 f'ALTER TABLE {table_name} DROP COLUMN {column_name}'
             )
             con.commit()
         return f'Tabellenspalte {column_name} wurde entfernt.'
     except sqlite3.Error as e:
-        # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
+        # e.args wird benötigt, um detailliertere Information über die Fehler dazustellen
         return f"Fehler beim Entfernen der Tabellenspalte: {e.args[0]}"
 
 def add_table(table_name:str, new_columns:list[tuple[str, str | None]]) -> str:
@@ -105,8 +105,8 @@ def add_table(table_name:str, new_columns:list[tuple[str, str | None]]) -> str:
         Fügt eine neue Tabelle zur Datenbank hinzu.
 
         :param str table_name: der name der Tabelle, die hizugefügt werden soll.
-        :param list[Tuple(str, str|None)] new_columns: alle Spalten die Die Datenbank am Anfang besitzen soll.
-            der erste Eintrag in jedem Tuple giebt den Namen der Neuen Spalte an und der zweite den Datentyp.
+        :param list[Tuple(str, str|None)] new_columns: alle Spalten, die die Datenbank am Anfang besitzen soll.
+            der erste Eintrag in jedem Tuple gibt den Namen der neuen Spalte an und der zweite den Datentyp.
 
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
@@ -140,7 +140,7 @@ def remove_table(table_name:str) -> str:
             con.commit()
         return f'Tabelle {table_name} wurde entfernt.'
     except sqlite3.Error as e:
-        # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
+        # e.args wird benötigt, um detailliertere Information über die Fehler dazustellen
         return f"Fehler Entfernen der Tabelle: {e.args[0]}"
 
 #####################################
@@ -151,7 +151,7 @@ def create_benutzer(nutzername:str, passwort:str, email:str) -> str:
     """
         Fügt einen neuen Benutzer zur Tabelle `Benutzer` hinzu.
         Passwort_hashed_value wird genutzt, um Plain_Passwörter in ein Hash wert zu ändern
-        {e.args} werden genutzt, um genauere Fehlermeldungen zurück zu bekommen
+        {e.args} werden genutzt, um genauere Fehlermeldungen zurückzubekommen
 
         :param str nutzername: z.B. LukasFa
         :param str passwort: z.B. #Lukas1234 (Wird ihn ein Hashwert umgewandelt)
@@ -161,13 +161,13 @@ def create_benutzer(nutzername:str, passwort:str, email:str) -> str:
     """
     try:
         passwort_hashed_value = hash_password(passwort)
-        # wird benutzt um das Passwort in ein Hashwert zu ändern
+        # wird benutzt, um das Passwort in ein Hashwert zu ändern
         con:sqlite3.Connection
         with init_connection() as con:
             cur = con.cursor()
             # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
             # Values werden als "?" - Platzhalter um fehler beim Übergeben der Values vorzubeugen,
-            # Und um eine Variable übergeben zu können
+            # und um eine Variable übergeben zu können
             cur.execute(
                 "INSERT INTO Benutzer (Nutzername, Passwort, Email, Rolle) VALUES (?, ?, ?, 'Guest')",
                 (nutzername, passwort_hashed_value, email)
@@ -209,7 +209,7 @@ def read_benutzer(nutzername:str) -> dict[str,str]:
 
         :param str nutzername: der name des zu lesenden benutzers
 
-        :return: die Daten des nutzers in form eines dictionaries
+        :return: die Daten des nutzers in Form eines dictionaries
     """
     con:sqlite3.Connection = None
     try:
@@ -247,7 +247,7 @@ def read_benutzer_suchverlauf(nutzername):
 
 def update_benutzer(nutzername:str, neues_passwort:str='', neues_email:str='', neue_rolle:str='', neue_suchverlauf:str='', neue_anwendungseinstellungen:str = '') -> str:
     """
-        Aktualisiert die Daten eines Benutzers (Passwort, Email, Rolle, Suchverlauf, Anwendungseinstellungen).
+        Aktualisiert die Daten eines Benutzers (Passwort, E-Mail, Rolle, Suchverlauf, Anwendungseinstellungen).
 
         :param str nutzername: der name des zu lesenden Benutzers.
         :param str neues_passwort:(falls kein neues, leer lassen und neues Komma setzten)
@@ -314,7 +314,7 @@ def delete_benutzer(nutzername:str) -> str:
 # H A R D W A R E - E N D P U N K T #
 #####################################
 
-def create_hardware(service_tag:str, geraetetyp:str, modell:str, beschaedigung, ausgeliehen_von, raum) -> str:
+def create_hardware(service_tag:str, geraetetyp:str, modell:str, beschaedigung:str, ausgeliehen_von:str, raum:str, metadata:str) -> str:
     """
         Erstellt einen neuen Eintrag in der Tabelle `Hardware`.
 
@@ -324,6 +324,7 @@ def create_hardware(service_tag:str, geraetetyp:str, modell:str, beschaedigung, 
         :param str beschaedigung:
         :param str ausgeliehen_von:
         :param str raum:
+        :param str metadata:
 
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
@@ -331,8 +332,8 @@ def create_hardware(service_tag:str, geraetetyp:str, modell:str, beschaedigung, 
         with init_connection() as con:
             cur = con.cursor()
             cur.execute(
-                "INSERT INTO Hardware (Service_Tag, Geraetetype, Modell, Beschaedigung, Ausgeliehen_von, Raum) VALUES (?, ?, ?, ?, ?, ?)",
-                (service_tag, geraetetyp, modell, beschaedigung, ausgeliehen_von, raum)
+                "INSERT INTO Hardware (Service_Tag, Geraetetype, Modell, Beschaedigung, Ausgeliehen_von, Raum, Metadata) VALUES (?, ?, ?, ?, ?, ?,?)",
+                (service_tag, geraetetyp, modell, beschaedigung, ausgeliehen_von, raum, metadata),
             )
             con.commit()
         return "Hardware-Eintrag wurde erstellt."
@@ -377,7 +378,7 @@ def update_hardware_by_id(
             neue_beschaedigung:str = None,
             neuer_standort:str = None):
     """
-        Aktualisiert bestimmte Felder einer Hardware basierend auf dem `Service_Tag`.
+        Aktualisiert bestimmte Felder einer Hardware basierend auf der `ID`.
 
         :param int id: zum Identifizieren des Datensatzes
         :param str neues_modell:
@@ -392,22 +393,22 @@ def update_hardware_by_id(
             update_fields = []
             parameters = []
 
-            if neue_ausgeliehen_von:
+            if neue_ausgeliehen_von is not None:
                 update_fields.append("Ausgeliehen_von = ?")
                 parameters.append(neue_ausgeliehen_von)
-            if neuer_service_tag:
+            if neuer_service_tag is not None:
                 update_fields.append("Service_Tag = ?")
                 parameters.append(neuer_service_tag)
-            if neue_beschaedigung:
+            if neue_beschaedigung is not None:
                 update_fields.append("Beschaedigung = ?")
                 parameters.append(neue_beschaedigung)
-            if neuer_standort:
+            if neuer_standort is not None:
                 update_fields.append("Raum = ?")
                 parameters.append(neuer_standort)
-            if neues_modell:
+            if neues_modell is not None:
                 update_fields.append("Modell = ?")
                 parameters.append(neues_modell)
-            if neuer_geraetetyp:
+            if neuer_geraetetyp is not None:
                 update_fields.append("Geraetetype = ?")
                 parameters.append(neuer_geraetetyp)
             if not update_fields:
@@ -415,7 +416,8 @@ def update_hardware_by_id(
 
             sql_query = f"UPDATE Hardware SET {', '.join(update_fields)} WHERE ID = ?"
             parameters.append(id)
-            print(sql_query)
+            logger.debug('sql query:'+str(sql_query))
+            logger.debug('sql parameters:'+str(parameters))
             cur.execute(sql_query, parameters)
             con.commit()
         return "Hardware erfolgreich aktualisiert."
@@ -505,8 +507,8 @@ def update_role(rolle: str, **rechte:str) -> str:
         Aktualisiert die Rechte einer bestimmten Nutzerrolle in der Tabelle `NutzerrollenRechte`.
         Die Rechte werden als benannte Argumente übergeben (z.B. Column1=value1, Column2=value2).
 
-        :param str rolle: Die Rolle, deren Rechte aktualisiert werden sollen.
-        :param rechte: Die zu aktualisierenden Rechte als benannte Argumente.
+        :param str rolle: die Rolle, deren Rechte aktualisiert werden sollen.
+        :param rechte: die zu aktualisierenden Rechte als benannte Argumente.
 
         :return: Erfolgsmeldung oder Fehlerbeschreibung.
     """
@@ -582,7 +584,7 @@ def fetch_ausleih_historie_by_id(id:int) -> dict[str,str]|str|None:
 
         :param int id: eine Konstante zum idenzifizieren des Datensatzes
 
-        :return: ein Dictionary mit der Ausleihhistorie dieses Hardwareobjekts, None falls der Eintrag nicht existiert, oder eine Fehlerbeschreibung.
+        :return: ein Dictionary mit der Ausleih-historie dieses Hardwareobjekts. None, falls der Eintrag nicht existiert, oder eine Fehlerbeschreibung.
     """
     try:
         with init_connection() as con:
@@ -617,7 +619,7 @@ def delete_ausleih_historie(id:int) -> str:
 
 def create_room(raum:str, ort:str)->str:
     """
-        Wird zum erstellen von neuen Räumen benutzt
+        Wird zum Erstellen von neuen Räumen benutzt
 
         :param str raum: (Raumname z.B. E220)
         :param str ort: (Ortsname z.B. Haus E 1. Etage)
