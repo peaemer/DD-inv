@@ -10,7 +10,7 @@ from ..util.Logging import Logger
 logger:Logger = Logger('sqlite3api')
 
 # Pfad zur Datenbankdatei
-path: str = r'M:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
+main_path: str = r'M:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __use__fallback_path: bool = True
 __fallback_path1:str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __fallback_path2: str = app_files_path + 'DD-invBeispielDatenbank.sqlite3'
@@ -24,14 +24,25 @@ def init_connection() -> sqlite3.Connection:
     """
     path_ = ''
 
-    if os.path.exists(path):
-        path_ = path
+    logger.debug_e(f"""trying to locate main database: "{main_path}" """)
+    if os.path.exists(main_path):
+        logger.debug_e(f"""successfully located main database: "{main_path}" """)
+        path_ = main_path
     elif __use__fallback_path:
+        logger.debug_e(f"""failed to locate main database: "{main_path}" """)
+        logger.debug_e(f"""trying to locate fallback database 1: "{__fallback_path1}" """)
         if os.path.exists(__fallback_path1):
+            logger.debug_e(f"""successfully located fallback database 1: "{__fallback_path1}" """)
             path_ = __fallback_path1
-        elif os.path.exists(__fallback_path2):
+        else:
+            logger.debug_e(f"""failed to locate fallback database 1: "{__fallback_path1}" """)
+        if os.path.exists(__fallback_path2):
+            logger.debug_e(f"""successfully located fallback database 2: "{__fallback_path2}" """)
             path_ = __fallback_path2
-    else:
+        else:
+            logger.debug_e(f"""failed to locate fallback database 2: "{__fallback_path2}" """)
+    if path_ == '':
+        logger.error(f"""failed to locate main database as well as fallback database 1 as well as fallback database 2""")
         raise FileNotFoundError(f"keine mögliche Datenbank gefunden")
     con = sqlite3.connect(path_)
     con.row_factory = sqlite3.Row
