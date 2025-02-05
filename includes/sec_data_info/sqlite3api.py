@@ -12,7 +12,8 @@ logger:Logger = Logger('sqlite3api')
 # Pfad zur Datenbankdatei
 path: str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __use__fallback_path: bool = True
-__fallback_path: str = app_files_path+'DD-invBeispielDatenbank.sqlite3'
+__fallback_path1:str = r'M:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
+__fallback_path2: str = app_files_path + 'DD-invBeispielDatenbank.sqlite3'
 
 def init_connection() -> sqlite3.Connection:
     """
@@ -21,20 +22,21 @@ def init_connection() -> sqlite3.Connection:
         - falls die Datenbank nicht existiert, wird entweder die Fallback Datenbank oder eine Exception geworfen.
         - row_factory wird auf sqlite3.Row gesetzt, um die Ergebnisse als Dictionaries zurückzugeben.
     """
-    if not os.path.exists(path):
-        if __use__fallback_path:
-            if not os.path.exists(__fallback_path):
-                raise FileNotFoundError(f"fallback Datenbankdatei nicht gefunden: {__fallback_path}")
-            #logger.debug_e(f"using fallback path: {__fallback_path}")
-            con = sqlite3.connect(__fallback_path)
-            con.row_factory = sqlite3.Row
-            return con
-        else:
-            raise FileNotFoundError(f"Datenbankdatei nicht gefunden: {path}")
-    #logger.debug_e(f"using default path: {path}")
-    con = sqlite3.connect(path)
+    path_ = ''
+
+    if os.path.exists(path):
+        path_ = path
+    elif __use__fallback_path:
+        if os.path.exists(__fallback_path1):
+            path_ = __fallback_path1
+        elif os.path.exists(__fallback_path2):
+            path_ = __fallback_path2
+    else:
+        raise FileNotFoundError(f"keine mögliche Datenbank gefunden")
+    con = sqlite3.connect(path_)
     con.row_factory = sqlite3.Row
     return con
+
 
 ###############################################################
 # T A B E L L E N - B E A R B E I T U N G S - E N D P U N K T #
