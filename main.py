@@ -19,7 +19,7 @@ logger: Logger = Logger('main')
 gen_paths()
 gen_app_files()
 
-config_manager:ConfigManager = ConfigManager(Paths.app_files_path+r'\DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
+config_manager:ConfigManager = ConfigManager(Paths.app_files_path_string + r'\DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
 
 
 class ddINV(tk.Tk):
