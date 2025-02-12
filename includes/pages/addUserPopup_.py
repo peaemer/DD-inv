@@ -7,6 +7,7 @@ from includes.sec_data_info import sqlite3api as db
 from .customMessageBoxDelete import customMessageBoxDelete
 import string, random
 from ._styles import *
+from ..util import Paths
 
 logger: Logger = Logger('AddUserPopup')
 
@@ -171,8 +172,8 @@ def add_user_popup(parent):
         add_popup.destroy()
 
     from ._avatarManager import resource_path
-    parent.add_btn_add_item_popup = tk.PhotoImage(file=resource_path("./includes/assets/HinzuBig_blue.png"))
-    parent.exit_btn_add_item_popup = tk.PhotoImage(file=resource_path("./includes/assets/AbbrechenButton.png"))
+    parent.add_btn_add_item_popup = tk.PhotoImage(file=Paths.assets_path("HinzuBig_blue.png"))
+    parent.exit_btn_add_item_popup = tk.PhotoImage(file=Paths.assets_path("AbbrechenButton.png"))
 
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")
     button_frame_add_item_popup.grid(row=5, column=0, pady=20,columnspan=3, sticky=tk.NSEW)

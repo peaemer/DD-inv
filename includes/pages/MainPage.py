@@ -3,6 +3,7 @@ from tkinter import ttk
 from customtkinter import CTkEntry
 import json
 
+from .AddItemPopup import AddItemPopup2
 from ._sort_tree import sort_column
 from includes.sec_data_info import sqlite3api as sqlapi
 from .Searchbar import SearchbarLogic as sb
@@ -79,8 +80,7 @@ class MainPage(tk.Frame):
             Ruft eine Funktion auf, um ein Dialog-Popup für das Hinzufügen eines Eintrags
             zu erstellen.
             """
-            from .addItemPopup import add_item_popup
-            add_item_popup(self)
+            AddItemPopup2(self.winfo_toplevel(),False)
             logger.debug("add_item executed")  # Debug
 
         global tree

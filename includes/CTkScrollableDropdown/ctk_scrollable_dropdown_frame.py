@@ -170,8 +170,8 @@ class CTkScrollableDropdownFrame(customtkinter.CTkFrame):
         # Check if the parent widget is a frame
         import tkinter as tk
         if isinstance(parent_widget, tk.Frame):
-            self.x_pos = parent_widget.winfo_x() + self.attach.winfo_x() + 20
-            self.y_pos = parent_widget.winfo_y() + self.attach.winfo_y() + self.attach.winfo_reqheight() + self.height + 5 #Box höhe
+            self.x_pos = parent_widget.winfo_x() + self.attach.winfo_x()
+            self.y_pos = parent_widget.winfo_y() + self.attach.winfo_y() + self.attach.winfo_reqheight() + 5 #Box höhe
 
         if self.resize:
             if self.button_num <= 5:

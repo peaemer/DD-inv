@@ -5,9 +5,11 @@ from tkinter import *
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
 from includes.util.Logging import Logger
+from .AddUserPopup import AddUserPopup
 from ._styles import *
 import customtkinter as ctk  #pip install customtkinter
 from ._sort_tree import sort_column
+from ..util import Paths
 
 logger:Logger = Logger('AdminUserWindow')
 
@@ -58,27 +60,6 @@ class AdminUserWindow(tk.Frame):
                             search_entrys.append(entry)
             self.update_treeview_with_data(data=search_entrys)
 
-        def add_user_item():
-            """
-            Diese Klasse repräsentiert das Hauptfenster zur Verwaltung von
-            Benutzerkonten innerhalb der Anwendung. Sie erbt von `tk.Frame`
-            und dient als Grundlage für die Erstellung der Benutzeroberfläche
-            zur Verwaltung der Benutzer.
-
-            Attribute
-            ----------
-            Keine spezifischen Attribute neben denen, die von `tk.Frame`
-            geerbt wurden.
-
-            Notes
-            -----
-            Die spezifischen Funktionen dieser Klasse, einschließlich der
-            Methoden und Verhalten, die auf diese Klasse angewandt werden,
-            müssen in den jeweiligen Methodendokumentationen definiert werden.
-            """
-            from .addUserPopup import add_user_popup
-            add_user_popup(self)
-
         def on_entry_click(event):
             if user_search_entry.get() == 'Suche':
                 user_search_entry.delete(0, "end")  # Lösche den Platzhalter-Text
@@ -108,8 +89,7 @@ class AdminUserWindow(tk.Frame):
             AdminRoleWindow.update_treeview_with_data()
 
         def add_user():
-            from .addUserPopup import add_user_popup
-            add_user_popup(self)
+            AddUserPopup(self, True)
 
         global tree
 
@@ -148,7 +128,7 @@ class AdminUserWindow(tk.Frame):
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
-        self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
+        self.log_out_btn = tk.PhotoImage(file=Paths.assets_path("ArrowLeft.png"))
 
         # Füge einen Button mit dem Bild hinzu
         log_out_button = tk.Button(header_frame,

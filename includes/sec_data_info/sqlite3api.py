@@ -3,7 +3,7 @@ import os
 import json
 
 import main
-from includes.util.Paths import app_files_path
+from includes.util.Paths import app_files_path_string
 from .UserSecurity import hash_password
 from ..util.Logging import Logger
 
@@ -13,7 +13,7 @@ logger:Logger = Logger('sqlite3api')
 main_path: str = r'M:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __use__fallback_path: bool = True
 __fallback_path1:str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
-__fallback_path2: str = app_files_path + 'DD-invBeispielDatenbank.sqlite3'
+__fallback_path2: str = app_files_path_string + 'DD-invBeispielDatenbank.sqlite3'
 
 def init_connection() -> sqlite3.Connection:
     """

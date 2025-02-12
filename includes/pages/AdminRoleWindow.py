@@ -84,8 +84,8 @@ class AdminRoleWindow(tk.Frame):
             logger.debug("change_to_user executed")  # Debug
 
         def add_role():
-            from .addRolePopup import add_role_popup
-            add_role_popup(self)
+            from .addRolePopup import AddRolePopup
+            AddRolePopup(self.winfo_toplevel())
             logger.debug("Add role executed") #Debug
 
         global tree

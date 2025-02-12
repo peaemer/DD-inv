@@ -21,12 +21,19 @@ STOPS_FAST_MARKING: Final[list[str]] = [
 
 logger:Logger = Logger('Searchbar')
 
+
 class Searchbar2(CTkTextbox):
+    """
+        contains manages the graphics and events of the searchbar
+
+        :ivar root:
+
+    """
     root: tk.Frame = None
     parent: tk.Frame = None
     dropdown: CTkListbox = None
 
-    __control_down:bool = False
+    __control_down: bool = False
 
     __on_focus_in_commands: list[Callable[[str], None]] = []
     __on_focus_out_commands: list[Callable[[str], None]] = []
@@ -54,18 +61,19 @@ class Searchbar2(CTkTextbox):
     def __has_tag(self, index: int, tag: str) -> bool:
         return self.tag_names(f'1.{index}')[0] == tag if self.tag_names(f'1.{index}') else False
 
-    def __clear_autocomplete_text(self, start_index:int = 0, finish_index:int = -1) -> None:
+    def __clear_autocomplete_text(self, start_index: int = 0, finish_index: int = -1) -> None:
         """
             clears all characters in the searchbar that are behind the start index and are highlighted as hint text.
 
             :param int start_index: position after which the hit text has to be removed.
             :param int finish_index: position until which the hit text has to be removed.
         """
-        logger_:Logger = Logger.from_logger(logger, 'clear_autocomplete_text')
+        logger_: Logger = Logger.from_logger(logger, 'clear_autocomplete_text')
         if finish_index <= -1:
             finish_index = self.__get_term_length()
         if self.__get_term_length() < finish_index:
-            logger_.debug(f"""start index {start_index} is greater than total term length {self.__get_term_length()} """)
+            logger_.debug(
+                f"""start index {start_index} is greater than total term length {self.__get_term_length()} """)
             return
         while start_index < finish_index:
             if self.__has_tag(start_index, 'hint'):
@@ -156,14 +164,14 @@ class Searchbar2(CTkTextbox):
         for command in self.__on_update_commands:
             command(self.__get_term())
 
-    def __on_up_down_typed(self, event:tk.Event) -> None:
+    def __on_up_down_typed(self, event: tk.Event) -> None:
         """
                 called every time up or down arrow was typed.
                 moves the selection of the dropdown up or down in case that is possible.there are options to select from.
 
                 :param Tk.event event: the event of the button press
         """
-        logger_:Logger = Logger.from_logger(logger, 'on_up_down_typed')
+        logger_: Logger = Logger.from_logger(logger, 'on_up_down_typed')
 
         logger_.debug("last key action was either up or down arrow")
         if event.keysym == 'Up':
@@ -172,7 +180,7 @@ class Searchbar2(CTkTextbox):
                     if self.dropdown.buttons[i] == self.dropdown.selections[0]:
                         logger_.debug(f":found selected button {self.dropdown.buttons[i]} at i:{i}")
                         self.dropdown.selections.clear()
-                        self.dropdown.selections.append(self.dropdown.buttons[i-1 if i> 0 else 0])
+                        self.dropdown.selections.append(self.dropdown.buttons[i - 1 if i > 0 else 0])
             else:
                 if self.dropdown.buttons:
                     self.dropdown.selections.clear()
@@ -192,7 +200,7 @@ class Searchbar2(CTkTextbox):
         self.dropdown.update()
         #print(self.dropdown.selections)
 
-    def __on_shortcut_typed(self, event:tk.Event) -> None:
+    def __on_shortcut_typed(self, event: tk.Event) -> None:
         """
                 called every time a key is pressed together with a control key
         """
@@ -243,7 +251,7 @@ class Searchbar2(CTkTextbox):
         if event.keysym == 'Control_R' or event.keysym == 'Control_L':
             self.__control_down = False
 
-    def __on_mouse_single_click(self, event: tk.Event, username:str) -> str:
+    def __on_mouse_single_click(self, event: tk.Event, username: str) -> str:
         logger.debug(f"""executing on_mouse_single_click""")
         if not self.focus_get() == self:
             logger.debug_e(f"""focusing searchbar""")
@@ -251,10 +259,10 @@ class Searchbar2(CTkTextbox):
         self.mark_set("insert", self.index(f"@{event.x},{event.y}"))
         if (
                 self.__has_tag(self.__get_insert_column(), 'edit')
-                or self.__has_tag(self.__get_insert_column()-1, 'edit')
+                or self.__has_tag(self.__get_insert_column() - 1, 'edit')
                 or self.__has_tag(self.__get_insert_column(), 'hint')
-                or self.__has_tag(self.__get_insert_column()-1, 'hint')
-            ):
+                or self.__has_tag(self.__get_insert_column() - 1, 'hint')
+        ):
             self.delete(f'1.{self.__get_insert_column()}', f'end-1c')
             self.__on_tab_typed(username)
         return 'break'
@@ -265,17 +273,18 @@ class Searchbar2(CTkTextbox):
         """
         logger.debug(f"""executing on_mouse_double_click""")
         column = self.__get_insert_column()
-        start:int=self.__get_insert_column()
-        if self.__has_tag(column - 1, 'hint') or self.__has_tag(column +1, 'hint'):
+        start: int = self.__get_insert_column()
+        if self.__has_tag(column - 1, 'hint') or self.__has_tag(column + 1, 'hint'):
             while start > 0:
-                if self.__has_tag(start-1,'edit') or self.get(f'1.{self.__get_insert_column()}') in STOPS_FAST_MARKING:
+                if self.__has_tag(start - 1, 'edit') or self.get(
+                        f'1.{self.__get_insert_column()}') in STOPS_FAST_MARKING:
                     break
-                start-=1
-        finish:int=self.__get_insert_column()
+                start -= 1
+        finish: int = self.__get_insert_column()
         while finish < self.__get_term_length():
-            if self.__has_tag(finish,'edit') or self.get(f'1.{self.__get_insert_column()}') in STOPS_FAST_MARKING:
+            if self.__has_tag(finish, 'edit') or self.get(f'1.{self.__get_insert_column()}') in STOPS_FAST_MARKING:
                 break
-            finish+=1
+            finish += 1
 
         return 'break'
 
@@ -300,7 +309,7 @@ class Searchbar2(CTkTextbox):
         logger.debug(f"""executing on_focus_out with searchbar text "{self.__get_term()}" """)
         self.delete(1.0, 'end-1c')
         self.insert('end', 'Suche', tags='normal')
-        self.configure(text_color='black',state='normal')
+        self.configure(text_color='black', state='normal')
         self.parent.focus()
         for command in self.__on_focus_out_commands:
             command(self.__get_term())
@@ -368,5 +377,5 @@ class Searchbar2(CTkTextbox):
         self.bind("<Key>", lambda event: self.__on_key_press(event, username))
         self.bind("<KeyRelease>", lambda event: self.__on_key_released(event))
         self.bind('<FocusOut>', lambda _: self.__on_focus_out())
-        self.bind('<Button-1>', lambda event:self.__on_mouse_single_click(event,username))
-        self.bind('<Double-Button-1>', lambda event:self.__on_mouse_double_click())
+        self.bind('<Button-1>', lambda event: self.__on_mouse_single_click(event, username))
+        self.bind('<Double-Button-1>', lambda event: self.__on_mouse_double_click())

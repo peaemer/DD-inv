@@ -7,6 +7,7 @@ import cache
 import customtkinter as ctk
 from ..CTkScrollableDropdown import *
 from includes.sec_data_info import sqlite3api as db
+from ..util import Paths
 
 
 def add_item_popup(parent):
@@ -55,7 +56,7 @@ def add_item_popup(parent):
     # Icon setzen (optional)
     try:
         from ._avatarManager import resource_path
-        add_popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
+        add_popup.iconbitmap(Paths.assets_path("srhIcon.ico"))
     except Exception as e:
         logger.debug(f"Fehler beim Laden des Icons: {e}")
 
@@ -147,14 +148,16 @@ def add_item_popup(parent):
     )
 
     # Name
-    name_label_add_item_popup = tk.Label(add_popup,
+    name_label_add_item_popup = tk.Label(
+        add_popup,
         text="Name",
         background="white",
         font=("Arial", size_add_item_popup)
     )
     name_label_add_item_popup.grid(row=4, column=0, padx=0, pady=20, sticky=tk.E)
 
-    name_entry_add_item_popup = ctk.CTkEntry(add_popup,
+    name_entry_add_item_popup = ctk.CTkEntry(
+        add_popup,
         border_width=0,
         text_color="black",
         fg_color=srh_grey,
@@ -164,14 +167,16 @@ def add_item_popup(parent):
     name_entry_add_item_popup.grid(row=4, column=1, padx=20, pady=20, sticky=tk.W + tk.E)
 
     # Beschädigung
-    damaged_label_add_item_popup = tk.Label(add_popup,
+    damaged_label_add_item_popup = tk.Label(
+        add_popup,
         text="Beschädigung",
         background="white",
         font=("Arial", size_add_item_popup)
     )
     damaged_label_add_item_popup.grid(row=5, column=0, padx=0, pady=20, sticky=tk.E)
 
-    damaged_button_add_item_popup = ctk.CTkEntry(add_popup,
+    damaged_button_add_item_popup = ctk.CTkEntry(
+        add_popup,
         border_width=0,
         text_color="black",
         fg_color=srh_grey,
@@ -180,7 +185,8 @@ def add_item_popup(parent):
     )
     damaged_button_add_item_popup.grid(row=5, column=1, padx=20, pady=20, sticky=tk.E + tk.W)
 
-    error_label = tk.Label(add_popup,
+    error_label = tk.Label(
+        add_popup,
         text="",
         background="white",
         fg="darkred",
@@ -246,8 +252,8 @@ def add_item_popup(parent):
         add_popup.destroy()
 
     from ._avatarManager import resource_path
-    parent.add_btn_add_item_popup = tk.PhotoImage(file=resource_path("./includes/assets/ErstellenButton.png"))
-    parent.exit_btn_add_item_popup = tk.PhotoImage(file=resource_path("./includes/assets/AbbrechenButton.png"))
+    parent.add_btn_add_item_popup = tk.PhotoImage(file=Paths.assets_path("ErstellenButton.png"))
+    parent.exit_btn_add_item_popup = tk.PhotoImage(file=Paths.assets_path("AbbrechenButton.png"))
 
     # Buttons in ein separates Frame
     button_frame_add_item_popup = tk.Frame(add_popup, background="white")
