@@ -7,6 +7,7 @@ import cache
 from ._styles import *
 from includes.util.Logging import Logger
 from ._sort_tree import sort_column
+from ..util import Paths
 
 logger:Logger = Logger('AdminRoleWindow')
 
@@ -217,7 +218,7 @@ class AdminRoleWindow(tk.Frame):
         search_frame.grid_columnconfigure(2, weight=0)
 
         global group_add_button
-        self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Hinzusmall_blue.png"))
+        self.add_btn = tk.PhotoImage(file=Paths.assets_path("Hinzusmall_blue.png"))
 
         group_add_button = tk.Button(search_frame,
             image=self.add_btn,

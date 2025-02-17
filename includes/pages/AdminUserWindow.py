@@ -89,7 +89,7 @@ class AdminUserWindow(tk.Frame):
             AdminRoleWindow.update_treeview_with_data()
 
         def add_user():
-            AddUserPopup(self, True)
+            AddUserPopup(self.winfo_toplevel())
 
         global tree
 

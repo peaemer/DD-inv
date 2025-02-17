@@ -1,8 +1,9 @@
 import sqlite3
 import os
 import json
+import time
+from typing import Any
 
-import main
 from includes.util.Paths import app_files_path_string
 from .UserSecurity import hash_password
 from ..util.Logging import Logger
@@ -14,6 +15,30 @@ main_path: str = r'M:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __use__fallback_path: bool = True
 __fallback_path1:str = r'L:\Austausch\Azubi\dd-inv\db\DD-invBeispielDatenbank.sqlite3'
 __fallback_path2: str = app_files_path_string + 'DD-invBeispielDatenbank.sqlite3'
+
+def __extract_entry(unextracted_entry:str) -> tuple[float, str]:
+    """
+        .
+    """
+    entry_dict:dict[float:str] = json.loads(unextracted_entry)
+    return list(entry_dict.keys())[0], entry_dict[list(entry_dict.keys())[0]]
+
+def extract_entry(unextracted_entry:str) -> tuple[float, str]:
+    """
+        .
+    """
+    return __extract_entry(unextracted_entry)
+
+def parse_entry(entry_data:str) -> str:
+    """
+        takes a string and turns it into a dict with the current time as the key and the data as the value
+
+        :param str entry_data: a string representing the data
+
+        :returns: a string representing the dict with the data and the current time
+    """
+    time.time()
+    return str(dict({str(time.time()): entry_data}))
 
 def init_connection() -> sqlite3.Connection:
     """
@@ -119,19 +144,25 @@ def add_table(table_name:str, new_columns:list[tuple[str, str | None]]) -> str:
             sql_stmt += ', '
     sql_stmt = sql_stmt[:-2]
     sql_stmt += ')'
-    print(sql_stmt)
     try:
         with init_connection() as con:
             cur = con.cursor()
-            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zusenden
+            # wir brauchen ein Cursor um SQL Befehle an die Datenbank zu senden
             cur.execute(sql_stmt)
             con.commit()
         return f'Tabelle {table_name} wurde hinzugefügt.'
     except sqlite3.Error as e:
-        # e.args wird benötigt um detailiertere Information über die Fehler dazustellen
+        # e.args wird benötigt, um detailiertere Information über die Fehler dazustellen
         return f"Fehler Erstellen der Tabelle: {e.args[0]}"
 
 def remove_table(table_name:str) -> str:
+    """
+
+    :param str table_name:
+
+    :return:
+
+    """
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -190,18 +221,19 @@ def read_all_benutzer() -> list[dict[str, str]]:
         :return: eine Liste aus den daten aller Benutzer. Die Nutzerdaten werden in jeweils einem dictionary ausgegeben.
     """
     con: sqlite3.Connection
+    data:list[dict[str,Any]]
     try:
         with init_connection() as con:
             cur = con.cursor()
             cur.execute("SELECT * FROM Benutzer")
-            rows = cur.fetchall()
-            # dict ist notwending um die Daten übersichtlicher in einer Tabelle darstellen zu können
-            return [dict(row) for row in rows]
+            data = cur.fetchall()
     except sqlite3.Error as e:
         raise RuntimeError(f"Fehler beim Abrufen der Benutzer: {e.args[0]}")
     finally:
         if con:
             con.close()
+    #der dict typ ist notwending um die Daten übersichtlicher in einer Tabelle darstellen zu können
+    return [dict(row) for row in data]
 
 def read_benutzer(nutzername:str) -> dict[str,str]:
     """
@@ -211,7 +243,7 @@ def read_benutzer(nutzername:str) -> dict[str,str]:
 
         :return: die Daten des nutzers in Form eines dictionaries
     """
-    con:sqlite3.Connection = None
+    con:sqlite3.Connection|None = None
     try:
         with init_connection() as con:
             cur = con.cursor()
@@ -356,13 +388,12 @@ def fetch_hardware() ->list[dict[str, str]]:
 def fetch_hardware_by_id(id:int):
     """
         Ruft die Daten einer spezifischen Hardware anhand ihres `Service_Tag` ab.
-        :param int id: eine Konstante zum identifizieren des Datensatzes
+        :param int id: eine Konstante zum Identifizieren des Datensatzes
     """
     try:
         with init_connection() as con:
             cur = con.cursor()
-            # ID muss hier mit einem Komma an ende übergeben werden um als Tuple zu agieren
-            # Warum? keine Ahnung aber der Wert muss ein Tuplse sein sonst findet er nichts
+            # ID muss hier mit einem Komma an Ende übergeben werden, um als Tuple zu agieren
             cur.execute("SELECT * FROM Hardware WHERE ID = ?", (id,))
             row = cur.fetchone()
             return dict(row) if row else None
@@ -371,21 +402,24 @@ def fetch_hardware_by_id(id:int):
 
 def update_hardware_by_id(
             id:int,
-            neue_ausgeliehen_von:str = None,
-            neuer_service_tag:str = None,
-            neues_modell:str = None,
             neuer_geraetetyp:str = None,
+            neues_modell:str = None,
+            neuer_service_tag:str = None,
+            neue_ausgeliehen_von:str = None,
             neue_beschaedigung:str = None,
             neuer_standort:str = None):
     """
         Aktualisiert bestimmte Felder einer Hardware basierend auf der `ID`.
 
         :param int id: zum Identifizieren des Datensatzes
-        :param str neues_modell:
         :param str neuer_geraetetyp:
+        :param str neues_modell:
+        :param str neuer_service_tag:
         :param str neue_ausgeliehen_von: falls kein neues, leer lassen und neues Komma setzten
         :param str neue_beschaedigung: (falls kein neues, leer lassen und neues Komma setzten)
         :param str neuer_standort: (falls kein neues, leer lassen und neues Komma setzten)
+
+    Args:
     """
     try:
         with init_connection() as con:
@@ -461,8 +495,7 @@ def create_rolle(rolle:str, **rechte:dict[str,str]) -> str:
             columns = ', '.join(rechte.keys())
             placeholders = ', '.join(['?'] * len(rechte))
             values = list(rechte.values())
-            cur.execute(f"INSERT INTO NutzerrollenRechte (Rolle, {columns}) VALUES (?, {placeholders})",
-                        [rolle] + values)
+            cur.execute(f"INSERT INTO NutzerrollenRechte (Rolle, {columns}) VALUES (?, {placeholders})", [rolle] + values)
             con.commit()
         return "Nutzerrolle wurde erfolgreich erstellt."
     except sqlite3.Error as e:
@@ -582,7 +615,7 @@ def fetch_ausleih_historie_by_id(id:int) -> dict[str,str]|str|None:
     """
         Ruft einen spezifischen Eintrag der Tabelle `Ausleih-Historie` anhand der ID ab.
 
-        :param int id: eine Konstante zum idenzifizieren des Datensatzes
+        :param int id: eine Konstante zum Identifizieren des Datensatzes
 
         :return: ein Dictionary mit der Ausleih-historie dieses Hardwareobjekts. None, falls der Eintrag nicht existiert, oder eine Fehlerbeschreibung.
     """
@@ -600,7 +633,7 @@ def delete_ausleih_historie(id:int) -> str:
     """
          Löscht einen Eintrag aus der Tabelle `Ausleih-Historie` anhand der ID.
 
-         :param int id: eine Konstante zum idenzifizieren des Datensatzes.
+         :param int id: eine Konstante zum Identifizieren des Datensatzes.
 
          :return: Erfolgsmeldung oder Fehlerbeschreibung.
      """
@@ -832,8 +865,6 @@ def get_application_data(nutzername:str, property_name:str) -> str | None:
             cur.execute("SELECT Application_Data FROM Benutzer WHERE Nutzername = ?", (nutzername,))
             row: dict[str, str] = dict[str, str](cur.fetchone())
             try:
-                print(row['Application_Data'])
-                # print(dict[str,str](row["Application_Data"]))
                 data = json.loads(row['Application_Data'])
             except KeyError as e:
                 print(e)

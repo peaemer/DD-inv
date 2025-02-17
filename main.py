@@ -1,8 +1,3 @@
-import json
-import os
-import sys
-from shutil import copyfile
-import pathlib
 import tkinter as tk
 from tkinter import font
 from typing import Tuple
@@ -62,11 +57,8 @@ class ddINV(tk.Tk):
         print(screen_width, screen_height)
         self.geometry(f'{screen_width}x{screen_height}+0+0')
 
-        from includes.pages._avatarManager import resource_path
-        self.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
+        self.iconbitmap(Paths.assets_path("srhIcon.ico"))
 
-        from includes.pages._avatarManager import resource_path
-        self.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))
 
         # Container für Frames erstellen
         self.container = tk.Frame(self)
@@ -93,7 +85,9 @@ class ddINV(tk.Tk):
             self.update_frame_widgets(frame)
 
     def update_frame_widgets(self, frame):
-        """Passt alle Widgets im gegebenen Frame an die aktuelle Zoomstufe an."""
+        """
+            Passt alle Widgets im gegebenen Frame an die aktuelle Zoomstufe an.
+        """
         for widget in frame.winfo_children():
             # Überprüfe, ob das Widget eines der Ziel-Widgets ist (Label, Button, Entry, Text)
             if isinstance(widget, (tk.Label, tk.Button, tk.Entry, tk.Text)):

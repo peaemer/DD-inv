@@ -8,16 +8,16 @@ from ._styles import *
 
 def add_room_popup(parent):
     """
-    Fügt ein Popup-Fenster hinzu, das verwendet wird, um Daten für einen neuen Raum
-    einzugeben, einschließlich Raumbezeichnung und Ort. Das Fenster bietet zusätzlich
-    Optionen zur Bestätigung oder zum Abbrechen der Eingabe.
+        Fügt ein Popup-Fenster hinzu, das verwendet wird, um Daten für einen neuen Raum
+        einzugeben, einschließlich Raumbezeichnung und Ort. Das Fenster bietet zusätzlich
+        Optionen zur Bestätigung oder zum Abbrechen der Eingabe.
 
-    :param parent: Das übergeordnete Fenster, auf dem das Popup-Fenster dargestellt wird.
-    :type parent: tkinter.Tk oder tkinter.Frame
+        :param parent: Das übergeordnete Fenster, auf dem das Popup-Fenster dargestellt wird.
+        :type parent: tkinter.Tk oder tkinter.Frame
 
-    :return: Entweder wird das Popup geschlossen ohne Aktion, oder die Eingaben werden
-             verarbeitet und einem extern definierten Datenbanksystem hinzugefügt.
-    :rtype: None
+        :return: Entweder wird das Popup geschlossen ohne Aktion, oder die Eingaben werden
+                 verarbeitet und einem extern definierten Datenbanksystem hinzugefügt.
+        :rtype: None
     """
     add_popup = tk.Toplevel(parent)
     add_popup.title("Raum Hinzufügen")

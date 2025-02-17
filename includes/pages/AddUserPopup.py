@@ -7,8 +7,7 @@ import customtkinter as ctk
 
 from includes.pages.customMessageBoxDelete import customMessageBoxDelete
 from includes.pages.IPopUp import IPopUp
-from includes.pages._styles import srh_grey, corner, comboborder, srh_grey_hover, \
-    size_add_user_popup, border
+from includes.pages._styles import srh_grey, corner, comboborder, srh_grey_hover, size_add_user_popup, border
 from includes.CTkScrollableDropdown import CTkScrollableDropdownFrame
 from includes.util import Paths
 from includes.util.Logging import Logger
@@ -134,11 +133,10 @@ class AddUserPopup(IPopUp):
         self.role_combobox.set("Rolle auswählen")
 
 
-    def __init__(self, parent: tk.Toplevel, admin_mode: bool = False):
+    def __init__(self, parent: tk.Toplevel):
         """
 
             :param tkinter.Toplevel parent:
-            :param bool admin_mode:
 
         """
         super().__init__(
@@ -152,5 +150,4 @@ class AddUserPopup(IPopUp):
                 (tk.PhotoImage(file=Paths.assets_path("HinzuBig_blue.png")), self.submit_entry)
             ],
             header_button=(tk.PhotoImage(file=Paths.assets_path("ArrowLeft.png")), self.destroy),
-
         )

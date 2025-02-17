@@ -1,4 +1,5 @@
 import tkinter as tk
+from abc import ABC, abstractmethod
 from tkinter import ttk
 from customtkinter import CTkEntry
 import json
@@ -14,35 +15,34 @@ from ._styles import *
 import customtkinter as ctk
 from .ctk_listbox import *
 import includes.sec_data_info.sqlite3api as db
+from ..util import Paths
 
 logger:Logger = Logger('MainPage')
 
 
-# Hauptseite (zweites Fenster)
-class MainPage(tk.Frame):
-    """
-    Die Klasse MainPage repräsentiert die Benutzeroberfläche der Hauptseite der Anwendung.
+class IWindow(tk.Frame, ABC):
 
-    Die Hauptseite dient als zentrale Übersicht für die Inventur. Sie enthält mehrere
-    wichtige Funktionen wie die Möglichkeit, nach Elementen zu suchen, neue Elemente hinzuzufügen,
-    sich auszuloggen, und verschiedene Optionen und Einstellungen anzuzeigen. Die Benutzeroberfläche
-    besteht aus mehreren geordneten Abschnitten wie dem Header, einer Seitenleiste und einem
-    mittleren Bereich zur Anzeige der Inhalte. Dabei wird ein Grid-Layout verwendet, um die Widgets
-    entsprechend ihrer Funktionalität und Position anzuordnen.
-
-    :ivar header_frame: Frame-Widget, das den Header-Bereich der Hauptseite darstellt.
-    :type header_frame: tk.Frame
-    :ivar srh_head: Bildobjekt, das zur Anzeige eines Logos im Header verwendet wird.
-    :type srh_head: tk.PhotoImage
-    :ivar log_out_btn: Bildobjekt für den Log-Out-Button.
-    :type log_out_btn: tk.PhotoImage
-    :ivar admin_btn: Bildobjekt für den Button, um den Admin-Bereich zu öffnen.
-    :type admin_btn: tk.PhotoImage
-    :ivar add_btn: Bildobjekt für den Button, um ein neues Element hinzuzufügen.
-    :type add_btn: tk.PhotoImage
-    :ivar search_btn: Bildobjekt für den Such-Button.
-    :type search_btn: tk.PhotoImage
     """
+        .
+    """
+    @abstractmethod
+    def setup_main_frame(self, main_frame: tk.Frame) -> None:
+        """
+            Subclasses must implement this method, to add the actual content to the content_frame of the popup.
+        """
+
+    @abstractmethod
+    def setup_header_bar(self, frame: tk.Frame) -> None:
+        """
+            Subclasses must implement this method, to add the actual content to the content_frame of the popup.
+        """
+
+    @abstractmethod
+    def setup_header_bar2(self, frame: tk.Frame) -> None:
+        """
+            Subclasses must implement this method, to add the actual content to the content_frame of the popup.
+        """
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.configure(background="white")
@@ -103,7 +103,7 @@ class MainPage(tk.Frame):
         self.header_frame.grid_columnconfigure(2, weight=1)  # Platz rechts
         self.header_frame.grid_rowconfigure(0, weight=1)
         from ._avatarManager import resource_path
-        self.srh_head = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
+        self.srh_head = tk.PhotoImage(file=Paths.assets_path("srh.png"))
 
         # Füge ein zentriertes Label hinzu
         header_label = tk.Label(self.header_frame,
@@ -121,7 +121,7 @@ class MainPage(tk.Frame):
         text_header_label.grid(row=0, column=1, padx=0, pady=50, sticky="")
 
         # Konvertiere das Bild für Tkinter
-        self.log_out_btn = tk.PhotoImage(file=resource_path("./includes/assets/ausloggen.png"))
+        self.log_out_btn = tk.PhotoImage(file=Paths.assets_path("ausloggen.png"))
 
         # Füge einen Button mit dem Bild hinzu
         log_out_button = tk.Button(self.header_frame,
@@ -151,7 +151,7 @@ class MainPage(tk.Frame):
 
         # Platzieren des Adminbuttons
         from ._avatarManager import resource_path
-        self.admin_btn = tk.PhotoImage(file=resource_path("./includes/assets/Key.png"))
+        self.admin_btn = tk.PhotoImage(file=Paths.assets_path("Key.png"))
 
         # Erstellen des Grayframes für linke Seite
         grey_frame_side = tk.Frame(self,
@@ -206,7 +206,7 @@ class MainPage(tk.Frame):
         search_frame: tk.Frame= tk.Frame(middle_frame, bg="white")
 
         #erstelle den hinufügen-button im auf dem search frame
-        self.add_btn = tk.PhotoImage(file=resource_path("./includes/assets/Erstellen.png"))
+        self.add_btn = tk.PhotoImage(file=Paths.assets_path("Erstellen.png"))
         self.add_button = tk.Button(search_frame,
                                     image=self.add_btn,
                                     bd=0, relief=tk.FLAT,
@@ -224,7 +224,7 @@ class MainPage(tk.Frame):
         #                                 hover_color=srh_orange_hover,
         #                                 command=add_item)
 
-        self.search_btn = tk.PhotoImage(file=resource_path("./includes/assets/SearchButton.png"))
+        self.search_btn = tk.PhotoImage(file=Paths.assets_path("SearchButton.png"))
         search_button = tk.Button(search_frame,
                                   image=self.search_btn,
                                   bd=0, relief=tk.FLAT,

@@ -36,7 +36,7 @@ class RolesDetailsWindow(tk.Frame):
     """
     Die Klasse RoomDetailsWindow dient zur Darstellung und Bearbeitung von Raumdetails in einer GUI.
 
-    Die Klasse ist eine Unterklasse von ``tk.Frame`` und wird zur Anzeige und Bearbeitung von Raumdaten
+    Die Klasse ist eine Unterklasse von tk.Frame und wird zur Anzeige und Bearbeitung von Raumdaten
     in einer GUI verwendet. Sie bietet Interaktionen zum Zurückkehren zu einer Admin-Seite, zum Anzeigen
     eines Einstellungs-Popups sowie zum Aktualisieren oder Löschen von Raumeinträgen.
 

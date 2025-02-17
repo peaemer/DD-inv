@@ -4,13 +4,13 @@ from shutil import copyfile
 
 real_path_string:str = ''
 root_path_string:str = ''
-bundled_app_files_path_string = ''
+bundled_app_files_path_string:str = ''
 app_files_path_string:str = ''
 assets_path_string:str = ''
 
 def gen_paths():
     """
-
+        .
     """
     global app_files_path_string, bundled_app_files_path_string, real_path_string, root_path_string, assets_path_string
     real_path_string = os.path.dirname(os.path.realpath(__file__))
@@ -29,13 +29,14 @@ def gen_paths():
 
 def gen_app_files():
     """
-        creates a directory and initializes a fallback database as well as the local config file
+        creates a directory for the app files and initializes a fallback database as well as the local config file
     """
     global root_path_string, bundled_app_files_path_string, app_files_path_string
     if not pathlib.Path(app_files_path_string + r'DD-invBeispielDatenbank.sqlite3').is_file():
         copyfile(
             bundled_app_files_path_string + r'sec_data_info\DD-invBeispielDatenbank.sqlite3',
-            app_files_path_string + r'DD-invBeispielDatenbank.sqlite3')
+            app_files_path_string + r'DD-invBeispielDatenbank.sqlite3'
+        )
 
 def assets_path(relative_asset_path:str) -> str:
     """
@@ -47,3 +48,6 @@ def assets_path(relative_asset_path:str) -> str:
     """
     global assets_path_string
     return os.path.join(assets_path_string, relative_asset_path)
+
+gen_paths()
+gen_app_files()

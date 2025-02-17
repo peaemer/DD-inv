@@ -54,6 +54,7 @@ class AddRolePopup(IPopUp):
             AdminRoleWindow.update_treeview_with_data()
             self.destroy()
 
+    # noinspection DuplicatedCode
     @override
     def add_content(self, content_frame: tk.Frame):
         row:int = 1

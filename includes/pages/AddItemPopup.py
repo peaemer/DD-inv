@@ -14,7 +14,8 @@ from includes.sec_data_info import sqlite3api as db
 
 logger: Logger = Logger('AddItemPopup2')
 
-class AddItemPopup2(IPopUp):
+class AddItemPopup(IPopUp):
+    
     """
 
         :var list[tkinter.Button] buttons:
@@ -173,7 +174,6 @@ class AddItemPopup2(IPopUp):
 
     def __init__(self, parent: tk.Toplevel, admin_mode: bool = False):
         """
-
             :param tkinter.Toplevel parent:
             :param bool admin_mode:
 
