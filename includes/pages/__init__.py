@@ -1,5 +1,5 @@
 from .AdminRoomWindow import AdminRoomWindow
-from .LogInWindow import LogInWindow
+from .LoginWindow import LoginWindow
 from .MainPage import MainPage
 from .settingsWindow import pop_up_settings
 from .DetailsWindow import DetailsWindow
@@ -9,14 +9,14 @@ from .addUserPopup_ import add_user_popup
 from .UserDetailsWindow import UserDetailsWindow
 from .AdminRoomWindow import AdminRoomWindow
 from .RoomDetailsWindow import RoomDetailsWindow
-from .addRoomPopup import add_room_popup
+from .addRoomPopup_ import add_room_popup
 from .AdminRoleWindow import AdminRoleWindow
 from .RolesDetailsWindow import RolesDetailsWindow
 from .customMessageBoxDelete import customMessageBoxDelete
 from ._sort_tree import *
 
 
-__all__ = ["LogInWindow",
+__all__ = ["LoginWindow",
            "MainPage",
            "AddItemPopup",
            "settingsWindow",

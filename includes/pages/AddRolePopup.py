@@ -17,9 +17,9 @@ logger: Logger = Logger('AddItemPopup2')
 
 class AddRolePopup(IPopUp):
     """
-        Creates a popup where a new role can be created. Contains an Entry for the name
+        Creates a popup where a new role can be created. Contains an entry for the name
         of the new role, and a list of optional rights, that users with that role will have.
-        When pressing the Submit button, a new Entry in the roles table will be created with the
+        When pressing the Submit button, a new entry in the roles table will be created with the
         properties of the new role.
     """
 

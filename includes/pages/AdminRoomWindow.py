@@ -3,6 +3,7 @@ from tkinter import ttk
 
 import includes.sec_data_info.sqlite3api as sqlapi
 import cache
+from .AddRoomPopup import AddRoomPopup
 from ._styles import *
 from ._sort_tree import sort_column
 import customtkinter as ctk
@@ -53,8 +54,9 @@ class AdminRoomWindow(tk.Frame):
             self.update_treeview_with_data(data=search_entrys)
 
         def add_room():
-            from .addRoomPopup import add_room_popup
-            add_room_popup(self)
+            #from .addRoomPopup_ import add_room_popup
+            #add_room_popup(self)
+            AddRoomPopup(self.winfo_toplevel())
 
         def on_entry_click(event):
             if room_search_entry.get() == 'Suche':

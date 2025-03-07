@@ -6,7 +6,8 @@ from includes.util import Paths
 from includes.util.Paths import *
 from includes.util.ConfigManager import ConfigManager, Configuration
 from includes.util.Logging import Logger
-from includes.pages import (LogInWindow)
+from includes.pages.LoginWindow import LoginWindow
+from includes.pages.LoginWindow_ import LoginWindow_
 
 
 logger: Logger = Logger('main')
@@ -71,7 +72,7 @@ class ddINV(tk.Tk):
         self.frames = {}
 
         # Login-Fenster zuerst laden
-        self.show_frame(LogInWindow)
+        self.show_frame(LoginWindow_)
 
     def update_zoom(self, value):
         """Aktualisiert die Zoomstufe basierend auf dem Wert des Schiebereglers."""

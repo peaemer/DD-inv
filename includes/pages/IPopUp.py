@@ -106,7 +106,7 @@ class IPopUp(tk.Toplevel, ABC):
                 command=header_button[1]
             )
 
-            self.header_button.grid(row=0, column=0, sticky="NSEW")
+            self.header_button.grid(row=0, column=0, sticky="NSWE")
             self.header_label.grid(row=0, column=2, sticky="NS")
 
             self.header_frame.grid_columnconfigure(0, weight=1)
@@ -118,6 +118,12 @@ class IPopUp(tk.Toplevel, ABC):
             self.header_frame.grid_columnconfigure(1, weight=0)
             self.header_frame.grid_columnconfigure(2, weight=1)
             self.header_label.grid(row=0, column=1, sticky="NS")
+
+    @abstractmethod
+    def add_content(self, content_frame: tk.Frame) -> None:
+        """
+            Subclasses must implement this method, to add the actual content to the content_frame of the popup.
+        """
 
     def __init__(
             self,
@@ -184,7 +190,7 @@ class IPopUp(tk.Toplevel, ABC):
             sticky="NSWE" if hasattr(self, 'buttons_frame') else "SWE"
         )
 
-        self.__non_blocking_add_content_command:Callable = self.add_content
+        non_blocking_add_content_command:Callable = self.add_content
 
         def block_add_content():
             """
@@ -194,10 +200,4 @@ class IPopUp(tk.Toplevel, ABC):
 
 
         self.add_content = block_add_content
-        self.after(0, self.__non_blocking_add_content_command, self.content_frame)
-
-    @abstractmethod
-    def add_content(self, content_frame: tk.Frame) -> None:
-        """
-            Subclasses must implement this method, to add the actual content to the content_frame of the popup.
-        """
+        self.after(0, non_blocking_add_content_command, self.content_frame)

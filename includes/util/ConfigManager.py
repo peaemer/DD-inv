@@ -1,7 +1,9 @@
+"""
+    .
+"""
 import math
 import os.path
-from math import trunc
-from typing import TextIO, Tuple, Final
+from typing import TextIO, Final
 
 from includes.util.Logging import Logger
 
@@ -19,6 +21,7 @@ class Configuration:
             :param str parameter_name: the name of the property
             :param bool generate_if_missing: whether to generate the new parameter inside
                 the configuration file, if it is not present
+            :param str gen_initial_value: initial value to use when generating the parameter
         """
         lines: list[str] = self.manager.get_lines()
         i: int = self.offset + 2
@@ -106,7 +109,6 @@ class ConfigManager:
 
             :return: a list of strings, containing the config file's text
         """
-        lines: list[str]
         with self.__open() as file_handle:
             lines = file_handle.readlines()
         return lines
@@ -136,7 +138,6 @@ class ConfigManager:
             :return: a configuration if a Configuration with that name exists, None otherwise
         """
         for line in self.get_lines():
-            i: int = 0
             if f'# {configuration_name} #' in line:
                 return Configuration(self, configuration_name, self.get_lines().index(line) + 1)
         return None

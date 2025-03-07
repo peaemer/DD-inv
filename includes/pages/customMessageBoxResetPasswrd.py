@@ -64,7 +64,7 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
         if not check_password_requirements(msg_passwrd_first.get()):
             logger.debug(cache.user_name)
             set_password(cache.user_name, msg_passwrd_first.get(),msg_passwrd_second.get())
-            from includes.pages import LogInWindow
+            from includes.pages import LoginWindow
             cache.user_group = None  # Benutzergruppe zurücksetzen
             cache.user_name = None
             cache.user = None
@@ -167,14 +167,8 @@ def customMessageBoxResetPasswrd(parent:tkinter.Tk, title:str, message:str, calb
     )
     cancel.grid(row=7, column=1, padx=0, pady=10)
 
-    passwrd_msg.grid_rowconfigure(0, weight=1)
-    passwrd_msg.grid_rowconfigure(1, weight=1)
-    passwrd_msg.grid_rowconfigure(2, weight=1)
-    passwrd_msg.grid_rowconfigure(3, weight=1)
-    passwrd_msg.grid_rowconfigure(4, weight=1)
-    passwrd_msg.grid_rowconfigure(5, weight=1)
-    passwrd_msg.grid_rowconfigure(6, weight=1)
-    passwrd_msg.grid_rowconfigure(7, weight=1)
+    for i in range(8):
+        passwrd_msg.grid_rowconfigure(i, weight=1)
     passwrd_msg.grid_columnconfigure(0, weight=1)
     passwrd_msg.grid_columnconfigure(1, weight=1)
     passwrd_msg.grid_columnconfigure(2, weight=1)

@@ -60,10 +60,10 @@ class MainPage(tk.Frame):
         self.show_admin_window = show_admin_window
 
         def log_out():
-            from .LogInWindow import LogInWindow
+            from .LoginWindow import LoginWindow
             cache.user_group = ""  # Benutzergruppe zurücksetzen
             cache.user_name = ""
-            controller.show_frame(LogInWindow)
+            controller.show_frame(LoginWindow)
 
         def search(search_term:str) -> None:
             search_entries = []

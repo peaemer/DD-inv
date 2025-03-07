@@ -303,9 +303,9 @@ def pop_up_settings(parent:tk, controller):
         :type controller: Controller-Klasse
         """
         try:
-            from .LogInWindow import LogInWindow
+            from .LoginWindow import LoginWindow
             cache.user_group = None  # Benutzergruppe zurücksetzen
-            contr.show_frame(LogInWindow)
+            contr.show_frame(LoginWindow)
             popup.destroy()
 
         except Exception as e:

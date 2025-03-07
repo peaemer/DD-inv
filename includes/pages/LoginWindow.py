@@ -9,7 +9,7 @@ from ._avatarManager import check_internet_connection, loadImage
 from includes.sec_data_info import sqlite3api as db
 
 
-class LogInWindow(tk.Frame):
+class LoginWindow(tk.Frame):
     """
     Eine Klasse, die ein Login-Fenster für die Anwendung darstellt.
 
@@ -22,6 +22,8 @@ class LogInWindow(tk.Frame):
     :type srh_head: tk.PhotoImage
     :ivar log_out_btn: Enthält das Bild für den Button zur Anmeldung.
     :type log_out_btn: tk.PhotoImage
+
+    ExampleClass::f: example method
     """
     def __init__(self, parent, controller):
         check_internet_connection()
