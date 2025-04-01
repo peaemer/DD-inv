@@ -3,8 +3,9 @@ from tkinter import font
 from typing import Tuple
 
 from includes.util import Paths
-from includes.util.Paths import *
 from includes.util.ConfigManager import ConfigManager, Configuration
+config_manager:ConfigManager = ConfigManager(Paths.app_files_path_string + r'\DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
+from includes.util.Paths import *
 from includes.util.Logging import Logger
 from includes.pages.LoginWindow import LoginWindow
 from includes.pages.LoginWindow_ import LoginWindow_
@@ -15,7 +16,6 @@ logger: Logger = Logger('main')
 gen_paths()
 gen_app_files()
 
-config_manager:ConfigManager = ConfigManager(Paths.app_files_path_string + r'\DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
 
 
 class ddINV(tk.Tk):
@@ -72,7 +72,7 @@ class ddINV(tk.Tk):
         self.frames = {}
 
         # Login-Fenster zuerst laden
-        self.show_frame(LoginWindow_)
+        self.show_frame(LoginWindow)
 
     def update_zoom(self, value):
         """Aktualisiert die Zoomstufe basierend auf dem Wert des Schiebereglers."""
