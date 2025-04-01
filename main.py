@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import font
-from typing import Tuple
+from typing import Tuple, Any
 
+#from includes.gui.pages.IPage import IPage
+#from includes.gui.pages.adminPages.AdminPage import IPage
 from includes.util import Paths
 from includes.util.Paths import *
 from includes.util.ConfigManager import ConfigManager, Configuration
 from includes.util.Logging import Logger
-from includes.pages.LoginWindow import LoginWindow
-from includes.pages.LoginWindow_ import LoginWindow_
 
 
 logger: Logger = Logger('main')
@@ -69,10 +69,11 @@ class ddINV(tk.Tk):
 
         logger.debug("MainFrame successfully created")  # Debug
 
-        self.frames = {}
+        self.frames:dict = {}
 
         # Login-Fenster zuerst laden
-        self.show_frame(LoginWindow_)
+        from includes.gui.pages.LoginPage import LoginPage
+        self.show_frame(LoginPage)
 
     def update_zoom(self, value):
         """Aktualisiert die Zoomstufe basierend auf dem Wert des Schiebereglers."""
@@ -97,25 +98,28 @@ class ddINV(tk.Tk):
         # Aktualisiere das Layout und die Widgets im Frame, um sicherzustellen, dass alle Änderungen angewendet werden
         frame.update_idletasks()  # Stellt sicher, dass Layout und Widgets neu berechnet werden
 
-    def show_frame(self, cont):
-        if cont not in self.frames:
-            logger.debug(f"{cont.__name__} is being dynamically created.")  # Debug
-            frame = cont(self.container, self)  # Frame erstellen
-            self.frames[cont] = frame  # Zu Frames hinzufügen
-            frame.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
+    def show_frame(self, page_type:type) -> Any:
+        #if not issubclass(page_type, IPage):
+        #    raise RuntimeError(f"Page type {page_type} is not a subclass of IPage")
+        if page_type not in self.frames.keys():
+            logger.debug(f"{page_type.__name__} is being dynamically created.")  # Debug
 
-        frame = self.frames[cont]  # Existierenden Frame verwenden
+            page_instance = page_type(self.container, self)  # Frame erstellen
+            self.frames[page_type] = page_instance  # Zu Frames hinzufügen
+            page_instance.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
 
-        if isinstance(frame, tk.Frame):
-            frame.tkraise()  # Frame sichtbar machen
+        page_instance = self.frames[page_type]  # Existierenden Frame verwenden
+
+        if isinstance(page_instance, tk.Frame) or isinstance(page_instance, tk.Label):
+            page_instance.tkraise()  # Frame sichtbar machen
 
             # Widgets im Frame aktualisieren
-            self.update_frame_widgets(frame)
+            self.update_frame_widgets(page_instance)
 
-            if hasattr(frame, 'on_load') and callable(frame.on_load):
-                logger.debug(f"on_load is being called for {cont.__name__}")  # Debug
-                frame.on_load()
-
+            if hasattr(page_instance, 'on_load') and callable(page_instance.on_load):
+                logger.debug(f"on_load is being called for {page_type.__name__}")  # Debug
+                page_instance.on_load()
+        return page_instance
 
 if __name__ == "__main__":
     app = ddINV()
