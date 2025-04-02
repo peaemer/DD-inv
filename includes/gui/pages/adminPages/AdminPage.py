@@ -1,18 +1,8 @@
-import tkinter
-import tkinter as tk
 from abc import ABC, abstractmethod
-from re import search
-from tkinter import ttk
-from tkinter import *
 
 from typing_extensions import override, Callable
 
-from includes.sec_data_info import sqlite3api as sqlapi
-import cache
-from includes.util.Logging import Logger
 from includes.gui.pages import MainPage
-from includes.gui.popups.AddUserPopup import AddUserPopup
-from includes.windows import AdminUserWindow
 from .AdminUserPage import *
 from ..IPage import IPage
 from includes.gui._styles import *
@@ -20,7 +10,7 @@ from includes.windows._sort_tree import sort_column
 import customtkinter as ctk  #pip install customtkinter
 from includes.util import Paths
 
-logger:Logger = Logger('AdminUserWindow')
+logger:Logger = Logger('AdminPage')
 
 
 # Hauptseite (zweites Fenster)
@@ -33,7 +23,8 @@ class AdminPage(IPage, ABC):
         controller:ddINV,
         add_button_callback:Callable,
         get_data_callback:Callable|None,
-        tree_structure:list[dict[str,str|int]],
+        select_item_callback:Callable|None,
+        tree_structure:dict[str,int],
         window_name:str='',
         header_text:str='',
     ):
@@ -41,129 +32,21 @@ class AdminPage(IPage, ABC):
             .
         """
         super().__init__(parent, controller, window_name=window_name, admin_mode=True)
-
         self.header_text = header_text
         self.admin_user_window_avatar = cache.user_avatar
         self.tree_structure = tree_structure
 
+        self.enable_searchbar(lambda _: add_button_callback(), add_button_callback)
+        self.enable_treeview(get_data_callback, select_item_callback, tree_structure)
+
+        return
         self.add_btn = tk.PhotoImage(file=Paths.assets_path("Hinzusmall_blue.png"))
-
-        def empty_callback(param:str) -> None:
-            """."""
-            pass
-
-        self.enable_searchbar(lambda _:self.update_treeview_with_data(sqlapi.read_all_benutzer()), add_button_callback)
-
-        # Entry-Feld mit Platzhalter-Text
-        # Scrollbar erstellen
-
-        """
-        self.main_treeview_scroll = ctk.CTkScrollbar(self.main_treeview_frame,
-            orientation="vertical",
-            command=self.main_treeview.yview,
-            fg_color="white",
-            width=20,                                                # <--- +++++side scrollbar visibility+++++ #
-            corner_radius=scroll_corner,
-            button_color = srh_grey,
-            button_hover_color="#2980b9"
-        )
-        self.main_treeview_scroll.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
-        # Treeview mit Scrollbar verbinden
-        self.main_treeview.configure(yscrollcommand=self.main_treeview_scroll.set)
-
-        # Tags für alternierende Zeilenfarben konfigurieren
-        self.main_treeview.tag_configure("oddrow", background="#f7f7f7")
-        self.main_treeview.tag_configure("evenrow", background="white")
-
-        user_columns = [
-            ("# 1", "ID", 60),
-            ("# 2", "Nutzername", 200),
-            ("# 3", "Passwort", 200),
-            ("# 4", "E-Mail", 300),
-            ("# 5", "Rolle", 100)
-        ]
-        for col_id, col_name, col_width in user_columns:
-            self.main_treeview.column(col_id, anchor=tk.CENTER, width=col_width)
-            self.main_treeview.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(self.main_treeview, c, False))
-
-        ### listbox for directories
-        self.main_treeview.column("# 1", anchor=CENTER, width=60)
-        self.main_treeview.heading("# 1", text="ID", )
-        self.main_treeview.column("# 2", anchor=CENTER, width=200)
-        self.main_treeview.heading("# 2", text="Nutzername")
-        self.main_treeview.column("# 3", anchor=CENTER, width=200)
-        self.main_treeview.heading("# 3", text="Passwort")
-        self.main_treeview.column("# 4", anchor=CENTER, width=300)
-        self.main_treeview.heading("# 4", text="E-Mail")
-        self.main_treeview.column("# 5", anchor=CENTER, width=100)
-        self.main_treeview.heading("# 5", text="Rolle")
-        self.main_treeview.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
-        self.main_treeview.tkraise()
-        """
         self.update_treeview_with_data(None)
+        self.main_treeview.bind("<Double-1>", select_item_callback)
 
         # Funktion für das Ereignis-Binding
-        def on_item_selected(event):
-            """
-            Eine GUI-Komponente für die Verwaltung von Benutzerfenstern in
-            einer Tkinter-Anwendung.
-            Dient als Grundaufbau für Benutzerinteraktionen, wie beispielsweise
-            die Auswahl von Benutzerdetails im Interface.
-            """
-            try:
-                selected_user = self.main_treeview.focus()
-                logger.debug(f"Ausgewählter User: {selected_user}")  # Debug
-                if selected_user:
-                    from includes.windows.UserDetailsWindow import UserDetailsWindow, show_user_details
-                    show_user_details(selected_user, self.main_treeview, controller)
-            except Exception as e:
-                logger.error(f"Fehler bei der Auswahl: {e}")
 
         # Binde die Ereignisfunktion an die Treeview
-        self.main_treeview.bind("<Double-1>", on_item_selected)
-
-    def settings_popup(self, controller:ddINV):
-        logger.debug("show settings window admin window")
-        from includes.windows.settingsWindow import pop_up_settings
-        pop_up_settings(self, controller)
-
-    def __setup_navigation_bar(self, frame:tkinter.Frame):
-        """
-            .
-        """
-        from .AdminUserPage import AdminUserPage
-        from .AdminRolePage import AdminRoleWindow
-        from .AdminRoomPage import AdminRoomPage
-
-        self.navigation_frame = tkinter.Frame(frame,background=srh_blue)
-        self.navigation_buttons: list[ctk.CTkButton] = []
-
-        def navigation_button_callback(window_type):
-            """."""
-            self.controller.show_frame(window_type)
-            window_type.update_treeview_with_data()
-            logger.debug(f"changing to window {window_type}")  # Debug
-
-        for button_content in [
-            ("Nutzer", lambda: navigation_button_callback(AdminUserPage)),
-            ("Räume", lambda: navigation_button_callback(AdminRoomPage)),
-            ("Rollen", lambda: navigation_button_callback(AdminRoleWindow)),
-        ]:
-            self.navigation_buttons.append(
-                ctk.CTkButton(
-                    self.navigation_frame,
-                    text=button_content[0],
-                    border_width=border,
-                    command=button_content[1],
-                    cursor="hand2",
-                    corner_radius=corner,
-                    fg_color="#C5C5C5",
-                    text_color="black",
-                    font=("Arial", 20),
-                    hover_color=nav_bar_hover_color
-                )
-            )
-            self.navigation_buttons[-1].grid(row=0, padx=40, pady=15, column=len(self.navigation_buttons) - 1,sticky='WE')
 
     @override
     def setup_header_bar(self, frame: tkinter.Frame) -> None:
@@ -194,7 +77,7 @@ class AdminPage(IPage, ABC):
             background="#DF4807",
             foreground="white"
         )
-        print(self.header_text)
+        print('header text:'+self.header_text)
         self.header_text_label = tk.Label(
             frame,
             background="#DF4807",
@@ -294,66 +177,7 @@ class AdminPage(IPage, ABC):
 
     @override
     def setup_main_frame(self, frame:tkinter.Frame) -> None:
-#        dropdown_overlay_frame: tk.Frame = tk.Frame(frame, background="white")
-#        self.search_bar_frame: tk.Frame = tk.Frame(frame, background="white")
-#        self.__setup_searchbar(self.search_bar_frame)
-
-        self.main_treeview = ttk.Treeview(frame,
-            columns=("c1", "c2", "c3", "c4", "c5"),
-            show="headings",
-            cursor="hand2"
-        )
-
-        self.main_tree_scrollbar = ctk.CTkScrollbar(
-            frame,
-            orientation="vertical",
-#            command=self.main_treeview.yview,
-            fg_color="white",
-            width=20,  # <--- +++++side scrollbar visibility+++++ #
-            corner_radius=scroll_corner,
-            button_color=srh_grey,
-            button_hover_color="#2980b9"
-        )
-
-        self.main_treeview.configure(yscrollcommand=self.main_tree_scrollbar.set)
-
-        frame.grid_rowconfigure(1, weight=1)
-        frame.grid_columnconfigure(0, weight=1)  # Spalte für die Tabelle
-        frame.grid_columnconfigure(1, weight=0)  # Spalte für die Scrollbar (fixiert)
-
-
-        # Tags für alternierende Zeilenfarben konfigurieren
-        self.main_treeview.tag_configure("oddrow", background="#f7f7f7")
-        self.main_treeview.tag_configure("evenrow", background="white")
-
-        user_columns = [
-            ("# 1", "ID", 60),
-            ("# 2", "Nutzername", 200),
-            ("# 3", "Passwort", 200),
-            ("# 4", "E-Mail", 300),
-            ("# 5", "Rolle", 100)
-        ]
-
-        for col_id, col_name, col_width in user_columns:
-            self.main_treeview.column(col_id, anchor=tk.CENTER, width=col_width)
-            self.main_treeview.heading(col_id, text=col_name, command=lambda c=col_id: sort_column(self.main_treeview, c, False))
-
-        ### listbox for directories
-        self.main_treeview.column("# 1", anchor=CENTER, width=60)
-        self.main_treeview.heading("# 1", text="ID", )
-        self.main_treeview.column("# 2", anchor=CENTER, width=200)
-        self.main_treeview.heading("# 2", text="Nutzername")
-        self.main_treeview.column("# 3", anchor=CENTER, width=200)
-        self.main_treeview.heading("# 3", text="Passwort")
-        self.main_treeview.column("# 4", anchor=CENTER, width=300)
-        self.main_treeview.heading("# 4", text="E-Mail")
-        self.main_treeview.column("# 5", anchor=CENTER, width=100)
-        self.main_treeview.heading("# 5", text="Rolle")
-        self.main_treeview.grid(row=1, column=0, sticky=tk.N + tk.S + tk.E + tk.W)
-        self.main_treeview.tkraise()
-        self.update_treeview_with_data()
-
-        self.main_tree_scrollbar.grid(row=1, column=1, sticky=tk.N + tk.S)  # Scrollbar genau neben der Tabelle
+        pass
 
     @override
     def setup_side_bar_left(self, frame:tkinter.Frame) -> bool:
@@ -365,9 +189,12 @@ class AdminPage(IPage, ABC):
 
     @override
     def on_load(self) -> None:
-        pass
+        self.update_treeview()
 
     def update_treeview_with_data(self, data, columns:list[str]=None):
+        """
+            .
+        """
         self.main_treeview.delete(*self.main_treeview.get_children())
         i = 0
         if data is None or columns is None: return

@@ -18,7 +18,7 @@ import customtkinter as ctk  #pip install customtkinter
 from includes.windows._sort_tree import sort_column
 from includes.util import Paths
 
-logger:Logger = Logger('AdminUserWindow')
+logger:Logger = Logger('AdminUserPage')
 
 
 # Hauptseite (zweites Fenster)
@@ -46,64 +46,65 @@ class AdminUserPage(AdminPage):
     def on_cell_click(self, cell_text:str) -> None:
         pass
 
-    @override
-    def update_treeview_with_data(self, treeview:tkinter.ttk.Treeview, data=None):
-        """
-            Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
-            löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
-            Datenbank ein. Jede Zeile erhält ein Tag, das zu einer alternierenden Darstellung von
-            geraden und ungeraden Zeilen verwendet werden kann.
-
-            :return: Gibt keinen Wert zurück.
-        """
-        user_tree.delete(*user_tree.get_children())
-        i = 0
-        data = sqlapi.read_all_benutzer()
-        for entry in data:
-            # Bestimme das Tag für die aktuelle Zeile
-            tag = "evenrow" if i % 2 == 0 else "oddrow"
-
-            # Daten mit dem Tag in das Treeview einfügen
-            user_tree.insert(
-                "",
-                "end",
-                text=f"{entry['Nutzername']}",
-                values=(
-                    i,
-                    entry['Nutzername'],
-                    entry['Passwort'],
-                    entry['Email'],
-                    entry['Rolle'],
-                ),
-                tags=(tag,)
-            )
-            i += 1
-        logger.debug(f"USER_ERSTELLEN:{cache.user_group_data['USER_ERSTELLEN']}")
-        if cache.user_group_data['USER_ERSTELLEN'] == "False":
-            user_add_button.grid_forget()
-        else:
-            user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
-
-
+        """    @override
+            def update_treeview_with_data(self, treeview:tkinter.ttk.Treeview, data=None):
+                
+                    Aktualisiert die Treeview-Komponente mit Daten aus einer SQL-Datenbank. Diese Methode
+                    löscht zunächst alle vorhandenen Einträge im Treeview und fügt dann neue Daten aus der
+                    Datenbank ein. Jede Zeile erhält ein Tag, das zu einer alternierenden Darstellung von
+                    geraden und ungeraden Zeilen verwendet werden kann.
+        
+                    :return: Gibt keinen Wert zurück.
+                
+                user_tree.delete(*user_tree.get_children())
+                i = 0
+                data = sqlapi.read_all_benutzer()
+                for entry in data:
+                    # Bestimme das Tag für die aktuelle Zeile
+                    tag = "evenrow" if i % 2 == 0 else "oddrow"
+        
+                    # Daten mit dem Tag in das Treeview einfügen
+                    user_tree.insert(
+                        "",
+                        "end",
+                        text=f"{entry['Nutzername']}",
+                        values=(
+                            i,
+                            entry['Nutzername'],
+                            entry['Passwort'],
+                            entry['Email'],
+                            entry['Rolle'],
+                        ),
+                        tags=(tag,)
+                    )
+                    i += 1
+                logger.debug(f"USER_ERSTELLEN:{cache.user_group_data['USER_ERSTELLEN']}")
+                if cache.user_group_data['USER_ERSTELLEN'] == "False":
+                    user_add_button.grid_forget()
+                else:
+                    user_add_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
+"""
     def __init__(self, parent, controller):
         super().__init__(
             parent,
             controller,
             header_text='Nutzer-Übersicht',
             window_name='dd inv',
-            get_data_callback=None,
-            tree_structure=[],
-            add_button_callback=lambda :AddUserPopup.AddUserPopup(self.winfo_toplevel())
+            add_button_callback=lambda :AddUserPopup.AddUserPopup(self.winfo_toplevel()),
+            get_data_callback=sqlapi.read_all_benutzer(),
+            select_item_callback=None,
+            tree_structure={'ID':200, 'Nutzername':300, 'Passwort': 200, 'E-Mail':300, 'Rolle':100}
         )
         self.configure(background="white")
         self.enable_navigation_bar(
                 [
-                    ('Nutzer', None),
+                    ('Nutzer', lambda:self.controller.show_frame(AdminUserPage)),
                     ('Räume',lambda:self.controller.show_frame(AdminRoomPage)),
                     ('Rollen', lambda:self.controller.show_frame(AdminUserPage)),
                 ]
         )
-
+        self.update_treeview()
+        logger.debug('updated treeview')
         return
         def go_back_admin_window():
             """

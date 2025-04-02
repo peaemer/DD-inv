@@ -1,3 +1,4 @@
+import importlib
 import tkinter as tk
 from tkinter import font
 from typing import Tuple, Any
@@ -101,6 +102,7 @@ class ddINV(tk.Tk):
     def show_frame(self, page_type:type) -> Any:
         #if not issubclass(page_type, IPage):
         #    raise RuntimeError(f"Page type {page_type} is not a subclass of IPage")
+
         if page_type not in self.frames.keys():
             logger.debug(f"{page_type.__name__} is being dynamically created.")  # Debug
 
@@ -109,8 +111,9 @@ class ddINV(tk.Tk):
             page_instance.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
 
         page_instance = self.frames[page_type]  # Existierenden Frame verwenden
-
-        if isinstance(page_instance, tk.Frame) or isinstance(page_instance, tk.Label):
+        from includes.gui.pages.IPage import IPage
+        if issubclass(page_type, IPage):
+            logger.debug(f'pyge type {page_instance.__class__.__name__} is a subclass of IPage')
             page_instance.tkraise()  # Frame sichtbar machen
 
             # Widgets im Frame aktualisieren

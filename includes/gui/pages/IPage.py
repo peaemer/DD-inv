@@ -3,6 +3,7 @@
 """
 import tkinter
 from abc import ABC, abstractmethod
+from tkinter import ttk
 from typing import Callable, Any
 
 import customtkinter
@@ -10,11 +11,14 @@ from customtkinter import CTkEntry
 
 import cache
 from includes.util import Paths
+from includes.util.Logging import Logger
+from includes.windows import sort_column
 from includes.windows.Searchbar import SearchbarLogic
 from includes.windows.Searchbar.Searchbar import Searchbar
-from includes.windows._styles import srh_orange, srh_blue, srh_grey, border, corner, nav_bar_hover_color
+from includes.windows._styles import srh_orange, srh_blue, srh_grey, border, corner, nav_bar_hover_color, scroll_corner
 from includes.windows.ctk_listbox import CTkListbox
 
+logger:Logger = Logger('IPage')
 
 class IPage(tkinter.Frame, ABC):
     """
@@ -63,6 +67,10 @@ class IPage(tkinter.Frame, ABC):
 
         self.__searchbar_enabled: bool = False
         self.__navigation_bar_enabled: bool = False
+        self.__treeview_enabled: bool = False
+
+        self.__get_treeview_data_callback:Callable[[],list[dict[str,str]]]|None = None
+        self.__on_click_callback:Callable[[str],None]|None = None
 
         self.__overlay_left_sidebar:bool = self.setup_side_bar_left(self.__left_bar_frame)
         self.__overlay_right_sidebar:bool = self.setup_side_bar_right(self.__right_bar_frame)
@@ -108,14 +116,132 @@ class IPage(tkinter.Frame, ABC):
             header frame. The header frame will extend to the right of the window.
         """
 
-    @abstractmethod
-    def on_load(self) -> None:
+    def __sort_column(self, col, reverse=False):
         """
-            Subclasses must implement this method.
+        Sortiert die Einträge einer Spalte in einer `ttk.Treeview`-Tabelle.
+
+        Diese Funktion sortiert die Inhalte der angegebenen Spalte entweder numerisch oder alphanumerisch,
+        abhängig vom Datentyp der Spaltenwerte. Zusätzlich wird die Reihenfolge der Einträge im Treeview
+        aktualisiert, und die Tags für "oddrow" (ungerade Zeilen) und "evenrow" (gerade Zeilen) werden
+        entsprechend neu gesetzt. Der Header der Spalte wird so konfiguriert, dass ein Klick auf den Header
+        die Sortierrichtung umkehrt.
+
+        Args:
+            tree_name (ttk.Treeview): Die Treeview-Instanz, deren Spalte sortiert werden soll.
+            col (str): Der Name der zu sortierenden Spalte.
+            reverse (bool, optional): Gibt an, ob die Sortierung in umgekehrter Reihenfolge erfolgen soll.
+                Standardmäßig False für aufsteigende Sortierung.
+
+        Raises:
+            ValueError: Falls beim Überprüfen von numerischen Werten ein unerwarteter Typ auftritt.
+
+        Notes:
+            - Die Funktion überprüft, ob alle Werte in der Spalte numerisch sind (sofern nicht leer)
+              und wählt basierend darauf die geeignete Sortierlogik (numerisch oder alphanumerisch).
+            - Nach der Sortierung werden die Tags für "oddrow" und "evenrow" neu gesetzt, um ein visuelles
+              Unterscheiden der Zeilen zu ermöglichen.
+            - Die Funktion modifiziert den Header der Spalte, sodass beim nächsten Klick die Sortierrichtung
+              umgekehrt wird.
+        """
+        if self.treeview is None:
+            return
+        # Daten aus der Treeview abrufen
+        data = [(self.treeview.set(item, col), item) for item in self.treeview.get_children('')]
+
+        # Prüfen, ob die Spalte hauptsächlich numerische Daten enthält
+        def is_numeric(value):
+            try:
+                float(value)
+                return True
+            except ValueError:
+                return False
+
+        # Entscheiden, ob die Spalte als Zahl oder Text sortiert werden soll
+        if all(is_numeric(row[0]) for row in data if row[0] != ''):
+            key_func = lambda x: float(x[0])
+        else:
+            key_func = lambda x: str(x[0])
+
+        # Daten sortieren
+        data.sort(key=key_func, reverse=reverse)
+
+        # Reihenfolge in der Treeview aktualisieren
+        for index, (_, item) in enumerate(data):
+            self.treeview.move(item, "", index)
+
+        # Tags für odd/even-Reihen neu setzen
+        for index, item in enumerate(self.treeview.get_children('')):
+            tag = "oddrow" if index % 2 == 0 else "evenrow"
+            self.treeview.item(item, tags=(tag,))
+
+        # Header aktualisieren, um Sortierrichtung zu wechseln
+        self.treeview.heading(col, command=lambda c=col: sort_column(self.treeview, c, not reverse))
+
+    def enable_treeview(self, get_data_callback:Callable[[], list[dict[str,str]]], on_click_callback:Callable[[str],None], tree_structure:dict[str,int]):
+        """
+            .
         """
 
-    def set_treeview_only(self, get_data_callback:Callable, tree_structure:list[dict[str,str|int]],):
-        pass
+        self.__treeview_enabled = True
+
+        self.treeview:ttk.Treeview = ttk.Treeview(
+            self.__center_frame,
+            columns=tuple([f"c{i}" for i in range(0,len(tree_structure))]),
+            show="headings"
+        )
+        self.tree_scrollbar = customtkinter.CTkScrollbar(
+            self.__center_frame,
+            orientation="vertical",
+            command=self.treeview.yview,
+            fg_color="white",
+            width=20,  # <--- +++++side scrollbar visibility+++++ #
+            corner_radius=scroll_corner,
+            button_color=srh_grey,
+            button_hover_color=srh_blue
+        )
+        self.horizontal_tree_scrollbar = customtkinter.CTkScrollbar(
+            self.__center_frame,
+            orientation="horizontal",
+            command=self.treeview.xview,
+            fg_color="white",
+            width=20,  # <--- +++++side scrollbar visibility+++++ #
+            corner_radius=scroll_corner,
+            button_color=srh_grey,
+            button_hover_color=srh_blue
+        )
+
+        i:int=1
+        for column_name in enumerate(tree_structure.keys()):
+            self.treeview.column(f'# {i}', anchor=tkinter.CENTER, width=tree_structure[column_name[1]])
+            self.treeview.heading(f'# {i}', text=column_name[1], command=lambda c=f'# {i}': sort_column(self.treeview, c, True))
+            i+=1
+
+        # Treeview mit Scrollbar verbinden
+        self.treeview.configure(yscrollcommand=self.tree_scrollbar.set)
+        self.treeview.configure(xscrollcommand=self.horizontal_tree_scrollbar.set)
+
+        # Tags für alternierende Zeilenfarben konfigurieren
+        self.treeview.tag_configure("oddrow", background="#f7f7f7")
+        self.treeview.tag_configure("evenrow", background="white")
+
+        self.treeview.tkraise()
+
+        if callable(get_data_callback):
+            self.__get_treeview_data_callback = get_data_callback
+        else:
+            def callback():
+                """a callback that returns an empty data dictionary"""
+                return {}
+            self.__get_treeview_data_callback = callback
+
+        if callable(on_click_callback):
+            self.__on_click_callback = on_click_callback
+        else:
+            def callback():
+                """a callback that returns an empty data dictionary"""
+                pass
+            self.__on_click_callback = callback
+
 
     def enable_navigation_bar(self, buttons:list[tuple[str, Callable]]):
         """
@@ -230,7 +356,7 @@ class IPage(tkinter.Frame, ABC):
         """
             arrange the default items depending on which ones are ment to be shown
         """
-
+        logger.debug('apply layout')
         self.__header_frame.grid(
             row=0,
             column=1 if self.__overlay_left_sidebar else 0,
@@ -274,6 +400,17 @@ class IPage(tkinter.Frame, ABC):
             column=1,
             sticky='NSWE'
         )
+
+        if self.__treeview_enabled:
+            self.__center_frame.grid_rowconfigure(0,weight=1)
+            self.__center_frame.grid_rowconfigure(1,weight=0)
+            self.__center_frame.grid_columnconfigure(0,weight=1)
+            self.__center_frame.grid_columnconfigure(1,weight=0)
+            self.tree_scrollbar.grid(row=0, column=1, rowspan=2, sticky='NS')
+            self.horizontal_tree_scrollbar.grid(row=1, column=0, sticky='WE')
+            self.treeview.grid(row=0, column=0, sticky='NSWE')
+
+
         self.__center_frame.tkraise(self.__dropdown_overlay_frame)
 
         self.grid_columnconfigure(0, weight=1)
@@ -283,8 +420,28 @@ class IPage(tkinter.Frame, ABC):
         self.grid_rowconfigure(1, weight=0 if self.__navigation_bar_enabled or self.__searchbar_enabled else 4)
         self.grid_rowconfigure(2, weight=0 if self.__navigation_bar_enabled and self.__searchbar_enabled else 4)
         if self.__navigation_bar_enabled and self.__searchbar_enabled:
-            self.grid_rowconfigure(3, weight=1)
+            self.grid_rowconfigure(3, weight=4)
 
+    def update_treeview(self):
+        """
+            .
+        """
+        logger.debug('update treeview')
 
-    def enable_treeview(self):
-        pass
+        self.treeview.delete(*self.treeview.get_children())
+
+        i:int=0
+        for entry in self.__get_treeview_data_callback():
+            i += 1
+            if entry['Beschaedigung'] == "None":
+                damage = ""
+            else:
+                damage = entry['Beschaedigung']
+            tag = "evenrow" if i % 2 == 0 else "oddrow"
+            self.treeview.insert(
+                "",
+                "end",
+                values=(entry['ID'], entry['Service_Tag'], entry['Geraetetype'], entry['Raum'],
+                        entry['Modell'], damage, entry['Ausgeliehen_von']),
+                tags=(tag,)
+            )

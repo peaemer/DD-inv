@@ -87,7 +87,7 @@ class LoginPage(IPage):
             self.username_entry.delete(0, 'end')
             # Zeige die MainPage an
 #            from includes.gui.pages.MainPage import MainPage
-            from includes.windows.MainPage import MainPage
+            from includes.gui.pages.MainPage import MainPage
             cache.controller = self.controller
             self.controller.show_frame(MainPage)
 
