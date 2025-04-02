@@ -7,12 +7,12 @@ from datetime import datetime
 import cache
 from ._styles import *
 from includes.sec_data_info import sqlite3api as db
-from main import ddINV
+from main import DdInv
 
 logger:Logger = Logger('LendPopup')
 
 
-def lend_popup(parent, data, controller: ddINV):
+def lend_popup(parent, data, controller: DdInv):
     """
     Erstellt ein modales Popup-Fenster zur Verwaltung von Ausleihvorgängen. Das Fenster
     zeigt ein Formular zur Eingabe von Ausleihdetails, einschließlich Name des Objekts,

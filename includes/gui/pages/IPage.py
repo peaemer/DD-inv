@@ -44,9 +44,8 @@ class IPage(tkinter.Frame, ABC):
         self.__header_buttons_frame_right:tkinter.Frame = tkinter.Frame(self.__header_frame, background=srh_orange if admin_mode else srh_blue)
         self.__header_buttons_frame_left:tkinter.Frame = tkinter.Frame(self.__header_frame, background=srh_orange if admin_mode else srh_blue)
 
-        self.__searchbar_frame:tkinter.Frame = tkinter.Frame(self, background='green')
         self.__navigation_bar_frame:tkinter.Frame = tkinter.Frame(self, background='blue')
-
+        self.__searchbar_frame:tkinter.Frame = tkinter.Frame(self, background='green')
         self.__dropdown_overlay_frame:tkinter.Frame = tkinter.Frame(self, background='purple')
 
         self.__center_frame:tkinter.Frame = tkinter.Frame(self, background='red')
@@ -58,22 +57,23 @@ class IPage(tkinter.Frame, ABC):
         self.search_button_image:tkinter.PhotoImage|None = None
         self.add_item_button_image:tkinter.PhotoImage|None = None
 
-        self.search_button:tkinter.Button|None = None
         self.add_item_button:tkinter.Button|None = None
+        self.search_button:tkinter.Button|None = None
 
-        self.dropdown:CTkListbox|None = None
         self.search_entry_oval:CTkEntry|None = None
         self.search_entry:Searchbar|None = None
+        self.dropdown:CTkListbox|None = None
 
         self.__searchbar_enabled: bool = False
         self.__navigation_bar_enabled: bool = False
         self.__treeview_enabled: bool = False
+        self.__overlay_left_sidebar:bool = self.setup_side_bar_left(self.__left_bar_frame)
+        self.__overlay_right_sidebar:bool = self.setup_side_bar_right(self.__right_bar_frame)
 
         self.__get_treeview_data_callback:Callable[[],list[dict[str,str]]]|None = None
         self.__on_click_callback:Callable[[str],None]|None = None
 
-        self.__overlay_left_sidebar:bool = self.setup_side_bar_left(self.__left_bar_frame)
-        self.__overlay_right_sidebar:bool = self.setup_side_bar_right(self.__right_bar_frame)
+        self.__treeview_structure:list[dict[str,str]]|None = None
 
         self.setup_header_bar(self.__header_frame)
         self.setup_main_frame(self.__center_frame)
@@ -116,6 +116,13 @@ class IPage(tkinter.Frame, ABC):
             header frame. The header frame will extend to the right of the window.
         """
 
+    def on_load(self):
+        """
+            Subclasses o fIWindow can optionally override this method.
+            It is called everytime a shown again by the current DdInv instance
+        """
+        pass
+
     def __sort_column(self, col, reverse=False):
         """
         Sortiert die Einträge einer Spalte in einer `ttk.Treeview`-Tabelle.
@@ -127,7 +134,6 @@ class IPage(tkinter.Frame, ABC):
         die Sortierrichtung umkehrt.
 
         Args:
-            tree_name (ttk.Treeview): Die Treeview-Instanz, deren Spalte sortiert werden soll.
             col (str): Der Name der zu sortierenden Spalte.
             reverse (bool, optional): Gibt an, ob die Sortierung in umgekehrter Reihenfolge erfolgen soll.
                 Standardmäßig False für aufsteigende Sortierung.
@@ -183,6 +189,7 @@ class IPage(tkinter.Frame, ABC):
         """
 
         self.__treeview_enabled = True
+        self.__treeview_structure = tree_structure
 
         self.treeview:ttk.Treeview = ttk.Treeview(
             self.__center_frame,
@@ -224,8 +231,6 @@ class IPage(tkinter.Frame, ABC):
         self.treeview.tag_configure("oddrow", background="#f7f7f7")
         self.treeview.tag_configure("evenrow", background="white")
 
-        self.treeview.tkraise()
-
         if callable(get_data_callback):
             self.__get_treeview_data_callback = get_data_callback
         else:
@@ -242,6 +247,18 @@ class IPage(tkinter.Frame, ABC):
                 pass
             self.__on_click_callback = callback
 
+        self.__center_frame.grid_rowconfigure(0, weight=1)
+        self.__center_frame.grid_rowconfigure(1, weight=0)
+        self.__center_frame.grid_columnconfigure(0, weight=1)
+        self.__center_frame.grid_columnconfigure(1, weight=0)
+
+        self.treeview.grid(row=0, column=0, sticky=tkinter.NSEW)
+        self.tree_scrollbar.grid(row=0, rowspan=2, column=1, sticky='NS')
+        self.horizontal_tree_scrollbar.grid(row=1, column=0, sticky='WE')
+
+        self.treeview.tkraise()
+        self.apply_layout()
+        self.update_treeview()
 
     def enable_navigation_bar(self, buttons:list[tuple[str, Callable]]):
         """
@@ -349,7 +366,7 @@ class IPage(tkinter.Frame, ABC):
         self.dropdown.bind("<<ListboxSelect>>", lambda var: self.__center_frame.tkraise(self.__dropdown_overlay_frame))
 
         self.search_entry.insert('end', 'Suche', tags='normal')
-
+        self.__center_frame.tkraise(self.__dropdown_overlay_frame)
         self.apply_layout()
 
     def apply_layout(self):
@@ -357,23 +374,27 @@ class IPage(tkinter.Frame, ABC):
             arrange the default items depending on which ones are ment to be shown
         """
         logger.debug('apply layout')
+        logger.debug(str(self.__overlay_left_sidebar))
+        logger.debug(str(self.__overlay_right_sidebar))
+        logger.debug(str(self.__navigation_bar_enabled))
+        logger.debug(str(self.__searchbar_enabled))
         self.__header_frame.grid(
             row=0,
-            column=1 if self.__overlay_left_sidebar else 0,
-            columnspan=3 - (1 if self.__overlay_left_sidebar else 0) - (1 if self.__overlay_right_sidebar else 0),
+            columnspan=3,
+            column=0,
             sticky='NSWE'
         )
         self.__left_bar_frame.grid(
-            row=0 if self.__overlay_left_sidebar else 1 + (1 if self.__navigation_bar_enabled else 0),
-            rowspan=1 + (1 if self.__overlay_left_sidebar else 0) + (1 if self.__navigation_bar_enabled and self.__overlay_left_sidebar else 0) + (1 if self.__searchbar_enabled else 0),
             column=0,
+            rowspan=1 + (1 if self.__overlay_left_sidebar else 0) + (1 if self.__searchbar_enabled else 0) + (1 if self.__overlay_left_sidebar and self.__searchbar_enabled else 0) + (1 if self.__overlay_left_sidebar and self.__navigation_bar_enabled else 0),
+            row=(0 if self.__overlay_left_sidebar else 1) + (1 if self.__navigation_bar_enabled and not self.__overlay_left_sidebar else 0),
             sticky='NSWE'
         )
 
         self.__right_bar_frame.grid(
-            row=0 if self.__overlay_right_sidebar else 1 + (1 if self.__navigation_bar_enabled else 0),
-            rowspan=1 + (1 if self.__overlay_right_sidebar else 0) + (1 if self.__navigation_bar_enabled and self.__overlay_right_sidebar else 0) + (1 if self.__searchbar_enabled else 0),
             column=2,
+            rowspan=1 + (1 if self.__overlay_right_sidebar else 0) + (1 if self.__searchbar_enabled else 0) + (1 if self.__overlay_right_sidebar and self.__searchbar_enabled else 0) + (1 if self.__overlay_right_sidebar and self.__navigation_bar_enabled else 0),
+            row=(0 if self.__overlay_right_sidebar else 1) + (1 if self.__navigation_bar_enabled and not self.__overlay_right_sidebar else 0),
             sticky='NSWE'
         )
 
@@ -388,7 +409,7 @@ class IPage(tkinter.Frame, ABC):
         if self.__searchbar_enabled:
             self.__searchbar_frame.grid(row=2 if self.__navigation_bar_enabled else 1, column=1, sticky='NSWE')
             self.__dropdown_overlay_frame.grid(
-                row=3 if self.__navigation_bar_enabled else 2,
+                row=1 + (1 if self.__searchbar_enabled else 0) + (1 if self.__navigation_bar_enabled else 0),
                 column=1,
                 padx=(77, 166),
                 pady = 0,
@@ -396,52 +417,46 @@ class IPage(tkinter.Frame, ABC):
             )
 
         self.__center_frame.grid(
-            row=1 + (1 if self.__searchbar_enabled else 0) + (1 if self.__navigation_bar_enabled else 1),
+            row=1 + (1 if self.__searchbar_enabled else 0) + (1 if self.__navigation_bar_enabled else 0),
             column=1,
             sticky='NSWE'
         )
 
-        if self.__treeview_enabled:
-            self.__center_frame.grid_rowconfigure(0,weight=1)
-            self.__center_frame.grid_rowconfigure(1,weight=0)
-            self.__center_frame.grid_columnconfigure(0,weight=1)
-            self.__center_frame.grid_columnconfigure(1,weight=0)
-            self.tree_scrollbar.grid(row=0, column=1, rowspan=2, sticky='NS')
-            self.horizontal_tree_scrollbar.grid(row=1, column=0, sticky='WE')
-            self.treeview.grid(row=0, column=0, sticky='NSWE')
-
-
-        self.__center_frame.tkraise(self.__dropdown_overlay_frame)
+        #self.__center_frame.tkraise(self.__dropdown_overlay_frame)
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=4)
         self.grid_columnconfigure(2, weight=1)
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=0 if self.__navigation_bar_enabled or self.__searchbar_enabled else 4)
-        self.grid_rowconfigure(2, weight=0 if self.__navigation_bar_enabled and self.__searchbar_enabled else 4)
-        if self.__navigation_bar_enabled and self.__searchbar_enabled:
-            self.grid_rowconfigure(3, weight=4)
+        self.grid_rowconfigure(2, weight=4 if self.__navigation_bar_enabled ^ self.__searchbar_enabled else 0)
+        self.grid_rowconfigure(3, weight=4 if self.__navigation_bar_enabled and self.__searchbar_enabled else 0)
+
+        self.__center_frame.tkraise(self.__dropdown_overlay_frame)
 
     def update_treeview(self):
         """
             .
         """
-        logger.debug('update treeview')
-
+        if not self.__treeview_enabled:
+            logger.error('no treeview enabled')
+            return
+        else:
+            logger.debug('update treeview')
         self.treeview.delete(*self.treeview.get_children())
 
         i:int=0
-        for entry in self.__get_treeview_data_callback():
-            i += 1
-            if entry['Beschaedigung'] == "None":
-                damage = ""
-            else:
-                damage = entry['Beschaedigung']
+        for row in self.__get_treeview_data_callback():
             tag = "evenrow" if i % 2 == 0 else "oddrow"
+            l:list[str] = []
+            for enumerated in enumerate(row.keys()):
+                l.append(row[enumerated[1]])
             self.treeview.insert(
                 "",
                 "end",
-                values=(entry['ID'], entry['Service_Tag'], entry['Geraetetype'], entry['Raum'],
-                        entry['Modell'], damage, entry['Ausgeliehen_von']),
-                tags=(tag,)
+                tags=(tag,),
+                values=tuple(l)
             )
+            i += 1
+        logger.debug('finished update treeview')
+

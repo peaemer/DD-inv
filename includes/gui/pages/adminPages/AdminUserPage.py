@@ -91,20 +91,13 @@ class AdminUserPage(AdminPage):
             header_text='Nutzer-Übersicht',
             window_name='dd inv',
             add_button_callback=lambda :AddUserPopup.AddUserPopup(self.winfo_toplevel()),
-            get_data_callback=sqlapi.read_all_benutzer(),
+            get_data_callback=sqlapi.read_all_benutzer,
             select_item_callback=None,
-            tree_structure={'ID':200, 'Nutzername':300, 'Passwort': 200, 'E-Mail':300, 'Rolle':100}
+            tree_structure={'Name':100, 'Passwort': 200, 'E-Mail':300, 'Rolle':100}
         )
-        self.configure(background="white")
-        self.enable_navigation_bar(
-                [
-                    ('Nutzer', lambda:self.controller.show_frame(AdminUserPage)),
-                    ('Räume',lambda:self.controller.show_frame(AdminRoomPage)),
-                    ('Rollen', lambda:self.controller.show_frame(AdminUserPage)),
-                ]
-        )
-        self.update_treeview()
-        logger.debug('updated treeview')
+        #self.configure(background="white")
+        self.apply_layout()
+
         return
         def go_back_admin_window():
             """

@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from main import ddINV
+from main import DdInv
 from includes.sec_data_info import sqlite3api as sqlapi
-from .customMessageBoxDelete import *
-from ._styles import *
+from includes.windows.customMessageBoxDelete import *
+from .._styles import *
 
 logger:Logger = Logger('RolesDetailsWindow')
 
@@ -51,17 +51,17 @@ class RolesDetailsWindow(tk.Frame):
     :ivar delete_btn: Bild für den „Löschen“-Button.
     :type delete_btn: tk.PhotoImage
     """
-    def __init__(self, parent, controller: ddINV):
+    def __init__(self, parent, controller: DdInv):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.configure(background="white")
 
         def go_back_roles_window():
-            from .AdminRoleWindow import AdminRoleWindow
+            from .adminPages.AdminRolePage import AdminRoleWindow
             controller.show_frame(AdminRoleWindow)
 
-        from ._avatarManager import resource_path
-        self.go_back_btn_roles_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
+        from includes.util import Paths
+        self.go_back_btn_roles_window = tk.PhotoImage(file=Paths.assets_path("ArrowLeft.png"))
 
         # Erstelle einen Header-Bereich
         header_frame_roles_window = tk.Frame(self,
@@ -324,7 +324,7 @@ class RolesDetailsWindow(tk.Frame):
                 "USER_ERSTELLEN": create_u
             }
             logger.debug(sqlapi.update_role(self.role_name.cget("text"), **rechte))
-            from .AdminRoleWindow import AdminRoleWindow
+            from .adminPages.AdminRolePage import AdminRoleWindow
             AdminRoleWindow.update_treeview_with_data()
             controller.show_frame(AdminRoleWindow)
 
@@ -342,7 +342,7 @@ class RolesDetailsWindow(tk.Frame):
                 sqlapi.delete_rolle(self.role_name.cget("text"))
             else:
                 messagebox.showerror("Abgebrochen", "Es befinden sich noch Nutzer in den Gruppen")
-            from .AdminRoleWindow import AdminRoleWindow
+            from .adminPages.AdminRolePage import AdminRoleWindow
             AdminRoleWindow.update_treeview_with_data()
             controller.show_frame(AdminRoleWindow)
 
@@ -354,9 +354,9 @@ class RolesDetailsWindow(tk.Frame):
                 blue=True):
                 delete_entry()
 
-        self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/AktualisierenBig_blue.png"))
-        self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))
-        self.delete_btn = tk.PhotoImage(file=resource_path("./includes/assets/Loeschen.png"))
+        self.edit_btn = tk.PhotoImage(file=Paths.assets_path("./includes/assets/AktualisierenBig_blue.png"))
+        self.lend_btn = tk.PhotoImage(file=Paths.assets_path("./includes/assets/Ausleihen.png"))
+        self.delete_btn = tk.PhotoImage(file=Paths.assets_path("./includes/assets/Loeschen.png"))
 
         # Buttons in ein separates Frame
         button_frame_update_role = tk.Frame(self, background="white")

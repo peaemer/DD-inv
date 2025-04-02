@@ -19,7 +19,7 @@ gen_app_files()
 config_manager:ConfigManager = ConfigManager(Paths.app_files_path_string + r'\DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
 
 
-class ddINV(tk.Tk):
+class DdInv(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Inventartool")
@@ -113,7 +113,7 @@ class ddINV(tk.Tk):
         page_instance = self.frames[page_type]  # Existierenden Frame verwenden
         from includes.gui.pages.IPage import IPage
         if issubclass(page_type, IPage):
-            logger.debug(f'pyge type {page_instance.__class__.__name__} is a subclass of IPage')
+            logger.debug(f'page type {page_instance.__class__.__name__} is a subclass of IPage')
             page_instance.tkraise()  # Frame sichtbar machen
 
             # Widgets im Frame aktualisieren
@@ -125,5 +125,5 @@ class ddINV(tk.Tk):
         return page_instance
 
 if __name__ == "__main__":
-    app = ddINV()
+    app = DdInv()
     app.mainloop()

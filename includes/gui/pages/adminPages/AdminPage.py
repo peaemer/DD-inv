@@ -16,11 +16,11 @@ logger:Logger = Logger('AdminPage')
 # Hauptseite (zweites Fenster)
 class AdminPage(IPage, ABC):
 
-    from main import ddINV
+    from main import DdInv
     def __init__(
         self,
         parent:tkinter.Widget|tkinter.Toplevel,
-        controller:ddINV,
+        controller:DdInv,
         add_button_callback:Callable,
         get_data_callback:Callable|None,
         select_item_callback:Callable|None,
@@ -36,9 +36,21 @@ class AdminPage(IPage, ABC):
         self.admin_user_window_avatar = cache.user_avatar
         self.tree_structure = tree_structure
 
-        self.enable_searchbar(lambda _: add_button_callback(), add_button_callback)
-        self.enable_treeview(get_data_callback, select_item_callback, tree_structure)
+        from .AdminUserPage import AdminUserPage
+        from .AdminRolePage import AdminRoomPage
+        #from .AdminRoomPage import AdminRoomPage
 
+        self.enable_navigation_bar(
+                [
+                    ('Nutzer', lambda:self.controller.show_frame(AdminUserPage)),
+                    ('Räume',lambda:self.controller.show_frame(AdminRoomPage)),
+                    ('Rollen', lambda:self.controller.show_frame(AdminRoomPage)),
+                ]
+        )
+        self.enable_searchbar(lambda _: add_button_callback(), add_button_callback)
+        self.apply_layout()
+        self.enable_treeview(get_data_callback, select_item_callback, tree_structure)
+        self.update_treeview()
         return
         self.add_btn = tk.PhotoImage(file=Paths.assets_path("Hinzusmall_blue.png"))
         self.update_treeview_with_data(None)
@@ -67,8 +79,7 @@ class AdminPage(IPage, ABC):
             relief=tk.FLAT,
             cursor="hand2",
             bg="#DF4807",
-            activebackground="#DF4807",
-            text='bla'
+            activebackground="#DF4807"
         )
 
         self.srh_image_label = tk.Label(
@@ -97,7 +108,7 @@ class AdminPage(IPage, ABC):
             activebackground="#DF4807"
         )
 
-#        frame.grid_columnconfigure(0, weight=0)
+        frame.grid_columnconfigure(0, weight=0)
         frame.grid_columnconfigure(1, weight=1)
         frame.grid_columnconfigure(2, weight=0)
         frame.grid_columnconfigure(3, weight=1)
@@ -187,43 +198,8 @@ class AdminPage(IPage, ABC):
     def setup_side_bar_right(self, frame:tkinter.Frame) -> bool:
         return False
 
-    @override
     def on_load(self) -> None:
-        self.update_treeview()
-
-    def update_treeview_with_data(self, data, columns:list[str]=None):
-        """
-            .
-        """
-        self.main_treeview.delete(*self.main_treeview.get_children())
-        i = 0
-        if data is None or columns is None: return
-
-        for entry in data:
-            # Bestimme das Tag für die aktuelle Zeile
-            tag = "evenrow" if i % 2 == 0 else "oddrow"
-
-            # Daten mit dem Tag in das Treeview einfügen
-            self.main_treeview.insert(
-                "",
-                "end",
-                text=f"{entry['Nutzername']}",
-                values=(
-                    i,
-                    entry['Nutzername'],
-                    entry['Passwort'],
-                    entry['Email'],
-                    entry['Rolle'],
-                ),
-                tags=(tag,)
-            )
-            i += 1
-        logger.debug(f"USER_ERSTELLEN:{cache.user_group_data['USER_ERSTELLEN']}")
-        if cache.user_group_data['USER_ERSTELLEN'] == "False":
-            self.add_item_button.grid_forget()
-        else:
-            self.add_item_button.grid(padx=10, pady=1, row=0, column=2, sticky="w")
-
+        pass
 
     @abstractmethod
     def on_cell_click(self, cell_text:str) -> None:
