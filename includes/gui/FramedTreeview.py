@@ -5,7 +5,7 @@ import tkinter
 from tkinter import ttk
 import customtkinter
 
-from includes.gui._styles import scroll_corner, srh_grey
+from includes.gui.styles import scroll_corner, srh_grey
 from includes.windows import sort_column
 
 

@@ -9,7 +9,7 @@ import customtkinter as ctk
 
 import cache
 from includes.gui.popups.IPopUp import IPopUp
-from includes.gui._styles import *
+from includes.gui.styles import *
 from includes.CTkScrollableDropdown import CTkScrollableDropdownFrame
 from includes.util import Paths
 from includes.util.Logging import Logger

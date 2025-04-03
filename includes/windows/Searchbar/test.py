@@ -149,20 +149,47 @@ def run():
         print(l[:i]+l[i+1:])
     print(l)
     """
-root:tkinter.Tk = tkinter.Tk()  # Tkinter root window
-print(root)
-root.grid()
-root.grid_rowconfigure(0, weight=1)
-root.grid_columnconfigure(0, weight=1)
-print(root)
-from includes.gui.pages.adminPages.AdminUserPage import AdminUserPage
-window = AdminUserPage(root, None)
-#Dropdown(window)
-#frame.setup_main_frame()
-#    frame.setup_main_frame(root)
-window.grid(row=0, column=0, sticky=tkinter.NSEW)
-print(isinstance(window, IWindow))
-root.mainloop()
+# Import the required libraries
+from tkinter import *
+from tkinter import ttk
+
+# Create an instance of tkinter frame
+win= Tk()
+
+# Set the size of the tkinter window
+win.geometry("700x350")
+s = ttk.Style()
+s.theme_use('clam')
+
+# Define a function to clear all the items present in Treeview
+def clear_all():
+    #tree.column(1).clear()
+    #print(tree.column(1))
+    return
+    for item in tree.get_children():
+        tree.delete(item)
+
+# Add a Treeview widget
+tree= ttk.Treeview(win, column=("c1", "c2"), show= 'headings', height= 6)
+tree.column("# 1",anchor=CENTER)
+tree.heading("# 1", text= "ID")
+tree.column("# 2", anchor= CENTER)
+tree.heading("# 2", text= "FName")
+
+# Insert the data in Treeview widget
+tree.insert('', 'end',text= "1",values=('1','Honda'))
+tree.insert('', 'end',text= "2",values=('2', 'Hyundai'))
+tree.insert('', 'end',text= "3",values=('3', 'Tesla'))
+tree.insert('', 'end',text= "4",values=('4', 'Volkswagen'))
+tree.insert('', 'end',text= "5",values=('5', 'Tata'))
+tree.insert('', 'end',text= "6",values=('6', 'Renault'))
+
+tree.pack()
+
+# Create a Button for clearing the Treeview Item
+ttk.Button(win, text= "Clear", command= clear_all).pack(pady=10)
+
+win.mainloop()
 
 """
 s = "ABCD"

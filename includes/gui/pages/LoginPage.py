@@ -11,7 +11,6 @@ import customtkinter
 
 import cache
 from includes.gui.pages.IPage import IPage
-from includes.windows.IWindow import IWindow
 from includes.windows.customMessageBoxDelete import customMessageBoxDelete
 from includes.windows._avatarManager import loadImage, check_internet_connection
 from includes.windows.styles import LARGEFONT, LOGINFONT, corner, border, srh_grey, srh_orange
@@ -101,7 +100,6 @@ class LoginPage(IPage):
 
     @override
     def setup_main_frame(self, frame:tkinter.Frame) -> None:
-        # Username
         tkinter.Label(
             frame,
             text="Benutzername",

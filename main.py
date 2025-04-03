@@ -64,7 +64,8 @@ class DdInv(tk.Tk):
 
         logger.debug("MainFrame successfully created")  # Debug
 
-        self.frames:dict = {}
+        from includes.gui.pages.IPage import IPage
+        self.frames:dict[type,IPage] = {}
 
         # Login-Fenster zuerst laden
         from includes.gui.pages.LoginPage import LoginPage
@@ -93,29 +94,47 @@ class DdInv(tk.Tk):
         # Aktualisiere das Layout und die Widgets im Frame, um sicherzustellen, dass alle Änderungen angewendet werden
         frame.update_idletasks()  # Stellt sicher, dass Layout und Widgets neu berechnet werden
 
-    def show_frame(self, page_type:type) -> Any:
+    from includes.gui.pages import IPage
+    def show_frame(self, page_type:type) -> Any|None:
+        from includes.gui.pages import IPage
         #if not issubclass(page_type, IPage):
         #    raise RuntimeError(f"Page type {page_type} is not a subclass of IPage")
-
+        page_instance:IPage
         if page_type not in self.frames.keys():
             logger.debug(f"{page_type.__name__} is being dynamically created.")  # Debug
-
             page_instance = page_type(self.container, self)  # Frame erstellen
             self.frames[page_type] = page_instance  # Zu Frames hinzufügen
-            page_instance.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
+        else:
+            page_instance = self.frames[page_type]
+            print(self.frames[page_type])
+        page_instance.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
+        page_instance.tkraise()
+        page_instance.update_idletasks()
+        if hasattr(page_instance, 'on_load') and callable(page_instance.on_load):
+            logger.debug(f"on_load is being called for {page_type.__name__}")  # Debug
+            page_instance.on_load()
+        return page_instance
+
+        self.frames[page_type] = page_instance  # Zu Frames hinzufügen
+        if True:
+            pass
+        else:
+            logger.debug(f"{page_type.__name__} already exists inside loaded frames.")
 
         page_instance = self.frames[page_type]  # Existierenden Frame verwenden
         from includes.gui.pages.IPage import IPage
         if issubclass(page_type, IPage):
             logger.debug(f'page type {page_instance.__class__.__name__} is a subclass of IPage')
+            page_instance.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
             page_instance.tkraise()  # Frame sichtbar machen
 
             # Widgets im Frame aktualisieren
-            self.update_frame_widgets(page_instance)
+            #self.update_frame_widgets(page_instance)
 
             if hasattr(page_instance, 'on_load') and callable(page_instance.on_load):
                 logger.debug(f"on_load is being called for {page_type.__name__}")  # Debug
                 page_instance.on_load()
+        page_instance.update_idletasks()
         return page_instance
 
 if __name__ == "__main__":

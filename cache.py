@@ -1,3 +1,4 @@
+main_instance = None
 user = ""
 user_group = ""
 user_group_data = {'USER_ERSTELLEN':True}

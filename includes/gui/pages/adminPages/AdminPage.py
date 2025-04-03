@@ -1,14 +1,14 @@
 from abc import ABC, abstractmethod
 
-from typing_extensions import override, Callable
+from typing_extensions import Callable, override
 import tkinter
 import cache
 
 from includes.gui.pages import MainPage
-from .AdminUserPage import *
 from ..IPage import IPage
-from includes.gui._styles import *
+from includes.gui.styles import *
 from includes.util import Paths
+from includes.util.Logging import Logger
 
 logger:Logger = Logger('AdminPage')
 
@@ -31,22 +31,27 @@ class AdminPage(IPage, ABC):
         """
             .
         """
-        super().__init__(parent, controller, window_name=window_name, admin_mode=True)
+        super().__init__(parent, controller, window_name=window_name, header_text=header_text, admin_mode=True)
         self.header_text = header_text
         self.admin_user_window_avatar = cache.user_avatar
         self.tree_structure = tree_structure
 
-        from ..adminPages.AdminUserPage import AdminUserPage
-        from ..adminPages.AdminRoomPage import AdminRoomPage
+        from .AdminUserPage import AdminUserPage
+        from .AdminRoomPage import AdminRoomPage
+        from .AdminRolePage import AdminRolePage
 
         self.enable_navigation_bar(
             [
                 ('Nutzer', lambda:self.controller.show_frame(AdminUserPage)),
                 ('Räume',lambda:self.controller.show_frame(AdminRoomPage)),
-                ('Rollen', lambda:self.controller.show_frame(AdminRoomPage)),
+                ('Rollen', lambda:self.controller.show_frame(AdminRolePage)),
             ]
         )
-        self.enable_searchbar(lambda _: add_button_callback(), add_button_callback)
+
+        def on_finish_search(search_term:str) -> None:
+            pass
+
+        self.enable_searchbar(on_finish_search, add_button_callback)
         self.toggle_right_sidebar()
         self.toggle_left_sidebar()
         self.apply_layout()
@@ -71,20 +76,19 @@ class AdminPage(IPage, ABC):
             bd=0,
             relief=tkinter.FLAT,
             cursor="hand2",
-            bg="#DF4807",
+            bg=srh_blue,
             activebackground="#DF4807"
         )
 
         self.srh_image_label = tkinter.Label(
             frame,
             image=self.srh_image,
-            background="#DF4807",
+            background=srh_blue,
             foreground="white"
         )
-        print('header text:'+self.header_text)
         self.header_text_label = tkinter.Label(
             frame,
-            background="#DF4807",
+            background=srh_blue,
             text=self.header_text,
             font=('Arial', 30),
             foreground="white"
@@ -113,10 +117,14 @@ class AdminPage(IPage, ABC):
 
 #        self.navigation_frame.grid(row=1, column=0, columnspan=5, sticky="NSWE")
 
-        self.srh_image_label.grid(row=0, column=0, padx=20, pady=20, sticky=tkinter.W)
-        self.header_text_label.grid(row=0, column=2, padx=0, pady=50, sticky="")
-        self.options_button.grid(row=0, column=4, sticky=tkinter.E, padx=20)
-        self.exit_admin_mode_button.grid(row=0, column=5, sticky=tkinter.E, padx=20)
+        self.srh_image_label.grid(row=0, column=0, padx=20, pady=20, sticky='W')
+        self.header_text_label.grid(row=0, column=2, padx=0, pady=50, sticky='')
+        self.options_button.grid(row=0, column=4, sticky='E', padx=20)
+        self.exit_admin_mode_button.grid(row=0, column=5, sticky='E', padx=20)
+
+    @override
+    def on_load(self):
+        super().on_load()
 
     @override
     def setup_main_frame(self, frame:tkinter.Frame) -> None:
