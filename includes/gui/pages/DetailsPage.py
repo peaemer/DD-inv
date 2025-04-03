@@ -9,7 +9,7 @@ from includes.CTkScrollableDropdown import *
 from includes.windows.customMessageBoxDelete import *
 from includes.windows._sort_tree import sort_column
 import includes.sec_data_info.sqlite3api as db
-from includes.windows._styles import size_details_window, corner, border, srh_grey, comboborder, srh_grey_hover
+from includes.windows.styles import size_details_window, corner, border, srh_grey, comboborder, srh_grey_hover
 from includes.CTkScrollableDropdown import CTkScrollableDropdownFrame
 
 logger:Logger = Logger('DetailsWindow')

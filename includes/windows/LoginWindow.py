@@ -13,7 +13,7 @@ import cache
 from includes.windows.customMessageBoxDelete import customMessageBoxDelete
 from includes.windows.IWindow import IWindow
 from includes.windows._avatarManager import loadImage, check_internet_connection
-from includes.windows._styles import LARGEFONT, LOGINFONT, corner, border, srh_grey, srh_orange
+from includes.windows.styles import LARGEFONT, LOGINFONT, corner, border, srh_grey, srh_orange
 from includes.sec_data_info import sqlite3api
 from includes.util import Paths
 from main import DdInv

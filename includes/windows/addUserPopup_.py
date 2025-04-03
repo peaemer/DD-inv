@@ -6,7 +6,7 @@ from ..CTkScrollableDropdown import *
 from includes.sec_data_info import sqlite3api as db
 from .customMessageBoxDelete import customMessageBoxDelete
 import string, random
-from ._styles import *
+from .styles import *
 from ..util import Paths
 
 logger: Logger = Logger('AddUserPopup')

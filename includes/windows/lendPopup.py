@@ -5,7 +5,7 @@ from includes.util.Logging import Logger
 from ..CTkScrollableDropdown import *
 from datetime import datetime
 import cache
-from ._styles import *
+from .styles import *
 from includes.sec_data_info import sqlite3api as db
 from main import DdInv
 

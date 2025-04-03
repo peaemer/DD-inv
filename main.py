@@ -3,18 +3,13 @@ import tkinter as tk
 from tkinter import font
 from typing import Tuple, Any
 
-#from includes.gui.pages.IPage import IPage
-#from includes.gui.pages.adminPages.AdminPage import IPage
+from includes.util import Preprocessor
 from includes.util import Paths
-from includes.util.Paths import *
 from includes.util.ConfigManager import ConfigManager, Configuration
 from includes.util.Logging import Logger
 
 
 logger: Logger = Logger('main')
-
-gen_paths()
-gen_app_files()
 
 config_manager:ConfigManager = ConfigManager(Paths.app_files_path_string + r'\DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
 
@@ -56,7 +51,6 @@ class DdInv(tk.Tk):
             )
 
         screen_height, screen_width = load_resolution()
-        print(screen_width, screen_height)
         self.geometry(f'{screen_width}x{screen_height}+0+0')
 
         self.iconbitmap(Paths.assets_path("srhIcon.ico"))
@@ -125,5 +119,6 @@ class DdInv(tk.Tk):
         return page_instance
 
 if __name__ == "__main__":
+    Preprocessor.run()
     app = DdInv()
     app.mainloop()

@@ -2,7 +2,7 @@ import json
 import tkinter as tk
 
 from includes.util.Logging import Logger
-from ._styles import *
+from .styles import *
 import cache
 import customtkinter as ctk
 from ..CTkScrollableDropdown import *

@@ -10,7 +10,7 @@ from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 from includes.util.ConfigManager import ConfigManager,Configuration
 from includes.util.Logging import Logger, DEBUG_MODE_NORMAL, DEBUG_MODE_ALL
 from includes.sec_data_info import sqlite3api as db
-from ._styles import *
+from .styles import *
 import cache
 from main import config_manager
 

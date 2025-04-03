@@ -6,7 +6,7 @@ import customtkinter as ctk
 
 import cache
 from includes.windows.IPopUp import IPopUp
-from includes.windows._styles import size_add_item_popup, srh_grey, corner, comboborder, srh_grey_hover
+from includes.windows.styles import size_add_item_popup, srh_grey, corner, comboborder, srh_grey_hover
 from includes.CTkScrollableDropdown import CTkScrollableDropdownFrame
 from includes.util import Paths
 from includes.util.Logging import Logger

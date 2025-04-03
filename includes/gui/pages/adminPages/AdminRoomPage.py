@@ -55,7 +55,7 @@ class AdminRoomPage(tk.Frame):
             self.update_treeview_with_data(data=search_entrys)
 
         def add_room():
-            #from .addRoomPopup_ import add_room_popup
+            from ...popups.AddRoomPopup import AddRoomPopup
             #add_room_popup(self)
             AddRoomPopup(self.winfo_toplevel())
 
@@ -75,7 +75,7 @@ class AdminRoomPage(tk.Frame):
         def change_to_user():
             from .AdminUserPage import AdminUserPage
             controller.show_frame(AdminUserPage)
-            AdminUserPage.update_treeview_with_data()
+            #AdminUserPage.update_treeview_with_data()
 
         def change_to_roles():
             from .AdminRolePage import AdminRoleWindow

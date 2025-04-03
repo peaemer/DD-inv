@@ -3,7 +3,7 @@ from tkinter import ttk, messagebox
 
 from .customMessageBoxDelete import *
 import includes.sec_data_info.sqlite3api as db
-from ._styles import *
+from .styles import *
 
 
 def show_room_details(selected_room, tree, controller):

@@ -10,7 +10,7 @@ from .Searchbar import SearchbarLogic as sb
 from .Searchbar.Searchbar import Searchbar
 from includes.util.Logging import Logger
 import cache
-from ._styles import *
+from .styles import *
 import customtkinter as ctk
 from .ctk_listbox import *
 

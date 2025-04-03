@@ -3,7 +3,7 @@ import customtkinter as ctk
 
 from includes.sec_data_info import sqlite3api as sqlapi
 from includes.util.Logging import Logger
-from ._styles import *
+from .styles import *
 
 
 def add_room_popup(parent):

@@ -15,7 +15,7 @@ from includes.util.Logging import Logger
 from includes.windows import sort_column
 from includes.windows.Searchbar import SearchbarLogic
 from includes.windows.Searchbar.Searchbar import Searchbar
-from includes.windows._styles import srh_orange, srh_blue, srh_grey, border, corner, nav_bar_hover_color, scroll_corner
+from includes.windows.styles import srh_orange, srh_blue, srh_grey, border, corner, nav_bar_hover_color, scroll_corner
 from includes.windows.ctk_listbox import CTkListbox
 
 logger:Logger = Logger('IPage')
@@ -34,7 +34,7 @@ class IPage(tkinter.Frame, ABC):
             :param bool admin_mode:
 
         """
-        super().__init__(parent, background='black',name=window_name)
+        super().__init__(parent, background='white',name=window_name)
         self.controller = controller
         self.parent = parent
         self.header_text = header_text
@@ -44,13 +44,13 @@ class IPage(tkinter.Frame, ABC):
         self.__header_buttons_frame_right:tkinter.Frame = tkinter.Frame(self.__header_frame, background=srh_orange if admin_mode else srh_blue)
         self.__header_buttons_frame_left:tkinter.Frame = tkinter.Frame(self.__header_frame, background=srh_orange if admin_mode else srh_blue)
 
-        self.__navigation_bar_frame:tkinter.Frame = tkinter.Frame(self, background='blue')
-        self.__searchbar_frame:tkinter.Frame = tkinter.Frame(self, background='green')
-        self.__dropdown_overlay_frame:tkinter.Frame = tkinter.Frame(self, background='purple')
+        self.__navigation_bar_frame:tkinter.Frame = tkinter.Frame(self, background=srh_grey)
+        self.__searchbar_frame:tkinter.Frame = tkinter.Frame(self, background='white')
+        self.__dropdown_overlay_frame:tkinter.Frame = tkinter.Frame(self, background='white')
 
-        self.__center_frame:tkinter.Frame = tkinter.Frame(self, background='red')
-        self.__left_bar_frame:tkinter.Frame = tkinter.Frame(self, background='yellow')
-        self.__right_bar_frame:tkinter.Frame = tkinter.Frame(self, background='yellow')
+        self.__center_frame:tkinter.Frame = tkinter.Frame(self, background='white')
+        self.__left_bar_frame:tkinter.Frame = tkinter.Frame(self, background='white')
+        self.__right_bar_frame:tkinter.Frame = tkinter.Frame(self, background='white')
 
         self.navigation_buttons: list[customtkinter.CTkButton] = []
 
@@ -67,8 +67,11 @@ class IPage(tkinter.Frame, ABC):
         self.__searchbar_enabled: bool = False
         self.__navigation_bar_enabled: bool = False
         self.__treeview_enabled: bool = False
+
         self.__overlay_left_sidebar:bool = self.setup_side_bar_left(self.__left_bar_frame)
         self.__overlay_right_sidebar:bool = self.setup_side_bar_right(self.__right_bar_frame)
+        self.__hide_left_sidebar:bool = False
+        self.__hide_right_sidebar:bool = False
 
         self.__get_treeview_data_callback:Callable[[],list[dict[str,str]]]|None = None
         self.__on_click_callback:Callable[[str],None]|None = None
@@ -79,49 +82,6 @@ class IPage(tkinter.Frame, ABC):
         self.setup_main_frame(self.__center_frame)
 
         self.apply_layout()
-
-    @abstractmethod
-    def setup_main_frame(self, frame:tkinter.Frame) -> None:
-        """
-            All Subclasses o fIWindow must override this method.
-            Code that adds content to the main frame should be called in this method.
-        """
-
-    @abstractmethod
-    def setup_header_bar(self, frame:tkinter.Frame) -> None:
-        """
-            All Subclasses o fIWindow must override this method.
-            Code that adds content to the header frame should be called in this method.
-        """
-
-    @abstractmethod
-    def setup_side_bar_left(self, frame:tkinter.Frame) -> bool:
-        """
-            All Subclasses o fIWindow must override this method.
-            Code that adds content to the frame of the left sidebar should be called in this method.
-            If the method returns True, the left sidebar will go from the bottom up to the top of the window, by
-            narrowing the header frame.
-            If the method returns False, the left sidebar will start from the bottom of the window and end at the bottom of the
-            header frame. The header frame will extend to the left of the window.
-        """
-
-    @abstractmethod
-    def setup_side_bar_right(self, frame:tkinter.Frame) -> bool:
-        """
-            All Subclasses o fIWindow must override this method.
-            Code that adds content to the frame of the right sidebar should be called in this method.
-            If the method returns True, the right sidebar will go from the bottom up to the top of the window, by
-            narrowing the header frame.
-            If the method returns False, the right sidebar will start from the bottom of the window and end at the bottom of the
-            header frame. The header frame will extend to the right of the window.
-        """
-
-    def on_load(self):
-        """
-            Subclasses o fIWindow can optionally override this method.
-            It is called everytime a shown again by the current DdInv instance
-        """
-        pass
 
     def __sort_column(self, col, reverse=False):
         """
@@ -183,6 +143,50 @@ class IPage(tkinter.Frame, ABC):
         # Header aktualisieren, um Sortierrichtung zu wechseln
         self.treeview.heading(col, command=lambda c=col: sort_column(self.treeview, c, not reverse))
 
+    @abstractmethod
+    def setup_main_frame(self, frame:tkinter.Frame) -> None:
+        """
+            All Subclasses o fIWindow must override this method.
+            Code that adds content to the main frame should be called in this method.
+        """
+
+    @abstractmethod
+    def setup_header_bar(self, frame:tkinter.Frame) -> None:
+        """
+            All Subclasses o fIWindow must override this method.
+            Code that adds content to the header frame should be called in this method.
+        """
+
+    @abstractmethod
+    def setup_side_bar_left(self, frame:tkinter.Frame) -> bool:
+        """
+            All Subclasses o fIWindow must override this method.
+            Code that adds content to the frame of the left sidebar should be called in this method.
+            If the method returns True, the left sidebar will go from the bottom up to the top of the window, by
+            narrowing the header frame.
+            If the method returns False, the left sidebar will start from the bottom of the window and end at the bottom of the
+            header frame. The header frame will extend to the left of the window.
+        """
+
+    @abstractmethod
+    def setup_side_bar_right(self, frame:tkinter.Frame) -> bool:
+        """
+            All Subclasses o fIWindow must override this method.
+            Code that adds content to the frame of the right sidebar should be called in this method.
+            If the method returns True, the right sidebar will go from the bottom up to the top of the window, by
+            narrowing the header frame.
+            If the method returns False, the right sidebar will start from the bottom of the window and end at the bottom of the
+            header frame. The header frame will extend to the right of the window.
+        """
+
+    def on_load(self):
+        """
+            Subclasses o fIWindow can optionally override this method.
+            It is called everytime a page is shown again by the current DdInv instance
+        """
+        pass
+
+
     def enable_treeview(self, get_data_callback:Callable[[], list[dict[str,str]]], on_click_callback:Callable[[str],None], tree_structure:dict[str,int]):
         """
             .
@@ -211,7 +215,7 @@ class IPage(tkinter.Frame, ABC):
             orientation="horizontal",
             command=self.treeview.xview,
             fg_color="white",
-            width=20,  # <--- +++++side scrollbar visibility+++++ #
+            height=20,  # <--- +++++side scrollbar visibility+++++ #
             corner_radius=scroll_corner,
             button_color=srh_grey,
             button_hover_color=srh_blue
@@ -369,6 +373,14 @@ class IPage(tkinter.Frame, ABC):
         self.__center_frame.tkraise(self.__dropdown_overlay_frame)
         self.apply_layout()
 
+    def toggle_left_sidebar(self):
+        """."""
+        self.__hide_left_sidebar = True
+
+    def toggle_right_sidebar(self):
+        """."""
+        self.__hide_right_sidebar = not self.__hide_right_sidebar
+
     def apply_layout(self):
         """
             arrange the default items depending on which ones are ment to be shown
@@ -403,6 +415,7 @@ class IPage(tkinter.Frame, ABC):
                 row=1,
                 column=1 if self.__overlay_left_sidebar else 0,
                 columnspan=3 - (1 if self.__overlay_left_sidebar else 0) - (1 if self.__overlay_right_sidebar else 0),
+                padx=10,
                 sticky='NSWE'
             )
 
@@ -419,14 +432,16 @@ class IPage(tkinter.Frame, ABC):
         self.__center_frame.grid(
             row=1 + (1 if self.__searchbar_enabled else 0) + (1 if self.__navigation_bar_enabled else 0),
             column=1,
+            padx=10,
+            pady=(0,10),
             sticky='NSWE'
         )
 
         #self.__center_frame.tkraise(self.__dropdown_overlay_frame)
 
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0 if self.__hide_left_sidebar else 1)
         self.grid_columnconfigure(1, weight=4)
-        self.grid_columnconfigure(2, weight=1)
+        self.grid_columnconfigure(2, weight=0 if self.__hide_left_sidebar else 1)
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=0 if self.__navigation_bar_enabled or self.__searchbar_enabled else 4)
         self.grid_rowconfigure(2, weight=4 if self.__navigation_bar_enabled ^ self.__searchbar_enabled else 0)

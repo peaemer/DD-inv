@@ -4,7 +4,7 @@ from tkinter import messagebox
 from main import DdInv
 from includes.sec_data_info import sqlite3api as sqlapi
 from .customMessageBoxDelete import *
-from ._styles import *
+from .styles import *
 
 logger:Logger = Logger('RolesDetailsWindow')
 

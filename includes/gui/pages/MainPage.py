@@ -13,7 +13,7 @@ from includes.windows.Searchbar.Searchbar import Searchbar
 from includes.util.Logging import Logger
 from includes.util import Paths
 import cache
-from includes.windows._styles import *
+from includes.windows.styles import *
 import customtkinter as ctk
 from includes.windows.ctk_listbox import *
 
@@ -69,7 +69,7 @@ class MainPage(IPage):
         def show_admin_window():
             from .adminPages.AdminUserPage import AdminUserPage
             controller.show_frame(AdminUserPage)
-            AdminUserPage.update_treeview_with_data()
+            #AdminUserPage.update_treeview_with_data()
 
         # Speichere die Funktion als Attribut, um später darauf zuzugreifen
         self.show_admin_window = show_admin_window

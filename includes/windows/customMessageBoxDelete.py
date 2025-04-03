@@ -4,7 +4,7 @@ import customtkinter as ctk
 
 import cache
 from includes.util.Logging import Logger
-from ._styles import *
+from .styles import *
 
 logger: Logger = Logger('SettingsWindow')
 

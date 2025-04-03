@@ -4,7 +4,7 @@ from tkinter import ttk
 import includes.sec_data_info.sqlite3api as sqlapi
 import cache
 from .AddRoomPopup import AddRoomPopup
-from ._styles import *
+from .styles import *
 from ._sort_tree import sort_column
 import customtkinter as ctk
 

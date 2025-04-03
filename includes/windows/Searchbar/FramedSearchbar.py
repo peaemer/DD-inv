@@ -5,7 +5,7 @@ from customtkinter import CTkTextbox
 import tkinter as tk
 
 from includes.util.Logging import Logger
-from .._styles import srh_grey
+from ..styles import srh_grey
 from includes.windows.ctk_listbox import CTkListbox
 from .SearchbarLogic import start_search, update_search, finish_search, get_most_suggested_term
 

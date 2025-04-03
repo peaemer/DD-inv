@@ -4,7 +4,7 @@ import customtkinter as ctk
 
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
-from ._styles import *
+from .styles import *
 from includes.util.Logging import Logger
 from ._sort_tree import sort_column
 from ..util import Paths

@@ -7,7 +7,7 @@ import customtkinter
 import customtkinter as ctk
 
 from includes.windows.IPopUp import IPopUp
-from includes.windows._styles import corner, border, size_add_role_popup
+from includes.windows.styles import corner, border, size_add_role_popup
 from includes.util import Paths
 from includes.util.Logging import Logger
 from includes.sec_data_info import sqlite3api as db

@@ -4,7 +4,7 @@
 import tkinter
 from abc import ABC, abstractmethod
 
-from includes.windows._styles import srh_orange, srh_blue
+from includes.windows.styles import srh_orange, srh_blue
 
 class IWindow(tkinter.Frame, ABC):
     """

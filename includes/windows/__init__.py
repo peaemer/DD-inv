@@ -14,18 +14,22 @@ from .AdminRoleWindow import AdminRoleWindow
 from .RolesDetailsWindow import RolesDetailsWindow
 from .customMessageBoxDelete import customMessageBoxDelete
 from ._sort_tree import *
+from . import styles
 
 
-__all__ = ["LoginWindow",
-           "MainPage",
-           "AddItemPopup",
-           "settingsWindow",
-           "DetailsWindow",
-           "AdminUserWindow",
-           "UserDetailsWindow",
-           "AdminRoomWindow",
-           "RoomDetailsWindow",
-           "AdminRoleWindow",
-           "RolesDetailsWindow",
-           "customMessageBoxDelete",
-           ]
+__all__ = [
+    "LoginWindow",
+    "MainPage",
+    "AddItemPopup",
+    "settingsWindow",
+    "DetailsWindow",
+    "AdminUserWindow",
+    "UserDetailsWindow",
+    "AdminRoomWindow",
+    "RoomDetailsWindow",
+    "AdminRoleWindow",
+    "RolesDetailsWindow",
+    "customMessageBoxDelete",
+    "sort_column",
+    "styles",
+]

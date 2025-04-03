@@ -6,7 +6,7 @@ from .customMessageBoxDelete import *
 from includes.util.Logging import Logger
 from ..sec_data_info import UserSecurity
 from ._sort_tree import sort_column
-from ._styles import *
+from .styles import *
 import includes.sec_data_info.sqlite3api as db
 
 

@@ -3,7 +3,7 @@ import customtkinter as ctk
 
 from includes.util.Logging import Logger
 from includes.sec_data_info import sqlite3api as db
-from ._styles import *
+from .styles import *
 from ..util import Paths
 
 

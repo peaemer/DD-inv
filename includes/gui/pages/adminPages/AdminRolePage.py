@@ -1,17 +1,52 @@
 import tkinter as tk
 from tkinter import ttk
 import customtkinter as ctk
+from typing_extensions import override
 
 from includes.sec_data_info import sqlite3api as sqlapi
 import cache
+from .AdminPage import AdminPage
 from ..._styles import *
 from includes.util.Logging import Logger
 from includes.windows._sort_tree import sort_column
 from includes.util import Paths
 from .AdminRoomPage import AdminRoomPage
+from ...popups.AddUserPopup import AddUserPopup
 
 logger:Logger = Logger('AdminRoleWindow')
 
+class AdminRolePage(AdminPage):
+    @override
+    def on_cell_click(self, cell_text:str) -> None:
+        pass
+
+    def __init__(self, parent, controller):
+        super().__init__(
+            parent,
+            controller,
+            header_text='Nutzer-Übersicht',
+            window_name='dd inv',
+            add_button_callback=lambda :AddUserPopup(self.winfo_toplevel()),
+            get_data_callback=sqlapi.read_all_benutzer,
+            select_item_callback=None,
+            tree_structure={
+                'Rolle':250,
+                'Rolle Löschbar': 200,
+                'Ansehen':300,
+                'Löschen':100,
+                'Bearbeiten':100,
+                'Erstellen':100,
+                'Gruppe Löschen':100,
+                'Gruppe Erstellen':100,
+                'Gruppe Bearbeiten':100,
+                'Rollen Bearbeiten':100,
+                'Rollen Löschen':100,
+                'User Löschen':100,
+                'User Bearbeiten':100,
+                'User Erstellen':100,
+            }
+        )
+        self.apply_layout()
 
 # Hauptseite (zweites Fenster)
 class AdminRoleWindow(tk.Frame):
