@@ -8,7 +8,6 @@ config_manager:ConfigManager = ConfigManager(Paths.app_files_path_string + r'\DD
 from includes.util.Paths import *
 from includes.util.Logging import Logger
 from includes.pages.LoginWindow import LoginWindow
-from includes.pages.LoginWindow_ import LoginWindow_
 
 
 logger: Logger = Logger('main')
