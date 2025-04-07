@@ -15,7 +15,7 @@ from includes.util import Paths
 from includes.util.Logging import Logger
 from includes.sec_data_info import sqlite3api as db
 
-logger: Logger = Logger('AddItemPopup2')
+logger: Logger = Logger('AddItemPopup')
 
 class AddItemPopup(IPopUp):
     

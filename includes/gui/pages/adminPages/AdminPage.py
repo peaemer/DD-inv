@@ -16,11 +16,11 @@ logger:Logger = Logger('AdminPage')
 # Hauptseite (zweites Fenster)
 class AdminPage(IPage, ABC):
 
-    from main import DdInv
+    from main import DDInv
     def __init__(
         self,
         parent:tkinter.Widget|tkinter.Toplevel,
-        controller:DdInv,
+        controller:DDInv,
         add_button_callback:Callable,
         get_data_callback:Callable|None,
         select_item_callback:Callable|None,
@@ -48,10 +48,7 @@ class AdminPage(IPage, ABC):
             ]
         )
 
-        def on_finish_search(search_term:str) -> None:
-            pass
-
-        self.enable_searchbar(on_finish_search, add_button_callback)
+        self.enable_searchbar(add_button_callback)
         self.toggle_right_sidebar()
         self.toggle_left_sidebar()
         self.apply_layout()

@@ -1,9 +1,8 @@
-import importlib
 import tkinter as tk
 from tkinter import font
 from typing import Tuple, Any
 
-from includes.util import Preprocessor
+from includes.logic import Preprocessor
 from includes.util import Paths
 from includes.util.ConfigManager import ConfigManager, Configuration
 from includes.util.Logging import Logger
@@ -14,14 +13,20 @@ logger: Logger = Logger('main')
 config_manager:ConfigManager = ConfigManager(Paths.app_files_path_string + r'\DD-inv.config', ['Fenster Aufloesung', 'Regeln fuer neue Passwoerter', 'Suchleiste', 'Admin Debug Mode', 'Zoom indicator'])
 
 
-class DdInv(tk.Tk):
+class DDInv(tk.Tk):
+    """
+        this class controls the flow of the application and contains the main entry point.
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        Preprocessor.after_window_init()
         self.title("Inventartool")
         self.configure(background="white")
         self.state("zoomed")
 
         def get_zoom_parameter():
+            """."""
             config: Configuration = config_manager.generate_configuration('Zoom indicator')
             try:
                 saved_value = config.read_parameter('Zoom indicator', generate_if_missing=True, gen_initial_value='1')
@@ -69,6 +74,8 @@ class DdInv(tk.Tk):
 
         # Login-Fenster zuerst laden
         from includes.gui.pages.LoginPage import LoginPage
+        from includes.gui.popupFrames.PopupFrameSupport import PopupFrameSupport
+        #PopupFrameSupport(self,self)
         self.show_frame(LoginPage)
 
     def update_zoom(self, value):
@@ -94,11 +101,11 @@ class DdInv(tk.Tk):
         # Aktualisiere das Layout und die Widgets im Frame, um sicherzustellen, dass alle Änderungen angewendet werden
         frame.update_idletasks()  # Stellt sicher, dass Layout und Widgets neu berechnet werden
 
-    from includes.gui.pages import IPage
     def show_frame(self, page_type:type) -> Any|None:
+        """
+            .
+        """
         from includes.gui.pages import IPage
-        #if not issubclass(page_type, IPage):
-        #    raise RuntimeError(f"Page type {page_type} is not a subclass of IPage")
         page_instance:IPage
         if page_type not in self.frames.keys():
             logger.debug(f"{page_type.__name__} is being dynamically created.")  # Debug
@@ -115,29 +122,7 @@ class DdInv(tk.Tk):
             page_instance.on_load()
         return page_instance
 
-        self.frames[page_type] = page_instance  # Zu Frames hinzufügen
-        if True:
-            pass
-        else:
-            logger.debug(f"{page_type.__name__} already exists inside loaded frames.")
-
-        page_instance = self.frames[page_type]  # Existierenden Frame verwenden
-        from includes.gui.pages.IPage import IPage
-        if issubclass(page_type, IPage):
-            logger.debug(f'page type {page_instance.__class__.__name__} is a subclass of IPage')
-            page_instance.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
-            page_instance.tkraise()  # Frame sichtbar machen
-
-            # Widgets im Frame aktualisieren
-            #self.update_frame_widgets(page_instance)
-
-            if hasattr(page_instance, 'on_load') and callable(page_instance.on_load):
-                logger.debug(f"on_load is being called for {page_type.__name__}")  # Debug
-                page_instance.on_load()
-        page_instance.update_idletasks()
-        return page_instance
-
 if __name__ == "__main__":
-    Preprocessor.run()
-    app = DdInv()
+    Preprocessor.pre_application()
+    app = DDInv()
     app.mainloop()

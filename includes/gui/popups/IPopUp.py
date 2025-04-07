@@ -4,7 +4,7 @@ import tkinter as tk
 from abc import ABC, abstractmethod
 from typing import Tuple, Callable, Any
 
-from includes.windows.styles import srh_orange, srh_blue
+from includes.gui.styles import srh_orange, srh_blue
 from includes.util import Paths
 from includes.util.Logging import Logger
 

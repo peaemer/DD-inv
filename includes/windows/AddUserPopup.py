@@ -7,7 +7,7 @@ import customtkinter as ctk
 
 from includes.windows.customMessageBoxDelete import customMessageBoxDelete
 from includes.windows.IPopUp import IPopUp
-from includes.windows.styles import srh_grey, corner, comboborder, srh_grey_hover, size_add_user_popup, border
+from includes.gui.styles import srh_grey, corner, comboborder, srh_grey_hover, size_add_user_popup, border
 from includes.CTkScrollableDropdown import CTkScrollableDropdownFrame
 from includes.util import Paths
 from includes.util.Logging import Logger

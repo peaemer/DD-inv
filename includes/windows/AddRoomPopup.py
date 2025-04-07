@@ -5,7 +5,7 @@ import customtkinter
 
 from includes.sec_data_info import sqlite3api as sqlapi
 from .IPopUp import IPopUp
-from .styles import *
+from includes.gui.styles import *
 from ..util import Paths
 
 

@@ -12,10 +12,9 @@ from customtkinter import CTkEntry
 import cache
 from includes.util import Paths
 from includes.util.Logging import Logger
-from includes.windows import sort_column
 from includes.windows.Searchbar import SearchbarLogic
 from includes.windows.Searchbar.Searchbar import Searchbar
-from includes.windows.styles import srh_orange, srh_blue, srh_grey, border, corner, nav_bar_hover_color, scroll_corner
+from includes.gui.styles import *
 from includes.windows.ctk_listbox import CTkListbox
 
 logger:Logger = Logger('IPage')
@@ -74,16 +73,16 @@ class IPage(tkinter.Frame, ABC):
         self.__hide_right_sidebar:bool = False
 
         self.__get_treeview_data_callback:Callable[[],list[dict[str,str]]]|None = None
-        self.__on_click_callback:Callable[[str],None]|None = None
+        self.__on_cell_click_callback: Callable[[dict[str,str|list[str]]],None] | None = None
 
         self.__treeview_structure:dict[str,int]|None = None
 
-        self.setup_header_bar(self.__header_frame)
-        self.setup_main_frame(self.__center_frame)
+        self.after(0, self.setup_header_bar, self.__header_frame)
+        self.after(0, self.setup_main_frame, self.__center_frame)
 
         self.apply_layout()
 
-    def __sort_column(self, col, reverse=False):
+    def __sort_column(self, col, reverse:bool=False):
         """
         Sortiert die Einträge einer Spalte in einer `ttk.Treeview`-Tabelle.
 
@@ -116,6 +115,7 @@ class IPage(tkinter.Frame, ABC):
 
         # Prüfen, ob die Spalte hauptsächlich numerische Daten enthält
         def is_numeric(value):
+            """."""
             try:
                 float(value)
                 return True
@@ -141,7 +141,7 @@ class IPage(tkinter.Frame, ABC):
             self.treeview.item(item, tags=(tag,))
 
         # Header aktualisieren, um Sortierrichtung zu wechseln
-        self.treeview.heading(col, command=lambda c=col: sort_column(self.treeview, c, not reverse))
+        self.treeview.heading(col, command=lambda c=col: self.__sort_column(c, not reverse))
 
     @abstractmethod
     def setup_main_frame(self, frame:tkinter.Frame) -> None:
@@ -215,10 +215,15 @@ class IPage(tkinter.Frame, ABC):
         print(self.__treeview_structure)
         for column_name in enumerate(self.__treeview_structure.keys()):
             self.treeview.column(f'# {i}', anchor=tkinter.CENTER, width=self.__treeview_structure[column_name[1]])
-            self.treeview.heading(f'# {i}', text=column_name[1], command=lambda c=f'# {i}': sort_column(self.treeview, c, True))
+            self.treeview.heading(f'# {i}', text=column_name[1], command=lambda c=f'# {i}': self.__sort_column(c, True))
             i+=1
 
-    def enable_treeview(self, get_data_callback:Callable[[], list[dict[str,str]]], on_click_callback:Callable[[str],None], tree_structure:dict[str,int]):
+    def enable_treeview(
+            self,
+            get_data_callback:Callable[[],list[dict[str,str]]],
+            on_cell_click_callback:Callable[[dict[str,str]],None],
+            tree_structure:dict[str,int]
+    ):
         """
             .
         """
@@ -262,13 +267,18 @@ class IPage(tkinter.Frame, ABC):
                 return {}
             self.__get_treeview_data_callback = callback
 
-        if callable(on_click_callback):
-            self.__on_click_callback = on_click_callback
+        if callable(on_cell_click_callback):
+            self.__on_cell_click_callback = on_cell_click_callback
         else:
-            def callback():
-                """a callback that returns an empty data dictionary"""
-                pass
-            self.__on_click_callback = callback
+            pass
+
+        def callback():
+            """a callback that returns an empty data dictionary"""
+            print(self.treeview.item(self.treeview.focus()))
+        self.__on_cell_click_callback = callback
+
+        #self.treeview.bind("<Double-1>", lambda _:self.__on_click_callback(self.treeview.item(self.treeview.focus())))
+        self.treeview.bind("<Double-1>", lambda _:self.__on_cell_click_callback())
 
         self.__center_frame.grid_rowconfigure(0, weight=1)
         self.__center_frame.grid_rowconfigure(1, weight=0)
@@ -283,7 +293,7 @@ class IPage(tkinter.Frame, ABC):
         self.apply_layout()
         self.update_treeview()
 
-    def enable_navigation_bar(self, buttons:list[tuple[str, Callable]], admin_mode=False):
+    def enable_navigation_bar(self, buttons:list[tuple[str, Callable]]):
         """
             .
         """
@@ -321,9 +331,12 @@ class IPage(tkinter.Frame, ABC):
                         search_entries.append(entry)
         self.update_treeview(data=search_entries)
 
-    def enable_searchbar(self, search_callback:Callable[[str],None], add_item_callback:Callable) -> None:
+    def enable_searchbar(self, add_item_callback:Callable) -> None:
         """
-            .
+            creates a frame on top of the center frame.
+            it contains a search button, the actual searchbar and a button for adding items.
+
+
         """
         if self.__searchbar_enabled:
             raise RuntimeError('enable_navigation_bar was called twice')
@@ -489,4 +502,3 @@ class IPage(tkinter.Frame, ABC):
             self.set_treeview_columns()
             self.update_treeview()
         self.apply_layout()
-

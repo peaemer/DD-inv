@@ -13,7 +13,7 @@ import cache
 from includes.gui.pages.IPage import IPage
 from includes.windows.customMessageBoxDelete import customMessageBoxDelete
 from includes.windows._avatarManager import loadImage, check_internet_connection
-from includes.windows.styles import LARGEFONT, LOGINFONT, corner, border, srh_grey, srh_orange
+from includes.gui.styles import LARGEFONT, LOGINFONT, corner, border, srh_grey, srh_orange
 from includes.sec_data_info import sqlite3api
 from includes.util import Paths
 
@@ -177,7 +177,6 @@ class LoginPage(IPage):
         # Bind die Enter-Taste
         self.username_entry.bind("<Return>", lambda _:self.log_in())
         self.password_entry.bind("<Return>", lambda _:self.log_in())
-
 
     @override
     def setup_header_bar(self, frame:tkinter.Frame) -> None:

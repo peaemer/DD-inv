@@ -3,13 +3,14 @@ from tkinter import ttk
 import customtkinter as ctk
 
 import cache
+from includes.util import Paths
 from includes.windows import customMessageBoxDelete
 from includes.CTkScrollableDropdown import *
 
 from includes.windows.customMessageBoxDelete import *
 from includes.windows._sort_tree import sort_column
 import includes.sec_data_info.sqlite3api as db
-from includes.windows.styles import size_details_window, corner, border, srh_grey, comboborder, srh_grey_hover
+from includes.gui.styles import size_details_window, corner, border, srh_grey, comboborder, srh_grey_hover
 from includes.CTkScrollableDropdown import CTkScrollableDropdownFrame
 
 logger:Logger = Logger('DetailsWindow')
@@ -70,11 +71,10 @@ class DetailsWindow(tk.Frame):
                 Öffnet das Einstellungs-Pop-Up-Fenster im Detailfenster.
             """
             logger.debug("Show settings window details window")
-            from ..settingsWindow import pop_up_settings
+            from SettingsPage import pop_up_settings
             pop_up_settings(self, controller)
 
-        from .._avatarManager import resource_path
-        self.go_back_btn_details_window = tk.PhotoImage(file=resource_path("./includes/assets/ArrowLeft.png"))
+        self.go_back_btn_details_window = tk.PhotoImage(file=Paths.assets_path("ArrowLeft.png"))
 
         initial_entry: dict[str, str] = db.fetch_hardware_by_id(cache.selected_ID)
 
@@ -333,7 +333,7 @@ class DetailsWindow(tk.Frame):
 
         def lend(data):
             logger.debug(f"Übergebene Daten: {data}")
-            from ..lendPopup import lend_popup
+            from includes.windows.lendPopup import lend_popup
             lend_popup(self, data, controller)
 
         def return_item(data):
@@ -351,11 +351,10 @@ class DetailsWindow(tk.Frame):
             update_label.configure(text="")
             controller.show_frame(MainPage)
 
-        from .._avatarManager import resource_path
-        self.edit_btn = tk.PhotoImage(file=resource_path("./includes/assets/Aktualisieren.png"))
-        self.lend_btn = tk.PhotoImage(file=resource_path("./includes/assets/Ausleihen.png"))
-        self.delete_btn = tk.PhotoImage(file=resource_path("./includes/assets/Loeschen.png"))
-        self.return_btn = tk.PhotoImage(file=resource_path("./includes/assets/Zurueckgeben.png"))
+        self.edit_btn = tk.PhotoImage(file=Paths.assets_path("Aktualisieren.png"))
+        self.lend_btn = tk.PhotoImage(file=Paths.assets_path("Ausleihen.png"))
+        self.delete_btn = tk.PhotoImage(file=Paths.assets_path("Loeschen.png"))
+        self.return_btn = tk.PhotoImage(file=Paths.assets_path("Zurueckgeben.png"))
 
         # Buttons in ein separates Frame
         global button_frame_add_item_popup, lend_button, ret_button, delete_button, edit_button

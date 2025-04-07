@@ -56,8 +56,8 @@ class IWindow(tkinter.Frame, ABC):
             Subclasses must implement this method.
         """
 
-    from main import DdInv
-    def __init__(self, parent:tkinter.Widget, controller:DdInv, admin_mode:bool=False, ):
+    from main import DDInv
+    def __init__(self, parent:tkinter.Widget, controller:DDInv, admin_mode:bool=False, ):
         """
             :param tkinter.Toplevel|tkinter.Frame parent:
             :param bool admin_mode:

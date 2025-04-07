@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from main import DdInv
+from main import DDInv
 from includes.sec_data_info import sqlite3api as sqlapi
 from includes.windows.customMessageBoxDelete import *
 from includes.gui.styles import *
@@ -51,7 +51,7 @@ class RolesDetailsWindow(tk.Frame):
     :ivar delete_btn: Bild für den „Löschen“-Button.
     :type delete_btn: tk.PhotoImage
     """
-    def __init__(self, parent, controller: DdInv):
+    def __init__(self, parent, controller: DDInv):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.configure(background="white")

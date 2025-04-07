@@ -16,7 +16,7 @@ from includes.windows._avatarManager import loadImage, check_internet_connection
 from includes.windows.styles import LARGEFONT, LOGINFONT, corner, border, srh_grey, srh_orange
 from includes.sec_data_info import sqlite3api
 from includes.util import Paths
-from main import DdInv
+from main import DDInv
 
 
 # noinspection PyAttributeOutsideInit
@@ -200,7 +200,7 @@ class LoginWindow(IWindow):
     def on_load(self) -> None:
         pass
 
-    def __init__(self, parent:tkinter.Frame, controller:DdInv):
+    def __init__(self, parent:tkinter.Frame, controller:DDInv):
         super().__init__(parent, controller, admin_mode=True)
         check_internet_connection()
         print('init!')

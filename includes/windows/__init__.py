@@ -14,7 +14,7 @@ from .AdminRoleWindow import AdminRoleWindow
 from .RolesDetailsWindow import RolesDetailsWindow
 from .customMessageBoxDelete import customMessageBoxDelete
 from ._sort_tree import *
-from . import styles
+from includes.gui import styles
 
 
 __all__ = [

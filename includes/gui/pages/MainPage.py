@@ -13,7 +13,7 @@ from includes.windows.Searchbar.Searchbar import Searchbar
 from includes.util.Logging import Logger
 from includes.util import Paths
 import cache
-from includes.windows.styles import *
+from includes.gui.styles import *
 import customtkinter as ctk
 from includes.windows.ctk_listbox import *
 
@@ -63,7 +63,7 @@ class MainPage(IPage):
         self.configure(background="white")
 
         def show_settings_window():
-            from SettingsPage import pop_up_settings
+            from .SettingsPage import pop_up_settings
             pop_up_settings(self, controller)
 
         def show_admin_window():

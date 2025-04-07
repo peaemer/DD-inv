@@ -7,12 +7,12 @@ import customtkinter
 import customtkinter as ctk
 
 from includes.gui.popups.IPopUp import IPopUp
-from includes.windows.styles import corner, border, size_add_role_popup
+from includes.gui.styles import corner, border, size_add_role_popup
 from includes.util import Paths
 from includes.util.Logging import Logger
 from includes.sec_data_info import sqlite3api as db
 
-logger: Logger = Logger('AddItemPopup2')
+logger: Logger = Logger('AddRolePopup')
 
 
 class AddRolePopup(IPopUp):

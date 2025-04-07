@@ -6,7 +6,7 @@ from includes.sec_data_info import sqlite3api as sqlapi
 import cache
 from includes.util.Logging import Logger
 from .AddUserPopup import AddUserPopup
-from .styles import *
+from includes.gui.styles import *
 import customtkinter as ctk  #pip install customtkinter
 from ._sort_tree import sort_column
 from ..util import Paths

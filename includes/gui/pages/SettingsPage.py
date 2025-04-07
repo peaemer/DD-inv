@@ -1,16 +1,15 @@
 import tkinter as tk
 import customtkinter as ctk
-from tkinter import ttk
 import webbrowser
 import os
 import sys
 import json
 
-from .customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
+from includes.windows.customMessageBoxResetPasswrd import customMessageBoxResetPasswrd
 from includes.util.ConfigManager import ConfigManager,Configuration
 from includes.util.Logging import Logger, DEBUG_MODE_NORMAL, DEBUG_MODE_ALL
 from includes.sec_data_info import sqlite3api as db
-from ._styles import *
+from includes.gui.styles import *
 import cache
 from main import config_manager
 
@@ -91,8 +90,8 @@ def pop_up_settings(parent:tk, controller):
     popup.resizable(False, False)  # Fenstergroeße anpassbar
 
     #Einfuegen des SRH-Icons
-    from ._avatarManager import resource_path
-    popup.iconbitmap(resource_path("./includes/assets/srhIcon.ico"))  # Fenster-Icon
+    from includes.util import Paths
+    popup.iconbitmap(Paths.assets_path("srhIcon.ico"))  # Fenster-Icon
 
     # Grid-Layout für Popup konfigurieren (danymische groeße)
     popup.grid_rowconfigure(0, weight=0)  # Bereich fuer Kategorien
@@ -124,10 +123,10 @@ def pop_up_settings(parent:tk, controller):
     header_frame_settings.grid_rowconfigure(0, weight=1)
 
     # Icons laden
-    default_icon = tk.PhotoImage(file=resource_path("./includes/assets/ProfileSettingsIcon.png"))
-    category_icons: dict = {"Profil": tk.PhotoImage(file=resource_path("./includes/assets/ProfileSettingsIcon.png")),
-        "System": tk.PhotoImage(file=resource_path("./includes/assets/SystemSettingsIcon.png")),
-        "Über-DD-Inv": tk.PhotoImage(file=resource_path("./includes/assets/Tool.png"))
+    default_icon = tk.PhotoImage(file=Paths.assets_path("ProfileSettingsIcon.png"))
+    category_icons: dict = {"Profil": tk.PhotoImage(file=Paths.assets_path("ProfileSettingsIcon.png")),
+        "System": tk.PhotoImage(file=Paths.assets_path("SystemSettingsIcon.png")),
+        "Über-DD-Inv": tk.PhotoImage(file=Paths.assets_path("Tool.png"))
     }
 
     # Standard-Header-Icon
@@ -148,8 +147,7 @@ def pop_up_settings(parent:tk, controller):
     side_settings.grid_columnconfigure(0, weight=1)
 
     # SRH Logo in der Seitenleiste
-    from ._avatarManager import resource_path
-    popup.srh_logo = tk.PhotoImage(file=resource_path("./includes/assets/srh.png"))
+    popup.srh_logo = tk.PhotoImage(file=Paths.assets_path("srh.png"))
     srh_logo_label = tk.Label(side_settings,
         image=popup.srh_logo,
         bg=srh_orange
@@ -247,11 +245,11 @@ def pop_up_settings(parent:tk, controller):
     profile_image_url.grid(row=2, column=1, columnspan=1, pady=5, sticky="n")
 
     # Importieren der Funktion URL
-    from ._avatarManager import loadImage
+    from includes.windows._avatarManager import loadImage
 
     # Laden des Bildes für Profile Btn
     parent.btn_image_set_profile_picture_settings = tk.PhotoImage(
-        file=resource_path("./includes/assets/SetProfileSettings.png"))
+        file=Paths.assets_path("SetProfileSettings.png"))
 
     # Label für Fehlermeldungen
     info_label_profile = tk.Label(frame_profile,
@@ -303,16 +301,16 @@ def pop_up_settings(parent:tk, controller):
         :type controller: Controller-Klasse
         """
         try:
-            from .LoginWindow_ import LoginWindow__
+            from includes.gui.pages.LoginPage import LoginPage
             cache.user_group = None  # Benutzergruppe zurücksetzen
-            contr.show_frame(LoginWindow__)
+            contr.show_frame(LoginPage)
             popup.destroy()
 
         except Exception as e:
             print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Error during logout by the user. {e}")
 
     # Laden des Bildes auf dem Passwort Btn
-    parent.btn_image_password = tk.PhotoImage(file=resource_path("./includes/assets/ResetPasswordSettings.png"))
+    parent.btn_image_password = tk.PhotoImage(file=Paths.assets_path("ResetPasswordSettings.png"))
 
     # Schriftzug Passwort ändern
     cache.controller = controller
@@ -342,7 +340,7 @@ def pop_up_settings(parent:tk, controller):
         :return: Das Bild der Schaltfläche als `tk.PhotoImage` Objekt.
         :rtype: tk.PhotoImage
         """
-        btn_image_logout = tk.PhotoImage(file=resource_path("./includes/assets/BenutzerAbmeldenSettings.png"))
+        btn_image_logout = tk.PhotoImage(file=Paths.assets_path("BenutzerAbmeldenSettings.png"))
         return btn_image_logout
 
     # Laden des Bildes auf den Abmelden Btn
@@ -442,7 +440,7 @@ def pop_up_settings(parent:tk, controller):
     hoehe_entry.grid(row=5, column=0, pady=7)
 
     # Button zur Bestätigung
-    parent.set_res_btn = tk.PhotoImage(file=resource_path("./includes/assets/SetResSettings.png"))
+    parent.set_res_btn = tk.PhotoImage(file=Paths.assets_path("SetResSettings.png"))
     aendern_button = tk.Button(frame_system,
         image=parent.set_res_btn,
         borderwidth=0,
@@ -655,12 +653,12 @@ def pop_up_settings(parent:tk, controller):
         try:
             if button["image"]:
                 button_image = loadImage(parent=parent, image=button["image"],
-                    defult_image=resource_path("includes/assets/GitHubSettings.png"), width=48,
+                    defult_image=Paths.assets_path("GitHubSettings.png"), width=48,
                     height=48
                 )
             else:
                 # Optional: Ein Standardbild verwenden, wenn kein Bild angegeben ist
-                button_image = tk.PhotoImage(file=resource_path("includes/assets/GitHubSettings.png"))
+                button_image = tk.PhotoImage(file=Paths.assets_path("GitHubSettings.png"))
             parent.images_credits.append(button_image)  # Das Bild in der Liste speichern
             btn_label = tk.Label(frame_ueber,
                 text=button["name"],
@@ -685,14 +683,11 @@ def pop_up_settings(parent:tk, controller):
 
     # Liste mit den Namenm, URL, Bild fuer genutzte Tools
     buttons_data_tools = [
-        {"name": "SQL3", "url": "https://www.sqlite.org/", "image": resource_path("includes/assets/SQL3Settings.png")},
-        {"name": "Figma", "url": "https://www.figma.com/", "image": resource_path("includes/assets/FigmaSettings.png")},
-        {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/",
-         "image": resource_path("includes/assets/PyCharmSettings.png")},
-        {"name": "Python", "url": "https://www.python.org/",
-         "image": resource_path("includes/assets/PythonSettings.png")},
-        {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07",
-         "image": resource_path("includes/assets/WindowsXPSettings.png")}
+        {"name": "SQL3", "url": "https://www.sqlite.org/", "image": Paths.assets_path("SQL3Settings.png")},
+        {"name": "Figma", "url": "https://www.figma.com/", "image": Paths.assets_path("FigmaSettings.png")},
+        {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/", "image": Paths.assets_path("PyCharmSettings.png")},
+        {"name": "Python", "url": "https://www.python.org/", "image": Paths.assets_path("PythonSettings.png")},
+        {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07", "image": Paths.assets_path("WindowsXPSettings.png")}
     ]
 
     parent.images_tools = []
@@ -724,8 +719,8 @@ def pop_up_settings(parent:tk, controller):
 
     # Liste mit den Namenm, URL, Bild fuer Projekt Unterstuetzen
     buttons_data_support = [
-        {"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": resource_path("includes/assets/KoFiSettings.png")},
-        {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de", "image": resource_path("includes/assets/FeedbackSettings.png")}
+        {"name": "Ko-Fi", "url": "https://ko-fi.com/dd_inv", "image": Paths.assets_path("KoFiSettings.png")},
+        {"name": "Feedback", "url": "mailto:Jack-Mike.Saering@srhk.de", "image": Paths.assets_path("FeedbackSettings.png")}
     ]
 
     parent.images_support = []
@@ -762,9 +757,9 @@ def pop_up_settings(parent:tk, controller):
     # Liste mit den Namenm, URL, Bild fuer Info
     buttons_data_info = [
         {"name": "VersionBuild   V. 1.2 STABLE", "url": "https://github.com/peaemer/DD-inv/releases/latest",
-         "image": resource_path("includes/assets/DD-Inv_Logo.png")},
+         "image": Paths.assets_path("DD-Inv_Logo.png")},
         {"name": "GitHub", "url": "https://github.com/peaemer/DD-inv",
-         "image": resource_path("includes/assets/GitHubSettings.png")}
+         "image": Paths.assets_path("GitHubSettings.png")}
     ]
 
     parent.images_info = []

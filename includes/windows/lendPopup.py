@@ -5,14 +5,14 @@ from includes.util.Logging import Logger
 from ..CTkScrollableDropdown import *
 from datetime import datetime
 import cache
-from .styles import *
+from includes.gui.styles import *
 from includes.sec_data_info import sqlite3api as db
-from main import DdInv
+from main import DDInv
 
 logger:Logger = Logger('LendPopup')
 
 
-def lend_popup(parent, data, controller: DdInv):
+def lend_popup(parent, data, controller: DDInv):
     """
     Erstellt ein modales Popup-Fenster zur Verwaltung von Ausleihvorgängen. Das Fenster
     zeigt ein Formular zur Eingabe von Ausleihdetails, einschließlich Name des Objekts,
