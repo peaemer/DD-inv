@@ -5,3 +5,7 @@
 .vs/
 .idea/
 .config
+/Compile/dist/DD-Inv-Files/DD-inv.config
+/DD-Inv-Files/DD-inv.config
+/Compile/dist/DD-Inv-Files/DD-invBeispielDatenbank.sqlite3
+/DD-Inv-Files/DD-invBeispielDatenbank.sqlite3
