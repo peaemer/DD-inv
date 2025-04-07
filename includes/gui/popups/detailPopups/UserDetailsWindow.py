@@ -1,12 +1,13 @@
 from tkinter import ttk, messagebox
-from ..CTkScrollableDropdown import *
+from includes.CTkScrollableDropdown import *
 
-from ._avatarManager import resource_path
-from .customMessageBoxDelete import *
+from includes.windows._avatarManager import resource_path
+from includes.windows.customMessageBoxDelete import *
 from includes.util.Logging import Logger
-from ..sec_data_info import UserSecurity
-from ._sort_tree import sort_column
+from includes.sec_data_info import UserSecurity
+from includes.windows._sort_tree import sort_column
 from includes.gui.styles import *
+from includes.CTkScrollableDropdown.ctk_scrollable_dropdown import *
 import includes.sec_data_info.sqlite3api as db
 
 
