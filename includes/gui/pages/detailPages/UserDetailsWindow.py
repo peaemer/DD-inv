@@ -11,11 +11,11 @@ from includes.CTkScrollableDropdown.ctk_scrollable_dropdown import *
 import includes.sec_data_info.sqlite3api as db
 
 
-def show_user_details(selected_user, tree, controller):
+def show_user_details(data:dict[str,str], controller):
     # Daten aus der ausgewählten Zeile
-    data = tree.item(selected_user, "values")
     Logger('UserDetailsWindow').debug(f"Data of the selected user: {data}")
-    cache.selected_ID = data[1]
+    print(data)
+    cache.selected_ID = data[0]
     controller.show_frame(UserDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
     details = controller.frames[UserDetailsWindow]
@@ -335,7 +335,7 @@ class UserDetailsWindow(tk.Frame):
         self.tree_details_window.delete(*self.tree_details_window.get_children())
         i = 0
         for entry in db.fetch_ausleih_historie():
-            if entry['Nutzername'] == data[1]:
+            if entry[0] == data[1]:
                 hw = db.fetch_hardware_by_id(entry['Hardware_ID'])
                 if hw:
                     i += 1

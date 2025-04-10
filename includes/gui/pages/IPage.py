@@ -179,7 +179,7 @@ class IPage(tkinter.Frame, ABC):
             header frame. The header frame will extend to the right of the window.
         """
 
-    def update_treeview(self, data:list[dict[str,str]]= None) -> None:
+    def update_treeview(self, data:list[dict[str,str]]= None, filter_string:str = None) -> None:
         """
             .
         """
@@ -192,6 +192,8 @@ class IPage(tkinter.Frame, ABC):
 
             i:int=0
             for row in data if data else self.__get_treeview_data_callback():
+                if filter_string is not None and not any(filter_string not in value for value in row):
+                    continue
                 tag = "evenrow" if i % 2 == 0 else "oddrow"
                 l:list[str] = []
                 for enumerated in enumerate(row.keys()):
@@ -270,15 +272,13 @@ class IPage(tkinter.Frame, ABC):
         if callable(on_cell_click_callback):
             self.__on_cell_click_callback = on_cell_click_callback
         else:
-            pass
-
-        def callback():
-            """a callback that returns an empty data dictionary"""
-            print(self.treeview.item(self.treeview.focus()))
-        self.__on_cell_click_callback = callback
+            def callback():
+                """a callback that returns an empty data dictionary"""
+                print(self.treeview.item(self.treeview.focus()))
+            self.__on_cell_click_callback = callback
 
         #self.treeview.bind("<Double-1>", lambda _:self.__on_click_callback(self.treeview.item(self.treeview.focus())))
-        self.treeview.bind("<Double-1>", lambda _:self.__on_cell_click_callback())
+        self.treeview.bind("<Double-1>", lambda _:self.__on_cell_click_callback(dict[str,str](self.treeview.item(self.treeview.focus()))['values']))
 
         self.__center_frame.grid_rowconfigure(0, weight=1)
         self.__center_frame.grid_rowconfigure(1, weight=0)
@@ -409,7 +409,7 @@ class IPage(tkinter.Frame, ABC):
         self.search_entry_oval.bind('<FocusIn>', lambda  _: self.search_entry.focus())
         self.search_entry.add_on_focus_in_event(lambda  _: self.__dropdown_overlay_frame.tkraise(self.__center_frame))
         self.search_entry.add_on_focus_out_event(lambda _: self.__center_frame.tkraise(self.__dropdown_overlay_frame))
-        self.search_entry.add_on_finish_search_event(lambda _: self.select_on_search(self.search_entry.get(0.0,'end-1c')))
+        self.search_entry.add_on_finish_search_event(lambda _: self.update_treeview(filter_string=self.search_entry.get(0.0,'end-1c')))
         self.dropdown.bind("<<ListboxSelect>>", lambda var: SearchbarLogic.on_dropdown_select(self.search_entry, self.dropdown, cache.user_name))
         self.dropdown.bind("<<ListboxSelect>>", lambda var: self.__center_frame.tkraise(self.__dropdown_overlay_frame))
 

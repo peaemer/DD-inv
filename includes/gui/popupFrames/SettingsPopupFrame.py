@@ -381,7 +381,7 @@ class SettingsPopupFrame(IPage):
             logger.debug(f'icon_url:{data['icon_url']}')
             logger.debug(f'icon:{data['icon']}')
             data['icon_label'].configure(image=data['icon'])
-            data['icon_label'].__setattr__('url',data['url'])
+            # data['icon_label'].__setattr__('url',data['url'])
             data['icon_label'].bind("<Button-1>",lambda _, url_ = data['url']: SettingsBindings.open_url(url_))
             logger.debug(f"""binding  button url {data['icon_label'].url}""")
 

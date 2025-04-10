@@ -23,7 +23,6 @@ class AdminPage(IPage, ABC):
         controller:DDInv,
         add_button_callback:Callable,
         get_data_callback:Callable|None,
-        select_item_callback:Callable|None,
         tree_structure:dict[str,int],
         window_name:str='',
         header_text:str='',
@@ -52,14 +51,11 @@ class AdminPage(IPage, ABC):
         self.toggle_right_sidebar()
         self.toggle_left_sidebar()
         self.apply_layout()
-        self.enable_treeview(get_data_callback, select_item_callback, tree_structure)
+        self.enable_treeview(get_data_callback, self.on_cell_click, tree_structure)
         self.update_treeview()
 
     @override
     def setup_header_bar(self, frame: tkinter.Frame) -> None:
-        """
-            .
-        """
         self.srh_image = tkinter.PhotoImage(file=Paths.assets_path("srh.png"))
         self.exit_admin_mode_button_image = tkinter.PhotoImage(file=Paths.assets_path("ArrowLeft.png"))
         self.options_button_image:tkinter.PhotoImage = cache.user_avatar
@@ -136,7 +132,7 @@ class AdminPage(IPage, ABC):
         return False
 
     @abstractmethod
-    def on_cell_click(self, cell_text:str) -> None:
+    def on_cell_click(self, values:dict[str,str]) -> None:
         """
             .
         """

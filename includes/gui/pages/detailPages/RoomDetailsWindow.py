@@ -1,12 +1,12 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-from .customMessageBoxDelete import *
+from includes.windows.customMessageBoxDelete import *
 import includes.sec_data_info.sqlite3api as db
 from includes.gui.styles import *
 
 
-def show_room_details(selected_room, tree, controller):
+def show_room_details(selected_room, controller):
     """
     Zeigt die Details des ausgewählten Raums an. Die Methode liest die Daten aus
     der ausgewählten Zeile eines Treeviews, speichert die ID des Raums in einem
@@ -19,13 +19,13 @@ def show_room_details(selected_room, tree, controller):
     :return: Es wird kein Wert zurückgegeben.
     """
     # Daten aus der ausgewählten Zeile
-    data = tree.item(selected_room, "values")
-    print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Data of the selected item: {data}")
-    cache.selected_ID = data[0]
+    #data = tree.item(selected_room, "values")
+    #print(f"{debug_ANSI_style}DEBUG{ANSI_style_END}: Data of the selected item: {data}")
+    #cache.selected_ID = data[0]
     controller.show_frame(RoomDetailsWindow)  # Zeige die Details-Seite
     # Frame aktualisieren und anzeigen
     details = controller.frames[RoomDetailsWindow]
-    details.update_data(data)  # Methode in DetailsWindow aufrufen
+    #details.update_data(data)  # Methode in DetailsWindow aufrufen
 
 
 class RoomDetailsWindow(tk.Frame):

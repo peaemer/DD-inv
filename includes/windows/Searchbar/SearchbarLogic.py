@@ -204,8 +204,7 @@ def update_search(dropdown: CTkListbox, search_term: str, username: str) -> None
     __update_dropdown(dropdown, search_term)
 
 
-def finish_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, root: tk.Frame, search_term: str,
-                  username: str) -> None:
+def finish_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, root: tk.Frame, search_term: str, username: str) -> None:
     """
         Called once user stops typing into the search bar.
         Recalculates the weight and repeated_uses of the last 30 terms the user searched for.
@@ -237,20 +236,15 @@ def finish_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, root: tk.Fram
             logger.debug(f"""loaded history is now "{loaded_history}" """)
         logger.debug(f"""writing "{json.dumps(loaded_history)}" to database """)
         logger.debug(db.update_benutzer(username, neue_suchverlauf=json.dumps(loaded_history)))
-    searchbar.delete(0.0, 'end-1c')
     dropdown.grid_forget()
     cancel_key_press_updates = 0
     root.focus()
-    new_tree_data: list[dict[str, str]] = []
-    for hardware in db.fetch_hardware():
-        for parameter in enumerate(hardware):
-            if search_term in str(parameter):
-                new_tree_data.append(hardware)
     if len(do_on_finish) > 0:
-        for do in do_on_finish:
-            do()
+        for function in do_on_finish:
+            function()
     search_is_running = False
-    logger.debug_e(f""" search is  "{search_is_running}" running for user "{username}" """)
+    searchbar.delete(0.0, 'end-1c')
+    logger.debug_e(f"""search is  "{search_is_running}" running for user "{username}" """)
 
 
 def start_search(searchbar: ctk.CTkTextbox, dropdown: CTkListbox, search_term: str, username: str) -> None:

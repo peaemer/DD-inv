@@ -75,7 +75,7 @@ class DDInv(tk.Tk):
         # Login-Fenster zuerst laden
         from includes.gui.pages.LoginPage import LoginPage
         from includes.gui.popupFrames.PopupFrameSupport import PopupFrameSupport
-        #PopupFrameSupport(self,self)
+        PopupFrameSupport(self,self)
         self.show_frame(LoginPage)
 
     def update_zoom(self, value):
@@ -110,17 +110,23 @@ class DDInv(tk.Tk):
         if page_type not in self.frames.keys():
             logger.debug(f"{page_type.__name__} is being dynamically created.")  # Debug
             page_instance = page_type(self.container, self)  # Frame erstellen
-            self.frames[page_type] = page_instance  # Zu Frames hinzufügen
+            self.frames[page_type] = page_instance
         else:
             page_instance = self.frames[page_type]
             print(self.frames[page_type])
-        page_instance.grid(row=0, column=0, sticky="nsew")  # Layout konfigurieren
+        page_instance.grid(row=0, column=0, sticky="nsew")
         page_instance.tkraise()
         page_instance.update_idletasks()
         if hasattr(page_instance, 'on_load') and callable(page_instance.on_load):
             logger.debug(f"on_load is being called for {page_type.__name__}")  # Debug
             page_instance.on_load()
         return page_instance
+
+    def get_page_instance(self, page_type:type) -> Any|None:
+        if page_type in self.frames.keys():
+            logger.debug(f"getting {page_type.__name__}")
+            return self.frames[page_type]
+        return None
 
 if __name__ == "__main__":
     Preprocessor.pre_application()
