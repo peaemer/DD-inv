@@ -48,8 +48,8 @@ class AdminPage(IPage, ABC):
         )
 
         self.enable_searchbar(add_button_callback)
-        self.toggle_right_sidebar()
-        self.toggle_left_sidebar()
+        self.toggle_rights_sidebar(False)
+        self.toggle_left_sidebar(False)
         self.apply_layout()
         self.enable_treeview(get_data_callback, self.on_cell_click, tree_structure)
         self.update_treeview()

@@ -7,6 +7,7 @@ from tkinter import ttk
 from typing import Callable, Any
 
 import customtkinter
+from Demos.win32ts_logoff_disconnected import session
 from customtkinter import CTkEntry
 
 import cache
@@ -39,6 +40,8 @@ class IPage(tkinter.Frame, ABC):
         self.header_text = header_text
         self.admin_mode = admin_mode
 
+        logger.debug('initializing IPage')
+
         self.__header_frame:tkinter.Frame = tkinter.Frame(self, background=srh_orange if admin_mode else srh_blue)
         self.__header_buttons_frame_right:tkinter.Frame = tkinter.Frame(self.__header_frame, background=srh_orange if admin_mode else srh_blue)
         self.__header_buttons_frame_left:tkinter.Frame = tkinter.Frame(self.__header_frame, background=srh_orange if admin_mode else srh_blue)
@@ -69,18 +72,37 @@ class IPage(tkinter.Frame, ABC):
 
         self.__overlay_left_sidebar:bool = self.setup_side_bar_left(self.__left_bar_frame)
         self.__overlay_right_sidebar:bool = self.setup_side_bar_right(self.__right_bar_frame)
-        self.__hide_left_sidebar:bool = False
-        self.__hide_right_sidebar:bool = False
+        self.__enable_left_sidebar:bool = True
+        self.__enable_right_sidebar:bool = True
 
         self.__get_treeview_data_callback:Callable[[],list[dict[str,str]]]|None = None
         self.__on_cell_click_callback: Callable[[dict[str,str|list[str]]],None] | None = None
 
         self.__treeview_structure:dict[str,int]|None = None
 
-        self.after(0, self.setup_header_bar, self.__header_frame)
-        self.after(0, self.setup_main_frame, self.__center_frame)
+        self.__left_bar_column_weight:int = 1
+        self.__right_bar_column_weight:int = 1
+        self.__center_frame_column_weight:int = 4
+
+        self.__center_frame_row_weight:int = 4
+        self.__header_bar_row_weight:int = 1
+
+        def callback():
+            """."""
+            self.setup_header_bar(self.__header_frame)
+            logger.debug('called child\'s setup_header_bar')
+        self.after(0, callback)
+
+        def callback():
+            """."""
+            self.setup_main_frame(self.__center_frame)
+            logger.debug('called child\'s setup_main_frame')
+        self.after(0, callback)
+
+        #self.after(0, self.setup_main_frame, self.__center_frame)
 
         self.apply_layout()
+        logger.debug('finished initializing IPage')
 
     def __sort_column(self, col, reverse:bool=False):
         """
@@ -143,6 +165,10 @@ class IPage(tkinter.Frame, ABC):
         # Header aktualisieren, um Sortierrichtung zu wechseln
         self.treeview.heading(col, command=lambda c=col: self.__sort_column(c, not reverse))
 
+    ####################
+    # abstract methods #
+    ####################
+
     @abstractmethod
     def setup_main_frame(self, frame:tkinter.Frame) -> None:
         """
@@ -179,46 +205,10 @@ class IPage(tkinter.Frame, ABC):
             header frame. The header frame will extend to the right of the window.
         """
 
-    def update_treeview(self, data:list[dict[str,str]]= None, filter_string:str = None) -> None:
-        """
-            .
-        """
-        if not self.__treeview_enabled:
-            logger.error('no treeview enabled')
-            return
-        else:
-            logger.debug('update treeview')
-            self.treeview.delete(*self.treeview.get_children())
 
-            i:int=0
-            for row in data if data else self.__get_treeview_data_callback():
-                if filter_string is not None and not any(filter_string not in value for value in row):
-                    continue
-                tag = "evenrow" if i % 2 == 0 else "oddrow"
-                l:list[str] = []
-                for enumerated in enumerate(row.keys()):
-                    l.append(row[enumerated[1]])
-                self.treeview.insert(
-                    "",
-                    "end",
-                    tags=(tag,),
-                    values=tuple(l)
-                )
-                i += 1
-            logger.debug('finished update treeview')
-
-    def set_treeview_columns(self):
-        """
-            .
-        """
-        if self.treeview['columns']:
-            self.treeview['columns'] = tuple([f"c{i}" for i in range(0,len(self.__treeview_structure))])
-        i:int=1
-        print(self.__treeview_structure)
-        for column_name in enumerate(self.__treeview_structure.keys()):
-            self.treeview.column(f'# {i}', anchor=tkinter.CENTER, width=self.__treeview_structure[column_name[1]])
-            self.treeview.heading(f'# {i}', text=column_name[1], command=lambda c=f'# {i}': self.__sort_column(c, True))
-            i+=1
+    ##############################################
+    # methods for handling the optional treeview #
+    ##############################################
 
     def enable_treeview(
             self,
@@ -227,7 +217,8 @@ class IPage(tkinter.Frame, ABC):
             tree_structure:dict[str,int]
     ):
         """
-            .
+            Adds a treeview to the center frame of the window, as well as a horizontal and a vertical scrollbar.
+
         """
         self.__treeview_enabled = True
         self.__treeview_structure = tree_structure
@@ -259,7 +250,7 @@ class IPage(tkinter.Frame, ABC):
             button_hover_color=srh_blue
         )
 
-        self.set_treeview_columns()
+        self.update_treeview_columns()
 
         if callable(get_data_callback):
             self.__get_treeview_data_callback = get_data_callback
@@ -272,12 +263,11 @@ class IPage(tkinter.Frame, ABC):
         if callable(on_cell_click_callback):
             self.__on_cell_click_callback = on_cell_click_callback
         else:
-            def callback():
+            def callback(_):
                 """a callback that returns an empty data dictionary"""
                 print(self.treeview.item(self.treeview.focus()))
             self.__on_cell_click_callback = callback
 
-        #self.treeview.bind("<Double-1>", lambda _:self.__on_click_callback(self.treeview.item(self.treeview.focus())))
         self.treeview.bind("<Double-1>", lambda _:self.__on_cell_click_callback(dict[str,str](self.treeview.item(self.treeview.focus()))['values']))
 
         self.__center_frame.grid_rowconfigure(0, weight=1)
@@ -292,6 +282,54 @@ class IPage(tkinter.Frame, ABC):
         self.treeview.tkraise()
         self.apply_layout()
         self.update_treeview()
+
+    def update_treeview(self, data:list[dict[str,str]]= None, filter_string:str | list[str] = None) -> None:
+        """
+            Updates the content of the treeview with the given data, or if none is given by calling the get data callback.
+            Optionally only filters the data entries. They have to either contain a given filter string,
+            or contain at least one filter string of a given list of filter strings.
+        """
+        if not self.__treeview_enabled:
+            logger.error('no treeview enabled')
+            return
+        else:
+            logger.debug('update treeview')
+            self.treeview.delete(*self.treeview.get_children())
+
+            i:int=0
+            for row in data if data else self.__get_treeview_data_callback():
+                if filter_string is not None and not any(filter_string not in value for value in row):
+                    continue
+                tag = "evenrow" if i % 2 == 0 else "oddrow"
+                l:list[str] = []
+                for enumerated in enumerate(row.keys()):
+                    l.append(row[enumerated[1]])
+                self.treeview.insert(
+                    "",
+                    "end",
+                    tags=(tag,),
+                    values=tuple(l)
+                )
+                i += 1
+            logger.debug('finished update treeview')
+
+    def update_treeview_columns(self):
+        """
+            .
+        """
+        if self.treeview['columns']:
+            self.treeview['columns'] = tuple([f"c{i}" for i in range(0,len(self.__treeview_structure))])
+        i:int=1
+        print(self.__treeview_structure)
+        for column_name in enumerate(self.__treeview_structure.keys()):
+            self.treeview.column(f'# {i}', anchor=tkinter.CENTER, width=self.__treeview_structure[column_name[1]])
+            self.treeview.heading(f'# {i}', text=column_name[1], command=lambda c=f'# {i}': self.__sort_column(c, True))
+            i+=1
+
+
+    ####################################################
+    # methods for handling the optional navigation bar #
+    ####################################################
 
     def enable_navigation_bar(self, buttons:list[tuple[str, Callable]]):
         """
@@ -319,24 +357,15 @@ class IPage(tkinter.Frame, ABC):
             self.navigation_buttons[-1].grid(row=0, padx=40, pady=15, column=len(self.navigation_buttons) - 1,sticky='WE')
         self.apply_layout()
 
-    def select_on_search(self, search_term:str):
-        """
-            .
-        """
-        search_entries = []
-        for entry in self.__get_treeview_data_callback():
-            for value in entry:
-                if search_term in str(entry[value]).lower():
-                    if entry not in search_entries:
-                        search_entries.append(entry)
-        self.update_treeview(data=search_entries)
+
+    ###############################################
+    # methods for handling the optional searchbar #
+    ###############################################
 
     def enable_searchbar(self, add_item_callback:Callable) -> None:
         """
-            creates a frame on top of the center frame.
-            it contains a search button, the actual searchbar and a button for adding items.
-
-
+            Creates a frame on top of the center frame.
+            It contains a search button, the actual searchbar and a button for adding items.
         """
         if self.__searchbar_enabled:
             raise RuntimeError('enable_navigation_bar was called twice')
@@ -364,7 +393,6 @@ class IPage(tkinter.Frame, ABC):
             command=add_item_callback
         )
 
-        #erstelle den hinufügen-button im auf dem search frame
         self.dropdown: CTkListbox = CTkListbox(
             self.__dropdown_overlay_frame,
             font=("Arial", 20),
@@ -417,14 +445,55 @@ class IPage(tkinter.Frame, ABC):
         self.__center_frame.tkraise(self.__dropdown_overlay_frame)
         self.apply_layout()
 
-    def toggle_left_sidebar(self):
-        """."""
-        self.__hide_left_sidebar = not self.__hide_left_sidebar
+    def select_on_search(self, search_term:str):
+        """
+            .
+        """
+        search_entries = []
+        for entry in self.__get_treeview_data_callback():
+            for value in entry:
+                if search_term in str(entry[value]).lower():
+                    if entry not in search_entries:
+                        search_entries.append(entry)
+        self.update_treeview(data=search_entries)
+
+    def set_grid_column_weights(self, left_bar_weight, center_frame_weight, right_bar_weight):
+        """
+            Allows to change the size ratio of the sidebars and the center
+            frame, by adjusting the weight of their grid columns.
+        """
+        self.__left_bar_column_weight = left_bar_weight
+        self.__right_bar_column_weight = right_bar_weight
+        self.__center_frame_column_weight = center_frame_weight
+
+    def set_grid_row_weights(self, header_bar_weight, center_frame_weight):
+        """
+            Allows to change the size ratio of the sidebars and the center
+            frame, by adjusting the weight of their grid columns.
+        """
+        self.__header_bar_row_weight = header_bar_weight
+        self.__center_frame_row_weight = center_frame_weight
+
+    def toggle_left_sidebar(self, set_value:bool|None=False):
+        """
+            Toggles the visibility of the left sidebar. Supports an optional value
+            to set the visibility of the sidebar independently of the previous visibility
+        """
+        if set_value is not None:
+            self.__enable_left_sidebar = set_value
+        else:
+            self.__enable_left_sidebar = not self.__enable_left_sidebar
         self.apply_layout()
 
-    def toggle_right_sidebar(self):
-        """."""
-        self.__hide_right_sidebar = not self.__hide_right_sidebar
+    def toggle_rights_sidebar(self, set_value:bool|None=False):
+        """
+            Toggles the visibility of the right sidebar. Supports an optional value
+            to set the visibility of the sidebar independently of the previous visibility
+        """
+        if set_value is not None:
+            self.__enable_right_sidebar = set_value
+        else:
+            self.__enable_right_sidebar = not self.__enable_right_sidebar
         self.apply_layout()
 
     def apply_layout(self):
@@ -483,10 +552,10 @@ class IPage(tkinter.Frame, ABC):
             sticky='NSWE'
         )
 
-        self.grid_columnconfigure(0, weight=0 if self.__hide_left_sidebar else 1)
-        self.grid_columnconfigure(1, weight=4)
-        self.grid_columnconfigure(2, weight=0 if self.__hide_left_sidebar else 1)
-        self.grid_rowconfigure(0, weight=0)
+        self.grid_columnconfigure(0, weight=self.__left_bar_column_weight if self.__enable_left_sidebar else 0)
+        self.grid_columnconfigure(1, weight=self.__center_frame_column_weight)
+        self.grid_columnconfigure(2, weight=self.__right_bar_column_weight if self.__enable_right_sidebar else 0)
+        self.grid_rowconfigure(0, weight=self.__header_bar_row_weight)
         self.grid_rowconfigure(1, weight=0 if self.__navigation_bar_enabled or self.__searchbar_enabled else 4)
         self.grid_rowconfigure(2, weight=4 if self.__navigation_bar_enabled ^ self.__searchbar_enabled else 0)
         self.grid_rowconfigure(3, weight=4 if self.__navigation_bar_enabled and self.__searchbar_enabled else 0)
@@ -499,6 +568,6 @@ class IPage(tkinter.Frame, ABC):
             It is called everytime a page is shown again by the current DdInv instance
         """
         if self.__treeview_enabled:
-            self.set_treeview_columns()
+            self.update_treeview_columns()
             self.update_treeview()
         self.apply_layout()

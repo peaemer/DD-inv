@@ -4,11 +4,11 @@
 import copy
 import tkinter
 from enum import Enum
-from typing import override, Callable
+from typing import override
 
 import customtkinter
 
-from includes.logic import ImageLoader, SettingsBindings
+from includes.logic import SettingsBindings
 from includes.windows import _avatarManager
 from main import DDInv
 from includes.util import Paths
@@ -27,6 +27,7 @@ class WindowState(Enum):
     SYSTEM = 1
     CREDITS = 2
 
+
 class SettingsPopupFrame(IPage):
     """
         .
@@ -39,13 +40,13 @@ class SettingsPopupFrame(IPage):
         super().__init__(parent, controller, admin_mode=admin_mode)
         self.__parent = parent
         self.__window_state = WindowState.PROFILE
-        self.category_icons:dict[WindowState, tuple[tkinter.PhotoImage, str]] = {
+        self.category_header_icons:dict[WindowState, tuple[tkinter.PhotoImage, str]] = {
             WindowState.PROFILE: (tkinter.PhotoImage(file=Paths.assets_path("ProfileSettingsIcon.png")), 'Dein Profil'),
             WindowState.SYSTEM: (tkinter.PhotoImage(file=Paths.assets_path("SystemSettingsIcon.png")), 'System'),
             WindowState.CREDITS: (tkinter.PhotoImage(file=Paths.assets_path("Tool.png")), 'Über DD-Inv')
         }
-        self.hader_bar_icon:tkinter.PhotoImage = self.category_icons[self.__window_state][0]
-        self.hader_bar_icon_label: tkinter.Label | None = None
+        self.hader_bar_icon:tkinter.PhotoImage = self.category_header_icons[self.__window_state][0]
+        self.header_bar_icon_label: tkinter.Label | None = None
         self.hader_bar_text_label: tkinter.Label | None = None
 
         self.credit_links_buttons:list[dict[str, str | customtkinter.CTkButton | tkinter.PhotoImage | tkinter.Label | None]] = [
@@ -54,8 +55,19 @@ class SettingsPopupFrame(IPage):
             {'name':'GitSchwan (Fabian)', 'url':'https://github.com/GitSchwan', 'icon_url':'https://avatars.githubusercontent.com/u/173039634?v=4'},
             {'name':'Chauto (Anakin)', 'url':'https://github.com/Chautoo', 'icon_url': 'https://avatars.githubusercontent.com/u/89986856?v=4'},
             {'name':'FemRene (Rene)', 'url':'https://github.com/FemRene', 'icon_url': 'https://avatars.githubusercontent.com/u/110292225?v=4'},
-      #      {'name':'Tam', 'url':'', 'icon_url':''}
+            # {"name": "SQL3", "url": "https://www.sqlite.org/", "icon_url": Paths.assets_path("includes/assets/SQL3Settings.png")},
+            # {"name": "Figma", "url": "https://www.figma.com/", "icon_url": Paths.assets_path("includes/assets/FigmaSettings.png")},
+            # {"name": "PyCharm", "url": "https://www.jetbrains.com/de-de/pycharm/", "image": Paths.assets_path("includes/assets/PyCharmSettings.png")},
+            # {"name": "Python", "url": "https://www.python.org/", "image": Paths.assets_path("includes/assets/PythonSettings.png")},
+            # {"name": "WindowsXP", "url": "https://gist.github.com/rolfn/1a05523cfed7214f4ad27f0a4ae56b07", "image": Paths.assets_path("includes/assets/WindowsXPSettings.png")}
+
+            #{'name':'Tam', 'url':'', 'icon_url':''}
         ]
+        self.set_grid_row_weights(1,3)
+        self.set_grid_column_weights(1,3,0)
+
+        self.toggle_rights_sidebar(False)
+        # self.
         self.after(1000,self.switch_to_credits)
         #self.switch_to_credits()
 
@@ -77,32 +89,35 @@ class SettingsPopupFrame(IPage):
     #         logger.error(f"Error when loading or changing the icon in the heading area. {button['image']}: {e}")
 
     @override
-    def on_load(self) -> None:
-        pass
-
-    @override
     def setup_header_bar(self, frame: tkinter.Frame) -> None:
-        frame.grid_rowconfigure(0, weight=4)
-        frame.grid_rowconfigure(1, weight=0)
-        frame.grid_rowconfigure(2, weight=1)
-        frame.grid_rowconfigure(3, weight=0)
-        frame.grid_rowconfigure(4, weight=4)
+        frame.configure(background='yellow')
+        self.configure(background='orange')
+        frame.grid_columnconfigure(0, weight=4)
+        frame.grid_columnconfigure(1, weight=0)
+        frame.grid_columnconfigure(2, weight=1)
+        frame.grid_columnconfigure(3, weight=0)
+        frame.grid_columnconfigure(4, weight=4)
 
-        self.hader_bar_icon_label = tkinter.Label(
+        self.header_bar_icon_label = tkinter.Label(
             frame,
-            image=self.category_icons[self.__window_state][0],
+            image=self.category_header_icons[self.__window_state][0],
             foreground="white",
-            background=srh_grey
+            background=srh_grey,
+            height=75,
+            width=75
+            #pady=5
         )
+
 
         self.header_bar_text_label = tkinter.Label(
             frame,
-            text=self.category_icons[self.__window_state][1],
-            foreground="white",
+            text='test',#self.category_header_icons[self.__window_state][1],
+            foreground="black",
             background=srh_grey
         )
 
-        self.hader_bar_icon_label.grid(row=0, column=1, sticky='E')
+        self.header_bar_icon_label.grid(row=0, column=1, sticky='E')
+        self.header_bar_text_label.grid(row=0, column=3, sticky='E')
 
         # for i in range(len(self.credit_links_buttons)):
         #    # self.credit_links_buttons[i] = (tkinter.Button(), tkinter.PhotoImage(file=self.credit_links_buttons[i][3]))
@@ -110,25 +125,78 @@ class SettingsPopupFrame(IPage):
         #    self.credit_links_buttons[i]['label']
 
 
+    @override
+    def setup_side_bar_right(self, frame: tkinter.Frame) -> bool:
+        return False
+
+    @override
+    def setup_side_bar_left(self, frame: tkinter.Frame) -> bool:
+        return False
+
+    @override
+    def setup_main_frame(self, frame:tkinter.Frame) -> None:
+
+        frame.grid_rowconfigure(0, weight=0)  # Bereich fuer Kategorien
+        frame.grid_rowconfigure(1, weight=1)  # Hauptbereich
+        frame.grid_columnconfigure(0, weight=0)  # Seitenleiste
+        frame.grid_columnconfigure(1, weight=1)  # Hauptinhalt
+
+        for i in range(0,17): frame.grid_rowconfigure(i, weight=1)
+        for i in range(0,17): frame.grid_columnconfigure(i, weight=1)
+
+        for i in range(0,5):
+            self.credit_links_buttons[i].update(
+                {
+                    'name_label': tkinter.Label(
+                        frame,
+                        text=self.credit_links_buttons[i]['name'],
+                        font=SETTINGS_BTN_FONT,
+                        bg="white"
+                    ),
+                    'icon_label':tkinter.Label(
+                        frame,
+                        font=SETTINGS_BTN_FONT,
+                        bg='white'
+                    )
+                }
+            )
+            self.credit_links_buttons[i].update(
+                {
+                    'icon_image': _avatarManager.loadImage(
+                        parent=self.credit_links_buttons[i]['icon_label'],
+                        image=self.credit_links_buttons[i]['icon_url'],
+                        defult_image=Paths.assets_path('GitHubSettings.png')
+                    )
+                }
+            )
+            logger.debug(f'label:{self.credit_links_buttons[i]['icon_label']}')
+            logger.debug(f'icon_url:{self.credit_links_buttons[i]['icon_url']}')
+            logger.debug(f'icon_image:{self.credit_links_buttons[i]['icon_image']}')
+            self.credit_links_buttons[i]['icon_label'].configure(image=self.credit_links_buttons[i]['icon_image'])
+            #data['icon_label'].__setattr__('url',data['url'])
+            self.credit_links_buttons[i]['icon_label'].bind(
+                "<Button-1>",
+                lambda _, url=self.credit_links_buttons[i]['url']: SettingsBindings.open_url(url)
+            )
+            logger.debug(f"""binding  button url {self.credit_links_buttons[i]['url']}""")
 
     def switch_to_system(self):
+        """."""
         pass
 
     def switch_to_profile(self):
+        """."""
         pass
-
 
     def switch_to_credits(self):
-        for i in range(0,3,1):
-            #self.credit_links_buttons[i]['button'].grid(row=i + 1, column=1, rowspan=2, columnspan=2, sticky="nsew")
-            self.credit_links_buttons[i]['icon_label'].grid(row=i*2, column=2, rowspan=1, columnspan=2, sticky="nsew")
-            self.credit_links_buttons[i]['name_label'].grid(row=i*2+1, column=1, rowspan=1, columnspan=4, sticky="nsew")
-        for i in range(3,5):
-            #self.credit_links_buttons[i]['button'].grid(row=i + 1, column=1, rowspan=2, columnspan=2, sticky="nsew")
-            self.credit_links_buttons[i]['icon_label'].grid(row=i*2-6, column=7, rowspan=1, columnspan=2, sticky="nsew")
-            self.credit_links_buttons[i]['name_label'].grid(row=i*2-5, column=6, rowspan=1, columnspan=4, sticky="nsew")
+        """."""
+        for i in range(0,5,1):
+            self.credit_links_buttons[i]['icon_label'].grid(row=i*2, column=1, rowspan=1, columnspan=1, sticky="nsew")
+            self.credit_links_buttons[i]['name_label'].grid(row=i*2+1, column=0, rowspan=1, columnspan=3, sticky="nsew")
+        # for i in range(3,5):
+        #     self.credit_links_buttons[i]['icon_label'].grid(row=i*2-6, column=7, rowspan=1, columnspan=2, sticky="nsew")
+        #     self.credit_links_buttons[i]['name_label'].grid(row=i*2-5, column=6, rowspan=1, columnspan=4, sticky="nsew")
 
-        pass
         #
         # for i in range(0,5):
         #     self.credit_links_buttons[i]['button'].grid(row=i + 1, column=4, rowspan=2, columnspan=2, sticky="nsew")
@@ -327,106 +395,49 @@ class SettingsPopupFrame(IPage):
     #     current_frame.columnconfigure(1, weight=1)
     #
     #
-    @override
-    def setup_side_bar_right(self, frame: tkinter.Frame) -> bool:
-        return False
-
-    @override
-    def setup_side_bar_left(self, frame: tkinter.Frame) -> bool:
-        return True
-
-    @override
-    def setup_main_frame(self, frame:tkinter.Frame) -> None:
-
-        frame.grid_rowconfigure(0, weight=0)  # Bereich fuer Kategorien
-        frame.grid_rowconfigure(1, weight=1)  # Hauptbereich
-        frame.grid_columnconfigure(0, weight=0)  # Seitenleiste
-        frame.grid_columnconfigure(1, weight=1)  # Hauptinhalt
-
-        for i in range(0,17): frame.grid_rowconfigure(i, weight=1)
-        for i in range(0,13): frame.grid_columnconfigure(i, weight=1)
-
-        for data in self.credit_links_buttons:
-            data.update(
-                {
-                    'name_label': tkinter.Label(
-                        frame,
-                        text=data['name'],
-                        font=SETTINGS_BTN_FONT,
-                        bg="white"
-                    )
-                }
-            )
-            data.update(
-                {
-                    'icon_label':tkinter.Label(
-                        frame,
-                        font=SETTINGS_BTN_FONT,
-                        bg='green'
-                    )
-                }
-            )
-            data.update(
-                {
-                    'icon': _avatarManager.loadImage(
-                        parent=data['icon_label'],
-                        image=data['icon_url'],
-                        defult_image=Paths.assets_path('GitHubSettings.png'),
-                        width=48,
-                        height=48
-                    )
-                }
-            )
-            logger.debug(f'label:{data['icon_label']}')
-            logger.debug(f'icon_url:{data['icon_url']}')
-            logger.debug(f'icon:{data['icon']}')
-            data['icon_label'].configure(image=data['icon'])
-            # data['icon_label'].__setattr__('url',data['url'])
-            data['icon_label'].bind("<Button-1>",lambda _, url_ = data['url']: SettingsBindings.open_url(url_))
-            logger.debug(f"""binding  button url {data['icon_label'].url}""")
-
-        for i in range(0,len(self.credit_links_buttons)):
-
-            logger.debug('creating button')
-            #self.credit_links_buttons[i]['icon']=ImageLoader.load_image(self.credit_links_buttons[i]['icon_url'])
-            self.credit_links_buttons[i].update(
-                {
-                    'name_label': tkinter.Label(
-                        frame,
-                        text=self.credit_links_buttons[i]['name'],
-                        font=SETTINGS_BTN_FONT,
-                        bg="white"
-                    )
-                }
-            )
-            self.credit_links_buttons[i].update(
-                {
-                    'icon_label':tkinter.Label(
-                        frame,
-                        font=SETTINGS_BTN_FONT,
-                        bg='green'
-                    )
-                }
-            )
-            self.credit_links_buttons[i].update(
-                {
-                    'icon': _avatarManager.loadImage(
-                        parent=self.credit_links_buttons[i]['icon_label'],
-                        image=self.credit_links_buttons[i]['icon_url'],
-                        defult_image=Paths.assets_path('GitHubSettings.png'),
-                        width=48,
-                        height=48
-                    )
-                }
-            )
-            logger.debug(f'label:{self.credit_links_buttons[i]['icon_label']}')
-            logger.debug(f'icon_url:{self.credit_links_buttons[i]['icon_url']}')
-            logger.debug(f'icon:{self.credit_links_buttons[i]['icon']}')
-            self.credit_links_buttons[i]['icon_label'].configure(image=self.credit_links_buttons[i]['icon'])
-            self.credit_links_buttons[i]['icon_label'].__setattr__('url',copy.copy(self.credit_links_buttons[i]['url']))
-            self.credit_links_buttons[i]['icon_label'].bind("<Button-1>",lambda _: SettingsBindings.open_url(self.credit_links_buttons[i]['icon_label'].url))
-            logger.debug(f"""binding  button url {self.credit_links_buttons[i]['icon_label'].url}""")
-        logger.debug(f'credit content:{self.credit_links_buttons}')
+        #
+        # for i in range(0,len(self.credit_links_buttons)):
+        #
+        #     logger.debug('creating button')
+        #     #self.credit_links_buttons[i]['icon']=ImageLoader.load_image(self.credit_links_buttons[i]['icon_url'])
+        #     self.credit_links_buttons[i].update(
+        #         {
+        #             'name_label': tkinter.Label(
+        #                 frame,
+        #                 text=self.credit_links_buttons[i]['name'],
+        #                 font=SETTINGS_BTN_FONT,
+        #                 bg="white"
+        #             )
+        #         }
+        #     )
+        #     self.credit_links_buttons[i].update(
+        #         {
+        #             'icon_label':tkinter.Label(
+        #                 frame,
+        #                 font=SETTINGS_BTN_FONT,
+        #                 bg='green'
+        #             )
+        #         }
+        #     )
+        #     self.credit_links_buttons[i].update(
+        #         {
+        #             'icon': _avatarManager.loadImage(
+        #                 parent=self.credit_links_buttons[i]['icon_label'],
+        #                 image=self.credit_links_buttons[i]['icon_url'],
+        #                 defult_image=Paths.assets_path('GitHubSettings.png'),
+        #                 width=48,
+        #                 height=48
+        #             )
+        #         }
+        #     )
+        #     logger.debug(f'label:{self.credit_links_buttons[i]['icon_label']}')
+        #     logger.debug(f'icon_url:{self.credit_links_buttons[i]['icon_url']}')
+        #     logger.debug(f'icon:{self.credit_links_buttons[i]['icon']}')
+        #     self.credit_links_buttons[i]['icon_label'].configure(image=self.credit_links_buttons[i]['icon'])
+        #     self.credit_links_buttons[i]['icon_label'].__setattr__('url',copy.copy(self.credit_links_buttons[i]['url']))
+        #     self.credit_links_buttons[i]['icon_label'].bind("<Button-1>",lambda _: SettingsBindings.open_url(self.credit_links_buttons[i]['icon_label'].url))
+        #     logger.debug(f"""binding  button url {self.credit_links_buttons[i]['icon_label'].url}""")
+        # logger.debug(f'credit content:{self.credit_links_buttons}')
         logger.debug(f"Complete loading of the 'Main' settings page. {['image']}")
     #
     #     ###################################

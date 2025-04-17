@@ -1,5 +1,7 @@
 import tkinter
 
+from typing_extensions import override
+
 from includes.gui.popupFrames.SettingsPopupFrame import SettingsPopupFrame
 from main import DDInv
 
@@ -9,7 +11,6 @@ class PopupFrameSupport(tkinter.Toplevel):
     """
         .
     """
-
     def __init__(self, parent, controller:DDInv):
         super().__init__(parent)
         self.title("Einstellungen")
@@ -26,6 +27,7 @@ class PopupFrameSupport(tkinter.Toplevel):
         center_y = int(screen_height / 2 - window_height / 2)
         self.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
         self.resizable(False, False)  # Fenstergroeße anpassbar
-
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
         s = SettingsPopupFrame(self, controller, admin_mode=False)
         s.grid(row=0, column=0, sticky='nsew')
