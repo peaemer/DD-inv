@@ -68,7 +68,6 @@ class DDInv(tk.Tk):
         self.container.grid_columnconfigure(0, weight=1)
 
         logger.debug("MainFrame successfully created")  # Debug
-
         from includes.gui.pages.IPage import IPage
         self.frames:dict[type,IPage] = {}
 

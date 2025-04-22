@@ -457,14 +457,20 @@ class IPage(tkinter.Frame, ABC):
                         search_entries.append(entry)
         self.update_treeview(data=search_entries)
 
-    def set_grid_column_weights(self, left_bar_weight, center_frame_weight, right_bar_weight):
+    def set_grid_column_weights(self, left_bar_weight=None, center_frame_weight=None, right_bar_weight=None):
         """
             Allows to change the size ratio of the sidebars and the center
             frame, by adjusting the weight of their grid columns.
         """
-        self.__left_bar_column_weight = left_bar_weight
-        self.__right_bar_column_weight = right_bar_weight
-        self.__center_frame_column_weight = center_frame_weight
+        logger.debug(str(left_bar_weight) + " " + str(center_frame_weight) + " " + str(right_bar_weight))
+        logger.debug(str(self.__left_bar_column_weight) + " " + str(self.__center_frame_column_weight) + " " + str(self.__right_bar_column_weight))
+        if left_bar_weight:
+            self.__left_bar_column_weight = left_bar_weight
+        if right_bar_weight:
+            self.__right_bar_column_weight = right_bar_weight
+        if center_frame_weight:
+            self.__center_frame_column_weight = center_frame_weight
+        logger.debug(str(self.__left_bar_column_weight) + " " + str(self.__center_frame_column_weight) + " " + str(self.__right_bar_column_weight))
 
     def set_grid_row_weights(self, header_bar_weight, center_frame_weight):
         """
@@ -485,7 +491,7 @@ class IPage(tkinter.Frame, ABC):
             self.__enable_left_sidebar = not self.__enable_left_sidebar
         self.apply_layout()
 
-    def toggle_rights_sidebar(self, set_value:bool|None=False):
+    def toggle_right_sidebar(self, set_value: bool | None=False):
         """
             Toggles the visibility of the right sidebar. Supports an optional value
             to set the visibility of the sidebar independently of the previous visibility
@@ -552,6 +558,7 @@ class IPage(tkinter.Frame, ABC):
             sticky='NSWE'
         )
 
+        logger.debug('applying weight to left column:'+str(self.__left_bar_column_weight))
         self.grid_columnconfigure(0, weight=self.__left_bar_column_weight if self.__enable_left_sidebar else 0)
         self.grid_columnconfigure(1, weight=self.__center_frame_column_weight)
         self.grid_columnconfigure(2, weight=self.__right_bar_column_weight if self.__enable_right_sidebar else 0)
