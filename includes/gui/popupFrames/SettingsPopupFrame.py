@@ -89,8 +89,8 @@ class SettingsPopupFrame(IPage):
         self.grid_columnconfigure(0, weight=3)
         self.set_grid_row_weights(4,4)
         # self.
-        self.after(1000,self.switch_to_credits)
-        #self.switch_to_credits()
+        self.after(0,self.switch_to_credits)
+        # self.switch_to_credits()
 
 
     # def zum aendern des Icons im Header bassierend auf der angezeiten Seite
@@ -163,11 +163,13 @@ class SettingsPopupFrame(IPage):
         frame.grid_columnconfigure(0, weight=0)  # Seitenleiste
         frame.grid_columnconfigure(1, weight=1)  # Hauptinhalt
 
+        for i in range(0,16): frame.grid_rowconfigure(i, weight=1)
+        for i in range(0,14): frame.grid_columnconfigure(i, weight=1)
+
+        self.__setup_system_items(frame)
 
 
-        for i in range(0,17): frame.grid_rowconfigure(i, weight=1)
-        for i in range(0,17): frame.grid_columnconfigure(i, weight=1)
-
+    def __setup_credits_items(self, frame:tkinter.Frame) -> None:
         for i in range(0,5):
             self.credit_links_buttons[i].update(
                 {
@@ -240,15 +242,21 @@ class SettingsPopupFrame(IPage):
                 {'label': tkinter.Label(frame,text=label_data['text'],font=SETTINGS_FONT,bg='white')}
             )
 
-    def switch_to_system(self):
+    def __setup_profile_items(self, frame:tkinter.Frame) -> None:
+        pass
+
+    def __setup_system_items(self, frame:tkinter.Frame) -> None:
+        pass
+
+    def switch_to_system(self) -> None:
         """."""
         pass
 
-    def switch_to_profile(self):
+    def switch_to_profile(self) -> None:
         """."""
         pass
 
-    def switch_to_credits(self):
+    def switch_to_credits(self) -> None:
         """."""
         for i in range(0,5,1):
             self.credit_links_buttons[i]['icon_label'].grid(row=(i+1)*2, column=1, rowspan=1, columnspan=1, sticky="nsew")
@@ -257,16 +265,16 @@ class SettingsPopupFrame(IPage):
             self.credit_links_buttons[i]['icon_label'].grid(row=(i-4)*2, column=4, rowspan=1, columnspan=1, sticky="nsew")
             self.credit_links_buttons[i]['name_label'].grid(row=(i-4)*2+1, column=3, rowspan=1, columnspan=3, sticky="nsew")
         for i in range(10,12,1):
-            self.credit_links_buttons[i]['icon_label'].grid(row=(i-9)*2, column=9, rowspan=1, columnspan=3, sticky="nsew")
-            self.credit_links_buttons[i]['name_label'].grid(row=(i-9)*2+1, column=8, rowspan=1, columnspan=5, sticky="nsew")
+            self.credit_links_buttons[i]['icon_label'].grid(row=(i-9)*2, column=8, rowspan=1, columnspan=3, sticky="nsew")
+            self.credit_links_buttons[i]['name_label'].grid(row=(i-9)*2+1, column=7, rowspan=1, columnspan=5, sticky="nsew")
         for i in range(12,14,1):
-            self.credit_links_buttons[i]['icon_label'].grid(row=(i-8)*2, column=9, rowspan=1, columnspan=3, sticky="nsew")
-            self.credit_links_buttons[i]['name_label'].grid(row=(i-8)*2+1, column=8, rowspan=1, columnspan=5, sticky="nsew")
+            self.credit_links_buttons[i]['icon_label'].grid(row=(i-8)*2, column=8, rowspan=1, columnspan=3, sticky="nsew")
+            self.credit_links_buttons[i]['name_label'].grid(row=(i-8)*2+1, column=7, rowspan=1, columnspan=5, sticky="nsew")
 
         self.credit_title_labels[0]['label'].grid(row=0, column=1, columnspan=3, sticky="nsew")
         self.credit_title_labels[1]['label'].grid(row=0, column=4, columnspan=3, sticky="nsew")
-        self.credit_title_labels[2]['label'].grid(row=0, column=9, columnspan=3, sticky="nsew")
-        self.credit_title_labels[3]['label'].grid(row=7, column=9, columnspan=3, sticky="nsew")
+        self.credit_title_labels[2]['label'].grid(row=0, column=8, columnspan=3, sticky="nsew")
+        self.credit_title_labels[3]['label'].grid(row=7, column=8, columnspan=3, sticky="nsew")
         # for i in range(3,5):
         #     self.credit_links_buttons[i]['icon_label'].grid(row=i*2-6, column=7, rowspan=1, columnspan=2, sticky="nsew")
         #     self.credit_links_buttons[i]['name_label'].grid(row=i*2-5, column=6, rowspan=1, columnspan=4, sticky="nsew")

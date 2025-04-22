@@ -22,7 +22,7 @@ class PopupFrameSupport(tkinter.Toplevel):
         # Bildschirmbreite und hoehe ermitteln (fenster mittig auf Bildschirm setzten)
         screen_width = parent.winfo_screenwidth()
         screen_height = parent.winfo_screenheight()
-        window_width, window_height = 850, 600
+        window_width, window_height = 900, 600
         center_x = int(screen_width / 2 - window_width / 2)
         center_y = int(screen_height / 2 - window_height / 2)
         self.geometry(f"{window_width}x{window_height}+{center_x}+{center_y}")
